@@ -225,6 +225,8 @@ client.background       #F8F8F2
 
 
 set $font pango:Jost*
+#set $font pango:Josefin Sans
+#set $font pango:League Spartan
 set $weight Medium
 set $size 11
 
@@ -254,7 +256,7 @@ bar {
         status_command /usr/share/bumblebee-status/bumblebee-status -m \
                        pomodoro nic pasink pasource date time \
                        -p interval=0.5 nic.format="" \
-                       time.format="%H:%M    " date.format="%A — %Y•%m•%d" \
+                       time.format="%H:%M    " date.format="%A – %Y･%m･%d" \
                        pomodoro.format="%m min" \
                        -t dracula
 }
