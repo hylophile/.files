@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "name"
+      user-mail-address "mail")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -21,14 +21,14 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+(setq doom-font (font-spec :family "Fira Code" :size 26)
+      doom-variable-pitch-font (font-spec :family "sans" :size 18))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-dracula)
 
-
-(setq doom-font (font-spec :family "Fira Code" :size 26 :weight 'medium))
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -59,3 +59,28 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+
+(setq auth-sources '("~/.authinfo"))
+(after! forge
+  (add-to-list 'forge-alist
+               '("gitlab.employer"
+                 "gitlab.employer/api/v4"
+                 "gitlab.employer" forge-gitlab-repository)))
+
+(map! :leader       
+      :desc "Small font mode"       
+      "t s" #'doom-small-font-mode) 
+
+(map! :leader
+      :desc "comment line"
+      "c l" #'comment-line)
+
+(map! :leader
+      :desc "Magit push"    
+      "g p" #'magit-push)
+
+(map! :leader "w <left>" #'evil-window-left)
+(map! :leader "w <down>" #'evil-window-down)
+(map! :leader "w <up>" #'evil-window-up)
+(map! :leader "w <right>" #'evil-window-right)
