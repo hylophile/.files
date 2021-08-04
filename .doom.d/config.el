@@ -42,6 +42,7 @@
 (map! :n "C-=" #'doom/reset-font-size)
 (map! :n "C--" #'doom/decrease-font-size)
 
+(map! "M-SPC" #'doom/leader)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
