@@ -122,7 +122,7 @@ bindsym $mod+t layout tabbed
 bindsym $mod+Shift+s layout toggle split
 
 # toggle tiling / floating
-#bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+f floating toggle
 
 bindsym $mod+Shift+p exec maim -s -u | xclip -selection clipboard -t image/png -i
 bindsym $mod+Shift+z exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i

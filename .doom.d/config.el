@@ -37,6 +37,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type nil)
 
+(setq evil-snipe-scope 'visible)
 
 (map! :n "C-+" #'doom/increase-font-size)
 (map! :n "C-=" #'doom/reset-font-size)
@@ -85,3 +86,6 @@
 (map! :leader "w <down>" #'evil-window-down)
 (map! :leader "w <up>" #'evil-window-up)
 (map! :leader "w <right>" #'evil-window-right)
+
+(map! :leader "TAB p" #'+workspace/other)
+
