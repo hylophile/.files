@@ -32,6 +32,7 @@ exec sh ~/.xinitrc
 #
 #exec --no-startup-id mullvad-vpn
 #exec --no-startup-id nm-applet
+exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
