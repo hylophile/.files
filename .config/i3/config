@@ -30,7 +30,8 @@ exec sh ~/.xinitrc
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 #
-exec --no-startup-id mullvad-vpn
+#exec --no-startup-id mullvad-vpn
+#exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -241,7 +242,7 @@ bar {
         # font pango:Fira Code 10
         workspace_min_width 100
         font $font $weight $size
-        tray_output none
+        tray_output primary
 	position bottom
 
         colors {
@@ -257,7 +258,7 @@ bar {
         }
 #        separator_symbol " - "
         status_command /usr/share/bumblebee-status/bumblebee-status -m \
-                       pomodoro nic pasink pasource date time \
+                       nic pasink pasource date time \
                        -p interval=0.5 nic.exclude="wlp*,lo" nic.format="" \
                        time.format="%H:%M    " date.format="%A – %Y･%m･%d" \
                        pomodoro.format="%m min" \

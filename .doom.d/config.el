@@ -35,7 +35,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type nil)
+(setq display-line-numbers-type 'relative)
 
 (setq evil-snipe-scope 'visible)
 
@@ -65,6 +65,7 @@
 
 (setq auth-sources '("~/.authinfo"))
 (after! forge
+  (setq forge-add-pullreq-refspec nil)
   (add-to-list 'forge-alist
                '("gitlab.employer"
                  "gitlab.employer/api/v4"
