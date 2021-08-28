@@ -71,22 +71,40 @@
                  "gitlab.employer/api/v4"
                  "gitlab.employer" forge-gitlab-repository)))
 
-(map! :leader       
-      :desc "Small font mode"       
-      "t s" #'doom-small-font-mode) 
-
-(map! :leader
-      :desc "comment line"
-      "c l" #'comment-line)
-
 (map! :leader
       :desc "Magit push"    
       "g p" #'magit-push)
 
-(map! :leader "w <left>" #'evil-window-left)
-(map! :leader "w <down>" #'evil-window-down)
-(map! :leader "w <up>" #'evil-window-up)
-(map! :leader "w <right>" #'evil-window-right)
+(map! :map evil-window-map
+      "<left>" #'evil-window-left
+      "<down>" #'evil-window-down
+      "<up>" #'evil-window-up
+      "<right>" #'evil-window-right
+
+      "S-<left>" #'+evil/window-move-left
+      "S-<down>" #'+evil/window-move-down
+      "S-<up>" #'+evil/window-move-up
+      "S-<right>" #'+evil/window-move-right
+
+      "v" #'+evil/window-vsplit-and-follow
+      "V" #'evil-window-vsplit
+      "h" #'+evil/window-split-and-follow
+      "H" #'evil-window-split
+      "C-h" nil
+      "j" nil
+      "J" nil
+      "C-j" nil
+      "k" nil
+      "K" nil
+      "C-k" nil
+      "l" nil
+      "L" nil
+      "C-l" nil
+      "s" nil
+      "S" nil
+      "C-s" nil
+      )
 
 (map! :leader "TAB p" #'+workspace/other)
 
+(load-file "~/.doom.d/vue-mode-polymode.el")
