@@ -1,0 +1,25 @@
+# These settings can also go under an "Account" section, but then the
+# "IMAPStore" section needs to reference the account. This is not
+# needed for just one store per account.
+Create Both
+Expunge Both
+SyncState *
+
+IMAPAccount posteo
+Host posteo.de
+User mail
+PassCmd "bw get password d1d6018d-92fc-4011-816a-ac0200ddd77e"
+SSLType STARTTLS
+
+IMAPStore posteo-remote
+Account posteo
+
+MaildirStore posteo-local
+Path ~/.mail/mailbox/posteo
+Inbox ~/.mail/mailbox/posteo/INBOX
+SubFolders Verbatim
+
+Channel posteo
+Master :posteo-remote:
+Slave :posteo-local:
+Patterns * !Archives
