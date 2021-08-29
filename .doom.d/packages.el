@@ -8,7 +8,7 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
-(package! rainbow-mode)
+;; (package! rainbow-mode)
 ;; (package! vue-mode)
 (package! polymode)
 
