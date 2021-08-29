@@ -8,7 +8,8 @@ SyncState *
 IMAPAccount posteo
 Host posteo.de
 User mail
-PassCmd "bw get password d1d6018d-92fc-4011-816a-ac0200ddd77e"
+#PassCmd "bw get password d1d6018d-92fc-4011-816a-ac0200ddd77e"
+PassCmd "pass email/posteo"
 SSLType STARTTLS
 
 IMAPStore posteo-remote
