@@ -109,3 +109,4 @@
 
 (load-file "~/.doom.d/vue-mode-polymode.el")
 (load-file "~/.doom.d/mail.el")
+(load-file "~/.doom.d/dotfiles.el")
