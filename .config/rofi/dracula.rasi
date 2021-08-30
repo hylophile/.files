@@ -3,6 +3,7 @@
 * {
     font: "Fira Code 24";
     foreground: #f8f8f2;
+    background: #282a36;
     background-color: #282a36;
     active-background: #6272a4;
     urgent-background: #ff5555;
@@ -11,6 +12,15 @@
     selected-active-background: @active-background;
     separatorcolor: @active-background;
     bordercolor: @active-background;
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+element-icon {
+    background-color: inherit;
 }
 
 #window {
