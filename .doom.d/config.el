@@ -37,6 +37,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
+(setq which-key-idle-delay 0.3)
 (setq evil-snipe-scope 'visible)
 
 (map! :n "C-+" #'doom/increase-font-size)

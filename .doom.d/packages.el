@@ -11,6 +11,8 @@
 ;; (package! rainbow-mode)
 ;; (package! vue-mode)
 (package! polymode)
+(package! prism :recipe (:host github :repo "alphapapa/prism.el"))
+(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
