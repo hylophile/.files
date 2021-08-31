@@ -1,5 +1,6 @@
-(use-package polymode
-        :ensure t
+;;; load/vue-polymode.el -*- lexical-binding: t; -*-
+
+(use-package! polymode
         :defer t
         :hook (vue-mode . lsp-deferred)
         :mode ("\\.vue\\'" . vue-mode)

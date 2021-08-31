@@ -44,7 +44,7 @@
 (map! :n "C-=" #'doom/reset-font-size)
 (map! :n "C--" #'doom/decrease-font-size)
 
-(map! "M-SPC" #'doom/leader)
+;; (map! "M-SPC" #'doom/leader)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -71,6 +71,24 @@
                '("gitlab.employer"
                  "gitlab.employer/api/v4"
                  "gitlab.employer" forge-gitlab-repository)))
+
+(setq avy-keys '(?s ?n ?r ?t ?d ?y))
+
+(setq-default
+ delete-by-moving-to-trash t                      ; Delete files to trash
+ window-combination-resize t                      ; take new window space from all other windows (not just current)
+ x-stretch-cursor t)                              ; Stretch cursor to the glyph width
+
+(setq undo-limit 80000000                         ; Raise undo-limit to 80Mb
+      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
+      auto-save-default t                         ; Nobody likes to loose work, I certainly don't
+      truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
+      password-cache-expiry nil                   ; I can trust my computers ... can't I?
+      scroll-preserve-screen-position 'always     ; Don't have `point' jump around
+      scroll-margin 5)                            ; It's nice to maintain a little margin
+
+(global-subword-mode t)                           ; Iterate through CamelCase words
+
 
 (map! :leader
       :desc "Magit push"    
@@ -108,6 +126,6 @@
 
 (map! :leader "TAB p" #'+workspace/other)
 
-(load-file "~/.doom.d/vue-mode-polymode.el")
-(load-file "~/.doom.d/mail.el")
-(load-file "~/.doom.d/dotfiles.el")
+(load! "load/vue-polymode.el")
+(load! "load/mail.el")
+(load! "load/dotfiles.el")
