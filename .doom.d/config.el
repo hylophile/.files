@@ -85,7 +85,8 @@
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
       scroll-preserve-screen-position 'always     ; Don't have `point' jump around
-      scroll-margin 5)                            ; It's nice to maintain a little margin
+      scroll-margin 5
+      hscroll-margin 20)                            ; It's nice to maintain a little margin
 
 (global-subword-mode t)                           ; Iterate through CamelCase words
 
