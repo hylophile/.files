@@ -83,6 +83,10 @@
                  "gitlab.employer/api/v4"
                  "gitlab.employer" forge-gitlab-repository)))
 
+<<<<<<< HEAD
+=======
+(setq avy-keys '(?s ?n ?r ?t ?d ?y))
+>>>>>>> 914b44b (update doom)
 
 (setq-default
  delete-by-moving-to-trash t                      ; Delete files to trash
@@ -95,6 +99,7 @@
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
       scroll-preserve-screen-position 'always     ; Don't have `point' jump around
+<<<<<<< HEAD
       scroll-margin 2
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
@@ -138,3 +143,49 @@
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 (load! "load/format-classes.el")
+=======
+      scroll-margin 5)                            ; It's nice to maintain a little margin
+
+(global-subword-mode t)                           ; Iterate through CamelCase words
+
+
+(map! :leader
+      :desc "Magit push"    
+      "g p" #'magit-push)
+
+(map! :map evil-window-map
+      "<left>" #'evil-window-left
+      "<down>" #'evil-window-down
+      "<up>" #'evil-window-up
+      "<right>" #'evil-window-right
+
+      "S-<left>" #'+evil/window-move-left
+      "S-<down>" #'+evil/window-move-down
+      "S-<up>" #'+evil/window-move-up
+      "S-<right>" #'+evil/window-move-right
+
+      "v" #'+evil/window-vsplit-and-follow
+      "V" #'evil-window-vsplit
+      "h" #'+evil/window-split-and-follow
+      "H" #'evil-window-split
+      "C-h" nil
+      "j" nil
+      "J" nil
+      "C-j" nil
+      "k" nil
+      "K" nil
+      "C-k" nil
+      "l" nil
+      "L" nil
+      "C-l" nil
+      "s" nil
+      "S" nil
+      "C-s" nil
+      )
+
+(map! :leader "TAB p" #'+workspace/other)
+
+(load! "load/vue-polymode.el")
+(load! "load/mail.el")
+(load! "load/dotfiles.el")
+>>>>>>> 914b44b (update doom)
