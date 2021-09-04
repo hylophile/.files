@@ -83,10 +83,7 @@
                  "gitlab.employer/api/v4"
                  "gitlab.employer" forge-gitlab-repository)))
 
-<<<<<<< HEAD
-=======
 (setq avy-keys '(?s ?n ?r ?t ?d ?y))
->>>>>>> 914b44b (update doom)
 
 (setq-default
  delete-by-moving-to-trash t                      ; Delete files to trash
@@ -148,10 +145,41 @@
 
 (global-subword-mode t)                           ; Iterate through CamelCase words
 
+;; (setq +format-on-save-enabled-modes
+      ;; '(not sgml-mode))
+      ;; '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
+      ;;       sql-mode         ; sqlformat is currently broken
+      ;;       tex-mode         ; latexindent is broken
+      ;;       latex-mode))
+;; (setq-hook! 'sgml-mode +format-with-lsp t)
+;; (setq-hook! 'html-mode +format-with-lsp t)
 
 (map! :leader
       :desc "Magit push"    
       "g p" #'magit-push)
+
+(map! :map org-mode-map
+      :after org
+      :localleader
+      "a" #'org-archive-subtree
+        (:prefix ("A" . "attachments")
+         "a" #'org-attach
+         "d" #'org-attach-delete-one
+         "D" #'org-attach-delete-all
+         "f" #'+org/find-file-in-attachments
+         "l" #'+org/attach-file-and-insert-link
+         "n" #'org-attach-new
+         "o" #'org-attach-open
+         "O" #'org-attach-open-in-emacs
+         "r" #'org-attach-reveal
+         "R" #'org-attach-reveal-in-emacs
+         "u" #'org-attach-url
+         "s" #'org-attach-set-directory
+         "S" #'org-attach-sync
+         (:when (featurep! +dragndrop)
+          "c" #'org-download-screenshot
+          "p" #'org-download-clipboard
+          "P" #'org-download-yank)))
 
 (map! :map evil-window-map
       "<left>" #'evil-window-left
@@ -180,12 +208,32 @@
       "C-l" nil
       "s" nil
       "S" nil
-      "C-s" nil
-      )
+      "C-s" nil)
 
 (map! :leader "TAB p" #'+workspace/other)
+
+;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
 
 (load! "load/vue-polymode.el")
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
+<<<<<<< HEAD
 >>>>>>> 914b44b (update doom)
+=======
+(load! "load/format-classes.el")
+>>>>>>> 44e7266 (doom)
