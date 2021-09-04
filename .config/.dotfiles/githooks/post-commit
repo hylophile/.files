@@ -1,0 +1,21 @@
+#!/bin/sh
+
+alias cfg="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+
+last_commit=$(cfg rev-parse HEAD)
+last_commit_msg=$(cfg show -s --format=%s)
+
+current_branch=$(cfg symbolic-ref --short HEAD)
+
+echo $last_commit
+echo $last_commit_msg
+echo $current_branch
+
+if [[ $last_commit_msg != work:* ]] && [[ $last_commit_msg != rook:* ]] ;
+then
+    cfg checkout main
+    cfg cherry-pick "$last_commit"
+    cfg push
+    cfg checkout $current_branch
+    echo hi
+fi
