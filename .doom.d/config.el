@@ -1,4 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(load! "load/maps.el")
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -29,8 +30,10 @@
 ;; `load-theme' function. This is the default:
 
 (setq doom-theme (hylo/random-non-light-theme))
-(setq +doom-dashboard-functions (append +doom-dashboard-functions (hylo/insert-theme)))
-
+(setq +doom-dashboard-functions (append
+                                 (list (car +doom-dashboard-functions))
+                                 '(hylo/insert-theme)
+                                 (cdr +doom-dashboard-functions)))
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -115,7 +118,6 @@
 
 
 ;; (load! "load/vue-polymode.el")
-(load! "load/maps.el")
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 (load! "load/format-classes.el")

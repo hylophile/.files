@@ -17,7 +17,7 @@
   (insert
    "\n"
    (+doom-dashboard--center
-    (- +doom-dashboard--width 2)
+    (- +doom-dashboard--width 0)
     (with-temp-buffer
       (insert (symbol-name doom-theme))
       (buffer-string)))
