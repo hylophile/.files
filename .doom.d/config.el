@@ -133,3 +133,4 @@
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 (load! "load/format-classes.el")
+(load! "load/kzk-config.el")
