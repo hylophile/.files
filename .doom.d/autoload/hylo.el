@@ -19,6 +19,7 @@
                                   (symbol-name y)))
                      '(
                        ;; undesirable
+                       manoj-dark
                        doom-plain-dark
                        wombat
                        ;; light
