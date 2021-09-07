@@ -56,6 +56,8 @@ bindsym $mod+e workspace next_on_output
 bindsym $mod+u workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
+bindsym $mod+o exec ~/.emacs.d/bin/doom everywhere
+
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
 # set $up k
@@ -143,6 +145,9 @@ bindsym $mod+Shift+minus move scratchpad
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
+
+
+for_window [title="^Emacs Everywhere"] floating enable
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
