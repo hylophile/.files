@@ -77,23 +77,24 @@
       :after org
       :localleader
       "a" #'org-archive-subtree
-      (:prefix ("A" . "attachments")
-       "a" #'org-attach
-       "d" #'org-attach-delete-one
-       "D" #'org-attach-delete-all
-       "f" #'+org/find-file-in-attachments
-       "l" #'+org/attach-file-and-insert-link
-       "n" #'org-attach-new
-       "o" #'org-attach-open
-       "O" #'org-attach-open-in-emacs
-       "r" #'org-attach-reveal
-       "R" #'org-attach-reveal-in-emacs
-       "u" #'org-attach-url
-       "s" #'org-attach-set-directory
-       "S" #'org-attach-sync
-       (:when (featurep! +dragndrop)
-        "c" #'org-download-screenshot
-        "p" #'org-download-clipboard
-        "P" #'org-download-yank)))
+      )
+      ;; (:prefix ("A" . "attachments")
+      ;;  "a" #'org-attach
+      ;;  "d" #'org-attach-delete-one
+      ;;  "D" #'org-attach-delete-all
+      ;;  "f" #'+org/find-file-in-attachments
+      ;;  "l" #'+org/attach-file-and-insert-link
+      ;;  "n" #'org-attach-new
+      ;;  "o" #'org-attach-open
+      ;;  "O" #'org-attach-open-in-emacs
+      ;;  "r" #'org-attach-reveal
+      ;;  "R" #'org-attach-reveal-in-emacs
+      ;;  "u" #'org-attach-url
+      ;;  "s" #'org-attach-set-directory
+      ;;  "S" #'org-attach-sync
+      ;;  (:when (featurep! +dragndrop)
+      ;;   "c" #'org-download-screenshot
+      ;;   "p" #'org-download-clipboard
+      ;;   "P" #'org-download-yank))
 
 (map! :leader "TAB p" #'+workspace/other)
