@@ -109,6 +109,14 @@
 ;; (setq-hook! 'sgml-mode +format-with-lsp t)
 ;; (setq-hook! 'html-mode +format-with-lsp t)
 
+(after! persp-mode
+  (defun display-workspaces-in-minibuffer ()
+    (with-current-buffer " *Minibuf-0*"
+      (erase-buffer)
+      (insert (+workspace--tabline))))
+  (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
+  (+workspace/display))
+
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 (use-package! websocket
   :after org-roam)
@@ -130,3 +138,4 @@
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 (load! "load/format-classes.el")
+(load! "load/kzk-config.el")
