@@ -35,6 +35,11 @@
                                  '(hylo/insert-theme)
                                  (cdr +doom-dashboard-functions)))
 
+ (setq doom-themes-treemacs-theme "doom-colors")
+
+;; (after! vterm
+;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
+
 ;; (after! magit
 ;;   (setq magit-display-buffer-function #'magit-display-buffer-traditional))
 
