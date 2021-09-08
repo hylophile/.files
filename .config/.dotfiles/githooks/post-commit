@@ -11,7 +11,7 @@ echo $last_commit
 echo $last_commit_msg
 echo $current_branch
 
-if [[ $last_commit_msg != work:* ]] && [[ $last_commit_msg != rook:* ]] ;
+if [[ $last_commit_msg != work:* ]] && [[ $last_commit_msg != rook:* ]] && [[ $current_branch != main ]];
 then
     cfg checkout main
     cfg cherry-pick "$last_commit"
