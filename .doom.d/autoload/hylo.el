@@ -21,13 +21,24 @@
                        ;; undesirable
                        doom-plain-dark
                        wombat
-                       ;; light
+                       ;; light actually
                        light-blue
                        doom-flatwhite
+                       doom-homage-white
+                       tango
+                       adwaita
+                       doom-tomorrow-day
                        whiteboard
                        doom-plain))))
       (string-suffix-p "-light" (symbol-name x))))
    (custom-available-themes)))
+
+;;;###autoload
+(defun hylo/insert-current-theme ()
+  (interactive)
+  (evil-open-below 1)
+  (insert (symbol-name doom-theme))
+  (evil-normal-state))
 
 ;;;###autoload
 (defun hylo/insert-theme ()
