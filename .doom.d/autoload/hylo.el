@@ -26,6 +26,7 @@
                        light-blue
                        doom-flatwhite
                        doom-homage-white
+                       dichromacy
                        tango
                        adwaita
                        doom-tomorrow-day
