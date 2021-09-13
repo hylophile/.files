@@ -89,12 +89,13 @@ Use evil's window splitting function to follow into the new window."
   (setq aw-background nil)
   (setq aw-keys '(?n ?r ?t ?d ?u ?i ?e ?o))
   (setq aw-dispatch-alist
+        ;; no docstring means dont prompt for window, use current (weird but ok)
         '((?k aw-delete-window "Delete Window")
           (?m aw-move-window "Move Window")
           (?M delete-other-windows)
           (?c aw-copy-window "Copy Window")
           (?b aw-switch-buffer-in-window "Select Buffer")
-          (?a aw-flip-window) ;;; docstring disables functionality
+          (?a aw-flip-window)
           (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
           (?s hylo/aw-split-window-fair-and-follow)
           (?S aw-swap-window "Swap Windows")
