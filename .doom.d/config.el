@@ -22,7 +22,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Fira Code" :size 26)
+(setq doom-font (font-spec :family "Fira Code" :size 30)
       doom-variable-pitch-font (font-spec :family "Jost*" :size 30))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -35,7 +35,7 @@
                                  '(hylo/insert-theme)
                                  (cdr +doom-dashboard-functions)))
 
- (setq doom-themes-treemacs-theme "doom-colors")
+(setq doom-themes-treemacs-theme "doom-colors")
 
 ;; (after! vterm
 ;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
@@ -55,6 +55,72 @@
 (setq evil-snipe-scope 'visible)
 
 
+(map! :leader
+      "a" #'ace-window)
+
+(custom-set-faces!
+  `(aw-leading-char-face
+    :foreground ,(face-attribute 'mode-line-emphasis :foreground)
+    :background ,(face-attribute 'mode-line :background)
+    :weight bold :height 1.0 :box (:line-width -50 :color ,(face-attribute 'mode-line :background))))
+
+(use-package! ace-window
+  :config
+  (setq aw-dispatch-always t)
+  (after! treemacs
+    (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
+  (ace-window-display-mode t)
+  (setq aw-background nil)
+  (setq aw-keys '(?n ?r ?t ?d ?u ?i ?e ?o))
+  (setq aw-dispatch-alist
+        '((?k aw-delete-window "Delete Window")
+          (?m aw-move-window "Move Window")
+          (?M delete-other-windows "Delete Other Windows")
+          (?c aw-copy-window "Copy Window")
+          (?b aw-switch-buffer-in-window "Select Buffer")
+          (?a aw-flip-window) ;;; docstring disables functionality
+          (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
+          (?s aw-split-window-fair "Split Fair Window")
+          (?S aw-swap-window "Swap Windows")
+          (?v aw-split-window-vert "Split Vert Window")
+          (?h aw-split-window-horz "Split Horz Window")
+          (?? aw-show-dispatch-help))))
+
+(use-package! avy
+  :config
+  (setq avy-all-windows t))
+
+(use-package! mixed-pitch
+  :hook (org-mode . mixed-pitch-mode)
+  )
+(after! mixed-pitch
+  (setq mixed-pitch-face 'variable-pitch-bigger)
+  )
+
+(defface variable-pitch-bigger
+  '((t (:family "Inter Light" )))
+  "Face for mixed-pitch mode"
+  :group 'basic-faces)
+
+
+
+(custom-set-faces!
+  '(outline-1 :weight semi-bold :height 1.25)
+  '(outline-2 :weight semi-bold :height 1.15)
+  '(outline-3 :weight semi-bold :height 1.12)
+  '(outline-4 :weight semi-bold :height 1.09)
+  '(outline-5 :weight semi-bold :height 1.06)
+  '(outline-6 :weight semi-bold :height 1.03)
+  '(outline-8 :weight semi-bold)
+  '(outline-9 :weight semi-bold))
+
+(custom-set-faces!
+  '(org-document-title :height 1.5))
+
+
+;; (setq projectile-project-search-path '("~/code"))
+;; (after! (company org)
+;; (set-company-backend! 'org-mode nil))
 ;; (map! "M-SPC" #'doom/leader)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -73,7 +139,8 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(setq lsp-auto-guess-root t)
+;; (setq lsp-auto-guess-root t)
+(setq iedit-toggle-key-default nil)
 
 (setq auth-sources '("~/.authinfo"))
 (after! forge
@@ -96,7 +163,6 @@
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
       scroll-preserve-screen-position 'always     ; Don't have `point' jump around
-<<<<<<< HEAD
       scroll-margin 2
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
@@ -115,7 +181,17 @@
   (defun display-workspaces-in-minibuffer ()
     (with-current-buffer " *Minibuf-0*"
       (erase-buffer)
-      (insert (+workspace--tabline))))
+      ;; (insert (+workspace--tabline))
+      (insert (format
+               (format "%%s %%%ds"
+                       (- (frame-width)
+                          (length (+workspace--tabline))
+                          1))
+               (+workspace--tabline)
+               (propertize
+                (symbol-name doom-theme)
+                'face '(:inherit (mode-line-emphasis)))))))
+
   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
   (+workspace/display))
 
@@ -137,103 +213,54 @@
 
 
 ;; (load! "load/vue-polymode.el")
-(load! "load/mail.el")
-(load! "load/dotfiles.el")
-(load! "load/format-classes.el")
-=======
-      scroll-margin 5)                            ; It's nice to maintain a little margin
 
 (global-subword-mode t)                           ; Iterate through CamelCase words
 
 ;; (setq +format-on-save-enabled-modes
-      ;; '(not sgml-mode))
-      ;; '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
-      ;;       sql-mode         ; sqlformat is currently broken
-      ;;       tex-mode         ; latexindent is broken
-      ;;       latex-mode))
+;; '(not sgml-mode))
+;; '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
+;;       sql-mode         ; sqlformat is currently broken
+;;       tex-mode         ; latexindent is broken
+;;       latex-mode))
 ;; (setq-hook! 'sgml-mode +format-with-lsp t)
 ;; (setq-hook! 'html-mode +format-with-lsp t)
 
-(map! :leader
-      :desc "Magit push"    
-      "g p" #'magit-push)
-
-(map! :map org-mode-map
-      :after org
-      :localleader
-      "a" #'org-archive-subtree
-        (:prefix ("A" . "attachments")
-         "a" #'org-attach
-         "d" #'org-attach-delete-one
-         "D" #'org-attach-delete-all
-         "f" #'+org/find-file-in-attachments
-         "l" #'+org/attach-file-and-insert-link
-         "n" #'org-attach-new
-         "o" #'org-attach-open
-         "O" #'org-attach-open-in-emacs
-         "r" #'org-attach-reveal
-         "R" #'org-attach-reveal-in-emacs
-         "u" #'org-attach-url
-         "s" #'org-attach-set-directory
-         "S" #'org-attach-sync
-         (:when (featurep! +dragndrop)
-          "c" #'org-download-screenshot
-          "p" #'org-download-clipboard
-          "P" #'org-download-yank)))
-
-(map! :map evil-window-map
-      "<left>" #'evil-window-left
-      "<down>" #'evil-window-down
-      "<up>" #'evil-window-up
-      "<right>" #'evil-window-right
-
-      "S-<left>" #'+evil/window-move-left
-      "S-<down>" #'+evil/window-move-down
-      "S-<up>" #'+evil/window-move-up
-      "S-<right>" #'+evil/window-move-right
-
-      "v" #'+evil/window-vsplit-and-follow
-      "V" #'evil-window-vsplit
-      "h" #'+evil/window-split-and-follow
-      "H" #'evil-window-split
-      "C-h" nil
-      "j" nil
-      "J" nil
-      "C-j" nil
-      "k" nil
-      "K" nil
-      "C-k" nil
-      "l" nil
-      "L" nil
-      "C-l" nil
-      "s" nil
-      "S" nil
-      "C-s" nil)
-
-(map! :leader "TAB p" #'+workspace/other)
 
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 (use-package! websocket
-    :after org-roam)
+  :after org-roam)
 
 (use-package! org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
+
+(add-hook 'org-mode-hook #'+org-pretty-mode)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 (load! "load/vue-polymode.el")
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
-<<<<<<< HEAD
->>>>>>> 914b44b (update doom)
-=======
 (load! "load/format-classes.el")
->>>>>>> 44e7266 (doom)

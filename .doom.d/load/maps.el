@@ -51,7 +51,7 @@
       ;; "R" #'evil-window-rotate-upwards
       ;; "t" #'evil-window-top-left
       ;; "T" #'tear-off-window
-      "k" #'+workspace/close-window-or-workspace
+      ;; "k" #'+workspace/close-window-or-workspace
 
       "k" #'evil-window-delete
 
@@ -73,28 +73,28 @@
       "S" nil
       "C-s" nil)
 
-(map! :map org-mode-map
-      :after org
-      :localleader
-      "a" #'org-archive-subtree
-      )
-      ;; (:prefix ("A" . "attachments")
-      ;;  "a" #'org-attach
-      ;;  "d" #'org-attach-delete-one
-      ;;  "D" #'org-attach-delete-all
-      ;;  "f" #'+org/find-file-in-attachments
-      ;;  "l" #'+org/attach-file-and-insert-link
-      ;;  "n" #'org-attach-new
-      ;;  "o" #'org-attach-open
-      ;;  "O" #'org-attach-open-in-emacs
-      ;;  "r" #'org-attach-reveal
-      ;;  "R" #'org-attach-reveal-in-emacs
-      ;;  "u" #'org-attach-url
-      ;;  "s" #'org-attach-set-directory
-      ;;  "S" #'org-attach-sync
-      ;;  (:when (featurep! +dragndrop)
-      ;;   "c" #'org-download-screenshot
-      ;;   "p" #'org-download-clipboard
-      ;;   "P" #'org-download-yank))
+;; (map! :map org-mode-map
+;;       :after org
+;;       :localleader
+;;       "a" #'org-archive-subtree
+;;       )
+;;       ;; (:prefix ("A" . "attachments")
+;;       ;;  "a" #'org-attach
+;;       ;;  "d" #'org-attach-delete-one
+;;       ;;  "D" #'org-attach-delete-all
+;;       ;;  "f" #'+org/find-file-in-attachments
+;;       ;;  "l" #'+org/attach-file-and-insert-link
+;;       ;;  "n" #'org-attach-new
+;;       ;;  "o" #'org-attach-open
+;;       ;;  "O" #'org-attach-open-in-emacs
+;;       ;;  "r" #'org-attach-reveal
+;;       ;;  "R" #'org-attach-reveal-in-emacs
+;;       ;;  "u" #'org-attach-url
+;;       ;;  "s" #'org-attach-set-directory
+;;       ;;  "S" #'org-attach-sync
+;;       ;;  (:when (featurep! +dragndrop)
+;;       ;;   "c" #'org-download-screenshot
+;;       ;;   "p" #'org-download-clipboard
+;;       ;;   "P" #'org-download-yank))
 
 (map! :leader "TAB p" #'+workspace/other)
