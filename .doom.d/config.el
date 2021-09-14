@@ -54,7 +54,7 @@
 (setq which-key-idle-delay 0.3)
 (setq evil-snipe-scope 'visible)
 
-
+(map! :leader :desc "Actions" "e" #'embark-act)
 (map! :leader
       "a" #'ace-window)
 
@@ -90,17 +90,17 @@
   :config
   (setq avy-all-windows t))
 
-(use-package! mixed-pitch
-  :hook (org-mode . mixed-pitch-mode)
-  )
-(after! mixed-pitch
-  (setq mixed-pitch-face 'variable-pitch-bigger)
-  )
+;; (use-package! mixed-pitch
+;;   :hook (org-mode . mixed-pitch-mode)
+;;   )
+;; (after! mixed-pitch
+;;   (setq mixed-pitch-face 'variable-pitch-bigger)
+;;   )
 
-(defface variable-pitch-bigger
-  '((t (:family "Inter Light" )))
-  "Face for mixed-pitch mode"
-  :group 'basic-faces)
+;; (defface variable-pitch-bigger
+;;   '((t (:family "Inter Light" )))
+;;   "Face for mixed-pitch mode"
+;;   :group 'basic-faces)
 
 
 
@@ -247,7 +247,14 @@
 
 
 
+(use-package! lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (push 'vue-mode lsp-tailwindcss-major-modes)
+  )
 
+;; (use-package! vue-mode)
 
 
 

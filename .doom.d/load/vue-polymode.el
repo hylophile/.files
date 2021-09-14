@@ -13,7 +13,7 @@
           :tail-mode 'host)
 
         (define-innermode poly-vue-script-innermode
-          :mode 'js-mode
+          :mode 'rjsx-mode
           :head-matcher "<[[:space:]]*\\(?:script\\)[[:space:]]*>"
           :tail-matcher "</[[:space:]]*\\(?:script\\)[[:space:]]*>"
           :head-mode 'host

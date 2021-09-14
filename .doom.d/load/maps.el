@@ -13,25 +13,25 @@
 ;;   r[eplace] to j
 ;;   t[ill]    to h
 ;;   d[elete]  to k[ill],
-(map! :after evil
-      :nv "n" #'evil-backward-char
-      :nv "r" #'evil-next-line
-      :nv "t" #'evil-previous-line
-      :nv "d" #'evil-forward-char
+;; (map! :after evil
+;;       :nv "n" #'evil-backward-char
+;;       :nv "r" #'evil-next-line
+;;       :nv "t" #'evil-previous-line
+;;       :nv "d" #'evil-forward-char
 
-      :n  "R" #'evil-join
-      :nv "l" #'evil-ex-search-next
-      :nv "L" #'evil-ex-search-previous
-      :nv "j" #'evil-replace
-      :nv "h" #'evil-snipe-t
-      :nv "k" #'evil-delete)
+;;       :n  "R" #'evil-join
+;;       :nv "l" #'evil-ex-search-next
+;;       :nv "L" #'evil-ex-search-previous
+;;       :nv "j" #'evil-replace
+;;       :nv "h" #'evil-snipe-t
+;;       :nv "k" #'evil-delete)
 
-(map! :map magit-mode-map
-      :after magit
-      :n "r" #'magit-next-line
-      :n "t" #'magit-previous-line
-      :n "j" #'magit-rebase
-      :n "k" #'magit-tag)
+;; (map! :map magit-mode-map
+;;       :after magit
+;;       :n "r" #'magit-next-line
+;;       :n "t" #'magit-previous-line
+;;       :n "j" #'magit-rebase
+;;       :n "k" #'magit-tag)
 
 (setq avy-keys '(?s ?n ?r ?t ?d ?y))
 
