@@ -43,8 +43,9 @@
 ;; (after! vterm
 ;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
 
-;; (after! magit
-;;   (setq magit-display-buffer-function #'magit-display-buffer-traditional))
+
+(after! magit
+  (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
