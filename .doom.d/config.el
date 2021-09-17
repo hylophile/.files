@@ -1,5 +1,8 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 (load! "load/maps.el")
+;; (map! :n "C-+" #'text-scale-increase)
+;; (map! :n "C--" #'text-scale-decrease)
+;; (map! :i "C-x C-s" #'save-buffer)
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -22,7 +25,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Fira Code" :size 30)
+(setq doom-font (font-spec :family "Fira Code" :size 26)
       doom-variable-pitch-font (font-spec :family "Jost*" :size 30))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -42,7 +45,6 @@
 
 ;; (after! magit
 ;;   (setq magit-display-buffer-function #'magit-display-buffer-traditional))
-
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -57,6 +59,19 @@
 (map! :leader :desc "Actions" "e" #'embark-act)
 (map! :leader
       "a" #'ace-window)
+
+(defun hylo/aw-split-window-fair-and-follow ()
+  "Split WINDOW vertically or horizontally, based on its current dimensions.
+Modify `aw-fair-aspect-ratio' to tweak behavior.
+Use evil's window splitting function to follow into the new window."
+  (let* ((window (selected-window))
+        (w (window-body-width window))
+        (h (window-body-height window)))
+    (if (< (* h 2.2) w)
+        (let ((evil-vsplit-window-right (not evil-vsplit-window-right)))
+          (call-interactively #'evil-window-vsplit))
+      (let ((evil-split-window-below (not evil-split-window-below)))
+        (call-interactively #'evil-window-split)))))
 
 (custom-set-faces!
   `(aw-leading-char-face
@@ -75,15 +90,18 @@
   (setq aw-dispatch-alist
         '((?k aw-delete-window "Delete Window")
           (?m aw-move-window "Move Window")
-          (?M delete-other-windows "Delete Other Windows")
+          (?M delete-other-windows)
           (?c aw-copy-window "Copy Window")
           (?b aw-switch-buffer-in-window "Select Buffer")
           (?a aw-flip-window) ;;; docstring disables functionality
           (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
-          (?s aw-split-window-fair "Split Fair Window")
+          (?s hylo/aw-split-window-fair-and-follow)
           (?S aw-swap-window "Swap Windows")
-          (?v aw-split-window-vert "Split Vert Window")
-          (?h aw-split-window-horz "Split Horz Window")
+          (?u winner-undo)
+          ;; (?v aw-split-window-vert "Split Vert Window")
+          ;; (?h aw-split-window-horz "Split Horz Window")
+          (?v +evil/window-vsplit-and-follow)
+          (?h +evil/window-split-and-follow)
           (?? aw-show-dispatch-help))))
 
 (use-package! avy
@@ -105,12 +123,12 @@
 
 
 (custom-set-faces!
-  '(outline-1 :weight semi-bold :height 1.25)
-  '(outline-2 :weight semi-bold :height 1.15)
-  '(outline-3 :weight semi-bold :height 1.12)
-  '(outline-4 :weight semi-bold :height 1.09)
-  '(outline-5 :weight semi-bold :height 1.06)
-  '(outline-6 :weight semi-bold :height 1.03)
+  '(outline-1 :weight semi-bold :height 1.15)
+  '(outline-2 :weight semi-bold :height 1.10)
+  '(outline-3 :weight semi-bold :height 1.09)
+  '(outline-4 :weight semi-bold :height 1.06)
+  '(outline-5 :weight semi-bold :height 1.03)
+  '(outline-6 :weight semi-bold :height 1.00)
   '(outline-8 :weight semi-bold)
   '(outline-9 :weight semi-bold))
 
@@ -245,7 +263,7 @@
 
 (add-hook 'org-mode-hook #'+org-pretty-mode)
 
-
+(remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
 (use-package! lsp-tailwindcss
   :init

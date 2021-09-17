@@ -35,6 +35,17 @@
 
 (setq avy-keys '(?s ?n ?r ?t ?d ?y))
 
+(map! :leader
+      "|" #'+popup/raise)
+
+(defun insert-primary ()
+  (interactive)
+  (insert-for-yank (gui-get-primary-selection)))
+
+(map! :nv "s" #'avy-goto-char-2)
+
+(map! :nvi "C-z" #'insert-primary)
+
 (map! :map evil-window-map
       "n" #'evil-window-left
       "r" #'evil-window-down
