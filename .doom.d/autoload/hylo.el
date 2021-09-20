@@ -26,6 +26,7 @@
                        light-blue
                        doom-flatwhite
                        doom-homage-white
+                       leuven
                        dichromacy
                        tango
                        adwaita

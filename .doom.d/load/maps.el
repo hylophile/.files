@@ -33,6 +33,21 @@
 ;;       :n "j" #'magit-rebase
 ;;       :n "k" #'magit-tag)
 
+;; (setq flycheck-indication-mode 'right-fringe)
+;; (setq-default right-margin-width 1)
+
+;; (setq-default right-fringe-width 20)
+
+;;     (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+;;       [16 48 112 240 112 48 16] nil nil 'center)
+
+;; 0001 0000
+;; 0011 0000
+;; 1111 0000
+;; 0011 0000
+;; 0001 0000
+
+
 (setq avy-keys '(?s ?n ?r ?t ?d ?y))
 
 (map! :leader
