@@ -25,12 +25,28 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Fira Code" :size 26)
-      doom-variable-pitch-font (font-spec :family "Jost*" :size 30))
+(setq doom-font (font-spec :family "Fira Code" :size 12.0)
+      ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 30)
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 12.0))
+(setq doom-font-increment 1)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
+
+(defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
+  "Advise `evil-delete-char' to set default REGISTER to the black hole register."
+  :around #'evil-delete-char
+  (unless register (setq register ?_))
+  (funcall fn beg end type register))
+
+(defadvice! my/evil-scroll-advice (fn count)
+  ""
+  :around #'evil-scroll-down
+  :around #'evil-scroll-up
+  (setq count (/ (window-body-height) 6))
+  (funcall fn count))
+
 
 (setq doom-theme (hylo/random-dark-theme))
 (setq +doom-dashboard-functions (append
@@ -43,6 +59,20 @@
 ;; (after! vterm
 ;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
 
+;; (map!
+;;  :after company
+;;  :map company-active-map
+;;  "RET" nil
+;;  "<return>" nil
+;;  [tab] #'company-complete-selection
+;;  "TAB" #'company-complete-selection)
+
+;; (custom-set-faces! '((flycheck-fringe-error) :width expanded))
+
+
+(defun my/lsp-no-code-actions ()
+  (setq lsp-ui-sideline-show-code-actions nil))
+(add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
 
 (after! magit
   (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -66,8 +96,8 @@
 Modify `aw-fair-aspect-ratio' to tweak behavior.
 Use evil's window splitting function to follow into the new window."
   (let* ((window (selected-window))
-        (w (window-body-width window))
-        (h (window-body-height window)))
+         (w (window-body-width window))
+         (h (window-body-height window)))
     (if (< (* h 2.2) w)
         (let ((evil-vsplit-window-right (not evil-vsplit-window-right)))
           (call-interactively #'evil-window-vsplit))
@@ -110,18 +140,22 @@ Use evil's window splitting function to follow into the new window."
   :config
   (setq avy-all-windows t))
 
-;; (use-package! mixed-pitch
-;;   :hook (org-mode . mixed-pitch-mode)
-;;   )
-;; (after! mixed-pitch
-;;   (setq mixed-pitch-face 'variable-pitch-bigger)
-;;   )
+(use-package! mixed-pitch
+  :hook (org-mode . mixed-pitch-mode)
+  )
+(after! mixed-pitch
+  (setq mixed-pitch-face 'variable-pitch-bigger)
+  )
 
-;; (defface variable-pitch-bigger
-;;   '((t (:family "Inter Light" )))
-;;   "Face for mixed-pitch mode"
-;;   :group 'basic-faces)
+(defface variable-pitch-bigger
+  '((t (:family "Overpass" :size 40)))
+  "Face for mixed-pitch mode"
+  :group 'basic-faces)
 
+;; (push 'org-todo-keyword-faces permanently-enabled-local-variables)
+
+(map! :n [mouse-8] #'better-jumper-jump-backward
+      :n [mouse-9] #'better-jumper-jump-forward)
 
 
 (custom-set-faces!
@@ -279,11 +313,43 @@ Use evil's window splitting function to follow into the new window."
 
 
 
+(defun my/info-buffer-p (buf)
+  (string= (buffer-name buf) "*info*"))
+(push 'my/info-buffer-p doom-real-buffer-functions)
 
+(defun my/helpful-buffer-p (buf)
+  (string-prefix-p "*helpful" (buffer-name buf)))
+(push 'my/helpful-buffer-p doom-real-buffer-functions)
 
+(defun my/search-info-org ()
+  (interactive)
+  (info "org")
+  (+popup/raise (selected-window))
+  (+default/search-buffer))
+(defun my/search-info-elisp ()
+  (interactive)
+  (info "elisp")
+  (+popup/raise (selected-window))
+  (+default/search-buffer))
+(defun my/search-emacsd ()
+  (interactive)
+  (+vertico/project-search t nil "~/.emacs.d"))
+(map! :leader :prefix "s"
+      "e" #'my/search-emacsd
+      "E" #'my/search-info-elisp
+      "n" #'my/search-info-org)
 
-
-
+(use-package! emacs-everywhere
+  :config
+  ;; (set-company-backend! 'emacs-everywhere-mode 'company-elisp)
+  ;; (add-hook! 'emacs-everywhere-init-hooks
+  ;;   (lambda ()
+  ;;     (set (make-local-variable 'company-backends)
+  ;;          (append (car company-backends)
+  ;;                  (list 'company-elisp)))))
+  (defadvice! my/emacs-everywhere-position ()
+    :override #'emacs-everywhere-set-frame-position
+    ()))
 
 
 
@@ -298,4 +364,3 @@ Use evil's window splitting function to follow into the new window."
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 (load! "load/format-classes.el")
-(load! "load/kzk-config.el")
