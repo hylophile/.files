@@ -287,6 +287,13 @@ Use evil's window splitting function to follow into the new window."
 
 
 
+
+(defun my/lsp-no-code-actions ()
+  (setq lsp-ui-sideline-show-code-actions nil))
+(add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
+
+
+
 (load! "load/vue-polymode.el")
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
