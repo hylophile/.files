@@ -364,4 +364,3 @@ Use evil's window splitting function to follow into the new window."
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 (load! "load/format-classes.el")
-(load! "load/kzk-config.el")
