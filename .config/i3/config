@@ -68,6 +68,7 @@ bindsym $mod+o exec ~/.emacs.d/bin/doom everywhere
 # set $down j
 # set $left h
 # set $right l
+bindsym $mod+Shift+b border toggle
 
 set $mod Mod4
 

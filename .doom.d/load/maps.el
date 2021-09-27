@@ -1,7 +1,7 @@
 
-(map! :n "C-+" #'doom/increase-font-size)
-(map! :n "C-=" #'doom/reset-font-size)
-(map! :n "C--" #'doom/decrease-font-size)
+(map! :ni "C-+" #'doom/increase-font-size)
+(map! :ni "C-=" #'doom/reset-font-size)
+(map! :ni "C--" #'doom/decrease-font-size)
 
 (map! :leader
       :desc "Magit push"

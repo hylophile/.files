@@ -6,6 +6,9 @@
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
+;; (map! :n "e" #'ediff-current-file)
+
+(remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -91,9 +94,8 @@
 (map! :leader
       "a" #'ace-window)
 
-(defun hylo/aw-split-window-fair-and-follow ()
-  "Split WINDOW vertically or horizontally, based on its current dimensions.
-Modify `aw-fair-aspect-ratio' to tweak behavior.
+(defun hylo/split-window-fair-and-follow ()
+  "Split current window vertically or horizontally, based on its current dimensions.
 Use evil's window splitting function to follow into the new window."
   (let* ((window (selected-window))
          (w (window-body-width window))
@@ -103,6 +105,11 @@ Use evil's window splitting function to follow into the new window."
           (call-interactively #'evil-window-vsplit))
       (let ((evil-split-window-below (not evil-split-window-below)))
         (call-interactively #'evil-window-split)))))
+
+(map! :map evil-window-map "s" #'hylo/split-window-fair-and-follow)
+
+
+;; (map! :nmv [C-i] #'evil-forward-WORD-end)
 
 (custom-set-faces!
   `(aw-leading-char-face
@@ -127,7 +134,7 @@ Use evil's window splitting function to follow into the new window."
           (?b aw-switch-buffer-in-window "Select Buffer")
           (?a aw-flip-window)
           (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
-          (?s hylo/aw-split-window-fair-and-follow)
+          (?s hylo/split-window-fair-and-follow)
           (?S aw-swap-window "Swap Windows")
           (?u winner-undo)
           ;; (?v aw-split-window-vert "Split Vert Window")
@@ -152,7 +159,6 @@ Use evil's window splitting function to follow into the new window."
   "Face for mixed-pitch mode"
   :group 'basic-faces)
 
-;; (push 'org-todo-keyword-faces permanently-enabled-local-variables)
 
 (map! :n [mouse-8] #'better-jumper-jump-backward
       :n [mouse-9] #'better-jumper-jump-forward)
@@ -167,6 +173,24 @@ Use evil's window splitting function to follow into the new window."
   '(outline-6 :weight semi-bold :height 1.00)
   '(outline-8 :weight semi-bold)
   '(outline-9 :weight semi-bold))
+
+;; (push 'habits org-modules)
+
+;; (defun my/todo-org-is-unreal (buf)
+;;       (string= (buffer-name buf) "todo.org"))
+;; (push #'my/todo-org-is-unreal doom-unreal-buffer-functions)
+
+(defadvice! my/center-line-after-search (&rest _)
+  :after #'evil-ex-search-next
+  :after #'evil-ex-search-previous
+  (evil-scroll-line-to-center nil))
+
+(setq find-file-visit-truename nil)
+(setq find-file-existing-other-name nil)
+
+(use-package! org
+  :config
+  (require 'org-habit))
 
 (custom-set-faces!
   '(org-document-title :height 1.5))
@@ -308,9 +332,61 @@ Use evil's window splitting function to follow into the new window."
   (push 'vue-mode lsp-tailwindcss-major-modes)
   )
 
+(cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
+  "Conduct a file search using ripgrep.
+
+:query STRING
+  Determines the initial input to search for.
+:in PATH
+  Sets what directory to base the search out of. Defaults to the current project's root.
+:recursive BOOL
+  Whether or not to search files recursively from the base directory."
+  (declare (indent defun))
+  (interactive)
+  (unless (executable-find "rg")
+    (user-error "Couldn't find ripgrep in your PATH"))
+  (require 'consult)
+  (setq deactivate-mark t)
+  (let* ((project-root (or (doom-project-root) default-directory))
+         (directory (or in project-root))
+         (consult-ripgrep-args
+          (concat "rg "
+                  (if all-files "-uu ")
+                  (unless recursive "--maxdepth 1 ")
+                  "--line-buffered --search-zip --color=never --max-columns=1000 "
+                  "--path-separator /   --smart-case --no-heading --line-number "
+                  "--hidden -g !.git -g elisp.info.gz "
+                  (mapconcat #'shell-quote-argument args " ")
+                  "."))
+         (prompt (if (stringp prompt) (string-trim prompt) "Search"))
+         (query (or query
+                    (when (doom-region-active-p)
+                      (regexp-quote (doom-thing-at-point-or-region)))))
+         (consult-async-split-style consult-async-split-style)
+         (consult-async-split-styles-alist consult-async-split-styles-alist))
+    ;; Change the split style if the initial query contains the separator.
+    (when query
+      (cl-destructuring-bind (&key type separator initial)
+          (consult--async-split-style)
+        (pcase type
+          (`separator
+           (replace-regexp-in-string (regexp-quote (char-to-string separator))
+                                     (concat "\\" (char-to-string separator))
+                                     query t t))
+          (`perl
+           (when (string-match-p initial query)
+             (setf (alist-get 'perlalt consult-async-split-styles-alist)
+                   `(:initial ,(or (cl-loop for char in (list "%" "@" "!" "&" "/" ";")
+                                            unless (string-match-p char query)
+                                            return char)
+                                   "%")
+                     :type perl)
+                   consult-async-split-style 'perlalt))))))
+    (consult--grep prompt #'consult--ripgrep-builder "/usr/share/info" query)))
+
+
+
 ;; (use-package! vue-mode)
-
-
 
 
 (defun my/info-buffer-p (buf)
@@ -335,9 +411,23 @@ Use evil's window splitting function to follow into the new window."
   (interactive)
   (+vertico/project-search t nil "~/.emacs.d"))
 (map! :leader :prefix "s"
-      "e" #'my/search-emacsd
+      ;; "e" #'my/search-emacsd
       "E" #'my/search-info-elisp
       "n" #'my/search-info-org)
+
+;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
+;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
+;; 10
+
+(map! [remap describe-bindings] #'embark-bindings
+      "C-."               #'embark-act
+      (:map minibuffer-local-map
+       "C-."               #'embark-act
+       "C-c C-."           #'embark-export))
+
+(setq doom-modeline-vcs-max-length 30)
+(setq doom-leader-alt-key "<f8>")
+(setq doom-localleader-alt-key "<f8> m")
 
 (use-package! emacs-everywhere
   :config
@@ -350,6 +440,9 @@ Use evil's window splitting function to follow into the new window."
   (defadvice! my/emacs-everywhere-position ()
     :override #'emacs-everywhere-set-frame-position
     ()))
+;; (advice-remove 'my/workspace-buffer-list-without-vterm #'+workspace-buffer-list)
+;; (map! :map smartparens-mode-map
+;;      [C-right] #'sp-wrap-round)
 
 
 
@@ -361,6 +454,9 @@ Use evil's window splitting function to follow into the new window."
 
 
 (load! "load/vue-polymode.el")
+;; (load! "load/vue-polymode.el")
+(use-package! vue-mode
+  :hook (vue-mode . lsp-deferred))
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 (load! "load/format-classes.el")
