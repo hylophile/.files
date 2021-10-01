@@ -1,0 +1,3 @@
+mbsync --all
+mu init --maildir .mail --my-address unilmail --my-address mail
+mu index
