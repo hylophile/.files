@@ -32,6 +32,8 @@ exec sh ~/.xinitrc
 #
 #exec --no-startup-id mullvad-vpn
 #exec --no-startup-id nm-applet
+exec --no-startup-id mbsync --all
+exec --no-startup-id mu index
 
 exec --no-startup-id pasystray
 #assign [class="^Mullvad VPN$"] 10
