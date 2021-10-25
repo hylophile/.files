@@ -57,9 +57,9 @@
   (interactive)
   (insert-for-yank (gui-get-primary-selection)))
 
-(map! :nv "s" #'avy-goto-char-2)
+(map! :nv "g a" #'avy-goto-char-2)
 
-(map! :nvi "C-z" #'insert-primary)
+(map! :niv "<269025133>" #'insert-primary)
 
 (map! :map evil-window-map
       "n" #'evil-window-left

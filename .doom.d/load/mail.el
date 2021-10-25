@@ -5,7 +5,7 @@
     (mu4e-drafts-folder     . "/posteo/Drafts")
     (mu4e-trash-folder      . "/posteo/Trash")
     ;; (mu4e-refile-folder     . "/posteo/All Mail")
-    (smtpmail-smtp-user     . "mail")
+    ;; (smtpmail-smtp-user     . "name")
     (mu4e-compose-signature . "---\nname"))
   t)
 
@@ -14,6 +14,6 @@
     (mu4e-drafts-folder     . "/uni/Entw&APw-rfe")
     (mu4e-trash-folder      . "/uni/Trash")
     ;; (mu4e-refile-folder     . "/uni/All Mail")
-    (smtpmail-smtp-user     . "unilmail")
+    ;; (smtpmail-smtp-user     . "nickname")
     (mu4e-compose-signature . "---\nname"))
   t)

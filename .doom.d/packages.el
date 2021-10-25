@@ -12,9 +12,10 @@
 (package! polymode)
 (package! prism :recipe (:host github :repo "alphapapa/prism.el"))
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
-
+(package! org-super-agenda)
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
+;;(package! ein :pin "e354ea77c29e8c20b6b1a9ee00d86e6a9512bc0d")
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

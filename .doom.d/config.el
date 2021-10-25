@@ -8,9 +8,12 @@
 ;; sync' after modifying this file!
 ;; (map! :n "e" #'ediff-current-file)
 
-(remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
+;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
+;; (setq evil-want-C-u-delete nil)
+(map! :map minibuffer-local-map "C-u" #'universal-argument)
+(map! :i "C-u" #'universal-argument)
 
-
+;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "name"
@@ -22,6 +25,13 @@
         message-sendmail-f-is-evil t
         message-sendmail-extra-arguments '("--read-envelope-from")
         message-send-mail-function #'message-send-mail-with-sendmail))
+
+(after! mu4e-alert
+  (setq +mu4e-alert-bell-cmd nil))
+;; (setq auth-sources '("~/.authinfo.gpg")
+;;       auth-source-cache-expiry nil)
+(setq mu4e-context-policy 'ask-if-none
+      mu4e-compose-context-policy 'always-ask)
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -34,14 +44,16 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Fira Code" :size 12.0)
+(setq doom-font (font-spec :family "Fira Code" :size 14.0)
       ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 30)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 12.0))
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 14.0))
 (setq doom-font-increment 1)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
+
+
 
 (defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
   "Advise `evil-delete-char' to set default REGISTER to the black hole register."
@@ -53,15 +65,17 @@
   ""
   :around #'evil-scroll-down
   :around #'evil-scroll-up
-  (setq count (/ (window-body-height) 6))
+  (setq count (/ (window-body-height) 4))
   (funcall fn count))
 
+(map! :after evil-collection :niv "C-y" #'yank)
 
 (setq doom-theme (hylo/random-dark-theme))
-(setq +doom-dashboard-functions (append
-                                 (list (car +doom-dashboard-functions))
-                                 '(hylo/insert-theme)
-                                 (cdr +doom-dashboard-functions)))
+;; (setq +doom-dashboard-functions (append
+;;                                  (list (car +doom-dashboard-functions))
+;;                                  '(hylo/insert-theme)
+;;                                  (cdr +doom-dashboard-functions)))
+
 
 (setq doom-themes-treemacs-theme "doom-colors")
 
@@ -93,7 +107,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
-(setq which-key-idle-delay 0.3)
+(setq which-key-idle-delay 0.5)
 (setq evil-snipe-scope 'visible)
 
 (map! :leader :desc "Actions" "e" #'embark-act)
@@ -153,18 +167,39 @@ Use evil's window splitting function to follow into the new window."
   :config
   (setq avy-all-windows t))
 
+(setq dired-dwim-target t)
+
+(use-package! org-super-agenda
+  :commands org-super-agenda-mode)
+
+(after! org-agenda
+  (org-super-agenda-mode))
+
+(setq org-superstar-headline-bullets-list '(9678 9673 9675))
+
 (use-package! mixed-pitch
   :hook (org-mode . mixed-pitch-mode)
   )
-(after! mixed-pitch
-  (setq mixed-pitch-face 'variable-pitch-bigger)
-  )
+;; (after! mixed-pitch
+;;   (setq mixed-pitch-face 'variable-pitch-bigger)
+;;   )
 
-(defface variable-pitch-bigger
-  '((t (:family "Overpass" :size 40)))
-  "Face for mixed-pitch mode"
-  :group 'basic-faces)
+;; (defface variable-pitch-bigger
+;;   '((t (:family "Overpass" :size 40)))
+;;   "Face for mixed-pitch mode"
+;;   :group 'basic-faces)
+;; (defvar mixed-pitch-modes '(org-mode LaTeX-mode markdown-mode gfm-mode Info-mode)
+;;   "Modes that `mixed-pitch-mode' should be enabled in, but only after UI initialisation.")
+;; (defun init-mixed-pitch-h ()
+;;   "Hook `mixed-pitch-mode' into each mode in `mixed-pitch-modes'.
+;; Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
+;;   (when (memq major-mode mixed-pitch-modes)
+;;     (mixed-pitch-mode 1))
+;;   (dolist (hook mixed-pitch-modes)
+;;     (add-hook (intern (concat (symbol-name hook) "-hook")) #'mixed-pitch-mode)))
+;; (add-hook 'doom-init-ui-hook #'init-mixed-pitch-h)
 
+;; (add-hook! org-mode (display-line-numbers-mode -1))
 
 (map! :n [mouse-8] #'better-jumper-jump-backward
       :n [mouse-9] #'better-jumper-jump-forward)
@@ -279,6 +314,53 @@ Use evil's window splitting function to follow into the new window."
   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
   (+workspace/display))
 
+(setq company-idle-delay nil)
+
+(setq which-key-allow-multiple-replacements t)
+(after! which-key
+  (pushnew!
+   which-key-replacement-alist
+   '(("" . "\\`+?evil[-:/]?\\(?:a-\\)?\\(.*\\)") . (nil . "ຯ\\1"))
+   '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))
+   ))
+
+(setq
+ window-divider-default-bottom-width 1
+ window-divider-default-right-width 5)
+;; (defadvice! wider-frame-dividers (w)
+;;   :filter-return window-right-divider-width
+;;   (* w 10))
+;;
+
+(use-package! org-roam
+  :config
+  (setq org-roam-capture-last-used-template "d")
+  (defadvice! hy/after-roam-capture (&optional GOTO KEYS &key FILTER-FN TEMPLATES INFO)
+    :after #'org-roam-capture
+    (message KEYS)
+    (setq org-roam-capture-last-used-template KEYS))
+  (defun hylo/org-roam-capture-last-used-template ()
+    (interactive)
+    (org-roam-capture :keys org-roam-capture-last-used-template))
+  :custom
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?" :target
+      (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("u" "Uni related note")
+     ("ua" "Algorithmic Game Theory" plain (file "~/org/roam/templates/agt.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-uni-agt-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("uw" "Web technologies" plain (file "~/org/roam/templates/wt.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-uni-wt-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("um" "Machine Learning" plain (file "~/org/roam/templates/ml.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-uni-ml-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("ug" "Computer Graphics" plain (file "~/org/roam/templates/cg.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-uni-cg-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     )))
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 (use-package! websocket
   :after org-roam)
@@ -311,25 +393,10 @@ Use evil's window splitting function to follow into the new window."
 
 
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
-(use-package! websocket
-  :after org-roam)
 
-(use-package! org-roam-ui
-  :after org-roam ;; or :after org
-  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-  ;;         a hookable mode anymore, you're advised to pick something yourself
-  ;;         if you don't care about startup time, use
-  ;;  :hook (after-init . org-roam-ui-mode)
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+;; (add-hook 'org-mode-hook #'+org-pretty-mode)
 
-
-(add-hook 'org-mode-hook #'+org-pretty-mode)
-
-(remove-hook 'doom-first-input-hook #'evil-snipe-mode)
+;; (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
 (use-package! lsp-tailwindcss
   :init
@@ -424,7 +491,7 @@ Use evil's window splitting function to follow into the new window."
 ;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
 ;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
 ;; 10
-
+(map! :nv "C-." #'embark-act)
 (map! [remap describe-bindings] #'embark-bindings
       "C-."               #'embark-act
       (:map minibuffer-local-map
@@ -432,8 +499,8 @@ Use evil's window splitting function to follow into the new window."
        "C-c C-."           #'embark-export))
 
 (setq doom-modeline-vcs-max-length 30)
-(setq doom-leader-alt-key "<f8>")
-(setq doom-localleader-alt-key "<f8> m")
+;; (setq doom-leader-alt-key "<f8>)
+;; (setq doom-localleader-alt-key "<f8> m")
 
 (use-package! emacs-everywhere
   :config
@@ -449,15 +516,110 @@ Use evil's window splitting function to follow into the new window."
 ;; (advice-remove 'my/workspace-buffer-list-without-vterm #'+workspace-buffer-list)
 ;; (map! :map smartparens-mode-map
 ;;      [C-right] #'sp-wrap-round)
+(define-minor-mode my-minor-mode
+  "My minor mode"
+  :init-value t)
+(use-package! ein
+  ;; :hook ((symbol ein:markdown-mode) . #'enable-minor-modes-in-poly-mode-h)
+  ;; :hook (python-mode . #'enable-minor-modes-in-poly-mode-h)
+  ;; :hook (fundamental-mode . #'enable-minor-modes-in-poly-mode-h)
+  :config
+  (defun ein-buffer-p (buf)
+    (string-match-p ".*\\*ein:.*" (buffer-name buf)))
+  (defun ein-variable ()
+    (interactive)
+    (when (ein-buffer-p (current-buffer))
+      (let* ((overlays (overlays-in (point-min) (point-max)))
+             ;; (input-overlays (seq-filter (lambda (x) (string= "ein:cell-input-area" (overlay-get x 'face)))
+             ;; (overlays-in (point-min) (point-max))))
+             (input-overlays (seq-filter (lambda (x) (string= "ein:cell-output-area" (overlay-get x 'face)))
+                                         (overlays-in (point-min) (point-max))))
+             (non-md-overlays (seq-remove (lambda (x) (string= "ein:markdown-mode"
+                                                               (get-text-property (overlay-start x) :pm-mode)))
+                                          overlays)))
+        (message (format "%s" non-md-overlays))
+        (message "setting faces")
+        (mapcar (lambda (ovl) (unless (listp (overlay-get ovl 'face))
+                                (overlay-put ovl 'face `(,(overlay-get ovl 'face) org-block))))
+                non-md-overlays)
+        )))
+  (defun ein-wait-time ()
+    (run-at-time 2.0 nil
+                 #'ein-variable))
+  ;; (defadvice! after-ein-notebook-open--callback (&rest _)
+  ;;   :after #'ein:notebook-open--callback
+  ;;     (enable-minor-modes-in-poly-mode-h)
+  ;;     (ein-wait-time))
+  ;; (add-hook! doom-switch-buffer-hook #'ein-variable)
+  (defun enable-minor-modes-in-poly-mode-h ()
+    (message "enabling minor poly stuff")
+    (when (ein-buffer-p (current-buffer))
+      ;; (undo-fu-mode -1)
+      (visual-line-mode +1)
+      (mixed-pitch-mode +1)
+      (display-line-numbers-mode +1)))
+
+  (set-popup-rule! "^.*\\*ein:notebooklist.*"
+    :size 0.3
+    :side 'bottom
+    :quit 't)
+
+  (after! link-hint
+    (link-hint-define-type 'ein-notebooklist
+      :next #'link-hint--next-widget-button
+      :at-point-p #'link-hint--widget-button-at-point-p
+      :vars '(ein:notebooklist-mode)
+      :open #'widget-button-press)
+    (push 'link-hint-ein-notebooklist link-hint-types))
 
 
+  ;; (defadvice! disable-undo-fu (&rest)
+  ;;   )
+  ;; (add-hook!
+  ;; '(fundamental-mode-hook ein:markdown-mode-hook python-mode-hook)
+  ;; poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-variable)
+  (add-hook! poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-wait-time)
 
+  (defadvice! center-after-cell-move (orig-fun &rest args)
+    :after 'ein:worksheet-goto-next-input
+    :after 'ein:worksheet-goto-prev-input
+    ;; (evil-scroll-line-to-center (line-number-at-pos))
+    ;; (let ((current-window (get-buffer-window)))
+    ;;   (apply orig-fun args)
+    ;;   (with-selected-window current-window (recenter))))
+    (run-at-time 0.01 nil #'recenter))
+
+  (map! :localleader
+        :map poly-ein-mode-map
+        "n" #'ein:worksheet-goto-next-input-km
+        "p" #'ein:worksheet-goto-prev-input-km)
+  (defhydra +hydra/ein (:color blue)
+    "
+          Cell navigation: _n_ext  _p_revious
+"
+    ("n" ein:worksheet-goto-next-input-km)
+    ("p" ein:worksheet-goto-prev-input-km))
+
+  (after! mixed-pitch
+    (pushnew! mixed-pitch-fixed-pitch-faces
+              'ein:notification-tab-normal 'ein:cell-input-prompt 'ein:cell-output-area))
+  (custom-set-faces!
+    ;; `(ein:cell-input-area :background ,(doom-color 'base3))
+    ;; `(ein:cell-input-area :inherit (org-block))
+    `(ein:cell-input-area :background ,(face-attribute 'org-block :background))))
+
+(delete "Noto Color Emoji" doom-emoji-fallback-font-families)
 
 (defun my/lsp-no-code-actions ()
   (setq lsp-ui-sideline-show-code-actions nil))
 (add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
 
-
+(defun rc/find-file-recursive ()
+  (interactive)
+  (let* ((cwd (file-name-directory (buffer-file-name)))
+         (files (directory-files-recursively cwd ""))
+         (files-without-cwd (mapcar (lambda (f) (string-remove-prefix cwd f)) files)))
+    (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
 
 (load! "load/vue-polymode.el")
 ;; (load! "load/vue-polymode.el")

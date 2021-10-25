@@ -26,6 +26,8 @@
                        light-blue
                        doom-flatwhite
                        doom-homage-white
+                       modus-operandi
+                       tsdh-dark
                        leuven
                        dichromacy
                        tango
