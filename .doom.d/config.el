@@ -314,7 +314,7 @@ Use evil's window splitting function to follow into the new window."
   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
   (+workspace/display))
 
-(setq company-idle-delay nil)
+;; (setq company-idle-delay nil)
 
 (setq which-key-allow-multiple-replacements t)
 (after! which-key
