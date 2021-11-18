@@ -31,8 +31,10 @@
     # screen width minus the width defined in within the geometry option.
     #geometry = "0x4-25-100"
     origin = bottom-center
-    offset = 25x100
+    offset = 0x100
 
+    width = 500
+    height = 100
     # Show how many messages are currently hidden (because of geometry).
     indicate_hidden = yes
 
@@ -56,14 +58,14 @@
     separator_height = 1
 
     # Padding between text and separator.
-    padding = 20
+    padding = 10
 
     # Horizontal padding.
-    horizontal_padding = 50
+    horizontal_padding = 10
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 0
+    frame_width = 1
 
     # Defines color of the frame around the notification window.
     frame_color = "#282a36"
@@ -74,7 +76,7 @@
     #  * foreground: use the same color as the foreground;
     #  * frame: use the same color as the frame;
     #  * anything else will be interpreted as a X color.
-    separator_color = "#f8f8f2"
+    separator_color = "frame"
 
     # Sort messages by urgency.
     sort = yes
@@ -88,7 +90,7 @@
 
     ### Text ###
 
-    font = Jost* 14
+    font = Jost* 11
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
