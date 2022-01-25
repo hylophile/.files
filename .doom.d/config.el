@@ -44,9 +44,9 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Fira Code" :size 14.0)
+(setq doom-font (font-spec :family "Fira Code" :size 10.0)
       ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 30)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 14.0))
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
 (setq doom-font-increment 1)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -260,7 +260,7 @@ Use evil's window splitting function to follow into the new window."
 ;; they are implemented.
 ;; (setq lsp-auto-guess-root t)
 (setq iedit-toggle-key-default nil)
-
+(map! :localleader :map org-mode-map "~" (cmd! (org-toggle-checkbox '(16))))
 (setq auth-sources '("~/.authinfo"))
 (after! forge
   (setq forge-add-pullreq-refspec nil)
@@ -398,12 +398,15 @@ Use evil's window splitting function to follow into the new window."
 
 ;; (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
+(use-package! svelte-mode)
+
 (use-package! lsp-tailwindcss
   :init
   (setq lsp-tailwindcss-add-on-mode t)
   :config
   (push 'vue-mode lsp-tailwindcss-major-modes)
   )
+
 
 (cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
   "Conduct a file search using ripgrep.
@@ -628,4 +631,4 @@ Use evil's window splitting function to follow into the new window."
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 ;;(load! "load/format-classes.el")
-(load! "load/kzk-config.el")
+;;(load! "load/kzk-config.el")

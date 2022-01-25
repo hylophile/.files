@@ -45,12 +45,13 @@ exec --no-startup-id mullvad-vpn
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 bindsym XF86Launch5 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
 
 # make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
 #bindsym --release $mod+Shift+z exec scrot -s '%Y-%m-%d_%s.png' -e 'mv $f ~/org/img/ && echo [[file:img/$f]] | xclip -selection primary'
@@ -241,7 +242,7 @@ bindsym $mod+r mode "resize"
 client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
 client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
 client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.urgent           #50fa7b #44475a #F8F8F2 #FF5555   #FF5555
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 
 client.background       #F8F8F2
@@ -262,7 +263,7 @@ bar {
         # font pango:Fira Code 10
         workspace_min_width 100
         font $font $weight $size
-        tray_output primary
+        tray_output DisplayPort-1
 	position bottom
 
         colors {
@@ -270,10 +271,10 @@ bar {
                 statusline #F8F8F2
                 separator  #44475A
 
-                focused_workspace  #44475A #44475A #F8F8F2
-                active_workspace   #282A36 #44475A #F8F8F2
+                focused_workspace  #6272A4 #6272A4 #F8F8F2
+                active_workspace   #44475A #44475A #F8F8F2
                 inactive_workspace #282A36 #282A36 #BFBFBF
-                urgent_workspace   #FF5555 #FF5555 #F8F8F2
+                urgent_workspace   #50fa7b #44475a #F8F8F2
                 binding_mode       #FF5555 #FF5555 #F8F8F2
         }
 #        separator_symbol " - "
