@@ -13,6 +13,7 @@
 (map! :map minibuffer-local-map "C-u" #'universal-argument)
 (map! :i "C-u" #'universal-argument)
 
+(setq auth-sources '("~/.authinfo"))
 ;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
@@ -418,6 +419,7 @@ Use evil's window splitting function to follow into the new window."
 (setq evil-disable-insert-mode-bindings t)
 (setq doom-modeline-modal-icon nil)
 
+(use-package! svelte-mode)
 
 (use-package! svelte-mode)
 
@@ -655,10 +657,11 @@ Use evil's window splitting function to follow into the new window."
     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
 
 
-(load! "load/vue-polymode.el")
+(use-package! lsp-volar)
 ;; (load! "load/vue-polymode.el")
-(use-package! vue-mode
-  :hook (vue-mode . lsp-deferred))
+;; (load! "load/vue-polymode.el")
+;; (use-package! vue-mode
+;;   :hook (vue-mode . lsp-deferred))
 (load! "load/mail.el")
 (load! "load/dotfiles.el")
 ;;(load! "load/format-classes.el")

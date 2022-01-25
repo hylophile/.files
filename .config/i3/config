@@ -286,11 +286,12 @@ bar {
         }
 #        separator_symbol " - "
         status_command /usr/share/bumblebee-status/bumblebee-status -m \
-                       nic pasink pasource date time \
-                       -p interval=0.5 nic.exclude="wlp*,lo" nic.format="" \
+                       pasink pasource date time -p interval=0.5 \
                        time.format="%H:%M    " date.format="%A – %Y･%m･%d" \
                        pomodoro.format="%m min" \
                        -t dracula
+                       # nic \
+                       # nic.exclude="wlp*,lo,enp*," nic.format="" \
 }
 
 #######################################################################

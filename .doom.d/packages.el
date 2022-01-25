@@ -8,18 +8,16 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
-(package! vue-mode)
-(package! polymode)
+;; (package! vue-mode)
+;; (package! polymode)
 (package! prism :recipe (:host github :repo "alphapapa/prism.el"))
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! svelte-mode :recipe (:host github :repo "leafoftree/svelte-mode"))
 (package! org-super-agenda)
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
-(package! col-highlight :recipe
-  (:host github
-   :repo "emacsmirror/emacswiki.org"
-   :files ("col-highlight.el")))
+(package! lsp-volar :recipe (:host github :repo "jadestrong/lsp-volar"))
+;; (package! web-mode :recipe (:local-repo "~/.doom.d/p/web-mode"))
 ;;(package! ein :pin "e354ea77c29e8c20b6b1a9ee00d86e6a9512bc0d")
 (unpin! web-mode)
 

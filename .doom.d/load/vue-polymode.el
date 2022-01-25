@@ -29,7 +29,7 @@
         (define-auto-innermode poly-vue-script-tag-lang-innermode
           :head-matcher "<[[:space:]]*\\(?:script\\)[[:space:]]*lang=[[:space:]]*[\"'][[:space:]]*[[:alpha:]]+[[:space:]]*[\"'][[:space:]]*>"
           :tail-matcher "</[[:space:]]*\\(?:script\\)[[:space:]]*>"
-          :mode-matcher (cons  "<[[:space:]]*\\(?:script\\)[[:space:]]*lang=[[:space:]]*[\"'][[:space:]]*\\([[:alpha:]]+\\)[[:space:]]*[\"'][[:space:]]*>" 1)
+          :mode-matcher (cons  "<[[:space:]]*\\(?:script\\)[[:space:]]*lang=[[:space:]]*[\"'][[:space:]]*\\([[:alpha:]]+\\)[[:space:]]*[\"'][[:space:]]*[[:alpha:]]*[[:space:]]*>" 1)
           :head-mode 'host
           :tail-mode 'host)
 
