@@ -44,16 +44,18 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Fira Code" :size 10.0)
+;; (setq doom-font (font-spec :family "Fira Code" :size 10.0)
+(setq doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0)
+;; (setq doom-font (font-spec :family "Victor Mono" :size 10.0)
       ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 30)
       doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
 (setq doom-font-increment 1)
-
+;;
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
-
+(custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
 
 (defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
   "Advise `evil-delete-char' to set default REGISTER to the black hole register."
@@ -70,11 +72,15 @@
 
 (map! :after evil-collection :niv "C-y" #'yank)
 
+;; (setq doom-theme 'everforest-harder)
 (setq doom-theme (hylo/random-dark-theme))
+;;
 ;; (setq +doom-dashboard-functions (append
 ;;                                  (list (car +doom-dashboard-functions))
 ;;                                  '(hylo/insert-theme)
 ;;                                  (cdr +doom-dashboard-functions)))
+
+;; tokyo night is nice
 
 
 (setq doom-themes-treemacs-theme "doom-colors")
@@ -97,8 +103,8 @@
   (setq lsp-ui-sideline-show-code-actions nil))
 (add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
 
-(after! magit
-  (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+;; (after! magit
+;;   (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
@@ -295,6 +301,17 @@ Use evil's window splitting function to follow into the new window."
 ;;       latex-mode))
 ;; (setq-hook! 'sgml-mode +format-with-lsp t)
 ;; (setq-hook! 'html-mode +format-with-lsp t)
+(after! company
+  (setq +company-backend-alist
+        '((text-mode (:separate company-dabbrev company-yasnippet))
+          (prog-mode company-capf company-yasnippet)
+          (conf-mode company-capf company-dabbrev-code company-yasnippet)))
+  )
+
+
+(map! :leader :desc "Undo tree" :n "U" #'vundo)
+(after! vundo
+    (setq vundo-glyph-alist vundo-unicode-symbols))
 
 (after! persp-mode
   (defun display-workspaces-in-minibuffer ()
@@ -396,7 +413,11 @@ Use evil's window splitting function to follow into the new window."
 
 ;; (add-hook 'org-mode-hook #'+org-pretty-mode)
 
+;; (remove-hook 'doom-first-buffer-hook 'smartparens-global-mode)
 ;; (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
+(setq evil-disable-insert-mode-bindings t)
+(setq doom-modeline-modal-icon nil)
+
 
 (use-package! svelte-mode)
 
@@ -501,6 +522,15 @@ Use evil's window splitting function to follow into the new window."
        "C-."               #'embark-act
        "C-c C-."           #'embark-export))
 
+(after! latex
+  (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)))
+(setq +latex-viewers '(zathura pdf-tools evince okular skim sumatrapdf))
+
+(map! :map cdlatex-mode-map "'" nil)
+
+(setq confirm-kill-emacs nil)
+
+(setq web-mode-script-padding 4)
 (setq doom-modeline-vcs-max-length 30)
 ;; (setq doom-leader-alt-key "<f8>)
 ;; (setq doom-localleader-alt-key "<f8> m")
@@ -623,6 +653,7 @@ Use evil's window splitting function to follow into the new window."
          (files (directory-files-recursively cwd ""))
          (files-without-cwd (mapcar (lambda (f) (string-remove-prefix cwd f)) files)))
     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
+
 
 (load! "load/vue-polymode.el")
 ;; (load! "load/vue-polymode.el")

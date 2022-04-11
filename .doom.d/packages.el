@@ -21,12 +21,20 @@
    :repo "emacsmirror/emacswiki.org"
    :files ("col-highlight.el")))
 ;;(package! ein :pin "e354ea77c29e8c20b6b1a9ee00d86e6a9512bc0d")
+(unpin! web-mode)
 
+(package! everforest-hard-dark-theme
+  :recipe (:repo "https://git.sr.ht/~theorytoe/everforest-hard-dark-theme"))
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
 ;(package! another-package
 ;  :recipe (:host github :repo "username/repo"))
+(package! everforest-harder-theme
+  :recipe (:local-repo "~/.doom.d/packages/ever"))
+
+(package! vundo :recipe (:host github :repo "casouri/vundo"))
+
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
