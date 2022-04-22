@@ -663,3 +663,9 @@ Use evil's window splitting function to follow into the new window."
 (load! "load/dotfiles.el")
 ;;(load! "load/format-classes.el")
 ;;(load! "load/kzk-config.el")
+
+(add-to-list 'org-agenda-custom-commands
+             '("y" "year"
+               agenda ""
+               ((org-agenda-span 'year)
+               )))
