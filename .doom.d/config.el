@@ -669,3 +669,5 @@ Use evil's window splitting function to follow into the new window."
                agenda ""
                ((org-agenda-span 'year)
                )))
+;; (load! "load/format-classes.el")
+(load! "load/kzk-config.el")
