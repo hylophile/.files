@@ -60,7 +60,7 @@ bindsym XF86Launch5 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ 
 bindsym button2 kill
 bindsym button3 move container to output left
 
-bindsym $mod+z exec rofimoji
+bindsym $mod+z exec rofimoji --skin-tone light
 bindsym $mod+space focus output left
 bindsym $mod+Control+space exec ~/.config/i3/swap.sh
 bindsym $mod+Shift+space move window to output left
