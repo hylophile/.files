@@ -60,7 +60,7 @@ bindsym XF86Launch5 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ 
 bindsym button2 kill
 bindsym button3 move container to output left
 
-bindsym $mod+z exec rofimoji --skin-tone light
+bindsym $mod+w exec rofimoji --skin-tone light
 bindsym $mod+space focus output left
 bindsym $mod+Control+space exec ~/.config/i3/swap.sh
 bindsym $mod+Shift+space move window to output left
@@ -145,6 +145,9 @@ bindsym $mod+Shift+f floating toggle
 
 bindsym $mod+Shift+p exec maim -s -u | xclip -selection clipboard -t image/png -i
 bindsym $mod+Shift+z exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
+# make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
+#bindsym --release $mod+z exec maim -s $(date +%Y-%m-%d-%s.png) -e 'mv $f ~/org/img/ && echo [[file:img/$f]] | xclip -selection primary'
+bindsym --release $mod+z exec imgpath="$HOME/org/img/$(date +%Y-%m-%d-%s.png)" && maim -s $imgpath && echo "[[file:$imgpath]]" | xclip -selection primary
 
 # change focus between tiling / floating windows
 bindsym $mod+Control+f focus mode_toggle
