@@ -147,7 +147,7 @@ bindsym $mod+Shift+p exec maim -s -u | xclip -selection clipboard -t image/png -
 bindsym $mod+Shift+z exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
 # make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
 #bindsym --release $mod+z exec maim -s $(date +%Y-%m-%d-%s.png) -e 'mv $f ~/org/img/ && echo [[file:img/$f]] | xclip -selection primary'
-bindsym --release $mod+z exec imgpath="$HOME/org/img/$(date +%Y-%m-%d-%s.png)" && maim -s $imgpath && echo "[[file:$imgpath]]" | xclip -selection primary
+bindsym --release $mod+z exec ~/scripts/org-screenshot.sh
 
 # change focus between tiling / floating windows
 bindsym $mod+Control+f focus mode_toggle
