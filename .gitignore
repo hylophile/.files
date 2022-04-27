@@ -1,7 +1,22 @@
 .cache
 .mozilla
+.cargo
 .local
 .emacs.d
 code
 Downloads
 .config/chromium
+.config/Code - OSS
+.config/Cypress
+.config/Microsoft
+.config/yarn
+.config/discord
+.config/GIMP
+.config/Mattermost
+.config/libreoffice
+.config/draw.io
+.pnpm-store
+.dotfiles
+.npm
+.vscode-oss
+stuff
