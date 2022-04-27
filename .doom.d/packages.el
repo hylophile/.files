@@ -28,8 +28,8 @@
 ;; https://github.com/raxod502/straight.el#the-recipe-format
 ;(package! another-package
 ;  :recipe (:host github :repo "username/repo"))
-(package! everforest-harder-theme
-  :recipe (:local-repo "~/.doom.d/packages/ever"))
+;(package! everforest-harder-theme
+;  :recipe (:local-repo "~/.doom.d/packages/ever"))
 
 (package! vundo :recipe (:host github :repo "casouri/vundo"))
 
