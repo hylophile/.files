@@ -44,21 +44,28 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-;; (setq doom-font (font-spec :family "Fira Code" :size 10.0)
-(setq doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0)
-;; (setq doom-font (font-spec :family "Victor Mono" :size 10.0)
-      ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 30)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
+(setq
+ ;; doom-font (font-spec :family "Fira Code" :size 10.0)
+ doom-font (font-spec :family "JuliaMono" :size 10.0)
+ doom-font (font-spec :family "JuliaMono" :size 10.0)
+ doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
+ ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0 :weight 'semi-light)
+ ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
+ ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
+ doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
+ ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
+ )
 (setq doom-font-increment 1)
 ;;
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
+                                        ;test
 
 (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
 
 (defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
-  "Advise `evil-delete-char' to set default REGISTER to the black hole register."
+  "Adv  ise `evil-delete-char' to set default REGISTER to the black hole register."
   :around #'evil-delete-char
   (unless register (setq register ?_))
   (funcall fn beg end type register))
@@ -174,14 +181,90 @@ Use evil's window splitting function to follow into the new window."
   (setq avy-all-windows t))
 
 (setq dired-dwim-target t)
-
+(setq org-agenda-mouse-1-follows-link t)
+;; (custom-set-faces! '(org-agenda-calendar-event :family "Victor Mono"))
+;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
+;; (setq doom-dracula-colorful-headers t)
+(setq org-cycle-max-level 5)
 (use-package! org-super-agenda
-  :commands org-super-agenda-mode)
+  :commands org-super-agenda-mode
+  :config
+  (setq org-super-agenda-groups `(
+                                  (:name "Work"  ; Optionally specify section name
+                                   :face (:foreground ,(doom-color 'green))
+                                   :tag "work"
+                                   ;; :and (:tag "work" :time-grid t))
+                                   )
+                                  (:name "Uni"
+                                   :face (:foreground ,(doom-color 'blue))
+                                   :tag "uni")
+                                  (:name "Other"
+                                   ))
+                                  ))
+;; (let ((org-super-agenda-groups
+;;        '(;; Each group has an implicit boolean OR operator between its selectors.
+;;          (:name "Uni"  ; Optionally specify section name
+;;           :time-grid t  ; Items that appear on the time grid
+;;           :tag "uni")  ; Items that have this TODO keyword
+;;          (:name "Work"  ; Optionally specify section name
+;;           ;; :time-grid t  ; Items that appear on the time grid
+;;           :tag "work")  ; Items that have this TODO keyword
+;;          (:name "Important"
+;;           ;; Single arguments given alone
+;;           :tag "bills"
+;;           :priority "A")
+;;          ;; Set order of multiple groups at once
+;;          (:order-multi (2 (:name "Shopping in town"
+;;                            ;; Boolean AND group matches items that match all subgroups
+;;                            :and (:tag "shopping" :tag "@town"))
+;;                           (:name "Food-related"
+;;                            ;; Multiple args given in list with implicit OR
+;;                            :tag ("food" "dinner"))
+;;                           (:name "Personal"
+;;                            :habit t
+;;                            :tag "personal")
+;;                           (:name "Space-related (non-moon-or-planet-related)"
+;;                            ;; Regexps match case-insensitively on the entire entry
+;;                            :and (:regexp ("space" "NASA")
+;;                                  ;; Boolean NOT also has implicit OR between selectors
+;;                                  :not (:regexp "moon" :tag "planet")))))
+;;          ;; Groups supply their own section names when none are given
+;;          (:todo "WAITING" :order 8)  ; Set order of this section
+;;          (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+;;           ;; Show this group at the end of the agenda (since it has the
+;;           ;; highest number). If you specified this group last, items
+;;           ;; with these todo keywords that e.g. have priority A would be
+;;           ;; displayed in that group instead, because items are grouped
+;;           ;; out in the order the groups are listed.
+;;           :order 9)
+;;          (:priority<= "B"
+;;           ;; Show this section after "Today" and "Important", because
+;;           ;; their order is unspecified, defaulting to 0. Sections
+;;           ;; are displayed lowest-number-first.
+;;           :order 1)
+;;          ;; After the last group, the agenda will display items that didn't
+;;          ;; match any of these groups, with the default order position of 99
+;;          )))
+;;   (org-agenda nil "a"))
+
+(setq org-agenda-show-outline-path t)
+(setq org-agenda-time-grid nil)
+(setq org-agenda-show-current-time-in-grid nil)
+;; (setq org-agenda-prefix-format "%i  %?-12t% s")
+(setq org-agenda-prefix-format "%i  %-12t% s")
+;; (setq org-agenda-prefix-format "  %?-12t% s")
+;; (setq org-agenda-prefix-format
+;;       '((agenda . " %-12:c%?-12t% s")
+;;         (todo . " %i %-12:c")
+;;         (tags . " %i %-12:c")
+;;         (search . " %i %-12:c")))
 
 (after! org-agenda
   (org-super-agenda-mode))
 
 (setq org-superstar-headline-bullets-list '(9678 9673 9675))
+(setq org-superstar-headline-bullets-list '(9689))
+(setq org-superstar-headline-bullets-list "●⚬")
 
 (use-package! mixed-pitch
   :hook (org-mode . mixed-pitch-mode)
@@ -210,16 +293,28 @@ Use evil's window splitting function to follow into the new window."
 (map! :n [mouse-8] #'better-jumper-jump-backward
       :n [mouse-9] #'better-jumper-jump-forward)
 
+(after! doom-themes
+  (custom-set-faces!
+    '(outline-1 :weight semi-bold :height 1.15)
+    '(outline-2 :weight semi-bold :height 1.10)
+    '(outline-3 :weight semi-bold :height 1.09)
+    '(outline-4 :weight semi-bold :height 1.06)
+    '(outline-5 :weight semi-bold :height 1.03)
+    '(outline-6 :weight semi-bold :height 1.00)
+    '(outline-7 :weight semi-bold :height 1.00)
+    '(outline-8 :weight semi-bold)
+    '(outline-9 :weight semi-bold)
+    ))
 
-(custom-set-faces!
-  '(outline-1 :weight semi-bold :height 1.15)
-  '(outline-2 :weight semi-bold :height 1.10)
-  '(outline-3 :weight semi-bold :height 1.09)
-  '(outline-4 :weight semi-bold :height 1.06)
-  '(outline-5 :weight semi-bold :height 1.03)
-  '(outline-6 :weight semi-bold :height 1.00)
-  '(outline-8 :weight semi-bold)
-  '(outline-9 :weight semi-bold))
+(setq org-agenda-format-date (lambda (date) (concat "\n"
+                                                    ;; (make-string (window-width) 9472)
+                                                    ;; "\n"
+                                                    (org-agenda-format-date-aligned date))))
+(after! org
+  (setq org-agenda-start-day "0d"
+        org-agenda-skip-deadline-if-done t
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-timestamp-if-done t))
 
 ;; (push 'habits org-modules)
 
@@ -235,9 +330,9 @@ Use evil's window splitting function to follow into the new window."
 (setq find-file-visit-truename nil)
 (setq find-file-existing-other-name nil)
 
-(use-package! org
-  :config
-  (require 'org-habit))
+;; (use-package! org
+;;   :config
+;;   (require 'org-habit))
 
 (custom-set-faces!
   '(org-document-title :height 1.5))
@@ -311,7 +406,7 @@ Use evil's window splitting function to follow into the new window."
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)
 (after! vundo
-    (setq vundo-glyph-alist vundo-unicode-symbols))
+  (setq vundo-glyph-alist vundo-unicode-symbols))
 
 (after! persp-mode
   (defun display-workspaces-in-minibuffer ()
@@ -348,6 +443,14 @@ Use evil's window splitting function to follow into the new window."
 ;;   :filter-return window-right-divider-width
 ;;   (* w 10))
 ;;
+
+(setq org-archive-location "~/org/archive/%s_archive::")
+
+(defadvice! my/hide-archived-on-global-cycle (&rest _)
+  :after #'org-content
+  (org-hide-archived-subtrees (point-min) (point-max)))
+
+;; (add-hook 'org-cycle (cmd! (org-hide-archived-subtrees (point-min) (point-max))))
 
 (use-package! org-roam
   :config
@@ -408,7 +511,10 @@ Use evil's window splitting function to follow into the new window."
 ;; (setq-hook! 'sgml-mode +format-with-lsp t)
 ;; (setq-hook! 'html-mode +format-with-lsp t)
 
-
+(setq org-agenda-format-date (lambda (date) (concat "\n"
+                                                    (make-string (window-width) 9472)
+                                                    "\n"
+                                                    (org-agenda-format-date-aligned date))))
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 
 ;; (add-hook 'org-mode-hook #'+org-pretty-mode)
@@ -663,9 +769,21 @@ Use evil's window splitting function to follow into the new window."
 (load! "load/dotfiles.el")
 ;;(load! "load/format-classes.el")
 ;;(load! "load/kzk-config.el")
+;; (after! org
+;;   (add-to-list 'org-agenda-custom-commands
+;;                '("y" "year"
+;;                  agenda ""
+;;                  ((org-agenda-span 'year)))))
 
-(add-to-list 'org-agenda-custom-commands
-             '("y" "year"
-               agenda ""
-               ((org-agenda-span 'year)
-               )))
+(defun my-open-calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-source (doom-color 'blue))  ; org-agenda source
+    ;; (cfw:org-create-file-source "cal" "/path/to/cal.org" "Cyan")  ; other org source
+    ;; (cfw:howm-create-source "Blue")  ; howm source
+    ;; (cfw:cal-create-source "Orange") ; diary source
+    ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+    ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+    )))
