@@ -262,13 +262,15 @@ Use evil's window splitting function to follow into the new window."
 (after! org-agenda
   (org-super-agenda-mode))
 
-(setq org-superstar-headline-bullets-list '(9678 9673 9675))
-(setq org-superstar-headline-bullets-list '(9689))
+;; (setq org-superstar-headline-bullets-list '(9678 9673 9675))
+;; (setq org-superstar-headline-bullets-list '(9689))
 (setq org-superstar-headline-bullets-list "●⚬")
 
 (use-package! mixed-pitch
-  :hook (org-mode . mixed-pitch-mode)
-  )
+  :hook (org-mode . mixed-pitch-mode))
+
+
+
 ;; (after! mixed-pitch
 ;;   (setq mixed-pitch-face 'variable-pitch-bigger)
 ;;   )
@@ -386,7 +388,7 @@ Use evil's window splitting function to follow into the new window."
       scroll-margin 2
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
-(global-subword-mode t)                           ; Iterate through CamelCase words
+;; (global-subword-mode t)                           ; Iterate through CamelCase words
 
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
@@ -500,7 +502,7 @@ Use evil's window splitting function to follow into the new window."
 
 ;; (load! "load/vue-polymode.el")
 
-(global-subword-mode t)                           ; Iterate through CamelCase words
+;; (global-subword-mode t)                           ; Iterate through CamelCase words
 
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
@@ -535,57 +537,57 @@ Use evil's window splitting function to follow into the new window."
   )
 
 
-(cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
-  "Conduct a file search using ripgrep.
+;; (cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
+;;   "Conduct a file search using ripgrep.
 
-:query STRING
-  Determines the initial input to search for.
-:in PATH
-  Sets what directory to base the search out of. Defaults to the current project's root.
-:recursive BOOL
-  Whether or not to search files recursively from the base directory."
-  (declare (indent defun))
-  (interactive)
-  (unless (executable-find "rg")
-    (user-error "Couldn't find ripgrep in your PATH"))
-  (require 'consult)
-  (setq deactivate-mark t)
-  (let* ((project-root (or (doom-project-root) default-directory))
-         (directory (or in project-root))
-         (consult-ripgrep-args
-          (concat "rg "
-                  (if all-files "-uu ")
-                  (unless recursive "--maxdepth 1 ")
-                  "--line-buffered --search-zip --color=never --max-columns=1000 "
-                  "--path-separator /   --smart-case --no-heading --line-number "
-                  "--hidden -g !.git -g elisp.info.gz "
-                  (mapconcat #'shell-quote-argument args " ")
-                  "."))
-         (prompt (if (stringp prompt) (string-trim prompt) "Search"))
-         (query (or query
-                    (when (doom-region-active-p)
-                      (regexp-quote (doom-thing-at-point-or-region)))))
-         (consult-async-split-style consult-async-split-style)
-         (consult-async-split-styles-alist consult-async-split-styles-alist))
-    ;; Change the split style if the initial query contains the separator.
-    (when query
-      (cl-destructuring-bind (&key type separator initial)
-          (consult--async-split-style)
-        (pcase type
-          (`separator
-           (replace-regexp-in-string (regexp-quote (char-to-string separator))
-                                     (concat "\\" (char-to-string separator))
-                                     query t t))
-          (`perl
-           (when (string-match-p initial query)
-             (setf (alist-get 'perlalt consult-async-split-styles-alist)
-                   `(:initial ,(or (cl-loop for char in (list "%" "@" "!" "&" "/" ";")
-                                            unless (string-match-p char query)
-                                            return char)
-                                   "%")
-                     :type perl)
-                   consult-async-split-style 'perlalt))))))
-    (consult--grep prompt #'consult--ripgrep-builder "/usr/share/info" query)))
+;; :query STRING
+;;   Determines the initial input to search for.
+;; :in PATH
+;;   Sets what directory to base the search out of. Defaults to the current project's root.
+;; :recursive BOOL
+;;   Whether or not to search files recursively from the base directory."
+;;   (declare (indent defun))
+;;   (interactive)
+;;   (unless (executable-find "rg")
+;;     (user-error "Couldn't find ripgrep in your PATH"))
+;;   (require 'consult)
+;;   (setq deactivate-mark t)
+;;   (let* ((project-root (or (doom-project-root) default-directory))
+;;          (directory (or in project-root))
+;;          (consult-ripgrep-args
+;;           (concat "rg "
+;;                   (if all-files "-uu ")
+;;                   (unless recursive "--maxdepth 1 ")
+;;                   "--line-buffered --search-zip --color=never --max-columns=1000 "
+;;                   "--path-separator /   --smart-case --no-heading --line-number "
+;;                   "--hidden -g !.git -g elisp.info.gz "
+;;                   (mapconcat #'shell-quote-argument args " ")
+;;                   "."))
+;;          (prompt (if (stringp prompt) (string-trim prompt) "Search"))
+;;          (query (or query
+;;                     (when (doom-region-active-p)
+;;                       (regexp-quote (doom-thing-at-point-or-region)))))
+;;          (consult-async-split-style consult-async-split-style)
+;;          (consult-async-split-styles-alist consult-async-split-styles-alist))
+;;     ;; Change the split style if the initial query contains the separator.
+;;     (when query
+;;       (cl-destructuring-bind (&key type separator initial)
+;;           (consult--async-split-style)
+;;         (pcase type
+;;           (`separator
+;;            (replace-regexp-in-string (regexp-quote (char-to-string separator))
+;;                                      (concat "\\" (char-to-string separator))
+;;                                      query t t))
+;;           (`perl
+;;            (when (string-match-p initial query)
+;;              (setf (alist-get 'perlalt consult-async-split-styles-alist)
+;;                    `(:initial ,(or (cl-loop for char in (list "%" "@" "!" "&" "/" ";")
+;;                                             unless (string-match-p char query)
+;;                                             return char)
+;;                                    "%")
+;;                      :type perl)
+;;                    consult-async-split-style 'perlalt))))))
+;;     (consult--grep prompt #'consult--ripgrep-builder "/usr/share/info" query)))
 
 
 
@@ -655,97 +657,96 @@ Use evil's window splitting function to follow into the new window."
 ;; (advice-remove 'my/workspace-buffer-list-without-vterm #'+workspace-buffer-list)
 ;; (map! :map smartparens-mode-map
 ;;      [C-right] #'sp-wrap-round)
-(define-minor-mode my-minor-mode
-  "My minor mode"
-  :init-value t)
-(use-package! ein
-  ;; :hook ((symbol ein:markdown-mode) . #'enable-minor-modes-in-poly-mode-h)
-  ;; :hook (python-mode . #'enable-minor-modes-in-poly-mode-h)
-  ;; :hook (fundamental-mode . #'enable-minor-modes-in-poly-mode-h)
-  :config
-  (defun ein-buffer-p (buf)
-    (string-match-p ".*\\*ein:.*" (buffer-name buf)))
-  (defun ein-variable ()
-    (interactive)
-    (when (ein-buffer-p (current-buffer))
-      (let* ((overlays (overlays-in (point-min) (point-max)))
-             ;; (input-overlays (seq-filter (lambda (x) (string= "ein:cell-input-area" (overlay-get x 'face)))
-             ;; (overlays-in (point-min) (point-max))))
-             (input-overlays (seq-filter (lambda (x) (string= "ein:cell-output-area" (overlay-get x 'face)))
-                                         (overlays-in (point-min) (point-max))))
-             (non-md-overlays (seq-remove (lambda (x) (string= "ein:markdown-mode"
-                                                               (get-text-property (overlay-start x) :pm-mode)))
-                                          overlays)))
-        (message (format "%s" non-md-overlays))
-        (message "setting faces")
-        (mapcar (lambda (ovl) (unless (listp (overlay-get ovl 'face))
-                                (overlay-put ovl 'face `(,(overlay-get ovl 'face) org-block))))
-                non-md-overlays)
-        )))
-  (defun ein-wait-time ()
-    (run-at-time 2.0 nil
-                 #'ein-variable))
-  ;; (defadvice! after-ein-notebook-open--callback (&rest _)
-  ;;   :after #'ein:notebook-open--callback
-  ;;     (enable-minor-modes-in-poly-mode-h)
-  ;;     (ein-wait-time))
-  ;; (add-hook! doom-switch-buffer-hook #'ein-variable)
-  (defun enable-minor-modes-in-poly-mode-h ()
-    (message "enabling minor poly stuff")
-    (when (ein-buffer-p (current-buffer))
-      ;; (undo-fu-mode -1)
-      (visual-line-mode +1)
-      (mixed-pitch-mode +1)
-      (display-line-numbers-mode +1)))
+;; (define-minor-mode my-minor-mode
+;;   "My minor mode"
+;;   :init-value t)
+;; (use-package! ein
+;;   ;; :hook ((symbol ein:markdown-mode) . #'enable-minor-modes-in-poly-mode-h)
+;;   ;; :hook (python-mode . #'enable-minor-modes-in-poly-mode-h)
+;;   ;; :hook (fundamental-mode . #'enable-minor-modes-in-poly-mode-h)
+;;   :config
+;;   (defun ein-buffer-p (buf)
+;;     (string-match-p ".*\\*ein:.*" (buffer-name buf)))
+;;   (defun ein-variable ()
+;;     (interactive)
+;;     (when (ein-buffer-p (current-buffer))
+;;       (let* ((overlays (overlays-in (point-min) (point-max)))
+;;              ;; (input-overlays (seq-filter (lambda (x) (string= "ein:cell-input-area" (overlay-get x 'face)))
+;;              ;; (overlays-in (point-min) (point-max))))
+;;              (input-overlays (seq-filter (lambda (x) (string= "ein:cell-output-area" (overlay-get x 'face)))
+;;                                          (overlays-in (point-min) (point-max))))
+;;              (non-md-overlays (seq-remove (lambda (x) (string= "ein:markdown-mode"
+;;                                                                (get-text-property (overlay-start x) :pm-mode)))
+;;                                           overlays)))
+;;         (message (format "%s" non-md-overlays))
+;;         (message "setting faces")
+;;         (mapcar (lambda (ovl) (unless (listp (overlay-get ovl 'face))
+;;                                 (overlay-put ovl 'face `(,(overlay-get ovl 'face) org-block))))
+;;                 non-md-overlays)
+;;         )))
+;;   (defun ein-wait-time ()
+;;     (run-at-time 2.0 nil
+;;                  #'ein-variable))
+;;   ;; (defadvice! after-ein-notebook-open--callback (&rest _)
+;;   ;;   :after #'ein:notebook-open--callback
+;;   ;;     (enable-minor-modes-in-poly-mode-h)
+;;   ;;     (ein-wait-time))
+;;   ;; (add-hook! doom-switch-buffer-hook #'ein-variable)
+;;   (defun enable-minor-modes-in-poly-mode-h ()
+;;     (message "enabling minor poly stuff")
+;;     (when (ein-buffer-p (current-buffer))
+;;       ;; (undo-fu-mode -1)
+;;       (visual-line-mode +1)
+;;       (mixed-pitch-mode +1)
+;;       (display-line-numbers-mode +1)))
 
-  (set-popup-rule! "^.*\\*ein:notebooklist.*"
-    :size 0.3
-    :side 'bottom
-    :quit 't)
+;;   (set-popup-rule! "^.*\\*ein:notebooklist.*"
+;;     :size 0.3
+;;     :side 'bottom
+;;     :quit 't)
 
-  (after! link-hint
-    (link-hint-define-type 'ein-notebooklist
-      :next #'link-hint--next-widget-button
-      :at-point-p #'link-hint--widget-button-at-point-p
-      :vars '(ein:notebooklist-mode)
-      :open #'widget-button-press)
-    (push 'link-hint-ein-notebooklist link-hint-types))
+;;   (after! link-hint
+;;     (link-hint-define-type 'ein-notebooklist
+;;       :next #'link-hint--next-widget-button
+;;       :at-point-p #'link-hint--widget-button-at-point-p
+;;       :vars '(ein:notebooklist-mode)
+;;       :open #'widget-button-press)
+;;     (push 'link-hint-ein-notebooklist link-hint-types))
 
 
-  ;; (defadvice! disable-undo-fu (&rest)
-  ;;   )
-  ;; (add-hook!
-  ;; '(fundamental-mode-hook ein:markdown-mode-hook python-mode-hook)
-  ;; poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-variable)
-  (add-hook! poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-wait-time)
+;;   ;; (defadvice! disable-undo-fu (&rest)
+;;   ;;   )
+;;   ;; (add-hook!
+;;   ;; '(fundamental-mode-hook ein:markdown-mode-hook python-mode-hook)
+;;   ;; poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-variable)
+;;   (add-hook! poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-wait-time)
 
-  (defadvice! center-after-cell-move (orig-fun &rest args)
-    :after 'ein:worksheet-goto-next-input
-    :after 'ein:worksheet-goto-prev-input
-    ;; (evil-scroll-line-to-center (line-number-at-pos))
-    ;; (let ((current-window (get-buffer-window)))
-    ;;   (apply orig-fun args)
-    ;;   (with-selected-window current-window (recenter))))
-    (run-at-time 0.01 nil #'recenter))
+;;   (defadvice! center-after-cell-move (orig-fun &rest args)
+;;     :after 'ein:worksheet-goto-next-input
+;;     :after 'ein:worksheet-goto-prev-input
+;;     ;; (evil-scroll-line-to-center (line-number-at-pos))
+;;     ;; (let ((current-window (get-buffer-window)))
+;;     ;;   (apply orig-fun args)
+;;     ;;   (with-selected-window current-window (recenter))))
+;;     (run-at-time 0.01 nil #'recenter))
 
-  (map! :localleader
-        :map poly-ein-mode-map
-        "n" #'ein:worksheet-goto-next-input-km
-        "p" #'ein:worksheet-goto-prev-input-km)
-  (defhydra +hydra/ein (:color blue)
-    "
-          Cell navigation: _n_ext  _p_revious
-"
-    ("n" ein:worksheet-goto-next-input-km)
-    ("p" ein:worksheet-goto-prev-input-km))
+;;   (map! :localleader
+;;         :map poly-ein-mode-map
+;;         "n" #'ein:worksheet-goto-next-input-km
+;;         "p" #'ein:worksheet-goto-prev-input-km)
+;;   (defhydra +hydra/ein (:color blue)
+;;     "
+;;           Cell navigation: _n_ext  _p_revious
+;; "
+;;     ("n" ein:worksheet-goto-next-input-km)
+;;     ("p" ein:worksheet-goto-prev-input-km))
 
-  (after! mixed-pitch
-    (pushnew! mixed-pitch-fixed-pitch-faces
-              'ein:notification-tab-normal 'ein:cell-input-prompt 'ein:cell-output-area))
-  (custom-set-faces!
-    ;; `(ein:cell-input-area :background ,(doom-color 'base3))
-    ;; `(ein:cell-input-area :inherit (org-block))
-    `(ein:cell-input-area :background ,(face-attribute 'org-block :background))))
+  ;;   (pushnew! mixed-pitch-fixed-pitch-faces
+  ;;             'ein:notification-tab-normal 'ein:cell-input-prompt 'ein:cell-output-area))
+  ;; (custom-set-faces!
+  ;;   ;; `(ein:cell-input-area :background ,(doom-color 'base3))
+  ;;   ;; `(ein:cell-input-area :inherit (org-block))
+  ;;   `(ein:cell-input-area :background ,(face-attribute 'org-block :background))))
 
 (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
 
@@ -775,15 +776,15 @@ Use evil's window splitting function to follow into the new window."
 ;;                  agenda ""
 ;;                  ((org-agenda-span 'year)))))
 
-(defun my-open-calendar ()
-  (interactive)
-  (cfw:open-calendar-buffer
-   :contents-sources
-   (list
-    (cfw:org-create-source (doom-color 'blue))  ; org-agenda source
-    ;; (cfw:org-create-file-source "cal" "/path/to/cal.org" "Cyan")  ; other org source
-    ;; (cfw:howm-create-source "Blue")  ; howm source
-    ;; (cfw:cal-create-source "Orange") ; diary source
-    ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
-    ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
-    )))
+;; (defun my-open-calendar ()
+;;   (interactive)
+;;   (cfw:open-calendar-buffer
+;;    :contents-sources
+;;    (list
+;;     (cfw:org-create-source (doom-color 'blue))  ; org-agenda source
+;;     ;; (cfw:org-create-file-source "cal" "/path/to/cal.org" "Cyan")  ; other org source
+;;     ;; (cfw:howm-create-source "Blue")  ; howm source
+;;     ;; (cfw:cal-create-source "Orange") ; diary source
+;;     ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+;;     ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+;;     )))
