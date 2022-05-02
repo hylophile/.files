@@ -182,6 +182,9 @@ Use evil's window splitting function to follow into the new window."
 
 (setq dired-dwim-target t)
 (setq org-agenda-mouse-1-follows-link t)
+(setq org-tags-column 0)
+(setq org-agenda-tags-column 0)
+
 ;; (custom-set-faces! '(org-agenda-calendar-event :family "Victor Mono"))
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
 ;; (setq doom-dracula-colorful-headers t)
@@ -190,17 +193,61 @@ Use evil's window splitting function to follow into the new window."
   :commands org-super-agenda-mode
   :config
   (setq org-super-agenda-groups `(
+                                  (:name "Plan"
+                                   :time-grid t
+                                   )
                                   (:name "Work"  ; Optionally specify section name
-                                   :face (:foreground ,(doom-color 'green))
+                                   ;; :face (:foreground ,(doom-color 'green))
                                    :tag "work"
                                    ;; :and (:tag "work" :time-grid t))
                                    )
                                   (:name "Uni"
-                                   :face (:foreground ,(doom-color 'blue))
+                                   ;; :face (:foreground ,(doom-color 'blue))
                                    :tag "uni")
-                                  (:name "Other"
-                                   ))
-                                  ))
+                                  (:name "Health" :tag "health")
+                                  (:name "Hobby" :tag "tech" :tag "emacs")
+                                  (:name "Buy" :tag "buy")
+                                  (:category "Diary" :name "Diary")
+                                  (:name "Other" :anything)
+                                  )
+        ))
+
+(setq org-agenda-category-icon-alist
+      `(
+        ("uni" (#("🌳")) nil nil :ascent center)
+        ;; ("work" ,(list (all-the-icons-material "work" :height 1.2 :face 'all-the-icons-green)) nil nil :ascent center)
+        ("work" (#("🌸")) nil nil :ascent center)
+        ;; ("" ,(list (all-the-icons-faicon "pencil" :height 1.2)) nil nil :ascent center)
+        ("" (#("🌊")) nil nil :ascent center)
+        )
+      )
+;; (setq my/blue (doom-color 'blue))
+;; (setq org-tag-faces
+;;       `(
+        ;; ("uni" . (:foreground ,(doom-color 'blue) :weight bold))
+        ;; ("work" . (:foreground my/blue))
+        ;; ("work"  . (:foreground "med"))
+        ;; ))
+;; (setq org-tag-faces
+
+;;       '(
+
+;;         ("work"  . (:foreground "mediumPurple1" :weight bold))
+
+;;         ("uni"   . (:foreground "royalblue1"    :weight bold))
+
+;;         ("frontend"  . (:foreground "forest green"  :weight bold))
+
+;;         ("QA"        . (:foreground "sienna"        :weight bold))
+
+;;         ("meeting"   . (:foreground "yellow1"       :weight bold))
+
+;;         ("CRITICAL"  . (:foreground "red1"          :weight bold))
+
+;;         )
+
+;;       )
+
 ;; (let ((org-super-agenda-groups
 ;;        '(;; Each group has an implicit boolean OR operator between its selectors.
 ;;          (:name "Uni"  ; Optionally specify section name
@@ -246,18 +293,49 @@ Use evil's window splitting function to follow into the new window."
 ;;          ;; match any of these groups, with the default order position of 99
 ;;          )))
 ;;   (org-agenda nil "a"))
+(setq org-agenda-include-diary t
+      holiday-bahai-holidays nil
+      holiday-hebrew-holidays nil
+      holiday-islamic-holidays nil
+      holiday-oriental-holidays nil
 
+      )
+
+(setq solar-n-hemi-seasons
+      '("Frühlingsanfang" "Sommeranfang" "Herbstanfang" "Winteranfang"))
+
+(setq holiday-general-holidays
+      '((holiday-fixed 1 1 "Neujahr")
+        (holiday-fixed 5 1 "Tag der Arbeit")
+        (holiday-fixed 3 8 "Internationaler Frauentag")
+        (holiday-fixed 10 3 "Tag der Deutschen Einheit")))
+
+
+(setq holiday-christian-holidays
+      '((holiday-float 12 0 -4 "1. Advent" 24)
+        (holiday-float 12 0 -3 "2. Advent" 24)
+        (holiday-float 12 0 -2 "3. Advent" 24)
+        (holiday-float 12 0 -1 "4. Advent" 24)
+        (holiday-fixed 12 25 "1. Weihnachtstag")
+        (holiday-fixed 12 26 "2. Weihnachtstag")
+        (holiday-easter-etc  -2 "Karfreitag")
+        (holiday-easter-etc   0 "Ostersonntag")
+        (holiday-easter-etc  +1 "Ostermontag")
+        (holiday-easter-etc +39 "Christi Himmelfahrt")
+        (holiday-easter-etc +49 "Pfingstsonntag")
+        (holiday-easter-etc +50 "Pfingstmontag")))
 (setq org-agenda-show-outline-path t)
 (setq org-agenda-time-grid nil)
 (setq org-agenda-show-current-time-in-grid nil)
 ;; (setq org-agenda-prefix-format "%i  %?-12t% s")
-(setq org-agenda-prefix-format "%i  %-12t% s")
+(setq org-agenda-prefix-format "  %i  %-12t% s")
 ;; (setq org-agenda-prefix-format "  %?-12t% s")
 ;; (setq org-agenda-prefix-format
 ;;       '((agenda . " %-12:c%?-12t% s")
 ;;         (todo . " %i %-12:c")
 ;;         (tags . " %i %-12:c")
 ;;         (search . " %i %-12:c")))
+
 
 (after! org-agenda
   (org-super-agenda-mode))
@@ -308,6 +386,7 @@ Use evil's window splitting function to follow into the new window."
     '(outline-9 :weight semi-bold)
     ))
 
+
 (setq org-agenda-format-date (lambda (date) (concat "\n"
                                                     ;; (make-string (window-width) 9472)
                                                     ;; "\n"
@@ -316,7 +395,9 @@ Use evil's window splitting function to follow into the new window."
   (setq org-agenda-start-day "0d"
         org-agenda-skip-deadline-if-done t
         org-agenda-skip-scheduled-if-done t
-        org-agenda-skip-timestamp-if-done t))
+        org-agenda-skip-timestamp-if-done t
+        org-agenda-todo-ignore-with-date t
+        ))
 
 ;; (push 'habits org-modules)
 
@@ -338,7 +419,10 @@ Use evil's window splitting function to follow into the new window."
 
 (custom-set-faces!
   '(org-document-title :height 1.5))
+(custom-set-faces!
+  `(org-agenda-diary :foreground ,(doom-color 'magenta) :weight bold))
 
+(map! :after evil :nv "'" #'evil-goto-mark)
 
 ;; (setq projectile-project-search-path '("~/code"))
 ;; (after! (company org)
@@ -741,12 +825,12 @@ Use evil's window splitting function to follow into the new window."
 ;;     ("n" ein:worksheet-goto-next-input-km)
 ;;     ("p" ein:worksheet-goto-prev-input-km))
 
-  ;;   (pushnew! mixed-pitch-fixed-pitch-faces
-  ;;             'ein:notification-tab-normal 'ein:cell-input-prompt 'ein:cell-output-area))
-  ;; (custom-set-faces!
-  ;;   ;; `(ein:cell-input-area :background ,(doom-color 'base3))
-  ;;   ;; `(ein:cell-input-area :inherit (org-block))
-  ;;   `(ein:cell-input-area :background ,(face-attribute 'org-block :background))))
+;;   (pushnew! mixed-pitch-fixed-pitch-faces
+;;             'ein:notification-tab-normal 'ein:cell-input-prompt 'ein:cell-output-area))
+;; (custom-set-faces!
+;;   ;; `(ein:cell-input-area :background ,(doom-color 'base3))
+;;   ;; `(ein:cell-input-area :inherit (org-block))
+;;   `(ein:cell-input-area :background ,(face-attribute 'org-block :background))))
 
 (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
 
