@@ -144,6 +144,11 @@ function fish_prompt
     set_color $retc
     # echo -n '╰─>'
     set_color -o green
+
+    if test (echo $IN_NIX_SHELL)
+        echo -n 'nix:'
+    end
+
     echo -n 'λ '
     set_color normal
 end
