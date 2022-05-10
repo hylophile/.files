@@ -45,21 +45,28 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-;; (setq doom-font (font-spec :family "Fira Code" :size 10.0)
-(setq doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0)
-;; (setq doom-font (font-spec :family "Victor Mono" :size 10.0)
-      ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 30)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
+(setq
+ ;; doom-font (font-spec :family "Fira Code" :size 10.0)
+ doom-font (font-spec :family "JuliaMono" :size 10.0)
+ doom-font (font-spec :family "JuliaMono" :size 10.0)
+ doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
+ ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0 :weight 'semi-light)
+ ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
+ ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
+ doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
+ ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
+ )
 (setq doom-font-increment 1)
 ;;
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
+                                        ;test
 
 (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
 
 (defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
-  "Advise `evil-delete-char' to set default REGISTER to the black hole register."
+  "Adv  ise `evil-delete-char' to set default REGISTER to the black hole register."
   :around #'evil-delete-char
   (unless register (setq register ?_))
   (funcall fn beg end type register))
@@ -175,18 +182,174 @@ Use evil's window splitting function to follow into the new window."
   (setq avy-all-windows t))
 
 (setq dired-dwim-target t)
+(setq org-agenda-mouse-1-follows-link t)
+(setq org-tags-column 0)
+(setq org-agenda-tags-column 0)
 
+;; (custom-set-faces! '(org-agenda-calendar-event :family "Victor Mono"))
+;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
+;; (setq doom-dracula-colorful-headers t)
+(setq org-cycle-max-level 5)
 (use-package! org-super-agenda
-  :commands org-super-agenda-mode)
+  :commands org-super-agenda-mode
+  :config
+  (setq org-super-agenda-groups `(
+                                  (:name "Plan"
+                                   :time-grid t
+                                   )
+                                  (:name "Work"  ; Optionally specify section name
+                                   ;; :face (:foreground ,(doom-color 'green))
+                                   :tag "work"
+                                   ;; :and (:tag "work" :time-grid t))
+                                   )
+                                  (:name "Uni"
+                                   ;; :face (:foreground ,(doom-color 'blue))
+                                   :tag "uni")
+                                  (:name "Health" :tag "health")
+                                  (:name "Hobby" :tag "tech" :tag "emacs")
+                                  (:name "Buy" :tag "buy")
+                                  (:category "Diary" :name "Diary")
+                                  (:name "Other" :anything)
+                                  )
+        ))
+
+(setq org-agenda-category-icon-alist
+      `(
+        ("uni" (#("🌳")) nil nil :ascent center)
+        ;; ("work" ,(list (all-the-icons-material "work" :height 1.2 :face 'all-the-icons-green)) nil nil :ascent center)
+        ("work" (#("🌸")) nil nil :ascent center)
+        ;; ("" ,(list (all-the-icons-faicon "pencil" :height 1.2)) nil nil :ascent center)
+        ("" (#("🌊")) nil nil :ascent center)
+        )
+      )
+;; (setq my/blue (doom-color 'blue))
+;; (setq org-tag-faces
+;;       `(
+        ;; ("uni" . (:foreground ,(doom-color 'blue) :weight bold))
+        ;; ("work" . (:foreground my/blue))
+        ;; ("work"  . (:foreground "med"))
+        ;; ))
+;; (setq org-tag-faces
+
+;;       '(
+
+;;         ("work"  . (:foreground "mediumPurple1" :weight bold))
+
+;;         ("uni"   . (:foreground "royalblue1"    :weight bold))
+
+;;         ("frontend"  . (:foreground "forest green"  :weight bold))
+
+;;         ("QA"        . (:foreground "sienna"        :weight bold))
+
+;;         ("meeting"   . (:foreground "yellow1"       :weight bold))
+
+;;         ("CRITICAL"  . (:foreground "red1"          :weight bold))
+
+;;         )
+
+;;       )
+
+;; (let ((org-super-agenda-groups
+;;        '(;; Each group has an implicit boolean OR operator between its selectors.
+;;          (:name "Uni"  ; Optionally specify section name
+;;           :time-grid t  ; Items that appear on the time grid
+;;           :tag "uni")  ; Items that have this TODO keyword
+;;          (:name "Work"  ; Optionally specify section name
+;;           ;; :time-grid t  ; Items that appear on the time grid
+;;           :tag "work")  ; Items that have this TODO keyword
+;;          (:name "Important"
+;;           ;; Single arguments given alone
+;;           :tag "bills"
+;;           :priority "A")
+;;          ;; Set order of multiple groups at once
+;;          (:order-multi (2 (:name "Shopping in town"
+;;                            ;; Boolean AND group matches items that match all subgroups
+;;                            :and (:tag "shopping" :tag "@town"))
+;;                           (:name "Food-related"
+;;                            ;; Multiple args given in list with implicit OR
+;;                            :tag ("food" "dinner"))
+;;                           (:name "Personal"
+;;                            :habit t
+;;                            :tag "personal")
+;;                           (:name "Space-related (non-moon-or-planet-related)"
+;;                            ;; Regexps match case-insensitively on the entire entry
+;;                            :and (:regexp ("space" "NASA")
+;;                                  ;; Boolean NOT also has implicit OR between selectors
+;;                                  :not (:regexp "moon" :tag "planet")))))
+;;          ;; Groups supply their own section names when none are given
+;;          (:todo "WAITING" :order 8)  ; Set order of this section
+;;          (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+;;           ;; Show this group at the end of the agenda (since it has the
+;;           ;; highest number). If you specified this group last, items
+;;           ;; with these todo keywords that e.g. have priority A would be
+;;           ;; displayed in that group instead, because items are grouped
+;;           ;; out in the order the groups are listed.
+;;           :order 9)
+;;          (:priority<= "B"
+;;           ;; Show this section after "Today" and "Important", because
+;;           ;; their order is unspecified, defaulting to 0. Sections
+;;           ;; are displayed lowest-number-first.
+;;           :order 1)
+;;          ;; After the last group, the agenda will display items that didn't
+;;          ;; match any of these groups, with the default order position of 99
+;;          )))
+;;   (org-agenda nil "a"))
+(setq org-agenda-include-diary t
+      holiday-bahai-holidays nil
+      holiday-hebrew-holidays nil
+      holiday-islamic-holidays nil
+      holiday-oriental-holidays nil
+
+      )
+
+(setq solar-n-hemi-seasons
+      '("Frühlingsanfang" "Sommeranfang" "Herbstanfang" "Winteranfang"))
+
+(setq holiday-general-holidays
+      '((holiday-fixed 1 1 "Neujahr")
+        (holiday-fixed 5 1 "Tag der Arbeit")
+        (holiday-fixed 3 8 "Internationaler Frauentag")
+        (holiday-fixed 10 3 "Tag der Deutschen Einheit")))
+
+
+(setq holiday-christian-holidays
+      '((holiday-float 12 0 -4 "1. Advent" 24)
+        (holiday-float 12 0 -3 "2. Advent" 24)
+        (holiday-float 12 0 -2 "3. Advent" 24)
+        (holiday-float 12 0 -1 "4. Advent" 24)
+        (holiday-fixed 12 25 "1. Weihnachtstag")
+        (holiday-fixed 12 26 "2. Weihnachtstag")
+        (holiday-easter-etc  -2 "Karfreitag")
+        (holiday-easter-etc   0 "Ostersonntag")
+        (holiday-easter-etc  +1 "Ostermontag")
+        (holiday-easter-etc +39 "Christi Himmelfahrt")
+        (holiday-easter-etc +49 "Pfingstsonntag")
+        (holiday-easter-etc +50 "Pfingstmontag")))
+(setq org-agenda-show-outline-path t)
+(setq org-agenda-time-grid nil)
+(setq org-agenda-show-current-time-in-grid nil)
+;; (setq org-agenda-prefix-format "%i  %?-12t% s")
+(setq org-agenda-prefix-format "  %i  %-12t% s")
+;; (setq org-agenda-prefix-format "  %?-12t% s")
+;; (setq org-agenda-prefix-format
+;;       '((agenda . " %-12:c%?-12t% s")
+;;         (todo . " %i %-12:c")
+;;         (tags . " %i %-12:c")
+;;         (search . " %i %-12:c")))
+
 
 (after! org-agenda
   (org-super-agenda-mode))
 
-(setq org-superstar-headline-bullets-list '(9678 9673 9675))
+;; (setq org-superstar-headline-bullets-list '(9678 9673 9675))
+;; (setq org-superstar-headline-bullets-list '(9689))
+(setq org-superstar-headline-bullets-list "●⚬")
 
 (use-package! mixed-pitch
-  :hook (org-mode . mixed-pitch-mode)
-  )
+  :hook (org-mode . mixed-pitch-mode))
+
+
+
 ;; (after! mixed-pitch
 ;;   (setq mixed-pitch-face 'variable-pitch-bigger)
 ;;   )
@@ -211,16 +374,31 @@ Use evil's window splitting function to follow into the new window."
 (map! :n [mouse-8] #'better-jumper-jump-backward
       :n [mouse-9] #'better-jumper-jump-forward)
 
+(after! doom-themes
+  (custom-set-faces!
+    '(outline-1 :weight semi-bold :height 1.15)
+    '(outline-2 :weight semi-bold :height 1.10)
+    '(outline-3 :weight semi-bold :height 1.09)
+    '(outline-4 :weight semi-bold :height 1.06)
+    '(outline-5 :weight semi-bold :height 1.03)
+    '(outline-6 :weight semi-bold :height 1.00)
+    '(outline-7 :weight semi-bold :height 1.00)
+    '(outline-8 :weight semi-bold)
+    '(outline-9 :weight semi-bold)
+    ))
 
-(custom-set-faces!
-  '(outline-1 :weight semi-bold :height 1.15)
-  '(outline-2 :weight semi-bold :height 1.10)
-  '(outline-3 :weight semi-bold :height 1.09)
-  '(outline-4 :weight semi-bold :height 1.06)
-  '(outline-5 :weight semi-bold :height 1.03)
-  '(outline-6 :weight semi-bold :height 1.00)
-  '(outline-8 :weight semi-bold)
-  '(outline-9 :weight semi-bold))
+
+(setq org-agenda-format-date (lambda (date) (concat "\n"
+                                                    ;; (make-string (window-width) 9472)
+                                                    ;; "\n"
+                                                    (org-agenda-format-date-aligned date))))
+(after! org
+  (setq org-agenda-start-day "0d"
+        org-agenda-skip-deadline-if-done t
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-timestamp-if-done t
+        org-agenda-todo-ignore-with-date t
+        ))
 
 ;; (push 'habits org-modules)
 
@@ -236,13 +414,16 @@ Use evil's window splitting function to follow into the new window."
 (setq find-file-visit-truename nil)
 (setq find-file-existing-other-name nil)
 
-(use-package! org
-  :config
-  (require 'org-habit))
+;; (use-package! org
+;;   :config
+;;   (require 'org-habit))
 
 (custom-set-faces!
   '(org-document-title :height 1.5))
+(custom-set-faces!
+  `(org-agenda-diary :foreground ,(doom-color 'magenta) :weight bold))
 
+(map! :after evil :nv "'" #'evil-goto-mark)
 
 ;; (setq projectile-project-search-path '("~/code"))
 ;; (after! (company org)
@@ -292,7 +473,7 @@ Use evil's window splitting function to follow into the new window."
       scroll-margin 2
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
-(global-subword-mode t)                           ; Iterate through CamelCase words
+;; (global-subword-mode t)                           ; Iterate through CamelCase words
 
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
@@ -312,7 +493,7 @@ Use evil's window splitting function to follow into the new window."
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)
 (after! vundo
-    (setq vundo-glyph-alist vundo-unicode-symbols))
+  (setq vundo-glyph-alist vundo-unicode-symbols))
 
 (after! persp-mode
   (defun display-workspaces-in-minibuffer ()
@@ -349,6 +530,14 @@ Use evil's window splitting function to follow into the new window."
 ;;   :filter-return window-right-divider-width
 ;;   (* w 10))
 ;;
+
+(setq org-archive-location "~/org/archive/%s_archive::")
+
+(defadvice! my/hide-archived-on-global-cycle (&rest _)
+  :after #'org-content
+  (org-hide-archived-subtrees (point-min) (point-max)))
+
+;; (add-hook 'org-cycle (cmd! (org-hide-archived-subtrees (point-min) (point-max))))
 
 (use-package! org-roam
   :config
@@ -398,7 +587,7 @@ Use evil's window splitting function to follow into the new window."
 
 ;; (load! "load/vue-polymode.el")
 
-(global-subword-mode t)                           ; Iterate through CamelCase words
+;; (global-subword-mode t)                           ; Iterate through CamelCase words
 
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
@@ -409,7 +598,10 @@ Use evil's window splitting function to follow into the new window."
 ;; (setq-hook! 'sgml-mode +format-with-lsp t)
 ;; (setq-hook! 'html-mode +format-with-lsp t)
 
-
+(setq org-agenda-format-date (lambda (date) (concat "\n"
+                                                    (make-string (window-width) 9472)
+                                                    "\n"
+                                                    (org-agenda-format-date-aligned date))))
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 
 ;; (add-hook 'org-mode-hook #'+org-pretty-mode)
@@ -431,57 +623,57 @@ Use evil's window splitting function to follow into the new window."
   )
 
 
-(cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
-  "Conduct a file search using ripgrep.
+;; (cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
+;;   "Conduct a file search using ripgrep.
 
-:query STRING
-  Determines the initial input to search for.
-:in PATH
-  Sets what directory to base the search out of. Defaults to the current project's root.
-:recursive BOOL
-  Whether or not to search files recursively from the base directory."
-  (declare (indent defun))
-  (interactive)
-  (unless (executable-find "rg")
-    (user-error "Couldn't find ripgrep in your PATH"))
-  (require 'consult)
-  (setq deactivate-mark t)
-  (let* ((project-root (or (doom-project-root) default-directory))
-         (directory (or in project-root))
-         (consult-ripgrep-args
-          (concat "rg "
-                  (if all-files "-uu ")
-                  (unless recursive "--maxdepth 1 ")
-                  "--line-buffered --search-zip --color=never --max-columns=1000 "
-                  "--path-separator /   --smart-case --no-heading --line-number "
-                  "--hidden -g !.git -g elisp.info.gz "
-                  (mapconcat #'shell-quote-argument args " ")
-                  "."))
-         (prompt (if (stringp prompt) (string-trim prompt) "Search"))
-         (query (or query
-                    (when (doom-region-active-p)
-                      (regexp-quote (doom-thing-at-point-or-region)))))
-         (consult-async-split-style consult-async-split-style)
-         (consult-async-split-styles-alist consult-async-split-styles-alist))
-    ;; Change the split style if the initial query contains the separator.
-    (when query
-      (cl-destructuring-bind (&key type separator initial)
-          (consult--async-split-style)
-        (pcase type
-          (`separator
-           (replace-regexp-in-string (regexp-quote (char-to-string separator))
-                                     (concat "\\" (char-to-string separator))
-                                     query t t))
-          (`perl
-           (when (string-match-p initial query)
-             (setf (alist-get 'perlalt consult-async-split-styles-alist)
-                   `(:initial ,(or (cl-loop for char in (list "%" "@" "!" "&" "/" ";")
-                                            unless (string-match-p char query)
-                                            return char)
-                                   "%")
-                     :type perl)
-                   consult-async-split-style 'perlalt))))))
-    (consult--grep prompt #'consult--ripgrep-builder "/usr/share/info" query)))
+;; :query STRING
+;;   Determines the initial input to search for.
+;; :in PATH
+;;   Sets what directory to base the search out of. Defaults to the current project's root.
+;; :recursive BOOL
+;;   Whether or not to search files recursively from the base directory."
+;;   (declare (indent defun))
+;;   (interactive)
+;;   (unless (executable-find "rg")
+;;     (user-error "Couldn't find ripgrep in your PATH"))
+;;   (require 'consult)
+;;   (setq deactivate-mark t)
+;;   (let* ((project-root (or (doom-project-root) default-directory))
+;;          (directory (or in project-root))
+;;          (consult-ripgrep-args
+;;           (concat "rg "
+;;                   (if all-files "-uu ")
+;;                   (unless recursive "--maxdepth 1 ")
+;;                   "--line-buffered --search-zip --color=never --max-columns=1000 "
+;;                   "--path-separator /   --smart-case --no-heading --line-number "
+;;                   "--hidden -g !.git -g elisp.info.gz "
+;;                   (mapconcat #'shell-quote-argument args " ")
+;;                   "."))
+;;          (prompt (if (stringp prompt) (string-trim prompt) "Search"))
+;;          (query (or query
+;;                     (when (doom-region-active-p)
+;;                       (regexp-quote (doom-thing-at-point-or-region)))))
+;;          (consult-async-split-style consult-async-split-style)
+;;          (consult-async-split-styles-alist consult-async-split-styles-alist))
+;;     ;; Change the split style if the initial query contains the separator.
+;;     (when query
+;;       (cl-destructuring-bind (&key type separator initial)
+;;           (consult--async-split-style)
+;;         (pcase type
+;;           (`separator
+;;            (replace-regexp-in-string (regexp-quote (char-to-string separator))
+;;                                      (concat "\\" (char-to-string separator))
+;;                                      query t t))
+;;           (`perl
+;;            (when (string-match-p initial query)
+;;              (setf (alist-get 'perlalt consult-async-split-styles-alist)
+;;                    `(:initial ,(or (cl-loop for char in (list "%" "@" "!" "&" "/" ";")
+;;                                             unless (string-match-p char query)
+;;                                             return char)
+;;                                    "%")
+;;                      :type perl)
+;;                    consult-async-split-style 'perlalt))))))
+;;     (consult--grep prompt #'consult--ripgrep-builder "/usr/share/info" query)))
 
 
 
@@ -551,97 +743,96 @@ Use evil's window splitting function to follow into the new window."
 ;; (advice-remove 'my/workspace-buffer-list-without-vterm #'+workspace-buffer-list)
 ;; (map! :map smartparens-mode-map
 ;;      [C-right] #'sp-wrap-round)
-(define-minor-mode my-minor-mode
-  "My minor mode"
-  :init-value t)
-(use-package! ein
-  ;; :hook ((symbol ein:markdown-mode) . #'enable-minor-modes-in-poly-mode-h)
-  ;; :hook (python-mode . #'enable-minor-modes-in-poly-mode-h)
-  ;; :hook (fundamental-mode . #'enable-minor-modes-in-poly-mode-h)
-  :config
-  (defun ein-buffer-p (buf)
-    (string-match-p ".*\\*ein:.*" (buffer-name buf)))
-  (defun ein-variable ()
-    (interactive)
-    (when (ein-buffer-p (current-buffer))
-      (let* ((overlays (overlays-in (point-min) (point-max)))
-             ;; (input-overlays (seq-filter (lambda (x) (string= "ein:cell-input-area" (overlay-get x 'face)))
-             ;; (overlays-in (point-min) (point-max))))
-             (input-overlays (seq-filter (lambda (x) (string= "ein:cell-output-area" (overlay-get x 'face)))
-                                         (overlays-in (point-min) (point-max))))
-             (non-md-overlays (seq-remove (lambda (x) (string= "ein:markdown-mode"
-                                                               (get-text-property (overlay-start x) :pm-mode)))
-                                          overlays)))
-        (message (format "%s" non-md-overlays))
-        (message "setting faces")
-        (mapcar (lambda (ovl) (unless (listp (overlay-get ovl 'face))
-                                (overlay-put ovl 'face `(,(overlay-get ovl 'face) org-block))))
-                non-md-overlays)
-        )))
-  (defun ein-wait-time ()
-    (run-at-time 2.0 nil
-                 #'ein-variable))
-  ;; (defadvice! after-ein-notebook-open--callback (&rest _)
-  ;;   :after #'ein:notebook-open--callback
-  ;;     (enable-minor-modes-in-poly-mode-h)
-  ;;     (ein-wait-time))
-  ;; (add-hook! doom-switch-buffer-hook #'ein-variable)
-  (defun enable-minor-modes-in-poly-mode-h ()
-    (message "enabling minor poly stuff")
-    (when (ein-buffer-p (current-buffer))
-      ;; (undo-fu-mode -1)
-      (visual-line-mode +1)
-      (mixed-pitch-mode +1)
-      (display-line-numbers-mode +1)))
+;; (define-minor-mode my-minor-mode
+;;   "My minor mode"
+;;   :init-value t)
+;; (use-package! ein
+;;   ;; :hook ((symbol ein:markdown-mode) . #'enable-minor-modes-in-poly-mode-h)
+;;   ;; :hook (python-mode . #'enable-minor-modes-in-poly-mode-h)
+;;   ;; :hook (fundamental-mode . #'enable-minor-modes-in-poly-mode-h)
+;;   :config
+;;   (defun ein-buffer-p (buf)
+;;     (string-match-p ".*\\*ein:.*" (buffer-name buf)))
+;;   (defun ein-variable ()
+;;     (interactive)
+;;     (when (ein-buffer-p (current-buffer))
+;;       (let* ((overlays (overlays-in (point-min) (point-max)))
+;;              ;; (input-overlays (seq-filter (lambda (x) (string= "ein:cell-input-area" (overlay-get x 'face)))
+;;              ;; (overlays-in (point-min) (point-max))))
+;;              (input-overlays (seq-filter (lambda (x) (string= "ein:cell-output-area" (overlay-get x 'face)))
+;;                                          (overlays-in (point-min) (point-max))))
+;;              (non-md-overlays (seq-remove (lambda (x) (string= "ein:markdown-mode"
+;;                                                                (get-text-property (overlay-start x) :pm-mode)))
+;;                                           overlays)))
+;;         (message (format "%s" non-md-overlays))
+;;         (message "setting faces")
+;;         (mapcar (lambda (ovl) (unless (listp (overlay-get ovl 'face))
+;;                                 (overlay-put ovl 'face `(,(overlay-get ovl 'face) org-block))))
+;;                 non-md-overlays)
+;;         )))
+;;   (defun ein-wait-time ()
+;;     (run-at-time 2.0 nil
+;;                  #'ein-variable))
+;;   ;; (defadvice! after-ein-notebook-open--callback (&rest _)
+;;   ;;   :after #'ein:notebook-open--callback
+;;   ;;     (enable-minor-modes-in-poly-mode-h)
+;;   ;;     (ein-wait-time))
+;;   ;; (add-hook! doom-switch-buffer-hook #'ein-variable)
+;;   (defun enable-minor-modes-in-poly-mode-h ()
+;;     (message "enabling minor poly stuff")
+;;     (when (ein-buffer-p (current-buffer))
+;;       ;; (undo-fu-mode -1)
+;;       (visual-line-mode +1)
+;;       (mixed-pitch-mode +1)
+;;       (display-line-numbers-mode +1)))
 
-  (set-popup-rule! "^.*\\*ein:notebooklist.*"
-    :size 0.3
-    :side 'bottom
-    :quit 't)
+;;   (set-popup-rule! "^.*\\*ein:notebooklist.*"
+;;     :size 0.3
+;;     :side 'bottom
+;;     :quit 't)
 
-  (after! link-hint
-    (link-hint-define-type 'ein-notebooklist
-      :next #'link-hint--next-widget-button
-      :at-point-p #'link-hint--widget-button-at-point-p
-      :vars '(ein:notebooklist-mode)
-      :open #'widget-button-press)
-    (push 'link-hint-ein-notebooklist link-hint-types))
+;;   (after! link-hint
+;;     (link-hint-define-type 'ein-notebooklist
+;;       :next #'link-hint--next-widget-button
+;;       :at-point-p #'link-hint--widget-button-at-point-p
+;;       :vars '(ein:notebooklist-mode)
+;;       :open #'widget-button-press)
+;;     (push 'link-hint-ein-notebooklist link-hint-types))
 
 
-  ;; (defadvice! disable-undo-fu (&rest)
-  ;;   )
-  ;; (add-hook!
-  ;; '(fundamental-mode-hook ein:markdown-mode-hook python-mode-hook)
-  ;; poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-variable)
-  (add-hook! poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-wait-time)
+;;   ;; (defadvice! disable-undo-fu (&rest)
+;;   ;;   )
+;;   ;; (add-hook!
+;;   ;; '(fundamental-mode-hook ein:markdown-mode-hook python-mode-hook)
+;;   ;; poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-variable)
+;;   (add-hook! poly-ein-mode #'enable-minor-modes-in-poly-mode-h #'ein-wait-time)
 
-  (defadvice! center-after-cell-move (orig-fun &rest args)
-    :after 'ein:worksheet-goto-next-input
-    :after 'ein:worksheet-goto-prev-input
-    ;; (evil-scroll-line-to-center (line-number-at-pos))
-    ;; (let ((current-window (get-buffer-window)))
-    ;;   (apply orig-fun args)
-    ;;   (with-selected-window current-window (recenter))))
-    (run-at-time 0.01 nil #'recenter))
+;;   (defadvice! center-after-cell-move (orig-fun &rest args)
+;;     :after 'ein:worksheet-goto-next-input
+;;     :after 'ein:worksheet-goto-prev-input
+;;     ;; (evil-scroll-line-to-center (line-number-at-pos))
+;;     ;; (let ((current-window (get-buffer-window)))
+;;     ;;   (apply orig-fun args)
+;;     ;;   (with-selected-window current-window (recenter))))
+;;     (run-at-time 0.01 nil #'recenter))
 
-  (map! :localleader
-        :map poly-ein-mode-map
-        "n" #'ein:worksheet-goto-next-input-km
-        "p" #'ein:worksheet-goto-prev-input-km)
-  (defhydra +hydra/ein (:color blue)
-    "
-          Cell navigation: _n_ext  _p_revious
-"
-    ("n" ein:worksheet-goto-next-input-km)
-    ("p" ein:worksheet-goto-prev-input-km))
+;;   (map! :localleader
+;;         :map poly-ein-mode-map
+;;         "n" #'ein:worksheet-goto-next-input-km
+;;         "p" #'ein:worksheet-goto-prev-input-km)
+;;   (defhydra +hydra/ein (:color blue)
+;;     "
+;;           Cell navigation: _n_ext  _p_revious
+;; "
+;;     ("n" ein:worksheet-goto-next-input-km)
+;;     ("p" ein:worksheet-goto-prev-input-km))
 
-  (after! mixed-pitch
-    (pushnew! mixed-pitch-fixed-pitch-faces
-              'ein:notification-tab-normal 'ein:cell-input-prompt 'ein:cell-output-area))
-  (custom-set-faces!
-    ;; `(ein:cell-input-area :background ,(doom-color 'base3))
-    ;; `(ein:cell-input-area :inherit (org-block))
-    `(ein:cell-input-area :background ,(face-attribute 'org-block :background))))
+;;   (pushnew! mixed-pitch-fixed-pitch-faces
+;;             'ein:notification-tab-normal 'ein:cell-input-prompt 'ein:cell-output-area))
+;; (custom-set-faces!
+;;   ;; `(ein:cell-input-area :background ,(doom-color 'base3))
+;;   ;; `(ein:cell-input-area :inherit (org-block))
+;;   `(ein:cell-input-area :background ,(face-attribute 'org-block :background))))
 
 (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
 
@@ -666,6 +857,11 @@ Use evil's window splitting function to follow into the new window."
 (load! "load/dotfiles.el")
 ;;(load! "load/format-classes.el")
 ;;(load! "load/kzk-config.el")
+;; (after! org
+;;   (add-to-list 'org-agenda-custom-commands
+;;                '("y" "year"
+;;                  agenda ""
+;;                  ((org-agenda-span 'year)))))
 
 (add-to-list 'org-agenda-custom-commands
              '("y" "year"

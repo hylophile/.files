@@ -55,6 +55,7 @@ bindsym XF86Mail exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ tog
 bindsym XF86Launch5 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 bindsym Ctrl+XF86Mail exec ~/toggle-work.sh
+bindsym $mod+F1 exec xset dpms force off
 
 # make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
 #bindsym --release $mod+Shift+z exec scrot -s '%Y-%m-%d_%s.png' -e 'mv $f ~/org/img/ && echo [[file:img/$f]] | xclip -selection primary'
