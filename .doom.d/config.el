@@ -185,6 +185,7 @@ Use evil's window splitting function to follow into the new window."
 (setq org-tags-column 0)
 (setq org-agenda-tags-column 0)
 
+(setq org-agenda-files (directory-files-recursively "~/org/" "\.org$"))
 ;; (custom-set-faces! '(org-agenda-calendar-event :family "Victor Mono"))
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
 ;; (setq doom-dracula-colorful-headers t)
