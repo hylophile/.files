@@ -222,6 +222,15 @@ Use evil's window splitting function to follow into the new window."
         ("" (#("🌊")) nil nil :ascent center)
         )
       )
+
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+   "/DONE" 'file))
+
 ;; (setq my/blue (doom-color 'blue))
 ;; (setq org-tag-faces
 ;;       `(
