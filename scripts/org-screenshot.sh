@@ -2,7 +2,7 @@
 set -e
 
 filename="$(date +%Y-%m-%d-%s.png)"
-orgpath="img/$filename"
-fullpath="$HOME/org/$orgpath"
+orgpath="~/org/img/$filename"
+maimpath="$HOME/org/img/$filename"
 
-maim -s $fullpath && echo "[[file:$orgpath]]" | xclip -selection primary
+maim -s $maimpath && echo "[[file:$orgpath]]" | xclip -selection primary
