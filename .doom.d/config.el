@@ -20,6 +20,8 @@
 (setq user-full-name "name"
       user-mail-address "mail")
 
+(setq projectile-project-search-path '("~/code" "~/tub"))
+
 (after! mu4e
   (setq sendmail-program (executable-find "msmtp")
         send-mail-function #'smtpmail-send-it
@@ -47,14 +49,14 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq
  ;; doom-font (font-spec :family "Fira Code" :size 10.0)
- doom-font (font-spec :family "JuliaMono" :size 10.0)
- doom-font (font-spec :family "JuliaMono" :size 10.0)
+ ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
+ ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
  doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
- doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
- ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
+ ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
+ doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
  )
 (setq doom-font-increment 1)
 ;;
@@ -66,7 +68,7 @@
 (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
 
 (defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
-  "Adv  ise `evil-delete-char' to set default REGISTER to the black hole register."
+  "Advise `evil-delete-char' to set default REGISTER to the black hole register."
   :around #'evil-delete-char
   (unless register (setq register ?_))
   (funcall fn beg end type register))
@@ -186,22 +188,24 @@ Use evil's window splitting function to follow into the new window."
 (setq org-tags-column 0)
 (setq org-agenda-tags-column 0)
 
+;; (setq org-agenda-files (directory-files-recursively "~/org/" "\.org$"))
+(setq org-agenda-files '("~/org" "~/org/issues"))
 ;; (custom-set-faces! '(org-agenda-calendar-event :family "Victor Mono"))
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
 ;; (setq doom-dracula-colorful-headers t)
 (setq org-cycle-max-level 5)
+
 (use-package! org-super-agenda
   :commands org-super-agenda-mode
   :config
-  (setq org-super-agenda-groups `(
+  (setq org-super-agenda-groups '(
                                   (:name "Plan"
                                    :time-grid t
                                    )
-                                  (:name "Work"  ; Optionally specify section name
-                                   ;; :face (:foreground ,(doom-color 'green))
-                                   :tag "work"
-                                   ;; :and (:tag "work" :time-grid t))
-                                   )
+                                  (:name "Important"
+                                   :priority>= "C")
+                                  (:name "Scheduled"
+                                   :scheduled t)
                                   (:name "Uni"
                                    ;; :face (:foreground ,(doom-color 'blue))
                                    :tag "uni")
@@ -209,26 +213,63 @@ Use evil's window splitting function to follow into the new window."
                                   (:name "Hobby" :tag "tech" :tag "emacs")
                                   (:name "Buy" :tag "buy")
                                   (:category "Diary" :name "Diary")
-                                  (:name "Other" :anything)
+                                  (:name "Work"  ; Optionally specify section name
+                                   ;; :face (:foreground ,(doom-color 'green))
+                                   :order 99
+                                   :tag "work"
+                                   :category "work"
+                                   ;; :and (:tag "work" :time-grid t))
+                                   )
+                                  (:name "Other" :anything t)
                                   )
         ))
+
+(setq org-agenda-custom-commands
+      '(("n" "3 days and todos"
+         ((agenda "" ((org-agenda-span 3)))
+          (alltodo "" ((org-agenda-overriding-header "")))))))
+
+(defadvice! my/alltodo-without-time-grid (fn &optional arg)
+  "the org-super-agenda selector :time-grid t collects all TODO
+items in the alltodo agenda, so we dynamically remove it when using that."
+  :around #'org-todo-list
+  (let ((org-super-agenda-groups (cdr org-super-agenda-groups)))
+    (apply fn arg)))
+
+
 
 (setq org-agenda-category-icon-alist
       `(
         ("uni" (#("🌳")) nil nil :ascent center)
         ;; ("work" ,(list (all-the-icons-material "work" :height 1.2 :face 'all-the-icons-green)) nil nil :ascent center)
         ("work" (#("🌸")) nil nil :ascent center)
+        ("buy" (#("🪙")) nil nil :ascent center)
+        ("health" (#("💊")) nil nil :ascent center)
+        ("tech" (#("🦄")) nil nil :ascent center)
+        ("emacs" (#("🎹")) nil nil :ascent center)
+        ("chore" (#("🔱")) nil nil :ascent center)
         ;; ("" ,(list (all-the-icons-faicon "pencil" :height 1.2)) nil nil :ascent center)
-        ("" (#("🌊")) nil nil :ascent center)
+        ("inbox" (#("🌊")) nil nil :ascent center)
+        ("" (#("🌈")) nil nil :ascent center)
         )
       )
+
+
+(defun org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+   "/DONE" 'file))
+
 ;; (setq my/blue (doom-color 'blue))
 ;; (setq org-tag-faces
 ;;       `(
-        ;; ("uni" . (:foreground ,(doom-color 'blue) :weight bold))
-        ;; ("work" . (:foreground my/blue))
-        ;; ("work"  . (:foreground "med"))
-        ;; ))
+;; ("uni" . (:foreground ,(doom-color 'blue) :weight bold))
+;; ("work" . (:foreground my/blue))
+;; ("work"  . (:foreground "med"))
+;; ))
 ;; (setq org-tag-faces
 
 ;;       '(
@@ -392,12 +433,13 @@ Use evil's window splitting function to follow into the new window."
                                                     ;; (make-string (window-width) 9472)
                                                     ;; "\n"
                                                     (org-agenda-format-date-aligned date))))
+
 (after! org
   (setq org-agenda-start-day "0d"
         org-agenda-skip-deadline-if-done t
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-timestamp-if-done t
-        org-agenda-todo-ignore-with-date t
+        ;; org-agenda-todo-ignore-with-date t
         ))
 
 ;; (push 'habits org-modules)
@@ -534,6 +576,9 @@ Use evil's window splitting function to follow into the new window."
 (setq org-archive-location "~/org/archive/%s_archive::")
 
 (defadvice! my/hide-archived-on-global-cycle (&rest _)
+  "For some reason org-content (i.e. <number>S-<TAB>) does not
+respect the hidden status of archived headings and shows them.
+This hides them again."
   :after #'org-content
   (org-hide-archived-subtrees (point-min) (point-max)))
 
@@ -847,6 +892,9 @@ Use evil's window splitting function to follow into the new window."
          (files-without-cwd (mapcar (lambda (f) (string-remove-prefix cwd f)) files)))
     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
 
+;; (use-package! org-modern
+;;   :hook (org-mode . org-modern-mode)
+;;   :hook (org-agenda-finalize . org-modern-agenda))
 
 (use-package! lsp-volar)
 ;; (load! "load/vue-polymode.el")
@@ -863,10 +911,17 @@ Use evil's window splitting function to follow into the new window."
 ;;                  agenda ""
 ;;                  ((org-agenda-span 'year)))))
 
-(add-to-list 'org-agenda-custom-commands
-             '("y" "year"
-               agenda ""
-               ((org-agenda-span 'year)
-               )))
-;; (load! "load/format-classes.el")
-(load! "load/kzk-config.el")
+;; (defun my-open-calendar ()
+;;   (interactive)
+;;   (cfw:open-calendar-buffer
+;;    :contents-sources
+;;    (list
+;;     (cfw:org-create-source (doom-color 'blue))  ; org-agenda source
+;;     ;; (cfw:org-create-file-source "cal" "/path/to/cal.org" "Cyan")  ; other org source
+;;     ;; (cfw:howm-create-source "Blue")  ; howm source
+;;     ;; (cfw:cal-create-source "Orange") ; diary source
+;;     ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+;;     ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+;;     )))
+
+(remove-hook! 'doom-modeline-mode-hook #'size-indication-mode)
