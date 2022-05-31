@@ -291,7 +291,7 @@ bar {
         }
 #        separator_symbol " - "
         status_command /usr/share/bumblebee-status/bumblebee-status -m \
-                       nic my_pasink my_pasource date time \
+                       my_pasink my_pasource date time \
                        -p interval=0.5 nic.exclude="wlp*,lo" nic.format="" \
                        time.format="%H:%M    " date.format="%A – %Y･%m･%d" \
                        pomodoro.format="%m min" \
