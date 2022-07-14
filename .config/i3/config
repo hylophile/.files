@@ -56,6 +56,10 @@ bindsym XF86Mail exec ~/scripts/toggle-all-sources.sh && $refresh_i3status
 bindsym XF86Launch5 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 bindsym Ctrl+XF86Mail exec ~/toggle-work.sh
+
+bindcode 199 --release exec ~/scripts/mute-all-sources.sh 1
+bindcode 199 exec ~/scripts/mute-all-sources.sh 0
+
 bindsym $mod+F1 exec xset dpms force off
 
 # make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
