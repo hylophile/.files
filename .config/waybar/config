@@ -5,8 +5,9 @@
     "position": "top",
     "height": 30,
     "modules-center": ["sway/workspaces"],
-    "modules-left": ["tray", "wlr/taskbar"],
+    "modules-left": ["tray"], //"wlr/taskbar"],
     "modules-right": [
+    "custom/clipboard",
       "pulseaudio#sink",
       "pulseaudio#source",
 //      "idle_inhibitor",
@@ -30,7 +31,7 @@
     },
     "clock": {
       "interval": 1,
-      "format": "{:%A ― W%W ― %Y‒%m‒%d ― %H:%M}", // or %B
+      "format": "{:%A   W%W   %Y‒%m‒%d   %H:%M}", // or %B
       "format-alt": "{:%Y-%m-%d}",
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     },
@@ -69,31 +70,37 @@
     },
     "pulseaudio#sink": {
       "scroll-step": 1,
-      "format": "<tt>{icon}{volume}%</tt>",
-      "format-bluetooth": "{icon} {volume}%",
+      "format": "{icon}",
+      "format-bluetooth": "{icon}",
       "format-bluetooth-muted": " {icon}",
-      "format-muted": "<tt> {volume}%</tt>",
+      "format-muted": "<span face='Material Icons'></span>",
       "format-source": "",
       "format-source-muted": "",
-      "tooltip": "false",
+      "tooltip-format": "{volume}%",
       "format-icons": {
         "headphone": "",
         "phone": "",
         "portable": "",
         "car": "",
-        "default": ["", "", ""],
+        "default": [
+      "<span face='Material Icons'></span>",
+      "<span face='Material Icons'></span>",
+      "<span face='Material Icons'></span>",
+        ],
       },
       "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
       "on-click-right": "pavucontrol",
+     // "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +1%",
+     // "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1%",
     },
     "pulseaudio#source": {
-      "tooltip": "false",
       "format": "{format_source}",
       "format-bluetooth": "{format_source}",
       "format-bluetooth-muted": "{format_source}",
       "format-muted": "{format_source}",
-      "format-source": "<tt>{volume}%</tt>",
-      "format-source-muted": "<tt>{volume}%</tt>",
+      "format-source": "<span face='Material Icons'></span>",
+      "format-source-muted": "<span face='Material Icons'></span>",
+      "tooltip-format": "{volume}%",
       "format-icons": {
         "headphone": "",
         "phone": "",
@@ -105,6 +112,11 @@
       "on-click-right": "pavucontrol",
       "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +1%",
       "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1%",
+    },
+    "custom/clipboard": {
+      "return-type": "json",
+      "exec": "sh $HOME/.config/waybar/scripts/clipboard.sh",
+      "interval": 1,
     },
     "custom/weather": {
       "return-type": "json",
