@@ -5,7 +5,7 @@
     "position": "top",
     "height": 30,
     "modules-center": ["sway/workspaces"],
-    "modules-left": ["tray"], //"wlr/taskbar"],
+    "modules-left": ["tray", "custom/urgency"], //"wlr/taskbar"],
     "modules-right": [
     // "custom/clipboard",
       "pulseaudio#sink",
@@ -123,6 +123,13 @@
       "exec": "sh $HOME/.config/waybar/scripts/weather.sh",
       "interval": 300,
       "on-click": "firefox https://wttr.in",
+    },
+    "custom/urgency": {
+      "return-type": "json",
+      "format": "<span face='Fira Code' color='blue'>{}</span>",
+      "exec": "sh $HOME/.config/waybar/scripts/urgency.sh",
+      "exec-if": "sh $HOME/.config/waybar/scripts/urgency.sh show",
+      "interval": 1,
     },
     "custom/poweroff": {
       "tooltip": false,
