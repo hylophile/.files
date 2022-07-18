@@ -25,7 +25,13 @@ set $menu wofi --show drun | xargs swaymsg exec --
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 #output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 #
+
 output "Unknown 2460G4 0x00000BD5" {
+    resolution 1920x1080
+    position 0,0
+}
+
+output "Unknown 2460G4 E99GBBA003029" {
     resolution 1920x1080
     position 0,0
 }
@@ -34,6 +40,10 @@ output "BenQ Corporation BenQ EW3270U W8L04567019" {
     resolution 3840x2160
     position 1920,0
     scale 1.5
+}
+
+output eDP-1 {
+	disable
 }
 
 input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
@@ -226,13 +236,24 @@ font $font $size
 #
 #
 # teams 
+# 
+# 
+# 
+# chrome-teams.microsoft.com__-Default
+# chrome-mailsrv.employer__owa_-Default
+for_window    [app_id="chrome-mailsrv.employer__owa_-Default"] title_format "<span foreground='#0072C6'><tt></tt></span> %title"
+for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
 for_window    [app_id="chrome-discord.com__app-Default" title="Discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
-for_window    [app_id="firefox-nightly"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
+for_window    [app_id="firefox.*"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
 for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' face='file-icons'></span> %title"
 for_window    [app_id="kitty"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
-for_window    [app_id="telegramdesktop"]        title_format "<span foreground='#8be9fd'><tt></tt></span> %title"
+for_window    [app_id="telegramdesktop"]        title_format "<span foreground='#0088CC'><tt></tt></span> %title"
 
 for_window [app_id="firefox-nightly" title="Picture-in-Picture"] floating enable, border none, resize set width 30ppt height 30ppt
+
+#for_window [app_id="^chrome-.*__-.*$"] shortcuts_inhibitor disable
+
+for_window [app_id="^chrome-.*"] shortcuts_inhibitor disable
 
 bar {
     swaybar_command waybar
@@ -251,7 +272,7 @@ bar {
 
 # class                 border  bground text    indicator child_border
 client.focused          #44475A #44475A #F8F8F2 #44475A   #44475A
-client.focused_inactive #44475A #44475A #88888F #44475A   #44475A
+client.focused_inactive #44475A #44475A #44475A #44475A   #44475A
 client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
 client.urgent           #50fa7b #44475a #F8F8F2 #FF5555   #FF5555
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36

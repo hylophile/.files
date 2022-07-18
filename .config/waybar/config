@@ -7,7 +7,7 @@
     "modules-center": ["sway/workspaces"],
     "modules-left": ["tray"], //"wlr/taskbar"],
     "modules-right": [
-    "custom/clipboard",
+    // "custom/clipboard",
       "pulseaudio#sink",
       "pulseaudio#source",
 //      "idle_inhibitor",
