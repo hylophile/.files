@@ -195,6 +195,9 @@ bindcode 199 exec ~/scripts/mute-all-sources.sh 0
 
 bindsym $mod+n exec ~/.config/sway/new-workspace.sh
 bindsym $mod+Shift+n exec sh ~/.config/sway/move-to-new-workspace.sh
+
+bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
+
 # Resizing containers:
 #
 mode "resize" {
