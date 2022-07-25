@@ -122,7 +122,7 @@
       "return-type": "json",
       "exec": "sh $HOME/.config/waybar/scripts/weather.sh",
       "interval": 300,
-      "on-click": "firefox https://wttr.in",
+      "on-click": "firefox-nightly https://www.wetter.de/deutschland/wetter-berlin-18228265.html",
     },
     "custom/urgency": {
       "return-type": "json",
