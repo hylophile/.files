@@ -907,6 +907,13 @@ This hides them again."
 ;;                '("y" "year"
 ;;                  agenda ""
 ;;                  ((org-agenda-span 'year)))))
+(map! :leader
+      :desc "FuZzily find File in home"
+      "f z f" (cmd!! #'affe-find "~/"))
+(map! :leader
+      :desc "FuZzily find file in this Dir"
+      "f z d" (cmd!! #'affe-find))
+
 
 ;; (defun my-open-calendar ()
 ;;   (interactive)
