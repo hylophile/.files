@@ -96,6 +96,7 @@ window#waybar.empty {
 #pulseaudio {
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
+    min-width: 50px;
 }
 
 #pulseaudio.source:not(.source-muted) {
@@ -107,10 +108,6 @@ window#waybar.empty {
     color: @dr_or;
     background-color: @dr_bg1;
 
-}
-
-#pulseaudio {
-    min-width: 20px;
 }
 
 
