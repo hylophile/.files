@@ -5,7 +5,7 @@
     "position": "top",
     "height": 30,
     "modules-center": ["sway/workspaces"],
-    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms"], //"wlr/taskbar"],
+    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms", "custom/toggle-big"], //"wlr/taskbar"],
     "modules-right": [
       // "custom/clipboard",
       "pulseaudio#sink",
@@ -135,6 +135,10 @@
       "tooltip": false,
       "format": "",
       "on-click": "bash $HOME/.config/waybar/scripts/poweroff.sh",
+    },
+    "custom/toggle-big": {
+      "format": "",
+      "on-click": "sh $HOME/.config/waybar/scripts/toggle-big.sh",
     },
     "custom/toggle-dpms": {
       "return-type": "json",
