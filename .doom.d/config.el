@@ -16,6 +16,7 @@
 ;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
+(setq projectile-project-search-path '("~/code" "~/tub"))
 (setq user-full-name "name"
       user-mail-address "mail")
 
@@ -509,8 +510,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                '("gitlab.employer"
                  "gitlab.employer/api/v4"
                  "gitlab.employer" forge-gitlab-repository)))
-
-(setq avy-keys '(?s ?n ?r ?t ?d ?y))
 
 (setq-default
  delete-by-moving-to-trash t                      ; Delete files to trash
