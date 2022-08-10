@@ -3,9 +3,9 @@
     "name": "topbar",
     "layer": "top",
     "position": "top",
-    "height": 30,
+    // "height": 30,
     "modules-center": ["sway/workspaces"],
-    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms", "custom/toggle-big"], //"wlr/taskbar"],
+    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms", "custom/toggle-big","custom/sep"], //"wlr/taskbar"],
     "modules-right": [
       // "custom/clipboard",
       "pulseaudio#sink",
@@ -30,7 +30,7 @@
       },
     },
     "clock": {
-      "interval": 1,
+      "interval": 10,
       "format": "{:%A   W%W   %Y‒%m‒%d   %H:%M}", // or %B
       "format-alt": "{:%Y-%m-%d}",
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -129,7 +129,7 @@
       "format": "<span face='Fira Code' color='blue'>{}</span>",
       "exec": "sh $HOME/.config/waybar/scripts/urgency.sh",
       "exec-if": "sh $HOME/.config/waybar/scripts/urgency.sh show",
-      "interval": 1,
+      "interval": 5,
     },
     "custom/poweroff": {
       "tooltip": false,
@@ -138,12 +138,16 @@
     },
     "custom/toggle-big": {
       "format": "",
-      "on-click": "sh $HOME/.config/waybar/scripts/toggle-big.sh",
+      "on-click": "(sleep 0.1; $HOME/.config/waybar/scripts/toggle-big.sh) & disown",
+    },
+    "custom/sep": {
+      "format": " ",
+      "on-click": "true",
     },
     "custom/toggle-dpms": {
       "return-type": "json",
       "exec": "sh $HOME/.config/waybar/scripts/toggle-dpms.sh",
-      "on-click": "sh $HOME/.config/waybar/scripts/toggle-dpms.sh toggle",
+      "on-click": "(sleep 0.1; $HOME/.config/waybar/scripts/toggle-dpms.sh toggle) & disown",
       "restart-interval": 1,
     },
     "custom/mail": {
