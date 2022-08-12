@@ -124,11 +124,10 @@
       "interval": 300,
       "on-click": "firefox-nightly https://www.wetter.de/deutschland/wetter-berlin-18228265.html",
     },
-    "custom/urgency": {
+    "custom/urgency-teams": {
       "return-type": "json",
-      "format": "<span face='Fira Code' color='blue'>{}</span>",
-      "exec": "sh $HOME/.config/waybar/scripts/urgency.sh",
-      "exec-if": "sh $HOME/.config/waybar/scripts/urgency.sh show",
+      "format": "{}",
+      "exec": "sh $HOME/.config/waybar/scripts/urgency.sh chrome-teams.microsoft.com__-Default 🌈",
       "interval": 5,
     },
     "custom/poweroff": {

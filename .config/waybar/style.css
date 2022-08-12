@@ -1,9 +1,9 @@
 * {
-    border: none;
-    border-radius: 0;
-    font-family: "Jost*";
-    font-size: 18px;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: "Jost*";
+  font-size: 18px;
+  min-height: 0;
 }
 
 @define-color dr_bg0 #282a36;
@@ -19,44 +19,44 @@
 @define-color dr_ye #f1fa8c;
 
 window#waybar {
-    background-color: @dr_bg0;
-    color: @dr_fg;
-    transition-property: background-color;
-    transition-duration: .5s;
+  background-color: @dr_bg0;
+  color: @dr_fg;
+  transition-property: background-color;
+  transition-duration: 0.5s;
 }
 
 window#waybar.empty {
-    color: rgba(0,0,0,0);
+  color: rgba(0, 0, 0, 0);
 }
 
 .topbar {
-    border-bottom: 3px solid @dr_bg1;
+  border-bottom: 3px solid @dr_bg1;
 }
 
 .bottombar {
-    border-top: 3px solid rgba(100, 114, 125, 1);
+  border-top: 3px solid rgba(100, 114, 125, 1);
 }
 
 #workspaces button {
-    min-width: 90px;
-    /* margin-left: 5px; */
-    background-color: transparent;
-    color: @dr_fg;
+  min-width: 90px;
+  /* margin-left: 5px; */
+  background-color: transparent;
+  color: @dr_fg;
 }
 
 #workspaces button:hover {
-    background: @dr_bg1;
-    box-shadow: inset 0 3px @dr_cy;
+  background: @dr_bg1;
+  box-shadow: inset 0 3px @dr_cy;
 }
 
 #workspaces button.visible {
-    background-color: @dr_bg1;
-    /* box-shadow: inset 0 3px @dr_cy; */
+  background-color: @dr_bg1;
+  /* box-shadow: inset 0 3px @dr_cy; */
 }
 
 #workspaces button.focused {
-    background-color: @dr_bg1;
-    box-shadow: inset 0 3px @dr_pi;
+  background-color: @dr_bg1;
+  box-shadow: inset 0 3px @dr_pi;
 }
 
 /* #workspaces button.urgent { */
@@ -64,8 +64,8 @@ window#waybar.empty {
 /* } */
 
 #mode {
-    background-color: #64727D;
-    border-top: 3px solid #ffffff;
+  background-color: #64727d;
+  border-top: 3px solid #ffffff;
 }
 
 #backlight,
@@ -90,9 +90,9 @@ window#waybar.empty {
 #taskbar,
 #temperature,
 #tray {
-    padding: 0px 5px;
-    margin: 2px 0px;
-    color: @dr_fg;
+  padding: 0px 5px;
+  margin: 2px 0px;
+  color: @dr_fg;
 }
 
 #pulseaudio {
@@ -102,16 +102,39 @@ window#waybar.empty {
 }
 
 #pulseaudio.source:not(.source-muted) {
-    color: @dr_gr;
-    background-color: @dr_bg1;
+  color: @dr_gr;
+  background-color: @dr_bg1;
 }
 
 #pulseaudio.sink.sink-muted {
-    color: @dr_or;
-    background-color: @dr_bg1;
-
+  color: @dr_or;
+  background-color: @dr_bg1;
 }
 
+#pulseaudio {
+  min-width: 20px;
+}
+
+#custom-azk {
+  min-width: 150px;
+  border-radius: 50px;
+  border: 0px solid @dr_bg1;
+  padding: 0px 0px;
+  margin: 8px 5px;
+  font-size: 0px;
+  /* box-shadow: inset -1px -1px 2px @dr_fg, 2px 2px 2px #121319; */
+  box-shadow: 2px 2px 2px #121319;
+  transition-property: all;
+  transition-duration: 0.5s;
+}
+
+#custom-azk.azk_break {
+  background-color: @dr_or;
+}
+
+#custom-azk.azk_working {
+  background-color: @dr_cy;
+}
 
 /* @keyframes blink { */
 /*     to { */
@@ -135,11 +158,11 @@ window#waybar.empty {
 /* } */
 
 #taskbar button:hover {
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0 3px #ffffff;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 3px #ffffff;
 }
 
 #taskbar button.active {
-    background-color: #64727D;
-    box-shadow: inset 0 3px #ffffff;
+  background-color: #64727d;
+  box-shadow: inset 0 3px #ffffff;
 }
