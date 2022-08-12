@@ -33,6 +33,10 @@ else
     text="+$temp°C"
 fi
 
+if [ "$temp" = "null" ]; then
+    text=""
+fi
+
 # curl "https://api.brightsky.dev/current_weather?lat=52.52&lon=13.29"|jq ".weather.temperature"
 
 # https://www.wetter.de/deutschland/wetter-berlin-18228265.html

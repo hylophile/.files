@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-names=$(swaymsg -t get_tree | jq -r 'recurse(.nodes[]?) | select(.app_id=="firefox-nightly" or .app_id=="telegramdesktop").name')
+names=$(swaymsg -t get_tree | jq -r "recurse(.nodes[]?) | select(.app_id==\"$1\").name")
 match=$(echo "$names" | grep -E -o '\([0-9]+\)')
 
-if [ "$1" = "show" ]; then
+if [ "$2" = "show" ]; then
     if [ "$match" = "" ]; then
         exit 1
     else
@@ -11,4 +11,6 @@ if [ "$1" = "show" ]; then
     fi
 fi
 
-echo "{\"text\": \"🦄\", \"class\": \"urgent\"}"
+if [ "$match" != "" ]; then
+    echo "{\"text\": \"$2\", \"class\": \"urgent\"}"
+fi

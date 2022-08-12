@@ -17,6 +17,7 @@
 ;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
+(setq projectile-project-search-path '("~/code" "~/tub"))
 (setq user-full-name "name"
       user-mail-address "mail")
 
@@ -56,8 +57,8 @@
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
- doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
- )
+ doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
+
 (setq doom-font-increment 1)
 ;;
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -73,8 +74,7 @@
   (unless register (setq register ?_))
   (funcall fn beg end type register))
 
-(defadvice! my/evil-scroll-advice (fn count)
-  ""
+(defadvice! hy/evil-scroll-advice (fn count)
   :around #'evil-scroll-down
   :around #'evil-scroll-up
   (setq count (/ (window-body-height) 4))
@@ -119,13 +119,26 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
+;; (defun six-split-window ()
+;;   (interactive)
+;;   (split-window-right)
+;;   (split-window-right)
+;;   (split-window-below)
+;;   (other-window 2)
+;;   (split-window-below)
+;;   (other-window 2)
+;;   (split-window-below))
+
+
+(advice-remove #'evil-visual-update-x-selection #'ignore)
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
-(setq which-key-idle-delay 0.5)
-(setq evil-snipe-scope 'visible)
-
+(setq which-key-idle-delay 1)
+(setq evil-snipe-scope 'whole-buffer)
+;; (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 (map! :leader :desc "Actions" "e" #'embark-act)
 (map! :leader
       "a" #'ace-window)
@@ -200,29 +213,29 @@ Use evil's window splitting function to follow into the new window."
   :config
   (setq org-super-agenda-groups '(
                                   (:name "Plan"
-                                   :time-grid t
-                                   )
+                                         :time-grid t)
+
                                   (:name "Important"
-                                   :priority>= "C")
+                                         :priority>= "C")
                                   (:name "Scheduled"
-                                   :scheduled t)
+                                         :scheduled t)
                                   (:name "Uni"
-                                   ;; :face (:foreground ,(doom-color 'blue))
-                                   :tag "uni")
+                                         ;; :face (:foreground ,(doom-color 'blue))
+                                         :tag "uni")
                                   (:name "Health" :tag "health")
                                   (:name "Hobby" :tag "tech" :tag "emacs")
                                   (:name "Buy" :tag "buy")
                                   (:category "Diary" :name "Diary")
                                   (:name "Work"  ; Optionally specify section name
-                                   ;; :face (:foreground ,(doom-color 'green))
-                                   :order 99
-                                   :tag "work"
-                                   :category "work"
-                                   ;; :and (:tag "work" :time-grid t))
-                                   )
-                                  (:name "Other" :anything t)
-                                  )
-        ))
+                                         ;; :face (:foreground ,(doom-color 'green))
+                                         :order 99
+                                         :tag "work"
+                                         :category "work")
+                                  ;; :and (:tag "work" :time-grid t))
+
+                                  (:name "Other" :anything t))))
+
+
 
 (setq org-agenda-custom-commands
       '(("n" "3 days and todos"
@@ -250,9 +263,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
         ("chore" (#("🔱")) nil nil :ascent center)
         ;; ("" ,(list (all-the-icons-faicon "pencil" :height 1.2)) nil nil :ascent center)
         ("inbox" (#("🌊")) nil nil :ascent center)
-        ("" (#("🌈")) nil nil :ascent center)
-        )
-      )
+        ("" (#("🌈")) nil nil :ascent center)))
+
+
 
 
 (defun org-archive-done-tasks ()
@@ -339,9 +352,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
       holiday-bahai-holidays nil
       holiday-hebrew-holidays nil
       holiday-islamic-holidays nil
-      holiday-oriental-holidays nil
+      holiday-oriental-holidays nil)
 
-      )
+
 
 (setq solar-n-hemi-seasons
       '("Frühlingsanfang" "Sommeranfang" "Herbstanfang" "Winteranfang"))
@@ -425,8 +438,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
     '(outline-6 :weight semi-bold :height 1.00)
     '(outline-7 :weight semi-bold :height 1.00)
     '(outline-8 :weight semi-bold)
-    '(outline-9 :weight semi-bold)
-    ))
+    '(outline-9 :weight semi-bold)))
+
 
 
 (setq org-agenda-format-date (lambda (date) (concat "\n"
@@ -438,9 +451,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (setq org-agenda-start-day "0d"
         org-agenda-skip-deadline-if-done t
         org-agenda-skip-scheduled-if-done t
-        org-agenda-skip-timestamp-if-done t
-        ;; org-agenda-todo-ignore-with-date t
-        ))
+        org-agenda-skip-timestamp-if-done t))
+;; org-agenda-todo-ignore-with-date t
+
 
 ;; (push 'habits org-modules)
 
@@ -448,7 +461,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;;       (string= (buffer-name buf) "todo.org"))
 ;; (push #'my/todo-org-is-unreal doom-unreal-buffer-functions)
 
-(defadvice! my/center-line-after-search (&rest _)
+(defadvice! hy/center-line-after-search (&rest _)
   :after #'evil-ex-search-next
   :after #'evil-ex-search-previous
   (evil-scroll-line-to-center nil))
@@ -499,8 +512,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                  "gitlab.employer/api/v4"
                  "gitlab.employer" forge-gitlab-repository)))
 
-(setq avy-keys '(?s ?n ?r ?t ?d ?y))
-
 (setq-default
  delete-by-moving-to-trash t                      ; Delete files to trash
  window-combination-resize t                      ; take new window space from all other windows (not just current)
@@ -512,11 +523,17 @@ items in the alltodo agenda, so we dynamically remove it when using that."
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
       scroll-preserve-screen-position 'always     ; Don't have `point' jump around
-      scroll-margin 2
+      scroll-margin 5
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
-;; (global-subword-mode t)                           ; Iterate through CamelCase words
+(global-subword-mode t)                           ; Iterate through CamelCase words
 
+
+
+
+(setq +format-with-lsp nil)
+(setq-hook! 'web-mode-hook +format-with "prettier")
+(setq-hook! 'json-mode-hook +format-with "prettier")
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
 ;; '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
@@ -529,8 +546,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (setq +company-backend-alist
         '((text-mode (:separate company-dabbrev company-yasnippet))
           (prog-mode company-capf company-yasnippet)
-          (conf-mode company-capf company-dabbrev-code company-yasnippet)))
-  )
+          (conf-mode company-capf company-dabbrev-code company-yasnippet))))
+
 
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)
@@ -562,8 +579,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (pushnew!
    which-key-replacement-alist
    '(("" . "\\`+?evil[-:/]?\\(?:a-\\)?\\(.*\\)") . (nil . "ຯ\\1"))
-   '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))
-   ))
+   '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))))
+
 
 (setq
  window-divider-default-bottom-width 1
@@ -611,8 +628,8 @@ This hides them again."
       :unnarrowed t)
      ("ug" "Computer Graphics" plain (file "~/org/roam/templates/cg.org")
       :if-new (file+head "%<%Y%m%d%H%M%S>-uni-cg-${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     )))
+      :unnarrowed t))))
+
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 (use-package! websocket
   :after org-roam)
@@ -664,8 +681,8 @@ This hides them again."
   :init
   (setq lsp-tailwindcss-add-on-mode t)
   :config
-  (push 'vue-mode lsp-tailwindcss-major-modes)
-  )
+  (push 'vue-mode lsp-tailwindcss-major-modes))
+
 
 
 ;; (cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
@@ -758,8 +775,8 @@ This hides them again."
 (map! [remap describe-bindings] #'embark-bindings
       "C-."               #'embark-act
       (:map minibuffer-local-map
-       "C-."               #'embark-act
-       "C-c C-."           #'embark-export))
+            "C-."               #'embark-act
+            "C-c C-."           #'embark-export))
 
 (after! latex
   (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)))
@@ -771,7 +788,7 @@ This hides them again."
 
 (setq web-mode-script-padding 4)
 (setq doom-modeline-vcs-max-length 30)
-;; (setq doom-leader-alt-key "<f8>)
+;; (setq doom-leader-alt-key "<f8>")
 ;; (setq doom-localleader-alt-key "<f8> m")
 
 (use-package! emacs-everywhere
@@ -910,6 +927,13 @@ This hides them again."
 ;;                '("y" "year"
 ;;                  agenda ""
 ;;                  ((org-agenda-span 'year)))))
+(map! :leader
+      :desc "FuZzily find File in home"
+      "f z f" (cmd!! #'affe-find "~/"))
+(map! :leader
+      :desc "FuZzily find file in this Dir"
+      "f z d" (cmd!! #'affe-find))
+
 
 ;; (defun my-open-calendar ()
 ;;   (interactive)

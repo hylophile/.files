@@ -48,7 +48,7 @@
 ;; 0001 0000
 
 
-(setq avy-keys '(?s ?n ?r ?t ?d ?y))
+(setq avy-keys '(?y ?d ?t ?r ?n ?s))
 
 (map! :leader
       "|" #'+popup/raise)
@@ -57,7 +57,7 @@
   (interactive)
   (insert-for-yank (gui-get-primary-selection)))
 
-(map! :nv "g a" #'avy-goto-char-2)
+(map! :nv "s" #'avy-goto-char-2)
 
 (map! :niv "<269025133>" #'insert-primary)
 

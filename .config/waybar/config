@@ -3,9 +3,9 @@
     "name": "topbar",
     "layer": "top",
     "position": "top",
-    "height": 30,
+    // "height": 30,
     "modules-center": ["sway/workspaces"],
-    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms"], //"wlr/taskbar"],
+    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms", "custom/toggle-big","custom/sep"], //"wlr/taskbar"],
     "modules-right": [
       "custom/azk",
       "pulseaudio#sink",
@@ -30,7 +30,7 @@
       },
     },
     "clock": {
-      "interval": 1,
+      "interval": 10,
       "format": "{:%A   W%W   %Y‒%m‒%d   %H:%M}", // or %B
       "format-alt": "{:%Y-%m-%d}",
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -124,12 +124,11 @@
       "interval": 300,
       "on-click": "firefox-nightly https://www.wetter.de/deutschland/wetter-berlin-18228265.html",
     },
-    "custom/urgency": {
+    "custom/urgency-teams": {
       "return-type": "json",
-      "format": "<span face='Fira Code' color='blue'>{}</span>",
-      "exec": "sh $HOME/.config/waybar/scripts/urgency.sh",
-      "exec-if": "sh $HOME/.config/waybar/scripts/urgency.sh show",
-      "interval": 1,
+      "format": "{}",
+      "exec": "sh $HOME/.config/waybar/scripts/urgency.sh chrome-teams.microsoft.com__-Default 🌈",
+      "interval": 5,
     },
     "custom/azk": {
       "return-type": "json",
@@ -143,10 +142,18 @@
       "format": "",
       "on-click": "bash $HOME/.config/waybar/scripts/poweroff.sh",
     },
+    "custom/toggle-big": {
+      "format": "",
+      "on-click": "(sleep 0.1; $HOME/.config/waybar/scripts/toggle-big.sh) & disown",
+    },
+    "custom/sep": {
+      "format": " ",
+      "on-click": "true",
+    },
     "custom/toggle-dpms": {
       "return-type": "json",
       "exec": "sh $HOME/.config/waybar/scripts/toggle-dpms.sh",
-      "on-click": "sh $HOME/.config/waybar/scripts/toggle-dpms.sh toggle",
+      "on-click": "(sleep 0.1; $HOME/.config/waybar/scripts/toggle-dpms.sh toggle) & disown",
       "restart-interval": 1,
     },
     "custom/mail": {

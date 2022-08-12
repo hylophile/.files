@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 default_source=$(pactl get-default-source)
-is_on=$(pactl list sources|rg -A 10 $default_source |rg "Mute: no")
+is_on=$(pactl list sources | grep -A 10 $default_source | grep "Mute: no")
 
 toggle_all()
 {
