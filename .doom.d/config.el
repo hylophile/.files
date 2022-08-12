@@ -525,8 +525,14 @@ items in the alltodo agenda, so we dynamically remove it when using that."
       scroll-margin 5
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
-;; (global-subword-mode t)                           ; Iterate through CamelCase words
+(global-subword-mode t)                           ; Iterate through CamelCase words
 
+
+
+
+(setq +format-with-lsp nil)
+(setq-hook! 'web-mode-hook +format-with "prettier")
+(setq-hook! 'json-mode-hook +format-with "prettier")
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
 ;; '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
