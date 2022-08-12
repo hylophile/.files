@@ -7,7 +7,7 @@
     "modules-center": ["sway/workspaces"],
     "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms"], //"wlr/taskbar"],
     "modules-right": [
-      // "custom/clipboard",
+      "custom/azk",
       "pulseaudio#sink",
       "pulseaudio#source",
       //      "idle_inhibitor",
@@ -129,6 +129,13 @@
       "format": "<span face='Fira Code' color='blue'>{}</span>",
       "exec": "sh $HOME/.config/waybar/scripts/urgency.sh",
       "exec-if": "sh $HOME/.config/waybar/scripts/urgency.sh show",
+      "interval": 1,
+    },
+    "custom/azk": {
+      "return-type": "json",
+      "format": "{}",
+      "exec": "sh $HOME/azk/show_azk.sh",
+      "on-click": "python $HOME/azk/azk_waybar.py stamp",
       "interval": 1,
     },
     "custom/poweroff": {

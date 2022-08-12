@@ -193,6 +193,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 
+bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
+
 bindsym XF86Mail exec ~/scripts/toggle-all-sources.sh
 bindcode --release --no-repeat 199 exec ~/scripts/mute-all-sources.sh 1
 bindcode 199 exec ~/scripts/mute-all-sources.sh 0
