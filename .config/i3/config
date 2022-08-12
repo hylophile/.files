@@ -294,7 +294,7 @@ bar {
         status_command bumblebee-status -m \
                        nic my_pasink my_pasource date time \
                        -p interval=0.5 nic.exclude="wlp*,lo" nic.format="" \
-                       time.format="%H:%M    " date.format="%A – %Y･%m･%d" \
+                       time.format="%H:%M    " date.format="W%W %A – %Y･%m･%d" \
                        pomodoro.format="%m min" \
                        -t my_dracula
 }
