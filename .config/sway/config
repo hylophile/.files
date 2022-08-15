@@ -49,8 +49,8 @@ output eDP-1 {
 output * background "#000000" solid_color
 
 input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
-    xkb_layout "de"
-    xkb_variant "neo"
+    # xkb_layout "de"
+    # xkb_variant "neo"
 }
 
 set $slimblade 1149:8257:Kensington_Slimblade_Trackball
