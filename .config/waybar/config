@@ -5,7 +5,7 @@
     "position": "top",
     // "height": 30,
     "modules-center": ["sway/workspaces"],
-    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms", "custom/toggle-big","custom/sep"], //"wlr/taskbar"],
+    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms", "custom/toggle-big","custom/move"], //"wlr/taskbar"],
     "modules-right": [
       // "custom/clipboard",
       "pulseaudio#sink",
@@ -129,6 +129,13 @@
       "format": "{}",
       "exec": "sh $HOME/.config/waybar/scripts/urgency.sh chrome-teams.microsoft.com__-Default 🌈",
       "interval": 5,
+    },
+    "custom/move": {
+      "return-type": "json",
+      "format": "{}",
+      "exec": "python $HOME/scripts/move.py diff",
+      "on-click": "python $HOME/scripts/move.py reset",
+      "interval": 300,
     },
     "custom/poweroff": {
       "tooltip": false,
