@@ -5,7 +5,7 @@
     "position": "top",
     // "height": 30,
     "modules-center": ["sway/workspaces"],
-    "modules-left": ["tray", "custom/urgency", "custom/toggle-dpms", "custom/toggle-big","custom/move"], //"wlr/taskbar"],
+    "modules-left": ["tray", "custom/urgency-teams", "custom/toggle-dpms", "custom/toggle-big","custom/move"], //"wlr/taskbar"],
     "modules-right": [
       "custom/azk",
       "pulseaudio#sink",

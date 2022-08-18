@@ -141,7 +141,8 @@ window#waybar.empty {
 }
 
 #custom-azk.azk_break {
-  background-color: @dr_or;
+  background-color: @dr_re;
+    min-width: 500px;
 }
 
 #custom-azk.azk_working {
