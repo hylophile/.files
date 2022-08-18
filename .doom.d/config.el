@@ -213,24 +213,24 @@ Use evil's window splitting function to follow into the new window."
   :config
   (setq org-super-agenda-groups '(
                                   (:name "Plan"
-                                         :time-grid t)
+                                   :time-grid t)
 
                                   (:name "Important"
-                                         :priority>= "C")
+                                   :priority>= "C")
                                   (:name "Scheduled"
-                                         :scheduled t)
+                                   :scheduled t)
                                   (:name "Uni"
-                                         ;; :face (:foreground ,(doom-color 'blue))
-                                         :tag "uni")
+                                   ;; :face (:foreground ,(doom-color 'blue))
+                                   :tag "uni")
                                   (:name "Health" :tag "health")
                                   (:name "Hobby" :tag "tech" :tag "emacs")
                                   (:name "Buy" :tag "buy")
                                   (:category "Diary" :name "Diary")
                                   (:name "Work"  ; Optionally specify section name
-                                         ;; :face (:foreground ,(doom-color 'green))
-                                         :order 99
-                                         :tag "work"
-                                         :category "work")
+                                   ;; :face (:foreground ,(doom-color 'green))
+                                   :order 99
+                                   :tag "work"
+                                   :category "work")
                                   ;; :and (:tag "work" :time-grid t))
 
                                   (:name "Other" :anything t))))
@@ -548,6 +548,11 @@ items in the alltodo agenda, so we dynamically remove it when using that."
           (prog-mode company-capf company-yasnippet)
           (conf-mode company-capf company-dabbrev-code company-yasnippet))))
 
+(defmacro nsa! (&rest body)
+  (when (string= "nsa" (system-name)) body))
+
+(defmacro rook! (&rest body)
+  (when (string= "rook" (system-name)) body))
 
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)
@@ -775,8 +780,8 @@ This hides them again."
 (map! [remap describe-bindings] #'embark-bindings
       "C-."               #'embark-act
       (:map minibuffer-local-map
-            "C-."               #'embark-act
-            "C-c C-."           #'embark-export))
+       "C-."               #'embark-act
+       "C-c C-."           #'embark-export))
 
 (after! latex
   (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)))
