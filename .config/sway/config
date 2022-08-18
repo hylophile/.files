@@ -49,13 +49,15 @@ output eDP-1 {
 output * background "#000000" solid_color
 
 input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
-    # xkb_layout "de"
-    # xkb_variant "neo"
+#     xkb_layout "de"
+#     xkb_variant "neo"
+    xkb_options compose:rwin
 }
 
 set $slimblade 1149:8257:Kensington_Slimblade_Trackball
 
 input 1149:8257:Kensington_Slimblade_Trackball {
+	drag enabled
       middle_emulation enabled
 }
 
@@ -77,11 +79,12 @@ workspace_layout tabbed
 # hide_edge_borders --i3 smart
 hide_edge_borders smart
 
-exec nm-applet --indicator
+#exec nm-applet --indicator
 
 exec swaybg --color "#000000"
 # exec nmcli con mullvad-de20 up
 exec mullvad-vpn
+
 exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 
 exec swayidle -w \
@@ -123,7 +126,8 @@ bindsym $mod+Shift+r reload
 # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 
-bindsym button2 kill
+# bindsym button2 kill
+bindsym BTN_MIDDLE kill
 bindsym button3 move container to output left
 
 bindsym $mod+$left focus left
@@ -287,6 +291,8 @@ for_window    [app_id="telegramdesktop"]        title_format "<span foreground='
 for_window    [app_id="org.kde.dolphin"]        title_format "<span foreground='#33BFFF'></span> %title"
 for_window    [app_id="mpv"]        title_format "<span foreground='#e557e5'></span> %title"
 for_window    [class="Mullvad VPN"]        floating disable, move container to workspace number 10, urgent deny
+for_window    [instance="mullvad vpn"]        urgent deny
+
 # assign    [class="Mullvad VPN"]        workspace number 10
 
 # urgent deny
