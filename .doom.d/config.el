@@ -955,4 +955,5 @@ This hides them again."
 
 (remove-hook! 'doom-modeline-mode-hook #'size-indication-mode)
 
-(load! "load/kzk-config.el" nil t)
+(nsa!
+ (load! "load/kzk-config.el" nil t))
