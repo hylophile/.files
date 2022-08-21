@@ -17,7 +17,6 @@
 ;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq projectile-project-search-path '("~/code" "~/tub"))
 (setq user-full-name "name"
       user-mail-address "mail")
 
@@ -52,7 +51,10 @@
  ;; doom-font (font-spec :family "Fira Code" :size 10.0)
  ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
  ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
- doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
+ doom-font (font-spec :family "JetBrains Mono" :size 11.0)
+ ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
+ ;; doom-font (font-spec :family "Operator Mono" :weight 'normal :size 13.0)
+ ;; doom-font (font-spec :family "IBM Plex Mono" :size 13.0)
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
@@ -66,7 +68,8 @@
 ;; `load-theme' function. This is the default:
                                         ;test
 
-(custom-set-faces! '(font-lock-comment-face :slant italic :weight semi-bold :family "Victor Mono" :height 0.98))
+;; (custom-set-faces! '(font-lock-comment-face :slant italic :family "Victor Mono"))
+(custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
 
 (defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
   "Advise `evil-delete-char' to set default REGISTER to the black hole register."
