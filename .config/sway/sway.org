@@ -1,12 +1,18 @@
-# Default config for sway
-#
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
-# Read `man 5 sway` for a complete reference.
+#+title: Sway
+#+property: header-args:conf-space :tangle "config" :comments link
+#+startup: fold
 
-### Variables
-#
-# Logo key. Use Mod1 for Alt.
+
+#+begin_src emacs-lisp :results silent
+(defun on-nsa (str)
+   (if (string= "nsa" (system-name)) str ""))
+
+(defun on-rook (str)
+   (if (string= "rook" (system-name)) str ""))
+#+end_src
+
+* Settings
+#+begin_src conf-space
 set $mod Mod4
 # Home row direction keys, like vim
 set $left Left
@@ -14,18 +20,38 @@ set $down Down
 set $up Up
 set $right Right
 # Your preferred terminal emulator
-set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi --show drun -I | xargs swaymsg exec --
 
-### Output configuration
-#
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-#
+set $font pango:Jost*
+set $weight Light
+set $size 12
 
+font $font $size
+
+
+# default_border none
+focus_follows_mouse no
+workspace_auto_back_and_forth yes
+title_align center
+workspace_layout tabbed
+# hide_edge_borders --i3 smart
+hide_edge_borders smart
+
+floating_modifier $mod normal
+
+titlebar_border_thickness 0
+titlebar_padding 5 0
+#+end_src
+
+* Variables
+#+begin_src conf-space
+
+#+end_src
+
+* Outputs
+#+begin_src conf-space
 output "Unknown 2460G4 0x00000BD5" {
     resolution 1920x1080
     position 0,0
@@ -47,18 +73,19 @@ output eDP-1 {
 }
 
 output * background "#000000" solid_color
+#+end_src
 
+* Inputs
+#+begin_src conf-space
 input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
-#     xkb_layout "de"
-#     xkb_variant "neo"
     xkb_options compose:rwin
 }
 
 set $slimblade 1149:8257:Kensington_Slimblade_Trackball
 
 input 1149:8257:Kensington_Slimblade_Trackball {
-	drag enabled
-      middle_emulation enabled
+    drag enabled
+    middle_emulation enabled
 }
 
 bindsym --input-device=$slimblade --whole-window BTN_MIDDLE seat - cursor press button8
@@ -66,24 +93,13 @@ bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cur
 
 bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
 bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
+#+end_src
 
-
-# buggy (size/theme different everywhere)
-#seat seat0 xcursor_theme capitaine-cursorss 48
-
-# default_border none
-focus_follows_mouse no
-workspace_auto_back_and_forth yes
-title_align center
-workspace_layout tabbed
-# hide_edge_borders --i3 smart
-hide_edge_borders smart
-
-#exec nm-applet --indicator
-
+* Startup
+#+begin_src conf-space :noweb yes
 exec swaybg --color "#000000"
-# exec nmcli con mullvad-de20 up
-exec mullvad-vpn
+
+<<mullvad()>>
 
 exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 
@@ -91,43 +107,33 @@ exec swayidle -w \
          timeout 300 'swaylock -f -c 000000' \
          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          before-sleep 'swaylock -f -c 000000'
+#+end_src
 
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
+#+name: mullvad
+#+begin_src elisp
+(on-rook "exec mullvad-vpn")
+#+end_src
+* Key bindings
+** t
+#+begin_src conf-space
 
-# sync clipboards
-# exec wl-paste --watch wl-copy --primary
-
-### Key bindings
-#
-# Basics:
-#
-# Start a terminal
+set $term kitty
 bindsym $mod+Return exec $term
 
 # Kill focused window
 bindsym $mod+q kill
 
 # Start your launcher
+set $menu wofi --show drun -I | xargs swaymsg exec --
 bindsym $mod+d exec $menu
-
-# Drag floating windows by holding down $mod and left mouse button.
-# Resize them with right mouse button + $mod.
-# Despite the name, also works for non-floating windows.
-# Change normal to inverse to use left mouse button for resizing and right
-# mouse button for dragging.
-floating_modifier $mod normal
 
 # Reload the configuration file
 bindsym $mod+Shift+r reload
 
-# Exit sway (logs you out of your Wayland session)
-# bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+Shift+Control+e exec swaymsg exit
 
-
-# bindsym button2 kill
-bindsym BTN_MIDDLE kill
+bindsym button2 kill
+# bindsym BTN_MIDDLE kill
 bindsym button3 move container to output left
 
 bindsym $mod+$left focus left
@@ -184,10 +190,10 @@ bindsym $mod+c focus child
 
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+period move scratchpad
+bindsym $mod+period scratchpad show
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
-bindsym $mod+period scratchpad show
 bindsym $mod+Shift+f floating toggle
 # Swap focus between the tiling area and the floating area
 # bindsym $mod+space focus mode_toggle
@@ -202,22 +208,6 @@ bindsym $mod+u workspace prev_on_output
 bindsym $mod+Shift+u move container to workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
-
-# select screenshot to clipboard
-bindsym $mod+z exec grim -s 1 -g "$(slurp)" - | wl-copy
-# color picker to clipboard
-bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
-
-
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-
-bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
-
-bindsym XF86Mail exec ~/scripts/toggle-all-sources.sh
-bindcode --release --no-repeat 199 exec ~/scripts/mute-all-sources.sh 1
-bindcode 199 exec ~/scripts/mute-all-sources.sh 0
 
 bindsym $mod+n exec ~/.config/sway/new-workspace.sh
 bindsym $mod+Shift+n exec sh ~/.config/sway/move-to-new-workspace.sh
@@ -234,9 +224,68 @@ bindsym $mod+a exec env RUST_BACKTRACE=1 \
 bindsym $mod+p exec env RUST_BACKTRACE=1 \
     swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
 
+#+end_src
+** t
+#+begin_src conf-space
 
-# Resizing containers:
-#
+#+end_src
+** Audio
+#+begin_src conf-space
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+#+end_src
+
+#+begin_src conf-space
+bindsym XF86Mail exec ~/scripts/toggle-all-sources.sh
+
+bindcode --release --no-repeat 199 exec ~/scripts/mute-all-sources.sh 1
+bindcode 199 exec ~/scripts/mute-all-sources.sh 0
+
+#+end_src
+** Misc
+#+begin_src conf-space
+# select screenshot to clipboard
+bindsym $mod+z exec grim -s 1 -g "$(slurp)" - | wl-copy
+# color picker to clipboard
+bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
+
+
+bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
+
+#+end_src
+** t
+#+begin_src conf-space
+
+#+end_src
+** t
+#+begin_src conf-space
+
+#+end_src
+
+* Window-specific settings
+#+begin_src conf-space
+for_window    [app_id="chrome-mailsrv.employer__owa_-Default"] title_format "<span foreground='#0072C6'><tt></tt></span> %title"
+for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
+for_window    [app_id="chrome-discord.com__app-Default" title="Discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
+for_window    [app_id="firefox.*"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
+for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' face='file-icons'></span> %title"
+for_window    [app_id="kitty"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
+for_window    [app_id="telegramdesktop"]        title_format "<span foreground='#0088CC'><tt></tt></span> %title"
+for_window    [app_id="org.kde.dolphin"]        title_format "<span foreground='#33BFFF'></span> %title"
+for_window    [app_id="mpv"]        title_format "<span foreground='#e557e5'></span> %title"
+for_window    [class="Mullvad VPN"]        floating disable, move container to workspace number 10, urgent deny
+for_window    [instance="mullvad vpn"]        urgent deny
+for_window [app_id="firefox-nightly" title="Picture-in-Picture"] floating enable, border none, resize set width 30ppt height 30ppt
+
+#for_window [app_id="^chrome-.*__-.*$"] shortcuts_inhibitor disable
+
+for_window [app_id="^chrome-.*"] shortcuts_inhibitor disable
+#+end_src
+
+* Modes
+** Resize
+#+begin_src conf-space
 mode "resize" {
     # left will shrink the containers width
     # right will grow the containers width
@@ -257,52 +306,23 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
 bindsym $mod+r mode "resize"
+#+end_src
 
+* Colors
+#+begin_src conf-space
+# class                 border  bground text    indicator child_border
+client.focused          #44475A #44475A #F8F8F2 #44475A   #44475A
+client.focused_inactive #44475A #44475A #44475A #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #50fa7b #44475a #50fa7b #FF5555   #FF5555
+# client.urgent          #44475A #44475A #F8F8F2 #44475A   #44475A
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+#+end_src
 
-
-set $font pango:Jost*
-# set $font pango:Comic Neue
-#set $font pango:Josefin Sans
-#set $font pango:League Spartan
-set $weight Light
-set $size 12
-
-font $font $size
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-#
-#
-# teams 
-# 
-# 
-# 
-# chrome-teams.microsoft.com__-Default
-# chrome-mailsrv.employer__owa_-Default
-for_window    [app_id="chrome-mailsrv.employer__owa_-Default"] title_format "<span foreground='#0072C6'><tt></tt></span> %title"
-for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
-for_window    [app_id="chrome-discord.com__app-Default" title="Discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
-for_window    [app_id="firefox.*"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
-for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' face='file-icons'></span> %title"
-for_window    [app_id="kitty"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
-for_window    [app_id="telegramdesktop"]        title_format "<span foreground='#0088CC'><tt></tt></span> %title"
-for_window    [app_id="org.kde.dolphin"]        title_format "<span foreground='#33BFFF'></span> %title"
-for_window    [app_id="mpv"]        title_format "<span foreground='#e557e5'></span> %title"
-for_window    [class="Mullvad VPN"]        floating disable, move container to workspace number 10, urgent deny
-for_window    [instance="mullvad vpn"]        urgent deny
-
-# assign    [class="Mullvad VPN"]        workspace number 10
-
-# urgent deny
-
-for_window [app_id="firefox-nightly" title="Picture-in-Picture"] floating enable, border none, resize set width 30ppt height 30ppt
-
-#for_window [app_id="^chrome-.*__-.*$"] shortcuts_inhibitor disable
-
-for_window [app_id="^chrome-.*"] shortcuts_inhibitor disable
-
+* Bar
+#+begin_src conf-space
 bar {
     swaybar_command waybar
     # position top
@@ -317,16 +337,9 @@ bar {
     #     inactive_workspace #32323200 #32323200 #5c5c5c
     # }
 }
+#+end_src
 
-# class                 border  bground text    indicator child_border
-client.focused          #44475A #44475A #F8F8F2 #44475A   #44475A
-client.focused_inactive #44475A #44475A #44475A #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #50fa7b #44475a #50fa7b #FF5555   #FF5555
-# client.urgent          #44475A #44475A #F8F8F2 #44475A   #44475A
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
-titlebar_border_thickness 0
-titlebar_padding 5 0
-
+* Fin
+#+begin_src conf-space
 include /etc/sway/config.d/*
+#+end_src
