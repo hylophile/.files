@@ -1,0 +1,629 @@
+* Main
+
+#+begin_src json :tangle config :noweb yes
+[
+  {
+    "name": "topbar",
+    "layer": "top",
+    "position": "top",
+    "spacing": 10,
+    // "height": 30,
+    "modules-center": ["sway/workspaces"],
+    "modules-left": [
+        "tray",
+        <<urgency-teams()>>
+        "custom/toggle-dpms",
+      // TODO  "custom/move",
+        "custom/toggle-big",
+
+    ],
+    "modules-right": [
+      <<azk()>>
+      "pulseaudio#sink",
+      "pulseaudio#source",
+      "custom/weather",
+      "clock",
+      "sway/mode",
+    ],
+    <<modules>>
+  },
+]
+#+end_src
+
+#+begin_src emacs-lisp :results silent
+(defun on-nsa (str)
+  (if (string= "nsa" (system-name)) (format "\"%s\"," str) ""))
+#+end_src
+
+#+name: azk
+#+begin_src emacs-lisp
+(on-nsa "custom/azk")
+#+end_src
+
+#+name: urgency-teams
+#+begin_src emacs-lisp
+(on-nsa "custom/urgency-teams")
+#+end_src
+
+* General style
+#+begin_src css :tangle style.css
+@define-color dr_bg0 #282a36;
+@define-color dr_bg1 #44475a;
+@define-color dr_bg2 #6272a4;
+@define-color dr_fg #f8f8f2;
+@define-color dr_cy #8be9fd;
+@define-color dr_gr #50fa7b;
+@define-color dr_or #ffb86c;
+@define-color dr_pi #ff79c6;
+@define-color dr_pu #bd93f9;
+@define-color dr_re #ff5555;
+@define-color dr_ye #f1fa8c;
+
+,* {
+  border: none;
+  border-radius: 0;
+  font-family: "Jost*";
+  font-size: 18px;
+}
+
+window#waybar {
+  background-color: @dr_bg0;
+  color: @dr_fg;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+
+.modules-left {
+  padding-left: 10px;
+}
+
+.modules-right {
+  padding-right: 10px;
+}
+#+end_src
+
+
+* Top bar
+  :PROPERTIES:
+:header-args:json: :noweb-ref modules
+:header-args:css: :tangle style.css
+:header-args:sh: :shebang #!/usr/bin/env sh :mkdirp yes
+  :END:
+
+#+begin_src css
+.topbar {
+  border-bottom: 3px solid @dr_bg1;
+}
+#+end_src
+
+** workspaces
+*** style
+#+begin_src css
+#workspaces button {
+  min-width: 90px;
+  /* margin-left: 5px; */
+  background-color: transparent;
+  color: @dr_fg;
+}
+
+#workspaces button:hover {
+  background: @dr_bg1;
+  box-shadow: inset 0 3px @dr_cy;
+}
+
+#workspaces button.visible {
+  background-color: @dr_bg1;
+  /* box-shadow: inset 0 3px @dr_cy; */
+}
+
+#workspaces button.focused {
+  background-color: @dr_bg1;
+  box-shadow: inset 0 3px @dr_pi;
+}
+
+#workspaces button.urgent {
+    box-shadow: inset 0 3px @dr_or;
+}
+#+end_src
+
+** clock
+*** config
+#+begin_src json
+"clock": {
+    "interval": 10,
+    "format": "{:%A  W%W  %Y‒%m‒%d  %H:%M}", // or %B
+    "format-alt": "{:%Y-%m-%d}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+},
+#+end_src
+
+** tray
+*** config
+#+begin_src json
+"tray": {
+    "spacing": 10,
+},
+#+end_src
+
+** mode
+*** style
+#+begin_src css
+#mode {
+  background-color: #64727d;
+  border-top: 3px solid #ffffff;
+}
+#+end_src
+
+** pulseaudio
+*** config
+#+begin_src json
+"pulseaudio#sink": {
+    "scroll-step": 1,
+    "format": "{icon}",
+    "format-bluetooth": "{icon}",
+    "format-bluetooth-muted": " {icon}",
+    "format-muted": "<span face='Material Icons'></span>",
+    "format-source": "",
+    "format-source-muted": "",
+    "tooltip-format": "{volume}%",
+    "format-icons": {
+    "headphone": "",
+    "phone": "",
+    "portable": "",
+    "car": "",
+    "default": [
+        "<span face='Material Icons'></span>",
+        "<span face='Material Icons'></span>",
+        "<span face='Material Icons'></span>",
+    ],
+    },
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "pavucontrol",
+    // "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +1%",
+    // "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1%",
+},
+#+end_src
+
+
+
+#+begin_src json
+"pulseaudio#source": {
+    "format": "{format_source}",
+    "format-bluetooth": "{format_source}",
+    "format-bluetooth-muted": "{format_source}",
+    "format-muted": "{format_source}",
+    "format-source": "<span face='Material Icons'></span>",
+    "format-source-muted": "<span face='Material Icons'></span>",
+    "tooltip-format": "{volume}%",
+    "format-icons": {
+    "headphone": "",
+    "phone": "",
+    "portable": "",
+    "car": "",
+    "default": ["", "", ""],
+    },
+    "on-click": "sh ~/scripts/toggle-all-sources.sh",
+    "on-click-right": "pavucontrol",
+    "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +1%",
+    "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1%",
+},
+#+end_src
+
+*** style
+#+begin_src css
+#pulseaudio {
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
+    min-width: 50px;
+}
+
+#pulseaudio.source:not(.source-muted) {
+  color: @dr_gr;
+  background-color: @dr_bg1;
+}
+
+#pulseaudio.sink.sink-muted {
+  color: @dr_or;
+  background-color: @dr_bg1;
+}
+#+end_src
+
+** custom
+*** weather
+**** source
+#+begin_src sh :tangle scripts/weather.sh
+temp=$(curl --silent "https://api.brightsky.dev/current_weather?lat=52.52&lon=13.29"|jq ".weather.temperature")
+
+if [ "$(echo "$temp" | head -c 1)" = "-" ]; then
+    text="$temp°C"
+else
+    text="+$temp°C"
+fi
+
+if [ "$temp" = "null" ]; then
+    text=""
+fi
+
+echo "{\"text\": \"$text\", \"class\": \"weather\"}"
+#+end_src
+**** config
+#+begin_src json
+"custom/weather": {
+    "return-type": "json",
+    "exec": "sh $HOME/.config/waybar/scripts/weather.sh",
+    "interval": 300,
+    "on-click": "firefox-nightly https://www.wetter.de/deutschland/wetter-berlin-18228265.html",
+},
+#+end_src
+*** urgency
+**** source
+#+begin_src sh :tangle scripts/urgency.sh
+names=$(swaymsg -t get_tree | jq -r "recurse(.nodes[]?) | select(.app_id==\"$1\").name")
+match=$(echo "$names" | grep -E -o '\([0-9]+\)')
+
+if [ "$2" = "show" ]; then
+    if [ "$match" = "" ]; then
+        exit 1
+    else
+        exit 0
+    fi
+fi
+
+if [ "$match" != "" ]; then
+    echo "{\"text\": \"$2\", \"class\": \"urgent\"}"
+fi
+#+end_src
+
+**** teams
+***** config
+#+begin_src json :noweb-ref (nsa "modules")
+"custom/urgency-teams": {
+    "return-type": "json",
+    "format": "{}",
+    "exec": "sh $HOME/.config/waybar/scripts/urgency.sh chrome-teams.microsoft.com__-Default 🌈",
+    "interval": 5,
+},
+#+end_src
+
+*** azk
+
+**** TODO source
+
+**** config
+#+begin_src json
+"custom/azk": {
+    "return-type": "json",
+    "format": "{}",
+    "exec": "sh $HOME/azk/show_azk.sh",
+    "on-click": "python $HOME/azk/azk_waybar.py stamp",
+    "interval": 1,
+},
+#+end_src
+
+**** style
+#+begin_src css
+#custom-azk {
+  min-width: 150px;
+  border-radius: 50px;
+  border: 0px solid @dr_bg1;
+  padding: 0px 0px;
+  margin: 8px 5px;
+  font-size: 0px;
+  /* box-shadow: inset -1px -1px 2px @dr_fg, 2px 2px 2px #121319; */
+  box-shadow: 2px 2px 2px #121319;
+  transition-property: all;
+  transition-duration: 0.5s;
+}
+
+#custom-azk.azk_break {
+  background-color: @dr_re;
+    min-width: 500px;
+}
+
+#custom-azk.azk_working {
+  background-color: @dr_cy;
+}
+#+end_src
+
+*** move
+
+**** TODO source
+
+**** config
+#+begin_src json
+"custom/move": {
+    "return-type": "json",
+    "format": "{}",
+    "exec": "python $HOME/scripts/move.py diff",
+    "on-click": "python $HOME/scripts/move.py reset",
+    "interval": 300,
+},
+#+end_src
+
+**** style
+#+begin_src css
+#custom-move {
+  min-width: 80px;
+  border-radius: 5px;
+  padding: 0px 10px;
+  margin: 5px 10px;
+}
+
+#custom-move.warn {
+  background-color: @dr_re;
+  color: @dr_bg0;
+  font-weight: bold;
+}
+#+end_src
+
+*** toggle zoom
+**** source
+#+begin_src sh :tangle scripts/toggle-big.sh
+current_output=$(swaymsg -t get_outputs | jq '.[] | select(.focused == true)')
+name=$(echo "$current_output" | jq '.name')
+scale=$(echo "$current_output" | jq '.scale')
+
+
+if [ "$scale" = "1" ] || [ "$scale" = "1.5" ]; then
+    swaymsg output "$name" scale "$(perl -E "say $scale*2")"
+else
+    swaymsg output "$name" scale "$(perl -E "say $scale/2")"
+fi
+#+end_src
+**** config
+#+begin_src json
+"custom/toggle-big": {
+    "format": "",
+    "on-click": "(sleep 0.1; $HOME/.config/waybar/scripts/toggle-big.sh) & disown",
+},
+#+end_src
+
+
+*** toggle dpms
+
+**** source
+#+begin_src sh :tangle scripts/toggle-dpms.sh
+output=$(swaymsg -t get_outputs| jq '.[] | select(.model == "2460G4")')
+name=$(echo "$output" | jq '.name')
+is_turned_on=$(echo "$output" | jq '.dpms')
+
+if [ "$1" = "toggle" ]; then
+    swaymsg output "$name" dpms toggle
+    exit
+fi
+
+if grep --silent rook /etc/hostname; then
+    if [ "$is_turned_on" = "false" ]; then
+        echo "{\"text\": \"\", \"class\": \"dpms\"}"
+    else
+        echo "{\"text\": \"\", \"class\": \"dpms\"}"
+    fi
+fi
+#+end_src
+
+**** config
+#+begin_src json
+"custom/toggle-dpms": {
+    "return-type": "json",
+    "exec": "sh $HOME/.config/waybar/scripts/toggle-dpms.sh",
+    "on-click": "(sleep 0.1; $HOME/.config/waybar/scripts/toggle-dpms.sh toggle) & disown",
+    "restart-interval": 1,
+},
+#+end_src
+
+* unused :ARCHIVE:
+:PROPERTIES:
+:header-args:json: :noweb-ref nil
+:header-args:css: :tangle no
+:END:
+
+** bottombar
+#+begin_src json
+{
+  "name": "bottombar",
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "modules-left": ["tray"],
+  "modules-center": ["wlr/taskbar"],
+  "modules-right": ["sway/workspaces", "sway/mode"],
+},
+#+end_src
+
+#+begin_src css
+.bottombar {
+  border-top: 3px solid rgba(100, 114, 125, 1);
+}
+#+end_src
+
+** mail
+*** config
+#+begin_src json
+"custom/mail": {
+    "tooltip": false,
+    "exec": "sh $HOME/.config/waybar/scripts/mail.sh",
+    "interval": 120,
+    "on-click": "thunderbird && swaymsg '[app_id=thunderbird] focus'",
+},
+#+end_src
+
+
+** idle inhibitor
+*** config
+#+begin_src json
+"idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+    "activated": "",
+    "deactivated": "",
+    },
+},
+#+end_src
+
+
+** window
+*** config
+#+begin_src json
+"sway/window": {
+    "all-outputs": true,
+},
+#+end_src
+
+
+** poweroff
+*** config
+#+begin_src json
+"custom/poweroff": {
+    "tooltip": false,
+    "format": "",
+    "on-click": "bash $HOME/.config/waybar/scripts/poweroff.sh",
+},
+#+end_src
+
+
+** taskbar
+*** config
+#+begin_src json
+"wlr/taskbar": {
+    "format": "{name}",
+    // "icon-theme": "Adwaita",
+    "on-click": "activate",
+    "on-click-right": "close",
+    //            "on-scroll-up": "swaymsg focus next",
+    "all-outputs": false,
+    "ignore-list": ["kitty", "telegramdesktop"],
+    // "icon-size": 16,
+},
+#+end_src
+
+
+
+#+begin_src json
+"sway/mode": {
+    "format": "<span style='italic'>{}</span>",
+},
+#+end_src
+
+
+
+#+begin_src json
+"tray": {
+    //"icon-size": 16,
+    "spacing": 10,
+},
+#+end_src
+
+
+#+begin_src json :tangle (nsa "cc") :noweb yes
+{
+  "ello": "yes",
+    // doien
+}
+#+end_src
+*** style
+#+begin_src css
+#taskbar button:hover {
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 3px #ffffff;
+}
+
+#taskbar button.active {
+  background-color: #64727d;
+  box-shadow: inset 0 3px #ffffff;
+}
+#+end_src
+** clipboard
+*** config
+#+begin_src json
+"custom/clipboard": {
+    "return-type": "json",
+    "exec": "sh $HOME/.config/waybar/scripts/clipboard.sh",
+    "interval": 1,
+},
+#+end_src
+
+*** source
+#+begin_src sh
+#textp=$(wl-paste -p | head -c 20|jq -Ra)
+#textc=$(wl-paste | head -c 20)
+textp=$(wl-paste -p |tr '\n' ' '| head -c 20|jq -Ra | sed 's/^"//;s/"$//')
+textc=$(wl-paste |tr '\n' ' '| head -c 20|jq -Ra | sed 's/^"//;s/"$//')
+
+# output for Waybar
+echo "{\"text\": \"$textp\t|\t$textc\t\", \"class\": \"clipboard\"}"
+#+end_src
+** network
+*** config
+#+begin_src json
+"network#disconnected": {
+    "tooltip-format": "No connection!",
+    "format-ethernet": "",
+    "format-wifi": "",
+    "format-linked": "",
+    "format-disconnected": "",
+    "on-click": "nm-connection-editor",
+},
+#+end_src
+
+
+
+#+begin_src json
+"network#ethernet": {
+    "interface": "enp*",
+    "format-ethernet": "",
+    "format-wifi": "",
+    "format-linked": "",
+    "format-disconnected": "",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+    "on-click": "nm-connection-editor",
+},
+#+end_src
+
+
+
+#+begin_src json
+"network#wifi": {
+    "interface": "wlp*",
+    "format-ethernet": "",
+    "format-wifi": " {essid} ({signalStrength}%)",
+    "format-linked": "",
+    "format-disconnected": "",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+    "on-click": "nm-connection-editor",
+},
+#+end_src
+
+
+
+#+begin_src json
+"network#vpn": {
+    "interface": "tun0",
+    "format": "",
+    "format-disconnected": "",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+    "on-click": "nm-connection-editor",
+},
+#+end_src
+** temperature (blink)
+#+begin_src css
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
+#battery.bat2.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#temperature.critical {
+    background-color: #eb4d4b;
+}
+#+end_src
