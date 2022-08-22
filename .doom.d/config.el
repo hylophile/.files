@@ -86,7 +86,8 @@
 (map! :after evil-collection :niv "C-y" #'yank)
 
 ;; (setq doom-theme 'everforest-harder)
-(setq doom-theme (hylo/random-dark-theme))
+;; (setq doom-theme (hylo/random-dark-theme))
+(setq doom-theme 'doom-dracula)
 ;;
 ;; (setq +doom-dashboard-functions (append
 ;;                                  (list (car +doom-dashboard-functions))
@@ -776,6 +777,12 @@ This hides them again."
       "E" #'my/search-info-elisp
       "n" #'my/search-info-org)
 
+(setq
+  org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-ellipsis "…")
+
+
 ;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
 ;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
 ;; 10
@@ -958,5 +965,55 @@ This hides them again."
 
 (remove-hook! 'doom-modeline-mode-hook #'size-indication-mode)
 
+(defun unpackaged/org-fix-blank-lines (&optional prefix)
+  "Ensure that blank lines exist between headings and between headings and their contents.
+With prefix, operate on whole buffer. Ensures that blank lines
+exist after each headings's drawers."
+  (interactive "P")
+  (org-map-entries (lambda ()
+
+                     (org-with-wide-buffer
+                      ;; `org-map-entries' narrows the buffer, which prevents us from seeing
+                      ;; newlines before the current heading, so we do this part widened.
+                      (while (not (looking-back "\n\n" nil))
+                        ;; Insert blank lines before heading.
+                        (insert "\n")))
+                     (let ((end (org-entry-end-position)))
+                       ;; Insert blank lines before entry content
+                       (forward-line)
+                       (while (and (org-at-planning-p)
+                                   (< (point) (point-max)))
+                         ;; Skip planning lines
+                         (forward-line))
+                       (while (re-search-forward org-drawer-regexp end t)
+                         ;; Skip drawers. You might think that `org-at-drawer-p' would suffice, but
+                         ;; for some reason it doesn't work correctly when operating on hidden text.
+                         ;; This works, taken from `org-agenda-get-some-entry-text'.
+                         (re-search-forward "^[ \t]*:END:.*\n?" end t)
+                         (goto-char (match-end 0)))
+                       (unless (or (= (point) (point-max))
+                                   (org-at-heading-p)
+                                   (looking-at-p "\n"))
+                         (insert "\n"))))
+                   t (if prefix
+                         nil
+                       'tree)))
+
+;; (map! :leader :map org-mode-map "c f" (cmd!! #'unpackaged/org-fix-blank-lines t))
+
+
 (nsa!
  (load! "load/kzk-config.el" nil t))
+
+
+
+
+(use-package! org-appear
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autoemphasis t
+        org-appear-autosubmarkers t
+        org-appear-autolinks nil)
+  ;; for proper first-time setup, `org-appear--set-elements'
+  ;; needs to be run after other hooks have acted.
+  (run-at-time nil nil #'org-appear--set-elements))
