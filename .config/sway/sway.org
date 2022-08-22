@@ -13,6 +13,7 @@
 #+end_src
 
 * Settings
+
 #+begin_src conf-space
 set $mod Mod4
 # Home row direction keys, like vim
@@ -47,11 +48,13 @@ titlebar_padding 5 0
 #+end_src
 
 * Variables
+
 #+begin_src conf-space
 
 #+end_src
 
 * Outputs
+
 #+begin_src conf-space
 output "Unknown 2460G4 0x00000BD5" {
     resolution 1920x1080
@@ -77,6 +80,7 @@ output * background "#000000" solid_color
 #+end_src
 
 * Inputs
+
 #+begin_src conf-space
 input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
     xkb_options compose:rwin
@@ -97,6 +101,7 @@ bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - curso
 #+end_src
 
 * Startup
+
 #+begin_src conf-space :noweb yes
 exec swaybg --color "#000000"
 
@@ -114,8 +119,11 @@ exec swayidle -w \
 #+begin_src elisp
 (on-rook "exec mullvad-vpn")
 #+end_src
+
 * Key bindings
+
 ** General
+
 #+begin_src conf-space
 
 set $term kitty
@@ -198,7 +206,9 @@ bindsym $mod+p exec env RUST_BACKTRACE=1 \
     swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
 
 #+end_src
+
 ** Workspace numbers
+
 #+begin_src conf-space
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
@@ -222,7 +232,9 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 #+end_src
+
 ** (move to) new workspace
+
 #+begin_src conf-space
 bindsym $mod+n exec ~/.config/sway/new-workspace.sh
 #+end_src
@@ -266,7 +278,9 @@ fi
 #+end_src
 
 *** TODO refactor
+
 ** Audio
+
 #+begin_src conf-space
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
@@ -280,7 +294,9 @@ bindcode --release --no-repeat 199 exec ~/scripts/mute-all-sources.sh 1
 bindcode 199 exec ~/scripts/mute-all-sources.sh 0
 
 #+end_src
+
 ** Misc
+
 #+begin_src conf-space
 # select screenshot to clipboard
 bindsym $mod+z exec grim -s 1 -g "$(slurp)" - | wl-copy
@@ -292,12 +308,15 @@ bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
 bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
 
 #+end_src
+
 ** t
+
 #+begin_src conf-space
 
 #+end_src
 
 * Window-specific settings
+
 #+begin_src conf-space
 for_window    [app_id="chrome-mailsrv.employer__owa_-Default"] title_format "<span foreground='#0072C6'><tt></tt></span> %title"
 for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
@@ -318,7 +337,9 @@ for_window [app_id="^chrome-.*"] shortcuts_inhibitor disable
 #+end_src
 
 * Modes
+
 ** Resize
+
 #+begin_src conf-space
 mode "resize" {
     # left will shrink the containers width
@@ -345,6 +366,7 @@ bindsym $mod+r mode "resize"
 #+end_src
 
 * Colors
+
 #+begin_src conf-space
 # class                 border  bground text    indicator child_border
 client.focused          #44475A #44475A #F8F8F2 #44475A   #44475A
@@ -356,6 +378,7 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 #+end_src
 
 * Bar
+
 #+begin_src conf-space
 bar {
     swaybar_command waybar
@@ -374,6 +397,7 @@ bar {
 #+end_src
 
 * Fin
+
 #+begin_src conf-space
 include /etc/sway/config.d/*
 #+end_src
