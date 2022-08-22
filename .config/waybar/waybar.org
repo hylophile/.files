@@ -13,9 +13,8 @@
         "tray",
         <<urgency-teams()>>
         "custom/toggle-dpms",
-      // TODO  "custom/move",
         "custom/toggle-big",
-
+        "custom/move",
     ],
     "modules-right": [
       <<azk()>>
