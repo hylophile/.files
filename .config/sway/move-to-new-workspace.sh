@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 workspaces=$(swaymsg -t get_workspaces | jq ".[] .num" | sort -g)
 new_workspace=-1
 

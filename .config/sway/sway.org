@@ -1,5 +1,6 @@
 #+title: Sway
 #+property: header-args:conf-space :tangle "config" :comments link
+#+property: header-args:sh :shebang #!/usr/bin/env sh :mkdirp yes
 #+startup: fold
 
 
@@ -114,7 +115,7 @@ exec swayidle -w \
 (on-rook "exec mullvad-vpn")
 #+end_src
 * Key bindings
-** t
+** General
 #+begin_src conf-space
 
 set $term kitty
@@ -146,27 +147,6 @@ bindsym $mod+Shift+$down move down
 bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
 
-bindsym $mod+1 workspace number 1
-bindsym $mod+2 workspace number 2
-bindsym $mod+3 workspace number 3
-bindsym $mod+4 workspace number 4
-bindsym $mod+5 workspace number 5
-bindsym $mod+6 workspace number 6
-bindsym $mod+7 workspace number 7
-bindsym $mod+8 workspace number 8
-bindsym $mod+9 workspace number 9
-bindsym $mod+0 workspace number 10
-
-bindsym $mod+Shift+1 move container to workspace number 1
-bindsym $mod+Shift+2 move container to workspace number 2
-bindsym $mod+Shift+3 move container to workspace number 3
-bindsym $mod+Shift+4 move container to workspace number 4
-bindsym $mod+Shift+5 move container to workspace number 5
-bindsym $mod+Shift+6 move container to workspace number 6
-bindsym $mod+Shift+7 move container to workspace number 7
-bindsym $mod+Shift+8 move container to workspace number 8
-bindsym $mod+Shift+9 move container to workspace number 9
-bindsym $mod+Shift+0 move container to workspace number 10
 
 bindsym $mod+h splith
 bindsym $mod+v splitv
@@ -190,13 +170,12 @@ bindsym $mod+c focus child
 
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+period move scratchpad
-bindsym $mod+period scratchpad show
-
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
-bindsym $mod+Shift+f floating toggle
+bindsym $mod+period scratchpad show
+
 # Swap focus between the tiling area and the floating area
-# bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+f floating toggle
 
 bindsym $mod+space focus output left
 bindsym $mod+Control+space exec ~/.config/sway/swap-visible-workspaces.sh
@@ -209,12 +188,6 @@ bindsym $mod+Shift+u move container to workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
 
-bindsym $mod+n exec ~/.config/sway/new-workspace.sh
-bindsym $mod+Shift+n exec sh ~/.config/sway/move-to-new-workspace.sh
-
-bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
-
-
 bindsym $mod+a exec env RUST_BACKTRACE=1 \
     swayr switch-window >> /tmp/swayr.log 2>&1
 
@@ -225,10 +198,74 @@ bindsym $mod+p exec env RUST_BACKTRACE=1 \
     swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
 
 #+end_src
-** t
+** Workspace numbers
 #+begin_src conf-space
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
 
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
 #+end_src
+** (move to) new workspace
+#+begin_src conf-space
+bindsym $mod+n exec ~/.config/sway/new-workspace.sh
+#+end_src
+
+#+begin_src sh :tangle ~/.config/sway/new-workspace.sh
+workspaces=$(swaymsg -t get_workspaces | jq ".[] .num" | sort -g)
+new_workspace=-1
+
+for i in $(seq 1 10)
+do
+    if ! echo "$workspaces" | grep --quiet "$i\$"; then
+        new_workspace=$i
+        break
+    fi
+done
+
+if [ "$new_workspace" != -1 ]; then
+    swaymsg workspace "$new_workspace"
+fi
+#+end_src
+
+#+begin_src conf-space
+bindsym $mod+Shift+n exec sh ~/.config/sway/move-to-new-workspace.sh
+#+end_src
+
+#+begin_src sh :tangle ~/.config/sway/move-to-new-workspace.sh
+workspaces=$(swaymsg -t get_workspaces | jq ".[] .num" | sort -g)
+new_workspace=-1
+
+for i in $(seq 1 10)
+do
+    if ! echo "$workspaces" | grep --quiet "$i\$"; then
+        new_workspace=$i
+        break
+    fi
+done
+
+if [ "$new_workspace" != -1 ]; then
+    swaymsg move container to workspace number "$new_workspace"
+fi
+#+end_src
+
+*** TODO refactor
 ** Audio
 #+begin_src conf-space
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -250,12 +287,9 @@ bindsym $mod+z exec grim -s 1 -g "$(slurp)" - | wl-copy
 # color picker to clipboard
 bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
+bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
 
 bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
-
-#+end_src
-** t
-#+begin_src conf-space
 
 #+end_src
 ** t
