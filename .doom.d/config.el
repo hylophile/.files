@@ -778,7 +778,7 @@ This hides them again."
       "n" #'my/search-info-org)
 
 (setq
-  org-hide-emphasis-markers t
+ org-hide-emphasis-markers t
  org-pretty-entities t
  org-ellipsis "…")
 
@@ -1017,3 +1017,7 @@ exist after each headings's drawers."
   ;; for proper first-time setup, `org-appear--set-elements'
   ;; needs to be run after other hooks have acted.
   (run-at-time nil nil #'org-appear--set-elements))
+
+(use-package! apheleia
+  :config
+  (apheleia-global-mode +1))
