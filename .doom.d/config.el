@@ -536,8 +536,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 
 (setq +format-with-lsp nil)
-(setq-hook! 'web-mode-hook +format-with "prettier")
-(setq-hook! 'json-mode-hook +format-with "prettier")
+;; (setq-hook! 'web-mode-hook +format-with "prettier")
+;; (setq-hook! 'json-mode-hook +format-with "prettier")
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
 ;; '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
@@ -553,10 +553,10 @@ items in the alltodo agenda, so we dynamically remove it when using that."
           (conf-mode company-capf company-dabbrev-code company-yasnippet))))
 
 (defmacro nsa! (&rest body)
-  (when (string= "nsa" (system-name)) body))
+  `(when (string= "nsa" (system-name)) ,@body))
 
 (defmacro rook! (&rest body)
-  (when (string= "rook" (system-name)) body))
+  `(when (string= "rook" (system-name)) ,@body))
 
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)

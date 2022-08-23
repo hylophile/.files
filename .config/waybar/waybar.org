@@ -299,7 +299,7 @@ fi
 
 ***** config
 
-#+begin_src json :noweb-ref (nsa "modules")
+#+begin_src json
 "custom/urgency-teams": {
     "return-type": "json",
     "format": "{}",
