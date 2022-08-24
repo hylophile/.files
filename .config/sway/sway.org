@@ -329,7 +329,8 @@ for_window    [app_id="org.kde.dolphin"]        title_format "<span foreground='
 for_window    [app_id="mpv"]        title_format "<span foreground='#e557e5'></span> %title"
 for_window    [class="Mullvad VPN"]        floating disable, move container to workspace number 10, urgent deny
 for_window    [instance="mullvad vpn"]        urgent deny
-for_window [app_id="firefox-nightly" title="Picture-in-Picture"] floating enable, border none, resize set width 30ppt height 30ppt
+for_window [app_id="firefox.*" title="Picture-in-Picture"] floating enable, border none, resize set width 30ppt height 30ppt
+for_window [app_id="firefox.*" title=".* — Sharing Indicator"] floating enable, move container to workspace number 10
 
 #for_window [app_id="^chrome-.*__-.*$"] shortcuts_inhibitor disable
 
