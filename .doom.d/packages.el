@@ -32,6 +32,8 @@
 ;(package! everforest-harder-theme
 ;  :recipe (:local-repo "~/.doom.d/packages/ever"))
 
+(package! ef-themes :recipe (:host nil :repo "https://git.sr.ht/~protesilaos/ef-themes"))
+
 (package! vundo :recipe (:host github :repo "casouri/vundo"))
 
 (package! org-fancy-priorities :disable t)
