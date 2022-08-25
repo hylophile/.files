@@ -402,3 +402,7 @@ bar {
 #+begin_src conf-space
 include /etc/sway/config.d/*
 #+end_src
+
+# no worky
+# Local Variables:
+# eval: (org-babel-execute-buffer)

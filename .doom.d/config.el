@@ -11,6 +11,10 @@
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 ;; (setq evil-want-C-u-delete nil)
 (map! :map minibuffer-local-map "C-u" #'universal-argument)
+
+(map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
+;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
+
 (map! :i "C-u" #'universal-argument)
 
 (setq auth-sources '("~/.authinfo"))
@@ -140,7 +144,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
-(setq which-key-idle-delay 1)
+(setq which-key-idle-delay 0.3)
 (setq evil-snipe-scope 'whole-buffer)
 ;; (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 (map! :leader :desc "Actions" "e" #'embark-act)
@@ -1023,3 +1027,10 @@ exist after each headings's drawers."
   (apheleia-global-mode +1))
 
 (use-package! ef-themes)
+
+(defun save-all ()
+  (interactive)
+  (save-some-buffers t))
+
+
+(add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
