@@ -403,6 +403,7 @@ bar {
 include /etc/sway/config.d/*
 #+end_src
 
-# no worky
 # Local Variables:
-# eval: (org-babel-execute-buffer)
+# eval: (add-hook 'after-save-hook (cmd! (ignore-errors (org-babel-execute-buffer))) t t)
+# eval: (add-hook 'after-save-hook #'org-babel-tangle t t)
+# End:

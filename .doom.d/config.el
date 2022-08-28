@@ -26,6 +26,24 @@
 
 (setq projectile-project-search-path '("~/code" "~/tub"))
 
+(defun mu5e ()
+  (interactive)
+  (run-at-time nil nil (lambda () (if (+workspace-get +mu4e-workspace-name t)
+                                      (+workspace-switch +mu4e-workspace-name)
+                                    (=mu4e))))
+  (ignore-errors (abort-recursive-edit)))
+
+(defadvice! yeet+hylo/go-to-workspace-if-exists-mu4e (fun)
+  "Go back to the mu4e workspace if it exists, otherwise launch mu4e normally."
+  :around #'=mu4e
+  (run-at-time nil nil (lambda () (if (+workspace-get +mu4e-workspace-name t)
+                                      (+workspace-switch +mu4e-workspace-name)
+                                    (funcall fun))))
+  (ignore-errors (abort-recursive-edit)))
+
+
+;; (map! :leader "o m" #'mu5e)
+
 (after! mu4e
   (setq sendmail-program (executable-find "msmtp")
         send-mail-function #'smtpmail-send-it
@@ -91,7 +109,8 @@
 
 ;; (setq doom-theme 'everforest-harder)
 ;; (setq doom-theme (hylo/random-dark-theme))
-(setq doom-theme 'doom-dracula)
+(setq doom-theme 'ef-spring)
+
 ;;
 ;; (setq +doom-dashboard-functions (append
 ;;                                  (list (car +doom-dashboard-functions))
@@ -99,12 +118,38 @@
 ;;                                  (cdr +doom-dashboard-functions)))
 
 ;; tokyo night is nice
-
+;;
+(use-package! cape-yasnippet
+  :after cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-yasnippet)
+  (after! lsp-mode
+    (add-hook 'lsp-managed-mode-hook #'cape-yasnippet--lsp))
+  (after! eglot
+    (add-hook 'eglot-managed-mode-hook #'cape-yasnippet--eglot)))
 
 (setq doom-themes-treemacs-theme "doom-colors")
 
+
+(setq vterm-always-compile-module t)
+;; (use-package!)
 ;; (after! vterm
 ;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
+;;
+(defun my/ef-themes-custom-faces ()
+  (interactive)
+  (when (string-prefix-p "ef-" (symbol-name doom-theme))
+    ;; (require 'ef-light)
+    (custom-set-faces
+     `(solaire-default-face ((,c :inherit default :background ,bg-alt :foreground ,fg-dim)))
+     `(solaire-line-number-face ((,c :inherit solaire-default-face :foreground ,fg-dim)))
+     `(solaire-hl-line-face ((,c :background ,bg-active)))
+     `(solaire-org-hide-face ((,c :background ,bg-alt :foreground ,bg-alt))))))
+
+                                        ;(add-hook 'doom-load-theme-hook #'my/ef-themes-custom-faces)
+
+
+;; ef-themes-post-load-hook
 
 ;; (map!
 ;;  :after company
@@ -273,7 +318,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
         ("inbox" (#("🌊")) nil nil :ascent center)
         ("" (#("🌈")) nil nil :ascent center)))
 
-
+;; (after! csharp-mode
+;;   (remove-hook 'csharp-mode-hook #'rainbow-delimiters-mode))
 
 
 (defun org-archive-done-tasks ()
@@ -310,6 +356,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;;         )
 
 ;;       )
+
+
 
 ;; (let ((org-super-agenda-groups
 ;;        '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -482,7 +530,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;;   (require 'org-habit))
 
 (custom-set-faces!
-  '(org-document-title :height 1.5))
+  '(org-document-title :height 1.1))
 (custom-set-faces!
   `(org-agenda-diary :foreground ,(doom-color 'magenta) :weight bold))
 
@@ -562,29 +610,51 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (defmacro rook! (&rest body)
   `(when (string= "rook" (system-name)) ,@body))
 
+;; (after! smartparens
+;;   (sp-pair "(" nil :unless '(:rem sp-point-before-word-p)))
+
+
+(use-package! page-break-lines)
+
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)
 (after! vundo
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
-(after! persp-mode
-  (defun display-workspaces-in-minibuffer ()
-    (with-current-buffer " *Minibuf-0*"
-      (erase-buffer)
-      ;; (insert (+workspace--tabline))
-      (insert (format
-               (format "%%s %%%ds"
-                       (- (frame-width)
-                          (length (+workspace--tabline))
-                          1))
-               (+workspace--tabline)
-               (propertize
-                (symbol-name doom-theme)
-                'face '(:inherit (mode-line-emphasis)))))))
+;; (after! persp-mode
+(defun display-workspaces-in-minibuffer ()
+  (interactive)
+  (with-current-buffer " *Minibuf-0*"
+    ;; (message (format "%s" (point-max)))
+    (message (buffer-string))
+    (erase-buffer)
+    ;; (message (format "%s" (point-max)))
+    ;; (insert (+workspace--tabline))
+    ;; (insert (format
+    ;;          (format "%%s %%%ds"
+    ;;                  (- (frame-width)
+    ;;                     (length (+workspace--tabline))
+    ;;                     1))
+    ;;          (+workspace--tabline)
+    ;;          (propertize
+    ;;           (symbol-name doom-theme)
+    ;;           'face '(:inherit (mode-line-emphasis)))))
+    ))
+;; )
+(map! "<f8>" #'display-workspaces-in-minibuffer)
+;; (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
+;; (+workspace/display))
+;; (defadvice! mmmm (&rest _)
+;;   :after #'minibuffer-message
+;;   (minibuffer-message "ello"))
+;; (use-package! minibuffer-header)
 
-  (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
-  (+workspace/display))
+;(defadvice! ssssss (s &rest a)
+;  :filter-args #'message
+;  (list (concat s "    hi") 'a))
 
+
+;; (list (concat "s" "s") 'hr)
 ;; (setq company-idle-delay nil)
 
 (setq which-key-allow-multiple-replacements t)
@@ -696,7 +766,18 @@ This hides them again."
   :config
   (push 'vue-mode lsp-tailwindcss-major-modes))
 
+(add-hook! 'rainbow-mode-hook
+  (hl-line-mode (if rainbow-mode -1 +1)))
 
+(map! :leader
+      "t n" #'rainbow-mode
+      "t t" #'+vterm/toggle
+      "t T" #'+vterm/here)
+
+
+
+;; no rainbow-delimiters
+;; (add-hook 'after-change-major-mode-hook (cmd! (rainbow-delimiters-mode -1)))
 
 ;; (cl-defun +vertico-elisp-search (&key query in all-files (recursive t) prompt args)
 ;;   "Conduct a file search using ripgrep.
@@ -1026,7 +1107,8 @@ exist after each headings's drawers."
   :config
   (apheleia-global-mode +1))
 
-(use-package! ef-themes)
+(use-package! ef-themes
+  :defer nil)
 
 (defun save-all ()
   (interactive)

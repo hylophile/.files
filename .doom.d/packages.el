@@ -32,15 +32,30 @@
 ;(package! everforest-harder-theme
 ;  :recipe (:local-repo "~/.doom.d/packages/ever"))
 
-(package! ef-themes :recipe (:host nil :repo "https://git.sr.ht/~protesilaos/ef-themes"))
+(package! ef-themes :recipe (:local-repo "~/code/doom-ef-themes/" :build (:not compile)))
+
+(package! page-break-lines)
+(package! minibuffer-header)
+
+;; (package! ef-themes :recipe (:host nil :repo "https://git.sr.ht/~protesilaos/ef-themes"))
 
 (package! vundo :recipe (:host github :repo "casouri/vundo"))
+
+(package! cape-yasnippet :recipe (:host github :repo "elken/cape-yasnippet"))
 
 (package! org-fancy-priorities :disable t)
 ;; (package! org-modern)
 (package! org-appear :recipe (:host github :repo "awth13/org-appear"))
 
 (package! apheleia)
+
+(unpin! vterm)
+(unpin! lsp-mode)
+;; (unpin! lsp-dart)
+(unpin! forge)
+(when (featurep! :completion corfu)
+  (unpin! evil-collection))
+
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
