@@ -24,6 +24,7 @@
 (setq user-full-name "name"
       user-mail-address "mail")
 
+;;; hr
 (setq projectile-project-search-path '("~/code" "~/tub"))
 
 (defun mu5e ()
@@ -456,7 +457,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (setq org-superstar-headline-bullets-list "●⚬")
 
 (use-package! mixed-pitch
-  :hook (org-mode . mixed-pitch-mode))
+  :hook
+  (org-mode . mixed-pitch-mode)
+  )
 
 
 
@@ -588,8 +591,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 
 (setq +format-with-lsp nil)
-;; (setq-hook! 'web-mode-hook +format-with "prettier")
-;; (setq-hook! 'json-mode-hook +format-with "prettier")
 ;; (setq +format-on-save-enabled-modes
 ;; '(not sgml-mode))
 ;; '(not emacs-lisp-mode  ; elisp's mechanisms are good enough
@@ -610,11 +611,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (defmacro rook! (&rest body)
   `(when (string= "rook" (system-name)) ,@body))
 
-;; (after! smartparens
-;;   (sp-pair "(" nil :unless '(:rem sp-point-before-word-p)))
-
-
-(use-package! page-break-lines)
+(use-package! page-break-lines
+  :hook
+  (emacs-lisp-mode . page-break-lines-mode))
 
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)
@@ -622,40 +621,106 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
 ;; (after! persp-mode
-(defun display-workspaces-in-minibuffer ()
-  (interactive)
-  (with-current-buffer " *Minibuf-0*"
-    ;; (message (format "%s" (point-max)))
-    (message (buffer-string))
-    (erase-buffer)
-    ;; (message (format "%s" (point-max)))
-    ;; (insert (+workspace--tabline))
-    ;; (insert (format
-    ;;          (format "%%s %%%ds"
-    ;;                  (- (frame-width)
-    ;;                     (length (+workspace--tabline))
-    ;;                     1))
-    ;;          (+workspace--tabline)
-    ;;          (propertize
-    ;;           (symbol-name doom-theme)
-    ;;           'face '(:inherit (mode-line-emphasis)))))
-    ))
-;; )
-(map! "<f8>" #'display-workspaces-in-minibuffer)
-;; (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
-;; (+workspace/display))
-;; (defadvice! mmmm (&rest _)
-;;   :after #'minibuffer-message
-;;   (minibuffer-message "ello"))
-;; (use-package! minibuffer-header)
+;; (defun display-workspaces-in-minibuffer ()
+;;   (interactive)
+;;   (with-current-buffer " *Minibuf-0*"
+;;     ;; (message (format "%s" (point-max)))
+;;     (message (buffer-string))
+;;     (erase-buffer)
+;;     ;; (message (format "%s" (point-max)))
+;;     ;; (insert (+workspace--tabline))
+;;     ;; (insert (format
+;;     ;;          (format "%%s %%%ds"
+;;     ;;                  (- (frame-width)
+;;     ;;                     (length (+workspace--tabline))
+;;     ;;                     1))
+;;     ;;          (+workspace--tabline)
+;;     ;;          (propertize
+;;     ;;           (symbol-name doom-theme)
+;;     ;;           'face '(:inherit (mode-line-emphasis)))))
+;;     ))
+;; ;; )
 
-;(defadvice! ssssss (s &rest a)
-;  :filter-args #'message
-;  (list (concat s "    hi") 'a))
+;; (defun display-workspaces-in-tab-bar ()
+;;   (interactive)
+;;   (with-temp-buffer
+;;     ;; (insert (+workspace--tabline))
+;;     (insert (format
+;;              (format "%%s %%%ds"
+;;                      (- (frame-width)
+;;                         (length (+workspace--tabline))
+;;                         1))
+;;              (+workspace--tabline)
+;;              (propertize
+;;               (symbol-name doom-theme)
+;;               'face '(:inherit (mode-line-emphasis)))))
+;;     (buffer-string)
+;;     ))
+
+;; ;; (force-mode-line-update t)
+;; ;; (setq tab-bar-show)
+;; (tab-bar-mode +1)
+;; ;; (setq tab-bar-format '(tab-bar-format-global display-workspaces-in-tab-bar))
+;; ;; (tab-bar--update-tab-bar-lines)
+;; ;; tab-bar-tabs-function
+;; ;; (customize-set-variable 'tab-bar-format '(tab-bar-format-global display-workspaces-in-tab-bar))
+
+;; (setq global-mode-string '((:eval (safe-persp-name (get-current-persp))) (:eval (display-workspaces-in-tab-bar))))
+;; (setq global-mode-string '((:eval (mimimi)) (:eval (safe-persp-name (get-current-persp)))))
+
+;; (my/hack)
+
+;;; (mimimi)
+
+;; (setq global-mode-string '((:eval (+doom-dashboard--center (frame-width) (mimimi))) " " (:eval (my/hack))))
+;; (force-mode-line-update t)
+
+;; (map! :g "C-t" #'+vterm/toggle)
+
+
+;;; Workspaces tab bar
 
 
-;; (list (concat "s" "s") 'hr)
-;; (setq company-idle-delay nil)
+(after! persp-mode
+
+  (defun hy/workspaces-formatted ()
+    (+doom-dashboard--center (frame-width)
+                             (let ((names (or persp-names-cache nil))
+                                   (current-name (safe-persp-name (get-current-persp))))
+                               (mapconcat
+                                #'identity
+                                (cl-loop for name in names
+                                         for i to (length names)
+                                         collect
+                                         (concat (propertize (format " %d" (1+ i)) 'face
+                                                             `(:inherit ,(if (equal current-name name)
+                                                                             '+workspace-tab-selected-face
+                                                                           '+workspace-tab-face)
+                                                               :weight bold))
+                                                 (propertize (format " %s " name) 'face
+                                                             (if (equal current-name name)
+                                                                 '+workspace-tab-selected-face
+                                                               '+workspace-tab-face))))
+                                " "))))
+
+
+  (defun hy/invisible-current-workspace ()
+    "The tab bar doesn't update when only faces change (i.e. the
+current workspace), so we invisibly print the current workspace
+name as well to trigger updates"
+    (propertize (safe-persp-name(get-current-persp)) 'invisible t))
+
+  (customize-set-variable 'tab-bar-format '(hy/workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
+  ;; (customize-set-variable 'tab-bar-format '(+workspace--tabline tab-bar-format-align-right hy/invisible-current-workspace))
+
+  (advice-add #'+workspace/display :override #'ignore)
+
+  )
+(customize-set-variable 'tab-bar-mode t)
+(custom-set-faces!
+  '(+workspace-tab-face :inherit default :family "Jost*" :height 135)
+  '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face))
+  )
 
 (setq which-key-allow-multiple-replacements t)
 (after! which-key
@@ -664,6 +729,11 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '(("" . "\\`+?evil[-:/]?\\(?:a-\\)?\\(.*\\)") . (nil . "ຯ\\1"))
    '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))))
 
+(after! persp-mode
+;; (remove-hook! 'after-make-frame-functions #'persp-init-new-frame)
+(remove-hook! 'after-make-frame-functions 'persp-init-new-frame)
+)
+;; (setq persp-init-frame-behaviour -1)
 
 (setq
  window-divider-default-bottom-width 1
