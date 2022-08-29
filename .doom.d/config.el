@@ -681,8 +681,13 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;;; Workspaces tab bar
 
 
-(after! persp-mode
+(custom-set-faces!
+  '(+workspace-tab-face :inherit default :family "Jost*" :height 135)
+  '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
 
+(customize-set-variable 'tab-bar-mode t)
+
+(after! persp-mode
   (defun hy/workspaces-formatted ()
     (+doom-dashboard--center (frame-width)
                              (let ((names (or persp-names-cache nil))
@@ -703,24 +708,20 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                                '+workspace-tab-face))))
                                 " "))))
 
-
-  (defun hy/invisible-current-workspace ()
+  (defun invisible-current-workspace ()
     "The tab bar doesn't update when only faces change (i.e. the
 current workspace), so we invisibly print the current workspace
 name as well to trigger updates"
     (propertize (safe-persp-name(get-current-persp)) 'invisible t))
 
-  (customize-set-variable 'tab-bar-format '(hy/workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
-  ;; (customize-set-variable 'tab-bar-format '(+workspace--tabline tab-bar-format-align-right hy/invisible-current-workspace))
+  (customize-set-variable 'tab-bar-format '(hy/workspaces-formatted (lambda () " ") invisible-current-workspace))
+  ;; the space after the workspaces is needed because otherwise the face of the rightmost workspace continues until the end of the tab-bar
+  ;; (customize-set-variable 'tab-bar-format '(+workspace--tabline (lambda () " ") invisible-current-workspace))
 
+  ;; don't show current workspaces when we switch, since we always see them
   (advice-add #'+workspace/display :override #'ignore)
-
-  )
-(customize-set-variable 'tab-bar-mode t)
-(custom-set-faces!
-  '(+workspace-tab-face :inherit default :family "Jost*" :height 135)
-  '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face))
-  )
+  ;; same for renaming and deleting (and saving, but oh well)
+  (advice-add #'+workspace-message :override #'ignore))
 
 (setq which-key-allow-multiple-replacements t)
 (after! which-key
@@ -729,10 +730,10 @@ name as well to trigger updates"
    '(("" . "\\`+?evil[-:/]?\\(?:a-\\)?\\(.*\\)") . (nil . "ຯ\\1"))
    '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))))
 
-(after! persp-mode
+;; (after! persp-mode
 ;; (remove-hook! 'after-make-frame-functions #'persp-init-new-frame)
-(remove-hook! 'after-make-frame-functions 'persp-init-new-frame)
-)
+;; (remove-hook! 'after-make-frame-functions 'persp-init-new-frame)
+;; )
 ;; (setq persp-init-frame-behaviour -1)
 
 (setq
