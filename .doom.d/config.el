@@ -111,6 +111,8 @@
 ;; (setq doom-theme 'everforest-harder)
 ;; (setq doom-theme (hylo/random-dark-theme))
 (setq doom-theme 'ef-spring)
+;; (setq doom-theme 'doom-dracula)
+
 
 ;;
 ;; (setq +doom-dashboard-functions (append
@@ -620,61 +622,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (after! vundo
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
-;; (after! persp-mode
-;; (defun display-workspaces-in-minibuffer ()
-;;   (interactive)
-;;   (with-current-buffer " *Minibuf-0*"
-;;     ;; (message (format "%s" (point-max)))
-;;     (message (buffer-string))
-;;     (erase-buffer)
-;;     ;; (message (format "%s" (point-max)))
-;;     ;; (insert (+workspace--tabline))
-;;     ;; (insert (format
-;;     ;;          (format "%%s %%%ds"
-;;     ;;                  (- (frame-width)
-;;     ;;                     (length (+workspace--tabline))
-;;     ;;                     1))
-;;     ;;          (+workspace--tabline)
-;;     ;;          (propertize
-;;     ;;           (symbol-name doom-theme)
-;;     ;;           'face '(:inherit (mode-line-emphasis)))))
-;;     ))
-;; ;; )
-
-;; (defun display-workspaces-in-tab-bar ()
-;;   (interactive)
-;;   (with-temp-buffer
-;;     ;; (insert (+workspace--tabline))
-;;     (insert (format
-;;              (format "%%s %%%ds"
-;;                      (- (frame-width)
-;;                         (length (+workspace--tabline))
-;;                         1))
-;;              (+workspace--tabline)
-;;              (propertize
-;;               (symbol-name doom-theme)
-;;               'face '(:inherit (mode-line-emphasis)))))
-;;     (buffer-string)
-;;     ))
-
-;; ;; (force-mode-line-update t)
-;; ;; (setq tab-bar-show)
-;; (tab-bar-mode +1)
-;; ;; (setq tab-bar-format '(tab-bar-format-global display-workspaces-in-tab-bar))
-;; ;; (tab-bar--update-tab-bar-lines)
-;; ;; tab-bar-tabs-function
-;; ;; (customize-set-variable 'tab-bar-format '(tab-bar-format-global display-workspaces-in-tab-bar))
-
-;; (setq global-mode-string '((:eval (safe-persp-name (get-current-persp))) (:eval (display-workspaces-in-tab-bar))))
-;; (setq global-mode-string '((:eval (mimimi)) (:eval (safe-persp-name (get-current-persp)))))
-
-;; (my/hack)
-
-;;; (mimimi)
-
-;; (setq global-mode-string '((:eval (+doom-dashboard--center (frame-width) (mimimi))) " " (:eval (my/hack))))
-;; (force-mode-line-update t)
-
 ;; (map! :g "C-t" #'+vterm/toggle)
 
 
@@ -684,11 +631,24 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (custom-set-faces!
   '(+workspace-tab-face :inherit default :family "Jost*" :height 135)
   '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
-
-(customize-set-variable 'tab-bar-mode t)
-
 (after! persp-mode
-  (defun hy/workspaces-formatted ()
+(defun left-right-center (len l c r)
+  "Xa "
+  (let* ((space-left (ceiling (max 0 (- len (length c) (* 2 (length l)))) 2))
+         (space-right (- len (+ (length l) (length c) space-left) (length r))))
+    (concat
+     l
+     (make-string space-left ? )
+     c
+     (make-string space-right ? )
+     r)))
+
+(left-right-center 40 "abc" "arst" "ghi")
+
+(defun lcr (l c r)
+  (left-right-center (frame-width) l c r))
+
+  (defun workspaces-formatted ()
     (+doom-dashboard--center (frame-width)
                              (let ((names (or persp-names-cache nil))
                                    (current-name (safe-persp-name (get-current-persp))))
@@ -708,20 +668,34 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                                '+workspace-tab-face))))
                                 " "))))
 
-  (defun invisible-current-workspace ()
+ ;; (defun +workspace--tabline () ())
+ ;; (defun wsf ()
+ ;;   (lcr "eloariiiiiiiiiiiiiiiiiiiiiiiiiiiiiistoienarstoyulwfp"
+ ;;        (+workspace--tabline)
+ ;;   (hy/invisible-current-workspace)
+
+ ;;        )
+ ;;  )
+
+ ;; (wsf)
+
+  (defun hy/invisible-current-workspace ()
     "The tab bar doesn't update when only faces change (i.e. the
 current workspace), so we invisibly print the current workspace
 name as well to trigger updates"
     (propertize (safe-persp-name(get-current-persp)) 'invisible t))
+    ;; (safe-persp-name(get-current-persp)))
 
-  (customize-set-variable 'tab-bar-format '(hy/workspaces-formatted (lambda () " ") invisible-current-workspace))
-  ;; the space after the workspaces is needed because otherwise the face of the rightmost workspace continues until the end of the tab-bar
-  ;; (customize-set-variable 'tab-bar-format '(+workspace--tabline (lambda () " ") invisible-current-workspace))
+  (customize-set-variable 'tab-bar-format '(workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
+;;  (customize-set-variable 'tab-bar-format '(wsf))
+  ;; (customize-set-variable 'tab-bar-format '(+workspace--tabline tab-bar-format-align-right hy/invisible-current-workspace))
 
   ;; don't show current workspaces when we switch, since we always see them
   (advice-add #'+workspace/display :override #'ignore)
   ;; same for renaming and deleting (and saving, but oh well)
   (advice-add #'+workspace-message :override #'ignore))
+
+(customize-set-variable 'tab-bar-mode t)
 
 (setq which-key-allow-multiple-replacements t)
 (after! which-key

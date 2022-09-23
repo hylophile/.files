@@ -2,6 +2,11 @@
 
 * Main
 
+#+begin_src emacs-lisp :results silent
+(defun on-nsa (str)
+  (if (string= "nsa" (system-name)) (format "\"%s\"," str) ""))
+#+end_src
+
 #+begin_src json :tangle config :noweb yes
 [
   {
@@ -22,6 +27,7 @@
       <<azk()>>
       "pulseaudio#sink",
       "pulseaudio#source",
+      //"battery",
       "custom/weather",
       "clock",
       "sway/mode",
@@ -29,11 +35,6 @@
     <<modules>>
   },
 ]
-#+end_src
-
-#+begin_src emacs-lisp :results silent
-(defun on-nsa (str)
-  (if (string= "nsa" (system-name)) (format "\"%s\"," str) ""))
 #+end_src
 
 #+name: azk
@@ -682,3 +683,11 @@ echo "{\"text\": \"$textp\t|\t$textc\t\", \"class\": \"clipboard\"}"
     background-color: #eb4d4b;
 }
 #+end_src
+
+* Fin
+
+
+# Local Variables:
+# eval: (add-hook 'after-save-hook (cmd! (ignore-errors (org-babel-execute-buffer))) t t)
+# eval: (add-hook 'after-save-hook #'org-babel-tangle t t)
+# End:

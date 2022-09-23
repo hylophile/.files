@@ -107,12 +107,16 @@ exec swaybg --color "#000000"
 
 <<mullvad()>>
 
+exec nm-applet --indicator
+
 exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 
 exec swayidle -w \
          timeout 300 'swaylock -f -c 000000' \
          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          before-sleep 'swaylock -f -c 000000'
+
+exec python ~/scripts/move.py reset
 #+end_src
 
 #+name: mullvad
