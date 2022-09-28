@@ -16,7 +16,7 @@ Downloads
 .config/libreoffice
 .config/draw.io
 .pnpm-store
-.dotfiles
+~/.dotfiles
 .npm
 .vscode-oss
 stuff
