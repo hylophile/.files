@@ -1,0 +1,18 @@
+#TabsToolbar {
+  visibility: collapse !important;
+}
+
+#sidebar-header {
+  display: none;
+}
+
+#sidebar {
+  max-width: none !important;
+  width: 100% !important;
+  /* min-width: 10% !important; */
+  /* min-width: 40em; */
+}
+
+#sidebar-box {
+  width: 40em;
+}
