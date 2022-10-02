@@ -6,6 +6,13 @@
   /* display: none; */
   font-size: 1em;
   padding: 2px !important;
+  border: 0px !important;
+  background-color: var(--toolbar-bgcolor);
+  /* #2B2A33 */
+}
+
+#navigator-toolbox {
+  border-bottom: 0px !important;
 }
 
 #sidebar-close {
