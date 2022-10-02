@@ -3,6 +3,24 @@
 }
 
 #sidebar-header {
+  /* display: none; */
+  font-size: 1em;
+  padding: 2px !important;
+}
+
+#sidebar-close {
+  display: none;
+}
+
+#sidebar-switcher-arrow {
+  display: none;
+}
+
+#sidebar-switcher-target {
+  width: 100%;
+}
+
+#sidebar-title {
   display: none;
 }
 
