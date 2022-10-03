@@ -40,6 +40,7 @@ title_align center
 workspace_layout tabbed
 # hide_edge_borders --i3 smart
 hide_edge_borders smart
+mouse_warping none
 
 floating_modifier $mod normal
 
