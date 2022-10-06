@@ -9,4 +9,8 @@ set -x FZF_CTRL_T_COMMAND 'fd --hidden .'
 set -Ux BUN_INSTALL "/home/$USER/.bun"
 set -px --path PATH "/home/$USER/.bun/bin"
 
+fish_add_path -p ~/.emacs.d/bin ~/.config/fisactl/bin
+
+set -U nvm_default_version v16.17.1
+
 zoxide init fish --cmd d | source
