@@ -118,6 +118,8 @@ exec swayidle -w \
          before-sleep 'swaylock -f -c 000000'
 
 exec python ~/scripts/move.py reset
+
+exec sh ~/scripts/disable-laptop-output-if-others.sh
 #+end_src
 
 #+name: mullvad
