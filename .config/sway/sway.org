@@ -120,6 +120,7 @@ exec swayidle -w \
 exec python ~/scripts/move.py reset
 
 exec sh ~/scripts/disable-laptop-output-if-others.sh
+
 #+end_src
 
 #+name: mullvad
@@ -144,7 +145,7 @@ set $menu wofi --show drun -I | xargs swaymsg exec --
 bindsym $mod+d exec $menu
 
 # Reload the configuration file
-bindsym $mod+Shift+r reload
+bindsym $mod+F5 reload
 
 bindsym $mod+Shift+Control+e exec swaymsg exit
 
@@ -163,12 +164,12 @@ bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
 
 
-bindsym $mod+h splith
+bindsym $mod+Control+Shift+s splith
 bindsym $mod+v splitv
 
 # bindsym $mod+s layout stacking
-bindsym $mod+t layout tabbed
-bindsym $mod+s layout toggle split
+bindsym $mod+Control+t layout tabbed
+bindsym $mod+Control+s layout toggle split
 
 bindsym $mod+f fullscreen
 
@@ -196,14 +197,14 @@ bindsym $mod+space focus output left
 bindsym $mod+Control+space exec ~/.config/sway/swap-visible-workspaces.sh
 bindsym $mod+Shift+space move window to output left
 
-bindsym $mod+e workspace next_on_output
-bindsym $mod+Shift+e move container to workspace next_on_output
-bindsym $mod+u workspace prev_on_output
-bindsym $mod+Shift+u move container to workspace prev_on_output
+bindsym $mod+a workspace next_on_output
+bindsym $mod+Shift+a move container to workspace next_on_output
+bindsym $mod+t workspace prev_on_output
+bindsym $mod+Shift+t move container to workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
 
-bindsym $mod+a exec env RUST_BACKTRACE=1 \
+bindsym $mod+h exec env RUST_BACKTRACE=1 \
     swayr switch-window >> /tmp/swayr.log 2>&1
 
 # bindsym $mod+Delete exec env RUST_BACKTRACE=1 \
