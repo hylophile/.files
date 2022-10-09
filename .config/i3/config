@@ -73,11 +73,11 @@ bindsym $mod+space focus output left
 bindsym $mod+Control+space exec ~/.config/i3/swap.sh
 bindsym $mod+Shift+space move window to output left
 
-bindsym $mod+e workspace next_on_output
-bindsym $mod+Shift+e move container to workspace next_on_output
-bindsym $mod+u workspace prev_on_output
-bindsym $mod+Shift+u move container to workspace prev_on_output
-bindsym $mod+b workspace back_and_forth
+# bindsym $mod+e workspace next_on_output
+# bindsym $mod+Shift+e move container to workspace next_on_output
+# bindsym $mod+u workspace prev_on_output
+# bindsym $mod+Shift+u move container to workspace prev_on_output
+# bindsym $mod+b workspace back_and_forth
 
 bindsym $mod+o exec ~/.emacs.d/bin/doom everywhere
 bindsym $mod+Shift+o exec "xclip -selection clipboard -o"
@@ -105,7 +105,7 @@ bindsym $mod+q kill
 #bindsym $mod+d exec rofi -show drun
 bindsym $mod+d exec rofi -combi-modi window#drun -show combi
 # bindsym $mod+w exec rofi -show window
-bindsym $mod+a exec rofi -show window
+# bindsym $mod+a exec rofi -show window
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -116,6 +116,12 @@ bindsym $mod+a exec rofi -show window
 # bindsym $mod+$down focus down
 # bindsym $mod+$up focus up
 # bindsym $mod+$right focus right
+
+bindsym $mod+a workspace prev_on_output
+bindsym $mod+Shift+a move container to workspace prev_on_output
+bindsym $mod+t workspace next_on_output
+bindsym $mod+Shift+t move container to workspace next_on_output
+bindsym $mod+b workspace back_and_forth
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -146,7 +152,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-bindsym $mod+t layout tabbed
+bindsym $mod+Control+t layout tabbed
 bindsym $mod+Shift+s layout toggle split
 
 # toggle tiling / floating
@@ -220,10 +226,17 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+F5 restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Control+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
+# [[file:sway.org::*(move to) new workspace][(move to) new workspace:1]]
+bindsym $mod+n exec ~/.config/sway/new-workspace.sh
+# (move to) new workspace:1 ends here
+
+# [[file:sway.org::*(move to) new workspace][(move to) new workspace:3]]
+bindsym $mod+Shift+n exec sh ~/.config/sway/move-to-new-workspace.sh
+# (move to) new workspace:3 ends here
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -264,43 +277,46 @@ client.background       #F8F8F2
 
 exec sh ~/hi.sh
 
-#set $font pango:Jost*
-set $font pango:Comic Neue
+set $font pango:Jost*
+# set $font pango:Comic Neue
 #set $font pango:Josefin Sans
 #set $font pango:League Spartan
-set $weight Bold
-set $size 14
+set $weight Medium
+# set $weight Bold
+set $size 11
 
 font $font $weight $size
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        # font pango:Fira Code 10
-        workspace_min_width 100
-        font $font $weight $size
-        #tray_output
-	position top
+    i3bar_command ~/.config/i3/polybar.sh
+    }
+#         # font pango:Fira Code 10
+#         workspace_min_width 100
+#         font $font $weight $size
+#         #tray_output
+# 	position top
 
-        colors {
-                background #282A36
-                statusline #F8F8F2
-                separator  #44475A
+#         colors {
+#                 background #282A36
+#                 statusline #F8F8F2
+#                 separator  #44475A
 
-                focused_workspace  #6272A4 #6272A4 #F8F8F2
-                active_workspace   #44475A #44475A #F8F8F2
-                inactive_workspace #282A36 #282A36 #BFBFBF
-                urgent_workspace   #50fa7b #44475a #F8F8F2
-                binding_mode       #FF5555 #FF5555 #F8F8F2
-        }
-#        separator_symbol " - "
-        status_command /usr/share/bumblebee-status/bumblebee-status -m \
-                       my_pasink my_pasource date time \
-                       -p interval=0.5 nic.exclude="wlp*,lo" nic.format="" \
-                       time.format="%H:%M    " date.format="W%W %A – %Y･%m･%d" \
-                       pomodoro.format="%m min" \
-                       -t my_dracula
-}
+#                 focused_workspace  #6272A4 #6272A4 #F8F8F2
+#                 active_workspace   #44475A #44475A #F8F8F2
+#                 inactive_workspace #282A36 #282A36 #BFBFBF
+#                 urgent_workspace   #50fa7b #44475a #F8F8F2
+#                 binding_mode       #FF5555 #FF5555 #F8F8F2
+#         }
+# #        separator_symbol " - "
+#         status_command /usr/share/bumblebee-status/bumblebee-status -m \
+#                        my_pasink my_pasource date time \
+#                        -p interval=0.5 nic.exclude="wlp*,lo" nic.format="" \
+#                        time.format="%H:%M    " date.format="W%W %A – %Y･%m･%d" \
+#                        pomodoro.format="%m min" \
+#                        -t my_dracula
+# }
 
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a
