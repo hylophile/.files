@@ -163,10 +163,10 @@ bindsym $mod+Shift+f floating toggle
 bindsym $mod+Shift+b border toggle
 
 bindsym $mod+Shift+p exec maim -s -u | xclip -selection clipboard -t image/png -i
-bindsym $mod+Shift+z exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
+bindsym $mod+z exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
 # make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
 #bindsym --release $mod+z exec maim -s $(date +%Y-%m-%d-%s.png) -e 'mv $f ~/org/img/ && echo [[file:img/$f]] | xclip -selection primary'
-bindsym --release $mod+z exec ~/scripts/org-screenshot.sh
+bindsym --release $mod+Shift+z exec ~/scripts/org-screenshot.sh
 
 # change focus between tiling / floating windows
 bindsym $mod+period focus mode_toggle
@@ -192,16 +192,16 @@ for_window [title="^Emacs Everywhere"] floating enable
 
 
 
-for_window    [class="chrome-mailsrv.employer__owa_-Default"] title_format "<span foreground='#0072C6'><tt></tt></span> %title"
-for_window    [class="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
-for_window    [class="chrome-discord.com__app-Default" title="Discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
+for_window    [instance="mailsrv.employer__owa"] title_format "<span foreground='#0072C6' face='Font Awesome 6 Brands'></span> %title"
+for_window    [instance="teams.microsoft.com"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
+# for_window    [class="discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
 
 for_window    [class="firefox.*"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
 for_window    [class="Emacs"]            title_format "<span foreground='#FF79C6' rise='-3pt' face='file-icons'></span> %title"
 # for_window    [class="Emacs"]            title_format "🌈 %title"
 for_window    [class="kitty"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
 for_window    [class="telegramdesktop"]        title_format "<span foreground='#0088CC'><tt></tt></span> %title"
-for_window    [class="org.kde.dolphin"]        title_format "<span foreground='#33BFFF'></span> %title"
+for_window    [class="dolphin"]        title_format "<span foreground='#33BFFF'></span> %title"
 for_window    [class="mpv"]        title_format "<span foreground='#e557e5'></span> %title"
 for_window    [class="Mullvad VPN"]        floating disable, move container to workspace number 10, urgent deny
 for_window    [instance="mullvad vpn"]        urgent deny
