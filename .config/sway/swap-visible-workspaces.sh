@@ -12,3 +12,5 @@ do
 done
 
 swaymsg "workspace --no-auto-back-and-forth $current"
+
+swaymsg "focus output left"
