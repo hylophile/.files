@@ -3,7 +3,7 @@
 status() {
     # pamixer --get-volume-human --default-source
     if [ "$(pamixer --get-mute --default-source)" = "true" ]; then
-      echo "%{F#ffb86c}%{B#282a36} %{T2} "
+      echo "%{F#ff5555}%{B#282a36} %{T2} "
     else
       echo "%{F#50fa7b}%{B#282a36} %{T2} "
       # echo "$(pamixer --get-volume-human --default-source)"

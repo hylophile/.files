@@ -21,7 +21,7 @@
 
        :completion
        (corfu
-        +icons
+        ;; +icons
         +orderless)
        ;; company           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
