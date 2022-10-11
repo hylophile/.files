@@ -2,6 +2,11 @@
   visibility: collapse !important;
 }
 
+#navigator-toolbox, :root {
+  font-family: "Jost*" !important;
+  font-size: 1.1rem !important;
+}
+ 
 #sidebar-header {
   /* display: none; */
   font-size: 1em;
