@@ -187,7 +187,7 @@
 ;;   (split-window-below))
 
 
-(advice-remove #'evil-visual-update-x-selection #'ignore)
+(setq evil-visual-update-x-selection-p t)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
