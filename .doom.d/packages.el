@@ -41,6 +41,8 @@
 
 (package! vundo :recipe (:host github :repo "casouri/vundo"))
 
+;; (package! spookfox :recipe (:host github :repo "bitspook/spookfox" :files ("lisp/*.el" "lisp/apps/*.el")))
+
 (package! cape-yasnippet :recipe (:host github :repo "elken/cape-yasnippet"))
 
 (package! org-fancy-priorities :disable t)

@@ -57,7 +57,7 @@
   (interactive)
   (insert-for-yank (gui-get-primary-selection)))
 
-(map! :nv "s" #'avy-goto-char-2)
+;; (map! :nv "s" #'avy-goto-char-2)
 
 (map! :niv "<269025133>" #'insert-primary)
 

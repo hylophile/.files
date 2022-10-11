@@ -187,7 +187,21 @@
 ;;   (split-window-below))
 
 
+
+
+(defun rename-buffers-with-annoying-names ()
+  (when (member (buffer-name) '("index.ts" "package.json"))
+    (when (string-match "[^/]+/[^/]+$" (buffer-file-name))
+      (rename-buffer (match-string 0 (buffer-file-name)) t))))
+
+(add-hook 'change-major-mode-hook #'rename-buffers-with-annoying-names)
+
 (setq evil-visual-update-x-selection-p t)
+
+(map! :map org-mode-map
+      :leader
+      "d" (cmd! (org-todo "DONE"))
+      "D" #'org-archive-done-tasks)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -195,6 +209,7 @@
 
 (setq which-key-idle-delay 0.3)
 (setq evil-snipe-scope 'whole-buffer)
+
 ;; (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 (map! :leader :desc "Actions" "e" #'embark-act)
 (map! :leader
@@ -213,6 +228,7 @@ Use evil's window splitting function to follow into the new window."
         (call-interactively #'evil-window-split)))))
 
 (map! :map evil-window-map "s" #'hylo/split-window-fair-and-follow)
+
 
 
 ;; (map! :nmv [C-i] #'evil-forward-WORD-end)
@@ -633,21 +649,21 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   '(+workspace-tab-face :inherit default :family "Jost*" :height 135)
   '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
 (after! persp-mode
-(defun left-right-center (len l c r)
-  "Xa "
-  (let* ((space-left (ceiling (max 0 (- len (length c) (* 2 (length l)))) 2))
-         (space-right (- len (+ (length l) (length c) space-left) (length r))))
-    (concat
-     l
-     (make-string space-left ? )
-     c
-     (make-string space-right ? )
-     r)))
+  (defun left-right-center (len l c r)
+    "Xa "
+    (let* ((space-left (ceiling (max 0 (- len (length c) (* 2 (length l)))) 2))
+           (space-right (- len (+ (length l) (length c) space-left) (length r))))
+      (concat
+       l
+       (make-string space-left ? )
+       c
+       (make-string space-right ? )
+       r)))
 
-(left-right-center 40 "abc" "arst" "ghi")
+  (left-right-center 40 "abc" "arst" "ghi")
 
-(defun lcr (l c r)
-  (left-right-center (frame-width) l c r))
+  (defun lcr (l c r)
+    (left-right-center (frame-width) l c r))
 
   (defun workspaces-formatted ()
     (+doom-dashboard--center (frame-width)
@@ -669,26 +685,26 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                                '+workspace-tab-face))))
                                 " "))))
 
- ;; (defun +workspace--tabline () ())
- ;; (defun wsf ()
- ;;   (lcr "eloariiiiiiiiiiiiiiiiiiiiiiiiiiiiiistoienarstoyulwfp"
- ;;        (+workspace--tabline)
- ;;   (hy/invisible-current-workspace)
+  ;; (defun +workspace--tabline () ())
+  ;; (defun wsf ()
+  ;;   (lcr "eloariiiiiiiiiiiiiiiiiiiiiiiiiiiiiistoienarstoyulwfp"
+  ;;        (+workspace--tabline)
+  ;;   (hy/invisible-current-workspace)
 
- ;;        )
- ;;  )
+  ;;        )
+  ;;  )
 
- ;; (wsf)
+  ;; (wsf)
 
   (defun hy/invisible-current-workspace ()
     "The tab bar doesn't update when only faces change (i.e. the
 current workspace), so we invisibly print the current workspace
 name as well to trigger updates"
     (propertize (safe-persp-name(get-current-persp)) 'invisible t))
-    ;; (safe-persp-name(get-current-persp)))
+  ;; (safe-persp-name(get-current-persp)))
 
   (customize-set-variable 'tab-bar-format '(workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
-;;  (customize-set-variable 'tab-bar-format '(wsf))
+  ;;  (customize-set-variable 'tab-bar-format '(wsf))
   ;; (customize-set-variable 'tab-bar-format '(+workspace--tabline tab-bar-format-align-right hy/invisible-current-workspace))
 
   ;; don't show current workspaces when we switch, since we always see them
@@ -809,8 +825,7 @@ This hides them again."
 (use-package! lsp-tailwindcss
   :init
   (setq lsp-tailwindcss-add-on-mode t)
-  :config
-  (push 'vue-mode lsp-tailwindcss-major-modes))
+  :config)
 
 (add-hook! 'rainbow-mode-hook
   (hl-line-mode (if rainbow-mode -1 +1)))
@@ -921,8 +936,8 @@ This hides them again."
 (map! [remap describe-bindings] #'embark-bindings
       "C-."               #'embark-act
       (:map minibuffer-local-map
-       "C-."               #'embark-act
-       "C-c C-."           #'embark-export))
+            "C-."               #'embark-act
+            "C-c C-."           #'embark-export))
 
 (after! latex
   (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)))
@@ -1136,8 +1151,28 @@ exist after each headings's drawers."
 (nsa!
  (load! "load/kzk-config.el" nil t))
 
+;; (map!
+;;  :after (evil-snipe evil)
+;;                     :m "," #'evil-snipe-repeat)
+;; (setq evil-snipe-override-evil-repeat-keys nil)
+(after! evil-snipe
+  ;; (when evil-snipe-override-evil-repeat-keys
+  (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
+  (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
+
+  (evil-define-key* '(motion) evil-snipe-local-mode-map
+    "," 'evil-snipe-repeat
+    ";" 'evil-snipe-repeat-reverse)
+  (evil-define-key* '(normal) evil-snipe-override-local-mode-map
+    "," 'evil-snipe-repeat
+    ";" 'evil-snipe-repeat-reverse))
 
 
+;; (use-package! spookfox
+;;   :config
+;;   (setq spookfox-saved-tabs-target
+;;         `(file+headline ,(expand-file-name "spookfox.org" org-directory) "Tabs"))
+;;   (spookfox-init))
 
 (use-package! org-appear
   :hook (org-mode . org-appear-mode)
