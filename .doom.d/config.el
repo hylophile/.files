@@ -1145,6 +1145,8 @@ exist after each headings's drawers."
                          nil
                        'tree)))
 
+;; (setq doom-localleader-key "\\")
+
 ;; (map! :leader :map org-mode-map "c f" (cmd!! #'unpackaged/org-fix-blank-lines t))
 
 
@@ -1160,12 +1162,17 @@ exist after each headings's drawers."
   (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
   (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
 
-  (evil-define-key* '(motion) evil-snipe-local-mode-map
+  (evil-define-key* '(motion normal) evil-snipe-local-mode-map
+    "S" nil
     "," 'evil-snipe-repeat
     ";" 'evil-snipe-repeat-reverse)
   (evil-define-key* '(normal) evil-snipe-override-local-mode-map
     "," 'evil-snipe-repeat
-    ";" 'evil-snipe-repeat-reverse))
+    ";" 'evil-snipe-repeat-reverse)
+
+
+(map! :n "S" #'avy-goto-char-2)
+  )
 
 (map! :map magit-mode-map
       "<escape>" #'+magit/quit)
