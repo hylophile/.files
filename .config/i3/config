@@ -305,12 +305,13 @@ client.background       #F8F8F2
 exec sh ~/hi.sh
 
 set $font pango:Jost*
+# set $font pango:Futura Std
 # set $font pango:Comic Neue
-#set $font pango:Josefin Sans
+# set $font pango:Josefin Sans
 #set $font pango:League Spartan
-set $weight Medium
+set $weight Book
 # set $weight Bold
-set $size 11
+set $size 12
 
 font $font $weight $size
 
