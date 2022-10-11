@@ -1167,6 +1167,8 @@ exist after each headings's drawers."
     "," 'evil-snipe-repeat
     ";" 'evil-snipe-repeat-reverse))
 
+(map! :map magit-mode-map
+      "<escape>" #'+magit/quit)
 
 ;; (use-package! spookfox
 ;;   :config
