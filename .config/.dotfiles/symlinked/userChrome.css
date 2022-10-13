@@ -2,7 +2,7 @@
   visibility: collapse !important;
 }
 
-#navigator-toolbox, :root {
+#navigator-toolbox {
   font-family: "Jost*" !important;
   font-size: 1.1rem !important;
 }
