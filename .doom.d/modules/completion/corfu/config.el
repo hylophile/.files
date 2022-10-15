@@ -3,7 +3,7 @@
 (use-package! corfu
   :custom
   (corfu-separator ?\s)
-  (corfu-auto t)
+  (corfu-auto nil)
   (corfu-auto-delay 0.3)
   (corfu-on-exact-match nil)
   (corfu-quit-no-match t)

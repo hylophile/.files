@@ -1171,7 +1171,7 @@ exist after each headings's drawers."
     ";" 'evil-snipe-repeat-reverse)
 
 
-(map! :n "S" #'avy-goto-char-2)
+  (map! :n "S" #'avy-goto-char-2)
   )
 
 (map! :map magit-mode-map
@@ -1200,9 +1200,33 @@ exist after each headings's drawers."
 (use-package! ef-themes
   :defer nil)
 
+
 (defun save-all ()
   (interactive)
   (save-some-buffers t))
 
 
+
 (add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
+
+;; (use-package! company-quickhelp)
+
+;; (map! :map emmet-mode-keymap
+;;       [tab] #'indent-for-tab-command)
+
+(after! company
+(add-hook! 'evil-normal-state-entry-hook
+ (defun +company-abort-h ()
+   ;; HACK `company-abort' doesn't no-op if company isn't active; causing
+   ;;      unwanted side-effects, like the suppression of messages in the
+   ;;      echo-area.
+   ;; REVIEW Revisit this to refactor; shouldn't be necessary!
+   (when company-candidates
+     (company-abort))))
+  (setq company-idle-delay nil))
+
+(setq evil-ex-substitute-global t)
+
+(after! lsp-ui
+  (setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
+        lsp-ui-doc-enable nil))
