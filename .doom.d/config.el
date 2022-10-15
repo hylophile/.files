@@ -1231,3 +1231,49 @@ exist after each headings's drawers."
 
 ;; (add-hook 'after-make-frame-functions
 ;;           (lambda (frame) (set-frame-parameter frame 'tab-bar-lines 0)))
+
+(after! flycheck
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    (vector #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111
+            #b111)))
