@@ -111,9 +111,8 @@
 
 ;; (setq doom-theme 'everforest-harder)
 ;; (setq doom-theme (hylo/random-dark-theme))
-(setq doom-theme 'ef-spring)
-;; (setq doom-theme 'doom-dracula)
-
+;; (setq doom-theme 'ef-spring)
+(setq doom-theme 'doom-dracula)
 
 ;;
 ;; (setq +doom-dashboard-functions (append
@@ -1200,11 +1199,9 @@ exist after each headings's drawers."
 (use-package! ef-themes
   :defer nil)
 
-
 (defun save-all ()
   (interactive)
   (save-some-buffers t))
-
 
 
 (add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
@@ -1215,14 +1212,15 @@ exist after each headings's drawers."
 ;;       [tab] #'indent-for-tab-command)
 
 (after! company
-(add-hook! 'evil-normal-state-entry-hook
- (defun +company-abort-h ()
-   ;; HACK `company-abort' doesn't no-op if company isn't active; causing
-   ;;      unwanted side-effects, like the suppression of messages in the
-   ;;      echo-area.
-   ;; REVIEW Revisit this to refactor; shouldn't be necessary!
-   (when company-candidates
-     (company-abort))))
+  (add-hook! 'evil-normal-state-entry-hook
+    (defun +company-abort-h ()
+      ;; HACK `company-abort' doesn't no-op if company isn't active; causing
+      ;;      unwanted side-effects, like the suppression of messages in the
+      ;;      echo-area.
+      ;; REVIEW Revisit this to refactor; shouldn't be necessary!
+      (when company-candidates
+        (company-abort))))
+
   (setq company-idle-delay nil))
 
 (setq evil-ex-substitute-global t)
@@ -1230,3 +1228,6 @@ exist after each headings's drawers."
 (after! lsp-ui
   (setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
         lsp-ui-doc-enable nil))
+
+;; (add-hook 'after-make-frame-functions
+;;           (lambda (frame) (set-frame-parameter frame 'tab-bar-lines 0)))
