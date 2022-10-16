@@ -7,7 +7,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 ;; (map! :n "e" #'ediff-current-file)
-
+(setq doom-leader-alt-key "C-c")
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 ;; (setq evil-want-C-u-delete nil)
 (map! :map minibuffer-local-map "C-u" #'universal-argument)
@@ -215,8 +215,9 @@
       "a" #'ace-window)
 
 (defun hylo/split-window-fair-and-follow ()
-  "Split current window vertically or horizontally, based on its current dimensions.
-Use evil's window splitting function to follow into the new window."
+  "Split current window vertically or horizontally, based on its
+ current dimensions. Use evil's window splitting function to
+ follow into the new window."
   (let* ((window (selected-window))
          (w (window-body-width window))
          (h (window-body-height window)))
@@ -1229,51 +1230,6 @@ exist after each headings's drawers."
   (setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
         lsp-ui-doc-enable nil))
 
-;; (add-hook 'after-make-frame-functions
-;;           (lambda (frame) (set-frame-parameter frame 'tab-bar-lines 0)))
-
 (after! flycheck
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    (vector #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111
-            #b111)))
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [224]
+          nil nil '(center repeated)))
