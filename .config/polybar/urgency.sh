@@ -13,4 +13,6 @@ fi
 
 if [ "$match" != "" ]; then
     echo "%{T2}$2"
+else
+    echo ""
 fi
