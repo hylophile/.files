@@ -7,47 +7,6 @@
       :desc "Magit push"
       "g p" #'magit-push)
 
-;; home row : nrtd
-;; remapping
-;;   n[ext]    to l[ook] (ahead/back)
-;;   r[eplace] to j
-;;   t[ill]    to h
-;;   d[elete]  to k[ill],
-;; (map! :after evil
-;;       :nv "n" #'evil-backward-char
-;;       :nv "r" #'evil-next-line
-;;       :nv "t" #'evil-previous-line
-;;       :nv "d" #'evil-forward-char
-
-;;       :n  "R" #'evil-join
-;;       :nv "l" #'evil-ex-search-next
-;;       :nv "L" #'evil-ex-search-previous
-;;       :nv "j" #'evil-replace
-;;       :nv "h" #'evil-snipe-t
-;;       :nv "k" #'evil-delete)
-
-;; (map! :map magit-mode-map
-;;       :after magit
-;;       :n "r" #'magit-next-line
-;;       :n "t" #'magit-previous-line
-;;       :n "j" #'magit-rebase
-;;       :n "k" #'magit-tag)
-
-;; (setq flycheck-indication-mode 'right-fringe)
-;; (setq-default right-margin-width 1)
-
-;; (setq-default right-fringe-width 20)
-
-;;     (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-;;       [16 48 112 240 112 48 16] nil nil 'center)
-
-;; 0001 0000
-;; 0011 0000
-;; 1111 0000
-;; 0011 0000
-;; 0001 0000
-
-
 (setq avy-keys '(?t ?n ?s ?e ?r ?i ?a ?o ?d ?h ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
 
 (map! :leader
@@ -98,29 +57,5 @@
       "s" nil
       "S" nil
       "C-s" nil)
-
-;; (map! :map org-mode-map
-;;       :after org
-;;       :localleader
-;;       "a" #'org-archive-subtree
-;;       )
-;;       ;; (:prefix ("A" . "attachments")
-;;       ;;  "a" #'org-attach
-;;       ;;  "d" #'org-attach-delete-one
-;;       ;;  "D" #'org-attach-delete-all
-;;       ;;  "f" #'+org/find-file-in-attachments
-;;       ;;  "l" #'+org/attach-file-and-insert-link
-;;       ;;  "n" #'org-attach-new
-;;       ;;  "o" #'org-attach-open
-;;       ;;  "O" #'org-attach-open-in-emacs
-;;       ;;  "r" #'org-attach-reveal
-;;       ;;  "R" #'org-attach-reveal-in-emacs
-;;       ;;  "u" #'org-attach-url
-;;       ;;  "s" #'org-attach-set-directory
-;;       ;;  "S" #'org-attach-sync
-;;       ;;  (:when (featurep! +dragndrop)
-;;       ;;   "c" #'org-download-screenshot
-;;       ;;   "p" #'org-download-clipboard
-;;       ;;   "P" #'org-download-yank))
 
 (map! :leader "TAB p" #'+workspace/other)
