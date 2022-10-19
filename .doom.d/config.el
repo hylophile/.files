@@ -7,7 +7,7 @@
 ;; hi:2 ends here
 
 ;; [[file:config.org::*basics][basics:1]]
-(setq doom-leader-alt-key "C-c")
+;; (setq doom-leader-alt-key "C-c")
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 ;; (setq evil-want-C-u-delete nil)
 (map! :map minibuffer-local-map "C-u" #'universal-argument)
@@ -135,7 +135,12 @@
 
 (map! :leader :desc "Undo tree" :n "U" #'vundo)
 (after! vundo
+  (map! :map vundo-mode-map "<escape>" #'vundo-quit)
   (setq vundo-glyph-alist vundo-unicode-symbols))
+
+(after! evil
+  (define-key evil-motion-state-map (kbd "RET") nil)
+                )
 
 (setq which-key-allow-multiple-replacements t)
 (after! which-key
@@ -147,6 +152,10 @@
 (setq
  window-divider-default-bottom-width 1
  window-divider-default-right-width 5)
+
+(map! :v "u" #'undo
+      :v "C-r" #'undo-redo)
+
 
 (setq doom-modeline-modal-icon nil)
 (advice-add #'doom-modeline-segment--modals :override #'ignore)
@@ -172,7 +181,7 @@
 (push 'my/helpful-buffer-p doom-real-buffer-functions)
 
 (map! :map helpful-mode-map :n
-      "K" #'+popup/raise
+      ;; "K" #'+popup/raise
       "<ESC>" #'+popup/quit-window)
 
 ;; (defun my/search-info-org ()
@@ -325,7 +334,7 @@
 
 (after! flycheck
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [224]
-          nil nil '(center repeated)))
+    nil nil '(center repeated)))
 ;; all stuff:1 ends here
 
 ;; [[file:config.org::*maps][maps:1]]
@@ -434,10 +443,13 @@ With prefix arg C-u, copy region instad of killing it."
 
 
 (map! :map org-mode-map
-      :leader
+      :localleader
+      (:prefix ("SPC" . "mine")
       "r" #'org-refile-region
       "d" (cmd! (org-todo "DONE"))
-      "D" #'org-archive-done-tasks)
+      "D" #'org-archive-done-tasks))
+
+(remove-hook 'org-mode-hook #'doom-disable-show-paren-mode-h)
 
 (setq org-agenda-mouse-1-follows-link t)
 (setq org-tags-column 0)
