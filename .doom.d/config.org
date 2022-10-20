@@ -120,7 +120,7 @@ always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
 (use-package! avy
   :config
-  (setq avy-all-windows t))
+  (setq avy-all-windows 'all-frames))
 #+end_src
 
 
@@ -230,9 +230,12 @@ always forget what this does exactly, but it's Good™
 ;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
 ;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
 ;; 10
+
+;; (map! :map embark-general-map "e" #'+vertico/embark-export-write)
 (map! :nv "C-." #'embark-act)
 (map! [remap describe-bindings] #'embark-bindings
       "C-."               #'embark-act
+         ;; :desc "Export to writable buffer" "C-. C-e" #'+vertico/embark-export-write
       (:map minibuffer-local-map
             "C-."               #'embark-act
             "C-c C-."           #'embark-export))
@@ -1024,6 +1027,7 @@ name as well to trigger updates"
 
 ;; (customize-set-variable 'tab-bar-mode t)
 
+  (push '(tab-bar-lines . 0) company-box-frame-parameters)
 
 ;; need to run this later for it to not break frame size for some reason
   (run-at-time nil nil (cmd! (tab-bar-mode +1)))
