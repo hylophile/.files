@@ -1027,7 +1027,8 @@ name as well to trigger updates"
 
 ;; (customize-set-variable 'tab-bar-mode t)
 
-  (push '(tab-bar-lines . 0) company-box-frame-parameters)
+(after! company-box
+  (push '(tab-bar-lines . 0) company-box-frame-parameters))
 
 ;; need to run this later for it to not break frame size for some reason
   (run-at-time nil nil (cmd! (tab-bar-mode +1)))
