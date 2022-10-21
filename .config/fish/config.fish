@@ -14,5 +14,6 @@ fish_add_path -p ~/.emacs.d/bin ~/.config/fisactl/bin ~/.local/bin
 set -U nvm_default_version v16.17.1
 
 set -U EDITOR nvim
+set -U VISUAL nvim
 
 zoxide init fish --cmd d | source
