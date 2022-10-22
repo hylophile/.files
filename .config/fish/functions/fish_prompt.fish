@@ -71,12 +71,21 @@ function fish_prompt
     # echo -n " "(pwd)
     # set_color -o $retc
     echo -n " "
-    for i in (pwd | sed 's#/#\n#g' | tail -n +2)
+
+    if test $PWD = /
         set_color -o $retc
         echo -n /
-        set_color normal
+    else if test $PWD = $HOME
         set_color cyan
-        echo -n $i
+        printf "~"
+    else
+        for i in (dirs | sed 's#/#\n#g')
+            set_color normal
+            set_color cyan
+            printf "%s" $i
+            set_color -o $retc
+            echo -n /
+        end
     end
     set_color -o green
     # echo -n ']'
