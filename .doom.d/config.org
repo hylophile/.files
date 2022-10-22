@@ -70,6 +70,64 @@ always forget what this does exactly, but it's Good™
 
 
 
+* follow file links with position
+#+begin_src emacs-lisp
+(after! link-hint
+  (link-hint-define-type 'file-link
+    :next #'link-hint--next-file-link
+    :at-point-p #'ffap-file-at-point
+    ;; TODO consider making file links opt-in (use :vars)
+    :not-vars '(org-mode Info-mode)
+    :open #'hylo/find-file-at-point-with-pos
+    :copy #'kill-new))
+
+  (defun hylo/find-file-at-point-with-pos ()
+    "goto line and column number of file at point, for example
+~/woop.el:202:13. useful for link-hint-open-link"
+    ;; (interactive)
+  (save-match-data
+    (let* ((line-content (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+           (matched (string-match ":\\([0-9]+\\):?\\([0-9]*\\)" line-content))
+           (line-number (and matched
+                             (match-string 1 line-content)
+                             (string-to-number (match-string 1 line-content))))
+           (col-number (and matched
+                            (match-string 2 line-content)
+                            (string-to-number (match-string 2 line-content))))
+           (filename (ffap-guesser)))
+      (when (boundp 'hy/current-frame)
+        (select-frame-set-input-focus hy/current-frame))
+      (when (boundp 'hy/current-window)
+        (select-window hy/current-window))
+      (find-file filename)
+      (when line-number
+        (goto-char (point-min))
+        (forward-line (- line-number 1)))
+      (when (> col-number 0)
+        (move-to-column (- col-number 1)))
+        )))
+
+(defun hylo/find-file-with-pos-here ()
+  (interactive)
+  (let ((hy/current-frame (selected-frame))
+        (hy/current-window (selected-window)))
+    (link-hint-open-link)))
+
+(map! :leader :prefix "s"  (:desc "hi" "t" #'hylo/find-file-with-pos-here))
+
+
+(defun touch-file ()
+  "Force modification of current file, unless already modified."
+  (interactive)
+  (if (and (verify-visited-file-modtime (current-buffer))
+           (not (buffer-modified-p)))
+      (progn
+        (set-buffer-modified-p t)
+        (save-buffer 0))))
+
+;; FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(\w+/)+(\w+\.)+\w+:[0-9]+:[0-9]+#$(dirs)/&#g"
+;;λ FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(src/|test/)#$(pwd)/&#g"
+#+end_src
 * fonts
 
 
@@ -113,6 +171,9 @@ always forget what this does exactly, but it's Good™
 (custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
 
 #+end_src
+
+#+RESULTS:
+| doom--customize-themes-h-29 | doom--customize-themes-h-30 | doom--customize-themes-h-31 | doom--customize-themes-h-33 | doom--customize-themes-h-34 | doom--customize-themes-h-32 | doom--customize-themes-h-17 | doom--customize-themes-h-44 | doom--customize-themes-h-45 |
 
 * theme
 
@@ -204,6 +265,7 @@ always forget what this does exactly, but it's Good™
 (defun my/helpful-buffer-p (buf)
   (string-prefix-p "*helpful" (buffer-name buf)))
 (push 'my/helpful-buffer-p doom-real-buffer-functions)
+
 
 (map! :map helpful-mode-map :n
       ;; "K" #'+popup/raise
@@ -339,7 +401,7 @@ always forget what this does exactly, but it's Good™
   (save-some-buffers t))
 
 
-(add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
+;; (add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
 
 ;; (use-package! company-quickhelp)
 
@@ -768,18 +830,19 @@ lsp-ui-doc-enable nil))
 
 (custom-set-faces!
   `(aw-leading-char-face
-    :foreground ,(face-attribute 'mode-line-emphasis :foreground)
+    ;; :foreground ,(face-attribute 'mode-line-emphasis :foreground)
+    :foreground ,(doom-color 'red)
     :background ,(face-attribute 'mode-line :background)
     :weight bold :height 1.0 :box (:line-width -50 :color ,(face-attribute 'mode-line :background))))
-
 (use-package! ace-window
   :config
+  (setq aw-scope 'visible)
   (setq aw-dispatch-always t)
   (after! treemacs
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   (ace-window-display-mode t)
   (setq aw-background nil)
-  (setq aw-keys '(?n ?r ?t ?d ?u ?i ?e ?o))
+(setq aw-keys '(?t ?n ?s ?e ?r ?i ?a ?o ?d ?h ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
   (setq aw-dispatch-alist
         ;; no docstring means dont prompt for window, use current (weird but ok)
         '((?k aw-delete-window "Delete Window")
