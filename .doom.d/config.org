@@ -20,6 +20,8 @@ always forget what this does exactly, but it's Good™
 ;; (setq evil-want-C-u-delete nil)
 (map! :map minibuffer-local-map "C-u" #'universal-argument)
 
+(map! "C-s" #'save-buffer)
+(map! :leader "f s" nil)
 (map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
 
