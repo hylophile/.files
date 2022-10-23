@@ -32,7 +32,7 @@ always forget what this does exactly, but it's Good™
 ;; clients, file templates and snippets.
 (setq user-full-name "name"
       user-mail-address "mail")
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type nil)
 
 (setq which-key-idle-delay 0.3)
 
@@ -208,7 +208,7 @@ always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
 (use-package! avy
   :config
-  (setq avy-t 1)
+  (setq avy-timeout-seconds 0.3)
   (setq avy-all-windows 'all-frames))
 (map! :nvieomg "C-t" #'avy-goto-char-timer
         :map magit-mode-map :n "C-t" #'avy-goto-char-timer
@@ -218,12 +218,61 @@ always forget what this does exactly, but it's Good™
       :map evil-org-mode-map :i "C-l" #'avy-goto-line)
 
 
+(defun avy-action-lookup-documentation (pt)
+  (save-excursion
+    (goto-char pt)
+    (+lookup/documentation (doom-thing-at-point-or-region)))
+  ;; (select-window
+  ;;  (cdr (ring-ref avy-ring 0))
+  ;;  t)
+  )
+
+(setf (alist-get ?h avy-dispatch-alist) 'avy-action-lookup-documentation)
+
 ;; (define-key org-mode-map (kbd "C-l") #'avy-goto-line)
 
-(setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?h ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
+(setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
 
+(defun avy-goto-char-3 (char1 char2 char3 &optional arg beg end)
+  "Jump to the currently visible CHAR1 followed by CHAR2.
+The window scope is determined by `avy-all-windows'.
+When ARG is non-nil, do the opposite of `avy-all-windows'.
+BEG and END narrow the scope where candidates are searched."
+  (interactive (list (let ((c1 (read-char "char 1: " t)))
+                       (if (memq c1 '(? ?\b))
+                           (keyboard-quit)
+                         c1))
+                     (let ((c2 (read-char "char 2: " t)))
+                       (cond ((eq c2 ?)
+                              (keyboard-quit))
+                             ((memq c2 avy-del-last-char-by)
+                              (keyboard-escape-quit)
+                              (call-interactively 'avy-goto-char-3))
+                             (t
+                              c2)))
+                     (let ((c3 (read-char "char 3: " t)))
+                       (cond ((eq c3 ?)
+                              (keyboard-quit))
+                             ((memq c3 avy-del-last-char-by)
+                              (keyboard-escape-quit)
+                              (call-interactively 'avy-goto-char-3))
+                             (t
+                              c3)))
+                     current-prefix-arg
+                     nil nil))
+  (when (eq char1 ?)
+    (setq char1 ?\n))
+  (when (eq char2 ?)
+    (setq char2 ?\n))
+  (avy-with avy-goto-char-3
+    (avy-jump
+     (regexp-quote (string char1 char2))
+     :window-flip arg
+     :beg beg
+     :end end)))
 
-
+(set-popup-rule!
+  "^\\*helpful" :side 'right :size 0.5)
 
 (defun +my/emacs-lisp--in-package-buffer-p ()
   (interactive)
@@ -1203,7 +1252,10 @@ name as well to trigger updates"
 ;; (customize-set-variable 'tab-bar-mode t)
 
 (after! company-box
-  (push '(tab-bar-lines . 0) company-box-frame-parameters))
+  (push '(tab-bar-format . nil) company-box-frame-parameters))
+
+  ;; (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters))
+;; ^ together with tab-bar-lines . 0
 
 ;; need to run this later for it to not break frame size for some reason
   (run-at-time nil nil (cmd! (tab-bar-mode +1)))
