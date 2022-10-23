@@ -835,10 +835,12 @@ lsp-ui-doc-enable nil))
 
 (custom-set-faces!
   `(aw-leading-char-face
-    ;; :foreground ,(face-attribute 'mode-line-emphasis :foreground)
-    :foreground ,(doom-color 'red)
-    :background ,(face-attribute 'mode-line :background)
-    :weight bold :height 1.0 :box (:line-width -50 :color ,(face-attribute 'mode-line :background))))
+    :foreground ,(face-attribute 'mode-line-emphasis :foreground)
+    ;; :foreground ,(doom-color 'red)
+    :background ,(face-attribute 'solaire-default-face :background)
+    :width ultra-expanded
+    :weight bold :height 3.0))
+    ;; :weight bold :height 2.0 :box (:line-width (5 . 5) :color ,(face-attribute 'mode-line :background))))
 (use-package! ace-window
   :config
   (setq aw-scope 'visible)
@@ -847,7 +849,7 @@ lsp-ui-doc-enable nil))
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   (ace-window-display-mode t)
   (setq aw-background nil)
-(setq aw-keys '(?t ?n ?s ?e ?r ?i ?a ?o ?d ?h ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
+(setq aw-keys '(?t ?n ?e ?r ?i ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v))
   (setq aw-dispatch-alist
         ;; no docstring means dont prompt for window, use current (weird but ok)
         '((?k aw-delete-window "Delete Window")
