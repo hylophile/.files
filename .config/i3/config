@@ -154,9 +154,8 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+Control+t layout tabbed
-bindsym $mod+Shift+s layout toggle split
+bindsym $mod+Shift+s layout tabbed
+bindsym $mod+s layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+f floating toggle
@@ -165,11 +164,13 @@ bindsym $mod+Shift+b border toggle
 bindsym $mod+Shift+p exec maim -s -u | xclip -selection clipboard -t image/png -i
 bindsym $mod+z exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
 bindsym $mod+Control+z exec maim -s -u | xclip -selection clipboard -t image/png -i
-bindsym F5 exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
+bindsym Shift+F4 exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
 bindsym F4 exec maim -s -u | xclip -selection clipboard -t image/png -i
 # make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
 #bindsym --release $mod+z exec maim -s $(date +%Y-%m-%d-%s.png) -e 'mv $f ~/org/img/ && echo [[file:img/$f]] | xclip -selection primary'
 bindsym --release $mod+Shift+z exec ~/scripts/org-screenshot.sh
+
+bindsym $mod+e exec ~/scripts/open-emacs-or-focus.sh
 
 # change focus between tiling / floating windows
 bindsym $mod+period focus mode_toggle
@@ -259,6 +260,8 @@ bindsym $mod+Shift+c reload
 bindsym $mod+F5 restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Control+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+
 
 # [[file:sway.org::*(move to) new workspace][(move to) new workspace:1]]
 bindsym $mod+n exec ~/.config/sway/new-workspace.sh

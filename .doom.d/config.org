@@ -37,6 +37,11 @@ always forget what this does exactly, but it's Good™
 
 (setq which-key-idle-delay 0.3)
 
+(global-visual-line-mode)
+
+
+(after! rotate-text
+  (add-to-list 'rotate-text-words '("false" "true")))
 
 (setq auth-sources '("~/.authinfo"))
 (after! forge
