@@ -1,8 +1,11 @@
 #+title: Config
 #+author: hylo
-#+property: header-args:emacs-lisp :tangle yes :comments link
+#+property: header-args:emacs-lisp :tangle yes :comments link :results silent
 
-* hi
+* aall
+
+** hi
+
 always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
 ;;; -*- lexical-binding: t; -*-
@@ -12,22 +15,18 @@ always forget what this does exactly, but it's Good™
 (setq projectile-project-search-path '("~/code"))
 #+end_src
 
-* basics
+** basics
+
 #+begin_src emacs-lisp
 
-;; (setq doom-leader-alt-key "C-c")
+(setq doom-localleader-key "\\")
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 ;; (setq evil-want-C-u-delete nil)
-(map! :map minibuffer-local-map "C-u" #'universal-argument)
 
-(map! "C-s" #'save-buffer)
-(map! :leader "f s" nil)
-(map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
 
-(map! :i "C-u" #'universal-argument)
-
 (setq auth-sources '("~/.authinfo"))
+
 ;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
@@ -40,16 +39,7 @@ always forget what this does exactly, but it's Good™
 (global-visual-line-mode)
 
 
-(after! rotate-text
-  (add-to-list 'rotate-text-words '("false" "true")))
 
-(setq auth-sources '("~/.authinfo"))
-(after! forge
-  (setq forge-add-pullreq-refspec nil)
-  (add-to-list 'forge-alist
-               '("gitlab.employer"
-                 "gitlab.employer/api/v4"
-                 "gitlab.employer" forge-gitlab-repository)))
 
 (setq-default
  delete-by-moving-to-trash t                      ; Delete files to trash
@@ -70,12 +60,51 @@ always forget what this does exactly, but it's Good™
 
 
 
-(setq confirm-kill-emacs nil)
+(setq confirm-kill-emacs nil) ; I know what I said.
+
+(setq
+ window-divider-default-bottom-width 1
+ window-divider-default-right-width 5)
+
+
+(add-hook! 'rainbow-mode-hook
+  (hl-line-mode (if rainbow-mode -1 +1)))
+
+(map! :leader
+      "t n" #'rainbow-mode
+      "t t" #'+vterm/toggle
+      "t T" #'+vterm/here)
+
 #+end_src
 
+** modeline
+#+begin_src emacs-lisp
+(setq doom-modeline-modal-icon nil)
+
+(advice-add #'doom-modeline-segment--modals :override #'ignore)
+
+#+end_src
+
+** magit
+
+#+begin_src emacs-lisp
 
 
-* follow file links with position
+
+(after! forge
+  (setq forge-add-pullreq-refspec nil)
+  (add-to-list 'forge-alist
+               '("gitlab.employer"
+                 "gitlab.employer/api/v4"
+                 "gitlab.employer" forge-gitlab-repository)))
+
+(map! :map magit-mode-map
+      "<escape>" #'+magit/quit)
+
+#+end_src
+
+** follow file links with position
+
 #+begin_src emacs-lisp
 (after! link-hint
   (link-hint-define-type 'file-link
@@ -133,23 +162,10 @@ always forget what this does exactly, but it's Good™
 ;; FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(\w+/)+(\w+\.)+\w+:[0-9]+:[0-9]+#$(dirs)/&#g"
 ;;λ FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(src/|test/)#$(pwd)/&#g"
 #+end_src
-* fonts
 
-
+** fonts
 
 #+begin_src emacs-lisp
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq
  ;; doom-font (font-spec :family "Fira Code" :size 10.0)
  ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
@@ -166,38 +182,52 @@ always forget what this does exactly, but it's Good™
  doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
 
 (setq doom-font-increment 1)
-;;
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-                                        ;test
-
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :family "Victor Mono"))
 (custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
 
 #+end_src
 
-#+RESULTS:
-| doom--customize-themes-h-29 | doom--customize-themes-h-30 | doom--customize-themes-h-31 | doom--customize-themes-h-33 | doom--customize-themes-h-34 | doom--customize-themes-h-32 | doom--customize-themes-h-17 | doom--customize-themes-h-44 | doom--customize-themes-h-45 |
 
-* theme
+** theme
 
-* vterm
+#+begin_src emacs-lisp
 
-* avy
+
+;; (setq doom-theme (hylo/random-dark-theme))
+;; (setq doom-theme 'ef-spring)
+(setq doom-theme 'doom-dracula)
+
+
+(use-package! ef-themes)
+#+end_src
+
+** vterm
+
+** avy
+
 #+begin_src emacs-lisp
 (use-package! avy
   :config
   (setq avy-all-windows 'all-frames))
+(map! :nvieomg "C-t" #'avy-goto-char-timer
+        :map magit-mode-map :n "C-t" #'avy-goto-char-timer
+        :map evil-org-mode-map :i "C-t" #'avy-goto-char-timer)
+
+(setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?h ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
+
+#+end_src
+
+** dired
+
+#+begin_src emacs-lisp
+
+(setq dired-dwim-target t)
 #+end_src
 
 
+** all stuff
 
-* all stuff
 #+begin_src emacs-lisp
-;; (setq doom-theme (hylo/random-dark-theme))
-;; (setq doom-theme 'ef-spring)
-(setq doom-theme 'doom-dracula)
 
 ;;
 ;; (setq +doom-dashboard-functions (append
@@ -212,7 +242,7 @@ always forget what this does exactly, but it's Good™
 
 ;; (map! :leader :desc "Actions" "e" #'embark-act)
 
-(setq dired-dwim-target t)
+
 
 (defmacro nsa! (&rest body)
   `(when (string= "nsa" (system-name)) ,@body))
@@ -220,18 +250,7 @@ always forget what this does exactly, but it's Good™
 (defmacro rook! (&rest body)
   `(when (string= "rook" (system-name)) ,@body))
 
-(use-package! page-break-lines
-  :hook
-  (emacs-lisp-mode . page-break-lines-mode))
 
-(map! :leader :desc "Undo tree" :n "U" #'vundo)
-(after! vundo
-  (map! :map vundo-mode-map "<escape>" #'vundo-quit)
-  (setq vundo-glyph-alist vundo-unicode-symbols))
-
-(after! evil
-  (define-key evil-motion-state-map (kbd "RET") nil)
-                )
 
 (setq which-key-allow-multiple-replacements t)
 (after! which-key
@@ -240,29 +259,155 @@ always forget what this does exactly, but it's Good™
    '(("" . "\\`+?evil[-:/]?\\(?:a-\\)?\\(.*\\)") . (nil . "ຯ\\1"))
    '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))))
 
-(setq
- window-divider-default-bottom-width 1
- window-divider-default-right-width 5)
+
 
 (map! :v "u" #'undo
       :v "C-r" #'undo-redo)
 
 
-(setq doom-modeline-modal-icon nil)
-(advice-add #'doom-modeline-segment--modals :override #'ignore)
-(use-package! lsp-tailwindcss
-  :init
-  (setq lsp-tailwindcss-add-on-mode t)
-  :config)
 
-(add-hook! 'rainbow-mode-hook
-  (hl-line-mode (if rainbow-mode -1 +1)))
+
+
+
+;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
+;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
+;; 10
+
+;; (map! :map embark-general-map "e" #'+vertico/embark-export-write)
+(map! :nv "C-." #'embark-act)
+(map! [remap describe-bindings] #'embark-bindings
+      "C-."               #'embark-act
+         ;; :desc "Export to writable buffer" "C-. C-e" #'+vertico/embark-export-write
+      (:map minibuffer-local-map
+            "C-."               #'embark-act
+            "C-c C-."           #'embark-export))
+
+(after! latex
+  (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)))
+(setq +latex-viewers '(zathura pdf-tools evince okular skim sumatrapdf))
+
+(map! :map cdlatex-mode-map "'" nil)
+
+
+;; (setq web-mode-script-padding 4)
+
+(setq doom-modeline-vcs-max-length 30)
+
+;; (setq doom-leader-alt-key "<f8>")
+;; (setq doom-localleader-alt-key "<f8> m")
+
+(use-package! emacs-everywhere
+  :config
+  ;; (set-company-backend! 'emacs-everywhere-mode 'company-elisp)
+  ;; (add-hook! 'emacs-everywhere-init-hooks
+  ;;   (lambda ()
+  ;;     (set (make-local-variable 'company-backends)
+  ;;          (append (car company-backends)
+  ;;                  (list 'company-elisp)))))
+  (defadvice! my/emacs-everywhere-position ()
+    :override #'emacs-everywhere-set-frame-position
+    ()))
+
+
+(delete "Noto Color Emoji" doom-emoji-fallback-font-families)
+
+;; (defun rc/find-file-recursive ()
+;;   (interactive)
+;;   (let* ((cwd (file-name-directory (buffer-file-name)))
+;;          (files (directory-files-recursively cwd ""))
+;;          (files-without-cwd (mapcar (lambda (f) (string-remove-prefix cwd f)) files)))
+;;     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
+
+(load! "load/mail.el")
+(load! "load/dotfiles.el")
+;;(load! "load/format-classes.el")
+;; (after! org
+;;   (add-to-list 'org-agenda-custom-commands
+;;                '("y" "year"
+;;                  agenda ""
+;;                  ((org-agenda-span 'year)))))
 
 (map! :leader
-      "t n" #'rainbow-mode
-      "t t" #'+vterm/toggle
-      "t T" #'+vterm/here)
+      :desc "FuZzily find File in home"
+      "f z f" (cmd!! #'affe-find "~/"))
+(map! :leader
+      :desc "FuZzily find file in this Dir"
+      "f z d" (cmd!! #'affe-find))
 
+(remove-hook! 'doom-modeline-mode-hook #'size-indication-mode)
+
+
+(nsa!
+ (load! "load/work-work.el" nil t))
+
+
+
+
+;; (Use-package! spookfox
+;;   :config
+;;   (setq spookfox-saved-tabs-target
+;;         `(file+headline ,(expand-file-name "spookfox.org" org-directory) "Tabs"))
+;;   (spookfox-init))
+
+
+
+(defun save-all ()
+  (interactive)
+  (save-some-buffers t))
+
+
+;; (add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
+
+;; (use-package! company-quickhelp)
+
+;; (map! :map emmet-mode-keymap
+;;       [tab] #'indent-for-tab-command)
+
+
+
+#+end_src
+
+** apheleia formatting
+
+#+begin_src emacs-lisp
+
+(use-package! apheleia
+  :config
+  (apheleia-global-mode +1))
+
+#+end_src
+
+** flycheck
+
+#+begin_src emacs-lisp
+
+(after! flycheck
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [224]
+    nil nil '(center repeated)))
+
+#+end_src
+
+** company
+
+#+begin_src emacs-lisp
+
+(after! company
+  (add-hook! 'evil-normal-state-entry-hook
+    (defun +company-abort-h ()
+      ;; HACK `company-abort' doesn't no-op if company isn't active; causing
+      ;;      unwanted side-effects, like the suppression of messages in the
+      ;;      echo-area.
+      ;; REVIEW Revisit this to refactor; shouldn't be necessary!
+      (when company-candidates
+        (company-abort))))
+
+  (setq company-idle-delay 0.3))
+
+#+end_src
+
+** helpful
+
+#+begin_src emacs-lisp
 (defun my/info-buffer-p (buf)
   (string= (buffer-name buf) "*info*"))
 (push 'my/info-buffer-p doom-real-buffer-functions)
@@ -295,147 +440,9 @@ always forget what this does exactly, but it's Good™
 ;;       "n" #'my/search-info-org)
 
 
-
-;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
-;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
-;; 10
-
-;; (map! :map embark-general-map "e" #'+vertico/embark-export-write)
-(map! :nv "C-." #'embark-act)
-(map! [remap describe-bindings] #'embark-bindings
-      "C-."               #'embark-act
-         ;; :desc "Export to writable buffer" "C-. C-e" #'+vertico/embark-export-write
-      (:map minibuffer-local-map
-            "C-."               #'embark-act
-            "C-c C-."           #'embark-export))
-
-(after! latex
-  (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)))
-(setq +latex-viewers '(zathura pdf-tools evince okular skim sumatrapdf))
-
-(map! :map cdlatex-mode-map "'" nil)
-
-
-(setq web-mode-script-padding 4)
-(setq doom-modeline-vcs-max-length 30)
-;; (setq doom-leader-alt-key "<f8>")
-;; (setq doom-localleader-alt-key "<f8> m")
-
-(use-package! emacs-everywhere
-  :config
-  ;; (set-company-backend! 'emacs-everywhere-mode 'company-elisp)
-  ;; (add-hook! 'emacs-everywhere-init-hooks
-  ;;   (lambda ()
-  ;;     (set (make-local-variable 'company-backends)
-  ;;          (append (car company-backends)
-  ;;                  (list 'company-elisp)))))
-  (defadvice! my/emacs-everywhere-position ()
-    :override #'emacs-everywhere-set-frame-position
-    ()))
-
-
-(delete "Noto Color Emoji" doom-emoji-fallback-font-families)
-
-(defun rc/find-file-recursive ()
-  (interactive)
-  (let* ((cwd (file-name-directory (buffer-file-name)))
-         (files (directory-files-recursively cwd ""))
-         (files-without-cwd (mapcar (lambda (f) (string-remove-prefix cwd f)) files)))
-    (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
-
-(load! "load/mail.el")
-(load! "load/dotfiles.el")
-;;(load! "load/format-classes.el")
-;;(load! "load/kzk-config.el")
-;; (after! org
-;;   (add-to-list 'org-agenda-custom-commands
-;;                '("y" "year"
-;;                  agenda ""
-;;                  ((org-agenda-span 'year)))))
-(map! :leader
-      :desc "FuZzily find File in home"
-      "f z f" (cmd!! #'affe-find "~/"))
-(map! :leader
-      :desc "FuZzily find file in this Dir"
-      "f z d" (cmd!! #'affe-find))
-
-(remove-hook! 'doom-modeline-mode-hook #'size-indication-mode)
-
-
-(nsa!
- (load! "load/kzk-config.el" nil t))
-
-;; (map!
-;;  :after (evil-snipe evil)
-;;                     :m "," #'evil-snipe-repeat)
-;; (setq evil-snipe-override-evil-repeat-keys nil)
-(after! evil-snipe
-  ;; (when evil-snipe-override-evil-repeat-keys
-  (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
-  (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
-
-  (evil-define-key* '(motion normal) evil-snipe-local-mode-map
-    "S" nil
-    "," 'evil-snipe-repeat
-    ";" 'evil-snipe-repeat-reverse)
-  (evil-define-key* '(normal) evil-snipe-override-local-mode-map
-    "," 'evil-snipe-repeat
-    ";" 'evil-snipe-repeat-reverse)
-
-
-  (map! :n "S" #'avy-goto-char-2)
-  )
-
-(map! :map magit-mode-map
-      "<escape>" #'+magit/quit)
-
-;; (use-package! spookfox
-;;   :config
-;;   (setq spookfox-saved-tabs-target
-;;         `(file+headline ,(expand-file-name "spookfox.org" org-directory) "Tabs"))
-;;   (spookfox-init))
-
-(use-package! apheleia
-  :config
-  (apheleia-global-mode +1))
-
-(use-package! ef-themes)
-
-(defun save-all ()
-  (interactive)
-  (save-some-buffers t))
-
-
-;; (add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
-
-;; (use-package! company-quickhelp)
-
-;; (map! :map emmet-mode-keymap
-;;       [tab] #'indent-for-tab-command)
-
-(after! company
-  (add-hook! 'evil-normal-state-entry-hook
-    (defun +company-abort-h ()
-      ;; HACK `company-abort' doesn't no-op if company isn't active; causing
-      ;;      unwanted side-effects, like the suppression of messages in the
-      ;;      echo-area.
-      ;; REVIEW Revisit this to refactor; shouldn't be necessary!
-      (when company-candidates
-        (company-abort))))
-
-  (setq company-idle-delay 0.3))
-
-
-
-(after! flycheck
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [224]
-    nil nil '(center repeated)))
 #+end_src
 
-#+RESULTS:
-: flycheck-fringe-bitmap-double-arrow
-
-* maps
+** maps
 
 #+begin_src emacs-lisp
 (map! :ni "C-+" #'doom/increase-font-size)
@@ -446,7 +453,8 @@ always forget what this does exactly, but it's Good™
       :desc "Magit push"
       "g p" #'magit-push)
 
-(setq avy-keys '(?t ?n ?s ?e ?r ?i ?a ?o ?d ?h ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
+
+
 
 (map! :leader
       "|" #'+popup/raise)
@@ -502,10 +510,20 @@ always forget what this does exactly, but it's Good™
 (map! :n [mouse-8] #'better-jumper-jump-backward
       :n [mouse-9] #'better-jumper-jump-forward)
 
+
+(map! :i "C-u" #'universal-argument)
+
+(map! :map minibuffer-local-map "C-u" #'universal-argument)
+
+(map! "C-s" #'save-buffer)
+(map! :leader "f s" nil)
+(map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
+
+
+
 #+end_src
 
-
-* org mode
+** org mode
 
 #+begin_src emacs-lisp
 
@@ -513,7 +531,7 @@ always forget what this does exactly, but it's Good™
 
 (defvar org-refile-region-format "\n%s\n")
 
-(defvar org-refile-region-position 'top
+(defvar org-refile-region-position 'bottom
   "Where to refile a region. Use 'bottom to refile at the
 end of the subtree. ")
 
@@ -550,7 +568,7 @@ With prefix arg C-u, copy region instad of killing it."
 (map! :map org-mode-map
       :localleader
       (:prefix ("SPC" . "mine")
-      "r" #'org-refile-region
+      ;; "r" #'org-refile-region ; bugged
       "d" (cmd! (org-todo "DONE"))
       "D" #'org-archive-done-tasks))
 
@@ -781,24 +799,91 @@ exist after each headings's drawers."
   (org-mode . mixed-pitch-mode)
   )
 
+#+end_src
+
+*** org super agenda
+#+begin_src emacs-lisp
+(use-package! org-super-agenda
+  :commands org-super-agenda-mode
+  :config
+  (setq org-super-agenda-groups '(
+                                  (:name "Plan"
+                                   :time-grid t)
+
+                                  (:name "Important"
+                                   :priority>= "C")
+                                  (:name "Scheduled"
+                                   :scheduled t)
+                                  (:name "Uni"
+                                   ;; :face (:foreground ,(doom-color 'blue))
+                                   :tag "uni")
+                                  (:name "Health" :tag "health")
+                                  (:name "Hobby" :tag "tech" :tag "emacs")
+                                  (:name "Buy" :tag "buy")
+                                  (:category "Diary" :name "Diary")
+                                  (:name "Work"  ; Optionally specify section name
+                                   ;; :face (:foreground ,(doom-color 'green))
+                                   :order 99
+                                   :tag "work"
+                                   :category "work")
+                                  ;; :and (:tag "work" :time-grid t))
+
+                                  (:name "Other" :anything t))))
 
 
+
+(setq org-agenda-custom-commands
+      '(("n" "3 days and todos"
+         ((agenda "" ((org-agenda-span 3)))
+          (alltodo "" ((org-agenda-overriding-header "")))))))
+
+(defadvice! my/alltodo-without-time-grid (fn &optional arg)
+  "the org-super-agenda selector :time-grid t collects all TODO
+items in the alltodo agenda, so we dynamically remove it when using that."
+  :around #'org-todo-list
+  (let ((org-super-agenda-groups (cdr org-super-agenda-groups)))
+    (apply fn arg)))
+
+
+
+(setq org-agenda-category-icon-alist
+      `(
+        ("uni" (#("🌳")) nil nil :ascent center)
+        ;; ("work" ,(list (all-the-icons-material "work" :height 1.2 :face 'all-the-icons-green)) nil nil :ascent center)
+        ("work" (#("🌸")) nil nil :ascent center)
+        ("buy" (#("🪙")) nil nil :ascent center)
+        ("health" (#("💊")) nil nil :ascent center)
+        ("tech" (#("🦄")) nil nil :ascent center)
+        ("emacs" (#("🎹")) nil nil :ascent center)
+        ("chore" (#("🔱")) nil nil :ascent center)
+        ;; ("" ,(list (all-the-icons-faicon "pencil" :height 1.2)) nil nil :ascent center)
+        ("inbox" (#("🌊")) nil nil :ascent center)
+        ("" (#("🌈")) nil nil :ascent center)))
 
 
 #+end_src
 
 
-
-* lsp
+** lsp
 
 #+begin_src emacs-lisp
+(defun my/lsp-no-code-actions ()
+  (setq lsp-ui-sideline-show-code-actions nil))
+(add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
+
 (setq +format-with-lsp nil)
 (after! lsp-ui
 (setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
 lsp-ui-doc-enable nil))
 
+(use-package! lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  :config)
 #+end_src
-* evil
+
+** evil
+
 #+begin_src emacs-lisp
 (setq evil-disable-insert-mode-bindings t)
 (setq evil-ex-substitute-global t)
@@ -809,9 +894,66 @@ lsp-ui-doc-enable nil))
 (evil-scroll-line-to-center nil))
 (map! :after evil :nv "'" #'evil-goto-mark)
 
+(setq evil-visual-update-x-selection-p t)
+#+end_src
 
-#+end_src* misc
-* windows
+*** evil snipe
+#+begin_src emacs-lisp
+;; (map!
+;;  :after (evil-snipe evil)
+;;                     :m "," #'evil-snipe-repeat)
+;; (setq evil-snipe-override-evil-repeat-keys nil)
+(after! evil-snipe
+  ;; (when evil-snipe-override-evil-repeat-keys
+  (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
+  (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
+
+  (evil-define-key* '(motion normal) evil-snipe-local-mode-map
+    "S" nil
+    "," 'evil-snipe-repeat
+    ";" 'evil-snipe-repeat-reverse)
+  (evil-define-key* '(normal) evil-snipe-override-local-mode-map
+    "," 'evil-snipe-repeat
+    ";" 'evil-snipe-repeat-reverse))
+
+
+
+
+
+(setq evil-snipe-scope 'whole-buffer)
+
+(after! evil
+  (define-key evil-motion-state-map (kbd "RET") nil))
+
+
+#+end_src
+
+
+** misc
+
+#+begin_src emacs-lisp
+
+(use-package! page-break-lines
+  :hook
+  (emacs-lisp-mode . page-break-lines-mode))
+
+(map! :leader :desc "Undo tree" :n "U" #'vundo)
+(after! vundo
+  (map! :map vundo-mode-map "<escape>" #'vundo-quit)
+  (setq vundo-glyph-alist vundo-unicode-symbols))
+
+(defun rename-buffers-with-annoying-names ()
+  (when (member (buffer-name) '("index.ts" "package.json"))
+    (when (string-match "[^/]+/[^/]+$" (buffer-file-name))
+      (rename-buffer (match-string 0 (buffer-file-name)) t))))
+
+(add-hook 'change-major-mode-hook #'rename-buffers-with-annoying-names)
+
+
+#+end_src
+
+** windows
+
 #+begin_src emacs-lisp
 
 (map! :leader
@@ -835,11 +977,13 @@ lsp-ui-doc-enable nil))
 
 (custom-set-faces!
   `(aw-leading-char-face
+    ;; :family "Jost*"
     :foreground ,(face-attribute 'mode-line-emphasis :foreground)
     ;; :foreground ,(doom-color 'red)
-    :background ,(face-attribute 'solaire-default-face :background)
-    :width ultra-expanded
-    :weight bold :height 3.0))
+    ;; :background ,(face-attribute 'solaire-default-face :background)
+    ;; :width ultra-expanded
+    ;; :weight light
+    :height 5.0))
     ;; :weight bold :height 2.0 :box (:line-width (5 . 5) :color ,(face-attribute 'mode-line :background))))
 (use-package! ace-window
   :config
@@ -863,23 +1007,30 @@ lsp-ui-doc-enable nil))
           (?s hylo/split-window-fair-and-follow)
           (?S aw-swap-window "Swap Windows")
           (?u winner-undo)
+          (?R +popup/raise "Raise Window")
           ;; (?v aw-split-window-vert "Split Vert Window")
           ;; (?h aw-split-window-horz "Split Horz Window")
           (?v +evil/window-vsplit-and-follow)
           (?h +evil/window-split-and-follow)
           (?? aw-show-dispatch-help))))
+
 #+end_src
 
-* no idea
+
+
+** rotate text
+
+#+begin_src emacs-lisp
+(after! rotate-text
+  (add-to-list 'rotate-text-words '("false" "true")))
+#+end_src
+
+** no idea
+#+begin_src emacs-lisp :tangle no
+
 
 (setq find-file-visit-truename nil)
 (setq find-file-existing-other-name nil)
-
-
-
-
-
-
 ;; (defun my/todo-org-is-unreal (buf)
 ;;       (string= (buffer-name buf) "todo.org"))
 ;; (push #'my/todo-org-is-unreal doom-unreal-buffer-functions)
@@ -898,15 +1049,13 @@ lsp-ui-doc-enable nil))
 
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 
+#+end_src
 
 
 
 
+** mail
 
-
-
-
-* mail
 #+begin_src emacs-lisp
 
 (defadvice! go-to-workspace-if-exists-mu4e (fun)
@@ -971,93 +1120,12 @@ lsp-ui-doc-enable nil))
 ;;  [tab] #'company-complete-selection
 ;;  "TAB" #'company-complete-selection)
 
-
-
-(defun my/lsp-no-code-actions ()
-  (setq lsp-ui-sideline-show-code-actions nil))
-(add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
-
-
-(defun rename-buffers-with-annoying-names ()
-  (when (member (buffer-name) '("index.ts" "package.json"))
-    (when (string-match "[^/]+/[^/]+$" (buffer-file-name))
-      (rename-buffer (match-string 0 (buffer-file-name)) t))))
-
-(add-hook 'change-major-mode-hook #'rename-buffers-with-annoying-names)
-
-
-
-(setq evil-visual-update-x-selection-p t)
-
-
-(setq evil-snipe-scope 'whole-buffer)
-
-
-
-
-
-(use-package! org-super-agenda
-  :commands org-super-agenda-mode
-  :config
-  (setq org-super-agenda-groups '(
-                                  (:name "Plan"
-                                   :time-grid t)
-
-                                  (:name "Important"
-                                   :priority>= "C")
-                                  (:name "Scheduled"
-                                   :scheduled t)
-                                  (:name "Uni"
-                                   ;; :face (:foreground ,(doom-color 'blue))
-                                   :tag "uni")
-                                  (:name "Health" :tag "health")
-                                  (:name "Hobby" :tag "tech" :tag "emacs")
-                                  (:name "Buy" :tag "buy")
-                                  (:category "Diary" :name "Diary")
-                                  (:name "Work"  ; Optionally specify section name
-                                   ;; :face (:foreground ,(doom-color 'green))
-                                   :order 99
-                                   :tag "work"
-                                   :category "work")
-                                  ;; :and (:tag "work" :time-grid t))
-
-                                  (:name "Other" :anything t))))
-
-
-
-(setq org-agenda-custom-commands
-      '(("n" "3 days and todos"
-         ((agenda "" ((org-agenda-span 3)))
-          (alltodo "" ((org-agenda-overriding-header "")))))))
-
-(defadvice! my/alltodo-without-time-grid (fn &optional arg)
-  "the org-super-agenda selector :time-grid t collects all TODO
-items in the alltodo agenda, so we dynamically remove it when using that."
-  :around #'org-todo-list
-  (let ((org-super-agenda-groups (cdr org-super-agenda-groups)))
-    (apply fn arg)))
-
-
-
-(setq org-agenda-category-icon-alist
-      `(
-        ("uni" (#("🌳")) nil nil :ascent center)
-        ;; ("work" ,(list (all-the-icons-material "work" :height 1.2 :face 'all-the-icons-green)) nil nil :ascent center)
-        ("work" (#("🌸")) nil nil :ascent center)
-        ("buy" (#("🪙")) nil nil :ascent center)
-        ("health" (#("💊")) nil nil :ascent center)
-        ("tech" (#("🦄")) nil nil :ascent center)
-        ("emacs" (#("🎹")) nil nil :ascent center)
-        ("chore" (#("🔱")) nil nil :ascent center)
-        ;; ("" ,(list (all-the-icons-faicon "pencil" :height 1.2)) nil nil :ascent center)
-        ("inbox" (#("🌊")) nil nil :ascent center)
-        ("" (#("🌈")) nil nil :ascent center)))
-
 #+end_src
 
 
 
-* workspaces
+** workspaces
+
 #+begin_src emacs-lisp
 
 (custom-set-faces!
@@ -1106,3 +1174,4 @@ name as well to trigger updates"
 ;; need to run this later for it to not break frame size for some reason
   (run-at-time nil nil (cmd! (tab-bar-mode +1)))
 #+end_src
+
