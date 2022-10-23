@@ -208,13 +208,43 @@ always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
 (use-package! avy
   :config
+  (setq avy-t 1)
   (setq avy-all-windows 'all-frames))
 (map! :nvieomg "C-t" #'avy-goto-char-timer
         :map magit-mode-map :n "C-t" #'avy-goto-char-timer
         :map evil-org-mode-map :i "C-t" #'avy-goto-char-timer)
 
+(map! :g "C-l" #'avy-goto-line
+      :map evil-org-mode-map :i "C-l" #'avy-goto-line)
+
+
+;; (define-key org-mode-map (kbd "C-l") #'avy-goto-line)
+
 (setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?h ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
 
+
+
+
+(defun +my/emacs-lisp--in-package-buffer-p ()
+  (interactive)
+  (let* ((file-path (buffer-file-name (buffer-base-buffer)))
+         (file-base (if file-path (file-name-base file-path))))
+    (and (derived-mode-p 'emacs-lisp-mode)
+         (or (null file-base)
+             (locate-file file-base (custom-theme--load-path) '(".elc" ".el"))
+             (save-excursion
+               (save-restriction
+                 (widen)
+                 (goto-char (point-max))
+                 (when (re-search-backward "^ *\\((provide\\)\\(?:-theme\\)? +'"
+                                           (max (point-min) (- (point-max) 512))
+                                           t)
+                   (goto-char (match-beginning 1))
+                   (ignore-errors
+                     (and (stringp file-base)
+                          (equal (symbol-name (doom-unquote (nth 1 (read (current-buffer)))))
+                                 file-base)))))))
+         (not (locate-dominating-file default-directory ".doommodule")))))
 #+end_src
 
 ** dired
@@ -445,6 +475,9 @@ always forget what this does exactly, but it's Good™
 ** maps
 
 #+begin_src emacs-lisp
+
+
+
 (map! :ni "C-+" #'doom/increase-font-size)
 (map! :ni "C-=" #'doom/reset-font-size)
 (map! :ni "C--" #'doom/decrease-font-size)
@@ -513,7 +546,8 @@ always forget what this does exactly, but it's Good™
 
 (map! :i "C-u" #'universal-argument)
 
-(map! :map minibuffer-local-map "C-u" #'universal-argument)
+(map! :map minibuffer-local-map "C-u" #'universal-argument
+      )
 
 (map! "C-s" #'save-buffer)
 (map! :leader "f s" nil)
@@ -1174,4 +1208,3 @@ name as well to trigger updates"
 ;; need to run this later for it to not break frame size for some reason
   (run-at-time nil nil (cmd! (tab-bar-mode +1)))
 #+end_src
-
