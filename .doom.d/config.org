@@ -845,6 +845,7 @@ lsp-ui-doc-enable nil))
   :config
   (setq aw-scope 'visible)
   (setq aw-dispatch-always t)
+  (ace-window-posframe-mode +1)
   (after! treemacs
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   (ace-window-display-mode t)
