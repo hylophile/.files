@@ -246,8 +246,7 @@ BEG and END narrow the scope where candidates are searched."
                        (cond ((eq c2 ?)
                               (keyboard-quit))
                              ((memq c2 avy-del-last-char-by)
-                              (keyboard-escape-quit)
-                              (call-interactively 'avy-goto-char-3))
+                              (keyboard-escape-quit))
                              (t
                               c2)))
                      (let ((c3 (read-char "char 3: " t)))
@@ -271,8 +270,8 @@ BEG and END narrow the scope where candidates are searched."
      :beg beg
      :end end)))
 
-(set-popup-rule!
-  "^\\*helpful" :side 'right :size 0.5)
+
+;; (map! :map helpful-mode-map "M-x" #'execute-extended-command)
 
 (defun +my/emacs-lisp--in-package-buffer-p ()
   (interactive)
@@ -294,6 +293,20 @@ BEG and END narrow the scope where candidates are searched."
                           (equal (symbol-name (doom-unquote (nth 1 (read (current-buffer)))))
                                  file-base)))))))
          (not (locate-dominating-file default-directory ".doommodule")))))
+#+end_src
+
+** popup
+#+begin_src emacs-lisp
+(defun my/select-orig (popup orig)
+  (run-at-time 0 nil `(lambda () (select-window ,orig t))))
+
+;; (set-popup-rule! "^\\*helpful" :side 'right :size 90 :select #'ignore :vslot 5)
+(set-popup-rule! "^\\*helpful" :select #'my/select-orig :vslot 5)
+;; (set-popup-rule! "^\\*helpful" :ignore t)
+;; (setq +popup-defaults (list :side 'right :height 0.16 :width 80 :quit t :select #'ignore :ttl 5))
+;; (set-popup-rule! :side 'bottom :height 0.16 :width 40 :quit t :select #'5 :ignore ttl)
+(set-popup-rule!
+  "^\\*Org Src" :side 'right :size 0.4 :quit nil)
 #+end_src
 
 ** dired
@@ -487,18 +500,18 @@ BEG and END narrow the scope where candidates are searched."
 ** helpful
 
 #+begin_src emacs-lisp
-(defun my/info-buffer-p (buf)
-  (string= (buffer-name buf) "*info*"))
-(push 'my/info-buffer-p doom-real-buffer-functions)
+;; (defun my/info-buffer-p (buf)
+;;   (string= (buffer-name buf) "*info*"))
+;; (push 'my/info-buffer-p doom-real-buffer-functions)
 
-(defun my/helpful-buffer-p (buf)
-  (string-prefix-p "*helpful" (buffer-name buf)))
-(push 'my/helpful-buffer-p doom-real-buffer-functions)
+;; (defun my/helpful-buffer-p (buf)
+;;   (string-prefix-p "*helpful" (buffer-name buf)))
+;; (push 'my/helpful-buffer-p doom-real-buffer-functions)
 
 
-(map! :map helpful-mode-map :n
-      ;; "K" #'+popup/raise
-      "<ESC>" #'+popup/quit-window)
+;; (map! :map helpful-mode-map :n
+;;       ;; "K" #'+popup/raise
+;;       "<ESC>" #'+popup/quit-window)
 
 ;; (defun my/search-info-org ()
 ;;   (interactive)
