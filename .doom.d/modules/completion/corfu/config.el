@@ -3,10 +3,11 @@
 (use-package! corfu
   :custom
   (corfu-separator ?\s)
-  (corfu-auto nil)
-  (corfu-auto-delay 0.3)
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
   (corfu-on-exact-match nil)
   (corfu-quit-no-match t)
+  ;; (corfu-count 5)
   (corfu-cycle t)
   (corfu-auto-prefix 2)
   (completion-cycle-threshold 1)
@@ -41,13 +42,19 @@
         "C-SPC"    #'corfu-insert-separator
         "C-n"      #'corfu-next
         "C-p"      #'corfu-previous
+        "<escape>" (cmd! (corfu-quit) (evil-normal-state))
         (:prefix "C-x"
-         "C-k"     #'cape-dict
-         "C-f"     #'cape-file))
+                 "C-k"     #'cape-dict
+                 "C-f"     #'cape-file))
   (after! evil
     (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
     (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map))
+
+  ;; (add-hook! 'evil-normal-state-entry-hook #'corfu-quit)
+  ;; (def)
+
+
 
   (defadvice! +corfu--org-return (orig) :around '+org/return
     (if (and (modulep! :completion corfu)
@@ -66,9 +73,9 @@
   :custom
   (corfu-doc-delay 0)
   :bind (:map corfu-map
-         ("M-n" . corfu-doc-scroll-down)
-         ("M-p" . corfu-doc-scroll-up)
-         ("M-d" . corfu-doc-toggle)))
+              ("M-n" . corfu-doc-scroll-down)
+              ("M-p" . corfu-doc-scroll-up)
+              ("M-d" . corfu-doc-toggle)))
 
 
 (use-package! orderless
@@ -85,7 +92,7 @@
   :custom
   (kind-icon-default-face 'corfu-default)
   :config
-  (setq kind-icon-use-icons t
+  (setq kind-icon-use-icons nil
         svg-lib-icons-dir (expand-file-name "svg-lib" doom-cache-dir)
         kind-icon-mapping
         '((array "a" :icon "code-brackets" :face font-lock-variable-name-face)
@@ -146,15 +153,12 @@
                         (savehist-mode 1)
                         (add-to-list 'savehist-additional-variables 'corfu-history))))
 
-
 (use-package! corfu-quick
   :after corfu
   :bind (:map corfu-map
-         ("M-q" . corfu-quick-complete)
-         ("C-q" . corfu-quick-insert)))
+              ("C-q" . corfu-quick-insert)))
 
 
-;; TODO This doesn't _quite_ work
 (use-package! evil-collection-corfu
   :when (modulep! :editor evil +everywhere)
   :defer t

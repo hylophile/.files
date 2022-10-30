@@ -19,7 +19,7 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 
-(setq doom-localleader-key "\\")
+(setq doom-localleader-key ",")
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 ;; (setq evil-want-C-u-delete nil)
 
@@ -141,6 +141,8 @@ always forget what this does exactly, but it's Good™
         (move-to-column (- col-number 1)))
         )))
 
+
+
 (defun hylo/find-file-with-pos-here ()
   (interactive)
   (let ((hy/current-frame (selected-frame))
@@ -167,15 +169,15 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 (setq
- ;; doom-font (font-spec :family "Fira Code" :size 10.0)
+ doom-font (font-spec :family "Fira Code" :size 10.0)
  ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
  ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
- doom-font (font-spec :family "JetBrains Mono" :size 11.0)
+ ;; doom-font (font-spec :family "JetBrains Mono" :size 11.0)
  ;; doom-font (font-spec :family "DM Mono" :size 11.0)
  ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
- ;; doom-font (font-spec :family "Operator Mono" :weight 'normal :size 13.0)
- ;; doom-font (font-spec :family "IBM Plex Mono" :size 13.0)
- ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 11.0 :weight 'semi-light)
+ ;; doom-font (font-spec :family "Operator Mono" :weight 'semi-light :size 13.0)
+ ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
+ ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
@@ -191,6 +193,8 @@ always forget what this does exactly, but it's Good™
 ** theme
 
 #+begin_src emacs-lisp
+
+(setq)
 
 
 ;; (setq doom-theme (hylo/random-dark-theme))
@@ -210,9 +214,9 @@ always forget what this does exactly, but it's Good™
   :config
   (setq avy-timeout-seconds 0.3)
   (setq avy-all-windows 'all-frames))
-(map! :nvieomg "C-t" #'avy-goto-char-timer
-        :map magit-mode-map :n "C-t" #'avy-goto-char-timer
-        :map evil-org-mode-map :i "C-t" #'avy-goto-char-timer)
+(map! :nvieomg "C-t" #'avy-goto-char-3
+        :map magit-mode-map :n "C-t" #'avy-goto-char-3
+        :map evil-org-mode-map :i "C-t" #'avy-goto-char-3)
 
 (map! :g "C-l" #'avy-goto-line
       :map evil-org-mode-map :i "C-l" #'avy-goto-line)
@@ -228,6 +232,8 @@ always forget what this does exactly, but it's Good™
   )
 
 (setf (alist-get ?h avy-dispatch-alist) 'avy-action-lookup-documentation)
+
+
 
 ;; (define-key org-mode-map (kbd "C-l") #'avy-goto-line)
 
@@ -263,9 +269,11 @@ BEG and END narrow the scope where candidates are searched."
     (setq char1 ?\n))
   (when (eq char2 ?)
     (setq char2 ?\n))
+  (when (eq char3 ?)
+    (setq char3 ?\n))
   (avy-with avy-goto-char-3
     (avy-jump
-     (regexp-quote (string char1 char2))
+     (regexp-quote (string char1 char2 char3))
      :window-flip arg
      :beg beg
      :end end)))
@@ -390,12 +398,6 @@ BEG and END narrow the scope where candidates are searched."
 
 (use-package! emacs-everywhere
   :config
-  ;; (set-company-backend! 'emacs-everywhere-mode 'company-elisp)
-  ;; (add-hook! 'emacs-everywhere-init-hooks
-  ;;   (lambda ()
-  ;;     (set (make-local-variable 'company-backends)
-  ;;          (append (car company-backends)
-  ;;                  (list 'company-elisp)))))
   (defadvice! my/emacs-everywhere-position ()
     :override #'emacs-everywhere-set-frame-position
     ()))
@@ -450,8 +452,6 @@ BEG and END narrow the scope where candidates are searched."
 
 ;; (add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
 
-;; (use-package! company-quickhelp)
-
 ;; (map! :map emmet-mode-keymap
 ;;       [tab] #'indent-for-tab-command)
 
@@ -481,7 +481,7 @@ BEG and END narrow the scope where candidates are searched."
 
 ** company
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 
 (after! company
   (add-hook! 'evil-normal-state-entry-hook
@@ -495,6 +495,11 @@ BEG and END narrow the scope where candidates are searched."
 
   (setq company-idle-delay 0.3))
 
+(after! company-box
+  (push '(tab-bar-format . nil) company-box-frame-parameters))
+
+  ;; (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters))
+;; ^ together with tab-bar-lines . 0
 #+end_src
 
 ** helpful
@@ -888,7 +893,7 @@ exist after each headings's drawers."
 (after! org-agenda
   (org-super-agenda-mode))
 
-(setq org-superstar-headline-bullets-list "●⚬")
+(setq org-superstar-headline-bullets-list "•");"●⚬")
 
 (use-package! mixed-pitch
   :hook
@@ -963,9 +968,22 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ** lsp
 
 #+begin_src emacs-lisp
+(use-package lsp-mode
+  :custom
+  (lsp-completion-provider :none) ;; we use Corfu!
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(flex))) ;; Configure flex
+  :hook
+  (lsp-completion-mode . my/lsp-mode-setup-completion))
+
 (defun my/lsp-no-code-actions ()
   (setq lsp-ui-sideline-show-code-actions nil))
 (add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
+
+;; (with-eval-after-load 'lsp-volar
+;;   (setq lsp-typescript-tsdk (file-name-directory (lsp-volar-get-typescript-server-path))))
 
 (setq +format-with-lsp nil)
 (after! lsp-ui
@@ -994,24 +1012,34 @@ lsp-ui-doc-enable nil))
 #+end_src
 
 *** evil snipe
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 ;; (map!
 ;;  :after (evil-snipe evil)
 ;;                     :m "," #'evil-snipe-repeat)
 ;; (setq evil-snipe-override-evil-repeat-keys nil)
+
+(projectile-process-current-project-buffers-current)
+
+
+
+
 (after! evil-snipe
   ;; (when evil-snipe-override-evil-repeat-keys
-  (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
-  (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
+  (define-key evil-snipe-parent-transient-map "," nil)
+  ;; (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
+  ;; (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
 
   (evil-define-key* '(motion normal) evil-snipe-local-mode-map
-    "S" nil
-    "," 'evil-snipe-repeat
-    ";" 'evil-snipe-repeat-reverse)
+    ;; "S" nil
+    "," nil
+    ;; "," 'evil-snipe-repeat
+    ;; ";" 'evil-snipe-repeat-reverse)
+    )
   (evil-define-key* '(normal) evil-snipe-override-local-mode-map
-    "," 'evil-snipe-repeat
-    ";" 'evil-snipe-repeat-reverse))
-
+    "," nil)
+    ;; "," 'evil-snipe-repeat
+    ;; ";" 'evil-snipe-repeat-reverse)
+  )
 
 
 
@@ -1135,14 +1163,6 @@ lsp-ui-doc-enable nil))
 (setq iedit-toggle-key-default nil)
 
 
-;; (after! company
-;;   (setq +company-backend-alist
-;;         '((text-mode (:separate company-dabbrev company-yasnippet))
-;;           (prog-mode company-capf company-yasnippet)
-;;           (conf-mode company-capf company-dabbrev-code company-yasnippet))))
-
-
-
 ;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
 
 #+end_src
@@ -1208,14 +1228,6 @@ lsp-ui-doc-enable nil))
 ;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
 ;;
 
-;; (map!
-;;  :after company
-;;  :map company-active-map
-;;  "RET" nil
-;;  "<return>" nil
-;;  [tab] #'company-complete-selection
-;;  "TAB" #'company-complete-selection)
-
 #+end_src
 
 
@@ -1264,11 +1276,6 @@ name as well to trigger updates"
 
 ;; (customize-set-variable 'tab-bar-mode t)
 
-(after! company-box
-  (push '(tab-bar-format . nil) company-box-frame-parameters))
-
-  ;; (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters))
-;; ^ together with tab-bar-lines . 0
 
 ;; need to run this later for it to not break frame size for some reason
   (run-at-time nil nil (cmd! (tab-bar-mode +1)))
