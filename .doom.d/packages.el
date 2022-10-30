@@ -38,6 +38,7 @@
 (package! page-break-lines)
 (package! minibuffer-header)
 
+(package! tempel)
 ;; (package! ef-themes :recipe (:host nil :repo "https://git.sr.ht/~protesilaos/ef-themes"))
 
 (package! vundo :recipe (:host github :repo "casouri/vundo"))

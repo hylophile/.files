@@ -187,6 +187,13 @@ always forget what this does exactly, but it's Good™
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :family "Victor Mono"))
 (custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
 
+;; (custom-set-faces!
+;;   '(nav-flash-face :inverse-video t :foreground unspecified :background unspecified))
+;; (custom-set-faces!
+;;   '(nav-flash-face :inherit cursor :foreground unspecified :background unspecified))
+(custom-set-faces!
+  '(nav-flash-face :background "#33bfff" :foreground "#0f172a" ))
+(setq nav-flash-delay 0.1)
 #+end_src
 
 
@@ -500,6 +507,74 @@ BEG and END narrow the scope where candidates are searched."
 
   ;; (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters))
 ;; ^ together with tab-bar-lines . 0
+#+end_src
+
+** tempel
+
+#+begin_src emacs-lisp
+
+
+(use-package tempel
+  ;; Require trigger prefix before template name when completing.
+  ;; :custom
+  ;; (tempel-trigger-prefix "<")
+
+  :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
+         ("M-*" . tempel-insert))
+
+  :init
+
+  ;; Setup completion at point
+  (defun tempel-setup-capf ()
+    ;; Add the Tempel Capf to `completion-at-point-functions'.
+    ;; `tempel-expand' only triggers on exact matches. Alternatively use
+    ;; `tempel-complete' if you want to see all matches, but then you
+    ;; should also configure `tempel-trigger-prefix', such that Tempel
+    ;; does not trigger too often when you don't expect it. NOTE: We add
+    ;; `tempel-expand' *before* the main programming mode Capf, such
+    ;; that it will be tried first.
+    (setq-local completion-at-point-functions
+                (cons #'tempel-expand
+                      completion-at-point-functions)))
+
+  (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf)
+
+  ;; Optionally make the Tempel templates available to Abbrev,
+  ;; either locally or globally. `expand-abbrev' is bound to C-x '.
+  ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+  ;; (global-tempel-abbrev-mode)
+
+  (map! :map tempel-map
+        "C-<tab>" #'tempel-next
+        "C-S-<tab>" #'tempel-previous ;???
+        "M-<right>" #'tempel-next
+        "M-<left>" #'tempel-previous)
+
+  :custom
+  (tempel-path (concat doom-user-dir "templates"))
+  )
+
+
+
+
+(when (modulep! :completion corfu)
+  (map! :map corfu-map
+        (:prefix "C-x"
+                 "C-t" #'tempel-complete)))
+
+
+#+end_src
+
+** embark
+
+#+begin_src emacs-lisp
+(map! :map embark-file-map "f" #'hy/find-file-in-fair-split)
+
+(defun hy/find-file-in-fair-split (file) (interactive "FFile: ")
+                                 (hylo/split-window-fair-and-follow)
+                                 (find-file file))
+
 #+end_src
 
 ** helpful
@@ -1012,16 +1087,11 @@ lsp-ui-doc-enable nil))
 #+end_src
 
 *** evil snipe
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 ;; (map!
 ;;  :after (evil-snipe evil)
 ;;                     :m "," #'evil-snipe-repeat)
 ;; (setq evil-snipe-override-evil-repeat-keys nil)
-
-(projectile-process-current-project-buffers-current)
-
-
-
 
 (after! evil-snipe
   ;; (when evil-snipe-override-evil-repeat-keys
