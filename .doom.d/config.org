@@ -169,14 +169,14 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 (setq
- doom-font (font-spec :family "Fira Code" :size 10.0)
+ ;; doom-font (font-spec :family "Fira Code" :size 10.0)
  ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
  ;; doom-font (font-spec :family "JuliaMono" :size 10.0)
  ;; doom-font (font-spec :family "JetBrains Mono" :size 11.0)
  ;; doom-font (font-spec :family "DM Mono" :size 11.0)
  ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
  ;; doom-font (font-spec :family "Operator Mono" :weight 'semi-light :size 13.0)
- ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
+ doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
@@ -1081,6 +1081,7 @@ lsp-ui-doc-enable nil))
 :after #'evil-ex-search-next
 :after #'evil-ex-search-previous
 (evil-scroll-line-to-center nil))
+
 (map! :after evil :nv "'" #'evil-goto-mark)
 
 (setq evil-visual-update-x-selection-p t)
