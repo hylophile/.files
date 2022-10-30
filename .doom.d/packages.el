@@ -45,7 +45,7 @@
 
 ;; (package! spookfox :recipe (:host github :repo "bitspook/spookfox" :files ("lisp/*.el" "lisp/apps/*.el")))
 
-(package! cape-yasnippet :recipe (:host github :repo "elken/cape-yasnippet"))
+;; (package! cape-yasnippet :recipe (:host github :repo "elken/cape-yasnippet"))
 
 (package! org-fancy-priorities :disable t)
 ;; (package! org-modern)

@@ -196,6 +196,16 @@ always forget what this does exactly, but it's Good™
 (setq nav-flash-delay 0.1)
 #+end_src
 
+** web
+#+begin_src emacs-lisp
+(after! emmet-mode
+  (map! :map emmet-mode-keymap
+        [tab] nil))
+
+(after! web-mode
+  (setq web-mode-script-padding 2))
+
+#+end_src
 
 ** theme
 
@@ -511,6 +521,8 @@ BEG and END narrow the scope where candidates are searched."
 
 ** tempel
 
+
+
 #+begin_src emacs-lisp
 
 
@@ -519,8 +531,9 @@ BEG and END narrow the scope where candidates are searched."
   ;; :custom
   ;; (tempel-trigger-prefix "<")
 
-  :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
-         ("M-*" . tempel-insert))
+  :bind (("M-t" . tempel-complete) ;; Alternative tempel-expand
+         ("C-M-t" . tempel-insert)
+         )
 
   :init
 
@@ -533,9 +546,10 @@ BEG and END narrow the scope where candidates are searched."
     ;; does not trigger too often when you don't expect it. NOTE: We add
     ;; `tempel-expand' *before* the main programming mode Capf, such
     ;; that it will be tried first.
-    (setq-local completion-at-point-functions
-                (cons #'tempel-expand
-                      completion-at-point-functions)))
+    (after! lsp-mode
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand
+                        completion-at-point-functions))))
 
   (add-hook 'prog-mode-hook 'tempel-setup-capf)
   (add-hook 'text-mode-hook 'tempel-setup-capf)
@@ -563,8 +577,18 @@ BEG and END narrow the scope where candidates are searched."
         (:prefix "C-x"
                  "C-t" #'tempel-complete)))
 
-
+(defadvice! hy/tempel-insert-evil-insert (&rest _)
+  "always go to evil insert mode after inserting a template"
+  :after #'tempel-insert
+  (evil-insert 0))
+(defadvice! hy/tempel-complete-evil-insert (&rest _)
+  "always go to evil insert mode after inserting a template"
+  :after #'tempel-complete
+  (evil-insert 0))
 #+end_src
+
+*** TODO how to check if region exists? region-active-p doesn't work
+*** TODO after tempel-insert -> insert mode
 
 ** embark
 
@@ -1283,14 +1307,14 @@ lsp-ui-doc-enable nil))
 
 
 
-(use-package! cape-yasnippet
-  :after cape
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-yasnippet)
-  (after! lsp-mode
-    (add-hook 'lsp-managed-mode-hook #'cape-yasnippet--lsp))
-  (after! eglot
-    (add-hook 'eglot-managed-mode-hook #'cape-yasnippet--eglot)))
+;; (use-package! cape-yasnippet
+;;   :after cape
+;;   :init
+;;   (add-to-list 'completion-at-point-functions #'cape-yasnippet)
+;;   (after! lsp-mode
+;;     (add-hook 'lsp-managed-mode-hook #'cape-yasnippet--lsp))
+;;   (after! eglot
+;;     (add-hook 'eglot-managed-mode-hook #'cape-yasnippet--eglot)))
 
 
 
