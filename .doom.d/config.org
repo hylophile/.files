@@ -588,6 +588,8 @@ BEG and END narrow the scope where candidates are searched."
 #+end_src
 
 *** TODO how to check if region exists? region-active-p doesn't work
+
+*** TODO trim region before insert, so that `V M-t` works
 *** TODO after tempel-insert -> insert mode
 
 ** embark
