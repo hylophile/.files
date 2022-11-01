@@ -107,7 +107,12 @@ web-mode :when (and (string= "svelte" (file-name-extension (buffer-file-name))) 
 ;; (elif "{:else if " p " }" > r>)
 typescript-mode web-mode :when (and (re-search-forward "^</script>" (point-max) 'no-error) (re-search-backward "^<script" (point-min) 'noerror))
 (log   "console.log(" (r "What to print")")")
+(cfn "const " p " = (" p ") => {" n> r> n "}" >)
+(const "const " p " = " r)
 
+(if "if (" p ") {" n> r> n "}" > n>)
+(elif "else if (" p ") {" n> r> n "}" > n>)
+(else "else {" n> r> n "}" > n>)
 ;; Local Variables:
 ;; mode: lisp-data
 ;; outline-regexp: "[a-z]"

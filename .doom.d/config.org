@@ -560,6 +560,8 @@ BEG and END narrow the scope where candidates are searched."
   ;; (global-tempel-abbrev-mode)
 
   (map! :map tempel-map
+        "<tab>" #'tempel-next
+        "<backtab>" #'tempel-previous
         "C-<tab>" #'tempel-next
         "C-S-<tab>" #'tempel-previous ;???
         "M-<right>" #'tempel-next
@@ -1111,6 +1113,7 @@ lsp-ui-doc-enable nil))
 (map! :after evil :nv "'" #'evil-goto-mark)
 
 (setq evil-visual-update-x-selection-p t)
+(setq evil-cross-lines t)
 #+end_src
 
 *** evil snipe
@@ -1149,6 +1152,19 @@ lsp-ui-doc-enable nil))
 
 #+end_src
 
+** ediff
+#+begin_src emacs-lisp
+(after! ediff
+(defun ediff-copy-both-to-C ()
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'C nil
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+(defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "B" 'ediff-copy-both-to-C))
+(add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+)
+#+end_src
 
 ** misc
 
