@@ -193,7 +193,7 @@ always forget what this does exactly, but it's Good™
 ;;   '(nav-flash-face :inherit cursor :foreground unspecified :background unspecified))
 (custom-set-faces!
   '(nav-flash-face :background "#33bfff" :foreground "#0f172a" ))
-(setq nav-flash-delay 0.1)
+(setq nav-flash-delay 0.3)
 #+end_src
 
 ** web
@@ -298,26 +298,26 @@ BEG and END narrow the scope where candidates are searched."
 
 ;; (map! :map helpful-mode-map "M-x" #'execute-extended-command)
 
-(defun +my/emacs-lisp--in-package-buffer-p ()
-  (interactive)
-  (let* ((file-path (buffer-file-name (buffer-base-buffer)))
-         (file-base (if file-path (file-name-base file-path))))
-    (and (derived-mode-p 'emacs-lisp-mode)
-         (or (null file-base)
-             (locate-file file-base (custom-theme--load-path) '(".elc" ".el"))
-             (save-excursion
-               (save-restriction
-                 (widen)
-                 (goto-char (point-max))
-                 (when (re-search-backward "^ *\\((provide\\)\\(?:-theme\\)? +'"
-                                           (max (point-min) (- (point-max) 512))
-                                           t)
-                   (goto-char (match-beginning 1))
-                   (ignore-errors
-                     (and (stringp file-base)
-                          (equal (symbol-name (doom-unquote (nth 1 (read (current-buffer)))))
-                                 file-base)))))))
-         (not (locate-dominating-file default-directory ".doommodule")))))
+;; (defun +my/emacs-lisp--in-package-buffer-p ()
+;;   (interactive)
+;;   (let* ((file-path (buffer-file-name (buffer-base-buffer)))
+;;          (file-base (if file-path (file-name-base file-path))))
+;;     (and (derived-mode-p 'emacs-lisp-mode)
+;;          (or (null file-base)
+;;              (locate-file file-base (custom-theme--load-path) '(".elc" ".el"))
+;;              (save-excursion
+;;                (save-restriction
+;;                  (widen)
+;;                  (goto-char (point-max))
+;;                  (when (re-search-backward "^ *\\((provide\\)\\(?:-theme\\)? +'"
+;;                                            (max (point-min) (- (point-max) 512))
+;;                                            t)
+;;                    (goto-char (match-beginning 1))
+;;                    (ignore-errors
+;;                      (and (stringp file-base)
+;;                           (equal (symbol-name (doom-unquote (nth 1 (read (current-buffer)))))
+;;                                  file-base)))))))
+;;          (not (locate-dominating-file default-directory ".doommodule")))))
 #+end_src
 
 ** popup
@@ -326,7 +326,6 @@ BEG and END narrow the scope where candidates are searched."
   (run-at-time 0 nil `(lambda () (select-window ,orig t))))
 
 ;; (set-popup-rule! "^\\*helpful" :side 'right :size 90 :select #'ignore :vslot 5)
-(set-popup-rule! "^\\*helpful" :select #'my/select-orig :vslot 5)
 ;; (set-popup-rule! "^\\*helpful" :ignore t)
 ;; (setq +popup-defaults (list :side 'right :height 0.16 :width 80 :quit t :select #'ignore :ttl 5))
 ;; (set-popup-rule! :side 'bottom :height 0.16 :width 40 :quit t :select #'5 :ignore ttl)
@@ -437,14 +436,6 @@ BEG and END narrow the scope where candidates are searched."
 ;;                '("y" "year"
 ;;                  agenda ""
 ;;                  ((org-agenda-span 'year)))))
-
-(map! :leader
-      :desc "FuZzily find File in home"
-      "f z f" (cmd!! #'affe-find "~/"))
-(map! :leader
-      :desc "FuZzily find file in this Dir"
-      "f z d" (cmd!! #'affe-find))
-
 (remove-hook! 'doom-modeline-mode-hook #'size-indication-mode)
 
 
@@ -473,6 +464,19 @@ BEG and END narrow the scope where candidates are searched."
 ;;       [tab] #'indent-for-tab-command)
 
 
+
+#+end_src
+
+** affe
+#+begin_src emacs-lisp
+
+
+(map! :leader
+      :desc "FuZzily find File in home"
+      "f z f" (cmd!! #'affe-find "~/"))
+(map! :leader
+      :desc "FuZzily find file in this Dir"
+      "f z d" (cmd!! #'affe-find))
 
 #+end_src
 
@@ -660,6 +664,7 @@ BEG and END narrow the scope where candidates are searched."
 
 
 (map! :leader
+      "R" #'+popup/raise
       "|" #'+popup/raise)
 
 (defun insert-primary ()
@@ -1309,7 +1314,7 @@ lsp-ui-doc-enable nil))
       mu4e-compose-context-policy 'always-ask)
 
 
-(defadvice! my-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
+(defadvice! evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
   "Advise `evil-delete-char' to set default REGISTER to the black hole register."
   :around #'evil-delete-char
   (unless register (setq register ?_))
