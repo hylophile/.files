@@ -52,6 +52,8 @@ emacs-lisp-mode
         "(advice-add #'" (p "fun") " " (p ":around") " #'" (s name) ")")
 (provide "(provide '" (file-name-base (or (buffer-file-name) (buffer-name))) ")" n
          ";;; " (file-name-nondirectory (or (buffer-file-name) (buffer-name))) " ends here" n)
+(msg "(message (format \"" str ": %s\" " (p "" str) "))")
+
 
 eshell-mode
 
@@ -108,10 +110,16 @@ web-mode :when (and (string= "svelte" (file-name-extension (buffer-file-name))) 
 web-mode :when (and (re-search-forward "^</script>" (point-max) 'no-error) (re-search-backward "^<script" (point-min) 'noerror))
 typescript-mode
 ;; (log   "console.log(" (r "What to print")")")
-(log "console.debug('%c " content ": ', 'background: #33bfff; color: #0f172a; font-weight: bold', " (s content) ");")
+(log "console.log('%c " content ": ', 'background: #33bfff; color: #0f172a; font-weight: bold', " (s content) ");")
+(err "throw new Error(`" q "`)")
+(sq "${" r "}") ;; string-quote
+(tp "type " p " = " q)
+(ex "export ")
+(ar "(" p ") => { " r " }")
 
 (cfn "const " p " = (" p ") => {" n> r> n "}" >)
-(const "const " p " = " r)
+(con "const " p " = " r)
+(econ "export const " p " = " r)
 (if "if (" p ") {" n> r> n "}" > n>)
 (elif "else if (" p ") {" n> r> n "}" > n>)
 (else "else {" n> r> n "}" > n>)
