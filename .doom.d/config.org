@@ -18,7 +18,6 @@ always forget what this does exactly, but it's Good™
 ** basics
 
 #+begin_src emacs-lisp
-
 (setq doom-localleader-key ",")
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 ;; (setq evil-want-C-u-delete nil)
@@ -74,7 +73,21 @@ always forget what this does exactly, but it's Good™
       "t n" #'rainbow-mode
       "t t" #'+vterm/toggle
       "t T" #'+vterm/here)
+#+end_src
 
+** evil relative in normal, absolute in insert
+#+begin_src emacs-lisp :tangle no
+
+(add-hook 'evil-normal-state-entry-hook
+          (cmd! (when (doom-real-buffer-p (current-buffer))
+                  (let (message-log-max)
+                    (with-temp-message (or (current-message) "")
+                      (menu-bar--display-line-numbers-mode-relative))))))
+
+(add-hook 'evil-insert-state-entry-hook
+          (cmd! (let (message-log-max)
+                  (with-temp-message (or (current-message) "")
+                    (menu-bar--display-line-numbers-mode-absolute)))))
 #+end_src
 
 ** modeline
