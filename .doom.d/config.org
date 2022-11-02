@@ -25,6 +25,8 @@ always forget what this does exactly, but it's Good™
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
 
 (setq auth-sources '("~/.authinfo"))
+#+end_src
+#+begin_src emacs-lisp
 
 ;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -37,6 +39,8 @@ always forget what this does exactly, but it's Good™
 
 (global-visual-line-mode)
 
+#+end_src
+#+begin_src emacs-lisp
 
 
 
@@ -57,6 +61,8 @@ always forget what this does exactly, but it's Good™
 (global-subword-mode t)                           ; Iterate through CamelCase words
 
 
+#+end_src
+#+begin_src emacs-lisp
 
 
 (setq confirm-kill-emacs nil) ; I know what I said.
@@ -65,6 +71,8 @@ always forget what this does exactly, but it's Good™
  window-divider-default-bottom-width 1
  window-divider-default-right-width 5)
 
+#+end_src
+#+begin_src emacs-lisp
 
 (add-hook! 'rainbow-mode-hook
   (hl-line-mode (if rainbow-mode -1 +1)))
@@ -366,12 +374,16 @@ BEG and END narrow the scope where candidates are searched."
 
 (setq doom-themes-treemacs-theme "doom-colors")
 
+#+end_src
+#+begin_src emacs-lisp
 (setq vterm-always-compile-module t)
 ;; (custom-set-faces! '((flycheck-fringe-error) :width expanded))
 
 ;; (map! :leader :desc "Actions" "e" #'embark-act)
 
 
+#+end_src
+#+begin_src emacs-lisp
 
 (defmacro nsa! (&rest body)
   `(when (string= "nsa" (system-name)) ,@body))
@@ -379,6 +391,8 @@ BEG and END narrow the scope where candidates are searched."
 (defmacro rook! (&rest body)
   `(when (string= "rook" (system-name)) ,@body))
 
+#+end_src
+#+begin_src emacs-lisp
 
 
 (setq which-key-allow-multiple-replacements t)
@@ -396,6 +410,8 @@ BEG and END narrow the scope where candidates are searched."
 
 
 
+#+end_src
+#+begin_src emacs-lisp
 
 
 ;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
@@ -425,11 +441,15 @@ BEG and END narrow the scope where candidates are searched."
 ;; (setq doom-leader-alt-key "<f8>")
 ;; (setq doom-localleader-alt-key "<f8> m")
 
-(use-package! emacs-everywhere
+(after! emacs-everywhere
   :config
   (defadvice! my/emacs-everywhere-position ()
     :override #'emacs-everywhere-set-frame-position
-    ()))
+    ())
+  (add-hook 'emacs-everywhere-init-hooks #'hide-mode-line-mode)
+  (add-hook 'emacs-everywhere-init-hooks (cmd! (toggle-frame-tab-bar)))
+
+  )
 
 
 (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
@@ -998,6 +1018,8 @@ exist after each headings's drawers."
                        'tree)))
 
 
+#+end_src
+#+begin_src emacs-lisp
 
 (use-package! org-appear
   :hook (org-mode . org-appear-mode)
@@ -1009,6 +1031,8 @@ exist after each headings's drawers."
   ;; needs to be run after other hooks have acted.
   (run-at-time nil nil #'org-appear--set-elements))
 
+#+end_src
+#+begin_src emacs-lisp
 
 (defun org-archive-done-tasks ()
   (interactive)
@@ -1037,6 +1061,8 @@ exist after each headings's drawers."
         (holiday-fixed 3 8 "Internationaler Frauentag")
         (holiday-fixed 10 3 "Tag der Deutschen Einheit")))
 
+#+end_src
+#+begin_src emacs-lisp
 
 (setq holiday-christian-holidays
       '((holiday-float 12 0 -4 "1. Advent" 24)
@@ -1100,6 +1126,8 @@ exist after each headings's drawers."
 
 
 
+#+end_src
+#+begin_src emacs-lisp
 (setq org-agenda-custom-commands
       '(("n" "3 days and todos"
          ((agenda "" ((org-agenda-span 3)))
@@ -1290,7 +1318,7 @@ lsp-ui-doc-enable nil))
   :config
   (setq aw-scope 'visible)
   (setq aw-dispatch-always t)
-  (ace-window-posframe-mode +1)
+  ;; (ace-window-posframe-mode +1)
   (after! treemacs
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   (ace-window-display-mode t)

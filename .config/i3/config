@@ -68,13 +68,14 @@ bindsym $mod+F1 exec xset dpms force off
 # make a selective screenshot and paste the link to clipboard for shift-insert pasting to org mode
 #bindsym --release $mod+Shift+z exec scrot -s '%Y-%m-%d_%s.png' -e 'mv $f ~/org/img/ && echo [[file:img/$f]] | xclip -selection primary'
 
+
 bindsym button2 kill
-bindsym button3 move container to output left
+bindsym button3 move container to output next
 
 bindsym $mod+w exec rofimoji --skin-tone light
-bindsym $mod+space focus output left
+bindsym $mod+space focus output next
 bindsym $mod+Control+space exec ~/.config/i3/swap.sh
-bindsym $mod+Shift+space move window to output left
+bindsym $mod+Shift+space move window to output next
 
 # bindsym $mod+e workspace next_on_output
 # bindsym $mod+Shift+e move container to workspace next_on_output
@@ -82,7 +83,7 @@ bindsym $mod+Shift+space move window to output left
 # bindsym $mod+Shift+u move container to workspace prev_on_output
 # bindsym $mod+b workspace back_and_forth
 
-bindsym $mod+o exec ~/.emacs.d/bin/doom everywhere
+bindsym $mod+o exec "~/.emacs.d/bin/doom +everywhere"
 bindsym $mod+Shift+o exec "xclip -selection clipboard -o"
 
 # use these keys for focus, movement, and resize directions when reaching for
@@ -194,7 +195,7 @@ focus_follows_mouse no
 bindsym $mod+minus scratchpad show
 
 
-for_window [title="^Emacs Everywhere"] floating enable
+for_window [title="^Emacs Everywhere"] floating enable border none
 
 
 
@@ -262,7 +263,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+F5 restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Control+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $mod+Control+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 
 
