@@ -4,12 +4,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ignored-local-variable-values '((elisp-lint-indent-specs (git-gutter:awhen . 1))))
+ '(package-selected-packages '(eldoc-box))
  '(safe-local-variable-values
    '((eval add-hook 'after-save-hook
-           (cmd!
-            (ignore-errors
-              (org-babel-execute-buffer)))
-           t t)
+      (cmd!
+       (ignore-errors
+         (org-babel-execute-buffer)))
+      t t)
      (eval add-hook 'after-save-hook #'org-babel-tangle t t)
      (eval add-hook 'after-save-hook #'org-babel-execute-buffer t t))))
 (custom-set-faces
@@ -17,8 +18,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(+workspace-tab-face ((t (:inherit default :family "Jost*" :height 135))))
+ '(+workspace-tab-selected-face ((t (:inherit (highlight +workspace-tab-face)))))
  '(aw-leading-char-face ((t (:foreground unspecified :background "#90e8b0" :weight bold :height 1.0 :box (:line-width -50 :color "#90e8b0")))))
  '(font-lock-comment-face ((t (:slant italic :weight normal))))
+ '(nav-flash-face ((t (:background "#33bfff" :foreground "#0f172a"))))
  '(org-agenda-diary ((t (:foreground nil :weight bold))))
  '(org-document-title ((t (:height 1.5))))
  '(outline-1 ((t (:weight semi-bold :height 1.15))))

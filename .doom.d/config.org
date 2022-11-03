@@ -574,9 +574,6 @@ BEG and END narrow the scope where candidates are searched."
 #+end_src
 
 ** tempel
-
-
-
 #+begin_src emacs-lisp
 
 
@@ -626,8 +623,6 @@ BEG and END narrow the scope where candidates are searched."
   )
 
 
-
-
 (when (modulep! :completion corfu)
   (map! :map corfu-map
         (:prefix "C-x"
@@ -646,30 +641,27 @@ BEG and END narrow the scope where candidates are searched."
   "trim a trailing newline in the region to make inserting the
 region into a snippet more streamlined"
   :before #'tempel-complete
-  (remove-trailing-newline-in-region))
+  (remove-trailing-whitespace-in-region))
 
 (defadvice! hy/tempel-insert-trim-newline-in-region (&rest _)
   "trim a trailing newline in the region to make inserting the
 region into a snippet more streamlined"
   :before #'tempel-insert
-  (remove-trailing-newline-in-region))
+  (remove-trailing-whitespace-in-region))
 
-(defun remove-trailing-newline-in-region ()
+
+(defun remove-trailing-whitespace-in-region ()
   (when (use-region-p)
     (when (> (mark) (point)) (exchange-point-and-mark))
-    (let ((mr (mark))
-          (pt (point)))
-      ;; (message (format "pt: %s" pt))
-      ;; (message (format "mr: %s" mr))
-      ;; (message (format "(char-after pt): %s" (char-after pt)))
-      ;; (message (format "(char-after mr): %s" (char-after mr)))
-      (when (evil-visual-state-p)
-        (evil-exit-visual-state))
-      (goto-char pt)
-      (set-mark mr)
-      (when (looking-at "[\s\n]")
-        (re-search-backward "[^\s\n]+"))
-      (goto-char (1+ (point))))))
+    (when (looking-at "\n")
+      (re-search-backward "[^\n]+"))
+    (goto-char (1+ (point)))))
+
+
+
+(defun hy/eh ()
+  (interactive)
+  (message (format "\"%s\"" (buffer-substring-no-properties (point) (mark)))))
 #+end_src
 
 *** TODO how to check if region exists? region-active-p doesn't work
@@ -1206,6 +1198,7 @@ lsp-ui-doc-enable nil))
 
 (setq evil-visual-update-x-selection-p t)
 (setq evil-cross-lines t)
+(setq evil-want-minibuffer t)
 #+end_src
 
 *** evil snipe
