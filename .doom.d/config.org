@@ -446,10 +446,15 @@ BEG and END narrow the scope where candidates are searched."
   (defadvice! my/emacs-everywhere-position ()
     :override #'emacs-everywhere-set-frame-position
     ())
-  (add-hook 'emacs-everywhere-init-hooks #'hide-mode-line-mode)
-  (add-hook 'emacs-everywhere-init-hooks (cmd! (toggle-frame-tab-bar)))
-
+  ;; (add-hook 'emacs-everywhere-init-hooks #'hide-mode-line-mode)
+  (add-hook 'emacs-everywhere-init-hooks (cmd! (text-scale-increase 1)))
+  ;; (add-hook 'emacs-everywhere-init-hooks (cmd! (toggle-frame-tab-bar)))
+  (push '(tab-bar-format . 0) emacs-everywhere-frame-parameters)
+  (push '(tab-bar-lines . 0) emacs-everywhere-frame-parameters)
+  (push '(tab-bar-lines-keep-state . 0) emacs-everywhere-frame-parameters)
+  (push '(internal-border-width . 10) emacs-everywhere-frame-parameters)
   )
+
 
 
 (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
