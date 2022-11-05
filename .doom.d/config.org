@@ -23,7 +23,7 @@ always forget what this does exactly, but it's Good™
 ;; (setq evil-want-C-u-delete nil)
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
-
+(add-to-list 'default-frame-alist '(alpha 95 95))
 (setq auth-sources '("~/.authinfo"))
 #+end_src
 #+begin_src emacs-lisp
@@ -346,13 +346,17 @@ BEG and END narrow the scope where candidates are searched."
 (defun my/select-orig (popup orig)
   (run-at-time 0 nil `(lambda () (select-window ,orig t))))
 
-;; (set-popup-rule! "^\\*helpful" :side 'right :size 90 :select #'ignore :vslot 5)
+;; (set-popup-rule! "^\\*lsp-help\\*" :side 'bottom)
+(set-popup-rule! "^\\*helpful" :side 'right :width 90 :vslot 1)
 ;; (set-popup-rule! "^\\*helpful" :ignore t)
 ;; (setq +popup-defaults (list :side 'right :height 0.16 :width 80 :quit t :select #'ignore :ttl 5))
 ;; (set-popup-rule! :side 'bottom :height 0.16 :width 40 :quit t :select #'5 :ignore ttl)
-(set-popup-rule!
-  "^\\*Org Src" :side 'right :size 0.4 :quit nil)
+;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.4 :quit nil :vslot -1)
+(after! org
+  (set-popup-rule! "^\\*Org Src" :side 'right :size 0.31 :quit nil :select t :autosave t :modeline t :ttl nil))
 #+end_src
+
+
 
 ** dired
 
@@ -422,7 +426,7 @@ BEG and END narrow the scope where candidates are searched."
 (map! :nv "C-." #'embark-act)
 (map! [remap describe-bindings] #'embark-bindings
       "C-."               #'embark-act
-         ;; :desc "Export to writable buffer" "C-. C-e" #'+vertico/embark-export-write
+      ;; :desc "Export to writable buffer" "C-. C-e" #'+vertico/embark-export-write
       (:map minibuffer-local-map
             "C-."               #'embark-act
             "C-c C-."           #'embark-export))
@@ -442,17 +446,22 @@ BEG and END narrow the scope where candidates are searched."
 ;; (setq doom-localleader-alt-key "<f8> m")
 
 (after! emacs-everywhere
-  :config
   (defadvice! my/emacs-everywhere-position ()
     :override #'emacs-everywhere-set-frame-position
     ())
-  ;; (add-hook 'emacs-everywhere-init-hooks #'hide-mode-line-mode)
-  (add-hook 'emacs-everywhere-init-hooks (cmd! (text-scale-increase 1)))
+  (remove-hook 'emacs-everywhere-init-hooks #'org-mode)
+  (add-hook 'emacs-everywhere-init-hooks #'org-mode)
+  ;; (add-hook 'emacs-everywhere-init-hooks (run-at-time nil nil (cmd! (text-scale-increase 1))))
   ;; (add-hook 'emacs-everywhere-init-hooks (cmd! (toggle-frame-tab-bar)))
-  (push '(tab-bar-format . 0) emacs-everywhere-frame-parameters)
-  (push '(tab-bar-lines . 0) emacs-everywhere-frame-parameters)
-  (push '(tab-bar-lines-keep-state . 0) emacs-everywhere-frame-parameters)
-  (push '(internal-border-width . 10) emacs-everywhere-frame-parameters)
+  (setq emacs-everywhere-frame-parameters
+        '((name . "emacs-everywhere")
+          (width . 80)
+          (height . 12)
+          (tab-bar-format . 0)
+          (tab-bar-lines . 0)
+          (tab-bar-lines-keep-state . 0)
+          (internal-border-width . 10))
+        )
   )
 
 
@@ -500,9 +509,48 @@ BEG and END narrow the scope where candidates are searched."
 
 ;; (map! :map emmet-mode-keymap
 ;;       [tab] #'indent-for-tab-command)
+#+end_src
+
+** eldoc-box
+#+begin_src emacs-lisp
+(use-package! eldoc-box
+  :hook
+  (eldoc-mode . eldoc-box-hover-mode)
+  :config
 
 
+  (push '(tab-bar-format . 0) eldoc-box-frame-parameters)
+  (push '(tab-bar-lines . 0) eldoc-box-frame-parameters)
+  (push '(child-frame-border-width . 10) eldoc-box-frame-parameters)
+  (push '(tab-bar-lines-keep-state . 0) eldoc-box-frame-parameters)
 
+(defun my/eldoc-box--window-side ()
+  "Return the side of the selected window.
+Symbol 'left if the selected window is on the left,'right if on the right.
+Return 'left if there is only one window."
+  (let ((left-window (window-at 50 50)))
+    (if (eq left-window (selected-window))
+        'left
+      'right)))
+
+  (defun my/eldoc-box--default-upper-corner-position-function (width _)
+    "The default function to set childframe position.
+Used by `eldoc-box-position-function'.
+Position is calculated base on WIDTH and HEIGHT of childframe text window"
+    ;; (cons (- (frame-outer-width (selected-frame)) width 40) 100))
+    (message (format "width: %s" width))
+    (pcase-let ((`(,offset-l ,offset-r ,offset-t) eldoc-box-offset))
+      (cons (pcase (my/eldoc-box--window-side) ; x position + offset
+              ;; display doc on right
+              ('left (- (frame-outer-width (selected-frame)) width 64))
+              ;; display doc on left
+              ('right offset-l))
+            ;; y position + v-offset
+            80)))
+  (setq eldoc-box-position-function #'my/eldoc-box--default-upper-corner-position-function)
+
+  (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background)))
+  )
 #+end_src
 
 ** affe
@@ -1311,20 +1359,26 @@ lsp-ui-doc-enable nil))
     ;; :width ultra-expanded
     ;; :weight light
     :height 5.0))
-    ;; :weight bold :height 2.0 :box (:line-width (5 . 5) :color ,(face-attribute 'mode-line :background))))
+;; :weight bold :height 2.0 :box (:line-width (5 . 5) :color ,(face-attribute 'mode-line :background))))
 (use-package! ace-window
   :config
   (setq aw-scope 'visible)
   (setq aw-dispatch-always t)
-  ;; (ace-window-posframe-mode +1)
+  (ace-window-posframe-mode +1)
   (after! treemacs
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   (ace-window-display-mode t)
   (setq aw-background nil)
-(setq aw-keys '(?t ?n ?e ?r ?i ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v))
+  (setq aw-keys '(?t ?n ?e ?r ?i ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v))
+
+  (defun delete-selected-window ()
+    (delete-window (selected-window)))
+
+
   (setq aw-dispatch-alist
         ;; no docstring means dont prompt for window, use current (weird but ok)
-        '((?k aw-delete-window "Delete Window")
+        '((?K delete-selected-window)
+          (?k aw-delete-window "Delete Window")
           (?m aw-move-window "Move Window")
           (?M delete-other-windows)
           (?c aw-copy-window "Copy Window")
@@ -1340,7 +1394,6 @@ lsp-ui-doc-enable nil))
           (?v +evil/window-vsplit-and-follow)
           (?h +evil/window-split-and-follow)
           (?? aw-show-dispatch-help))))
-
 #+end_src
 
 

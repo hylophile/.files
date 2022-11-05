@@ -51,6 +51,7 @@
     (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map))
 
+;; (advice-add 'evil-escape-func :after 'corfu-quit)
   ;; (add-hook! 'evil-normal-state-entry-hook #'corfu-quit)
   ;; (def)
 
