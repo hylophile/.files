@@ -9,7 +9,7 @@ set -x FZF_CTRL_T_COMMAND 'fd --hidden .'
 set -Ux BUN_INSTALL "/home/$USER/.bun"
 set -px --path PATH "/home/$USER/.bun/bin"
 
-fish_add_path -p ~/.emacs.d/bin ~/.config/fisactl/bin ~/.local/bin
+fish_add_path -p ~/.nix-profile/bin ~/.emacs.d/bin ~/.config/fisactl/bin ~/.local/bin
 
 set -U nvm_default_version v16.17.1
 

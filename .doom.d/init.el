@@ -70,7 +70,7 @@
        ;;objed             ; text object editing for the innocent
        ;; parinfer          ; turn lisp into python, sort of
        rotate-text       ; cycle region at point between text candidates
-       ;; snippets          ; my elves. They type so I don't have to
+       snippets          ; my elves. They type so I don't have to
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
@@ -159,7 +159,7 @@
        ;;lua               ; one-based indices? one-based indices
        (markdown +grip)          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
-       ;;nix               ; I hereby declare "nix geht mehr!"
+       nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org +roam2 +jupyter
             +pretty
