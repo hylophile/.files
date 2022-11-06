@@ -30,6 +30,7 @@ always forget what this does exactly, but it's Good™
 
 (setq lsp-idle-delay 0.01)
 
+(set-file-template! "emacs-everywhere-[[:digit:]]+-[[:digit:]]+" :ignore t)
 
 #+end_src
 #+begin_src emacs-lisp
