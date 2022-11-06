@@ -2,20 +2,22 @@
 
 with (import <nixpkgs> { });
 
-(emacs.override { nativeComp = true; }).overrideAttrs (old: {
-  pname = "emacs";
-  version = "head";
-  src = fetchFromGitHub {
-    owner = "emacs-lsp";
-    repo = "emacs";
-    rev = "299a8771567c9da0d7eb3ea8f69aefcc258ed93a";
-    sha256 = "11hnm3rpa4gs7hkkskpjn945mqz2cgngacqc4wby9f1qjhs1j43z";
-  };
-  patches = [ ];
-  configureFlags = old.configureFlags ++ [ "--with-json" ];
-  preConfigure = "./autogen.sh";
-  buildInputs = old.buildInputs ++ [ autoconf texinfo ];
-})
+let
+  emacsLSP = (emacs.override { nativeComp = true; }).overrideAttrs (old: {
+    pname = "emacs";
+    version = "head";
+    src = fetchFromGitHub {
+      owner = "emacs-lsp";
+      repo = "emacs";
+      rev = "299a8771567c9da0d7eb3ea8f69aefcc258ed93a";
+      sha256 = "11hnm3rpa4gs7hkkskpjn945mqz2cgngacqc4wby9f1qjhs1j43z";
+    };
+    patches = [ ];
+    configureFlags = old.configureFlags ++ [ "--with-json" ];
+    preConfigure = "./autogen.sh";
+    buildInputs = old.buildInputs ++ [ autoconf texinfo ];
+  });
+in (emacsPackagesFor emacsLSP).emacsWithPackages (epkgs: [ epkgs.vterm ])
 
 # build:
 # nix-build emacs-lsp-override.nix
