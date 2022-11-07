@@ -5,9 +5,10 @@ with (import <nixpkgs> { });
 let
   emacsLSP = (emacs.override {
     nativeComp = true;
+    withPgtk = true;
     # Use gtk3 instead of the default gtk2
-    withGTK3 = true;
-    withGTK2 = false;
+    #withGTK3 = true;
+    #withGTK2 = false;
   }).overrideAttrs (old: {
     pname = "emacs";
     version = "head";
