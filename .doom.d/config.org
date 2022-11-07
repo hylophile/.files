@@ -13,6 +13,8 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 (setq projectile-project-search-path '("~/code"))
+;; (let ((projectile-project-search-path '("~/code/fisa" "~/code/kzk" "~/code/misc/" "~/code/uni")))
+;;   (projectile-discover-projects-in-search-path))
 #+end_src
 
 ** basics
@@ -531,21 +533,21 @@ BEG and END narrow the scope where candidates are searched."
   (push '(child-frame-border-width . 10) eldoc-box-frame-parameters)
   (push '(tab-bar-lines-keep-state . 0) eldoc-box-frame-parameters)
 
-(defun my/eldoc-box--window-side ()
-  "Return the side of the selected window.
+  (defun my/eldoc-box--window-side ()
+    "Return the side of the selected window.
 Symbol 'left if the selected window is on the left,'right if on the right.
 Return 'left if there is only one window."
-  (let ((left-window (window-at 50 50)))
-    (if (eq left-window (selected-window))
-        'left
-      'right)))
+    (let ((left-window (window-at 50 50)))
+      (if (eq left-window (selected-window))
+          'left
+        'right)))
 
-  (defun my/eldoc-box--default-upper-corner-position-function (width _)
+  (defun my/eldoc-box--default-upper-corner-position-function (width height)
     "The default function to set childframe position.
 Used by `eldoc-box-position-function'.
 Position is calculated base on WIDTH and HEIGHT of childframe text window"
     ;; (cons (- (frame-outer-width (selected-frame)) width 40) 100))
-    (message (format "width: %s" width))
+    ;; (message (format "width: %s" width))
     (pcase-let ((`(,offset-l ,offset-r ,offset-t) eldoc-box-offset))
       (cons (pcase (my/eldoc-box--window-side) ; x position + offset
               ;; display doc on right
@@ -553,7 +555,8 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
               ;; display doc on left
               ('right offset-l))
             ;; y position + v-offset
-            80)))
+            (- (frame-outer-height (selected-frame)) height 120))))
+
   (setq eldoc-box-position-function #'my/eldoc-box--default-upper-corner-position-function)
 
   (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background)))

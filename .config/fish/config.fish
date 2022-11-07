@@ -11,10 +11,14 @@ set -px --path PATH "/home/$USER/.bun/bin"
 
 fish_add_path -p ~/.nix-profile/bin ~/.emacs.d/bin ~/.config/fisactl/bin ~/.local/bin
 
+set -U NIX_PATH ~/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels
+
 set -U nvm_default_version v16.17.1
 
 set -U EDITOR nvim
 set -U VISUAL nvim
+
+source ~/.config/fish/hm-session-vars.fish
 
 bind \cH backward-kill-word
 bind \cw backward-kill-bigword

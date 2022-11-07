@@ -33,7 +33,7 @@
 ;(package! everforest-harder-theme
 ;  :recipe (:local-repo "~/.doom.d/packages/ever"))
 
-(package! ef-themes :recipe (:local-repo "~/code/doom-ef-themes/" :build (:not compile)))
+(package! ef-themes :recipe (:local-repo "~/code/misc/doom-ef-themes/" :build (:not compile)))
 
 (package! page-break-lines)
 (package! minibuffer-header)
