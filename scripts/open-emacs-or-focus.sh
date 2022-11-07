@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
 if ! i3-msg '[class="^Emacs$"]' focus; then
-    emacs &
+    ~/.nix-profile/bin/emacs &
 fi
