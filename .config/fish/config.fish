@@ -20,3 +20,4 @@ bind \cH backward-kill-word
 bind \cw backward-kill-bigword
 
 zoxide init fish --cmd d | source
+direnv hook fish | source
