@@ -81,9 +81,14 @@ bindsym $mod+F1 exec xset dpms force off
 bindsym button2 kill
 bindsym button3 move container to output next
 
+bindsym button6 --whole-window focus output next
+bindsym button7 --whole-window exec ~/.config/sway/swap-visible-workspaces.sh
+# bindsym button7 --whole-window focus output next
+bindsym button10 --whole-window move container to output next
+
 bindsym $mod+w exec rofimoji --skin-tone light
 bindsym $mod+space focus output next
-bindsym $mod+Control+space exec ~/.config/i3/swap.sh
+bindsym $mod+Control+space exec ~/.config/sway/swap-visible-workspaces.sh
 bindsym $mod+Shift+space move window to output next
 
 # bindsym $mod+e workspace next_on_output

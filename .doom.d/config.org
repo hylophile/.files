@@ -791,14 +791,12 @@ region into a snippet more streamlined"
 (map! :ni "C-=" #'doom/reset-font-size)
 (map! :ni "C--" #'doom/decrease-font-size)
 
-(map! :leader
-      :desc "Magit push"
-      "g p" #'magit-push)
-
-
 
 
 (map! :leader
+      "," #'consult-buffer
+      ">" #'+vertico/switch-workspace-buffer
+      "g p" #'magit-push
       "R" #'+popup/raise
       "|" #'+popup/raise)
 
