@@ -39,7 +39,9 @@ exec --no-startup-id xbanish
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 #
+#exec --no-startup-id "xcompmgr"
 exec --no-startup-id "picom --experimental-backends -b"
+
 #exec --no-startup-id mullvad-vpn
 #exec --no-startup-id nm-applet
 exec --no-startup-id mbsync --all
