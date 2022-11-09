@@ -45,13 +45,14 @@ exec --no-startup-id "picom --experimental-backends -b"
 exec --no-startup-id mbsync --all
 exec --no-startup-id mu index
 
-exec --no-startup-id pasystray
+# exec --no-startup-id pasystray
 #assign [class="^Mullvad VPN$"] 10
 #exec --no-startup-id mullvad-vpn
 
 assign [class="^Mullvad VPN$"] 10
 exec --no-startup-id mullvad-vpn
 exec --no-startup-id nm-applet
+exec --no-startup-id redshift
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
