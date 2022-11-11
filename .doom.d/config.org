@@ -27,7 +27,7 @@ always forget what this does exactly, but it's Good™
       +evil-want-o/O-to-continue-comments nil)
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
-(add-to-list 'default-frame-alist '(alpha 95 95))
+;; (add-to-list 'default-frame-alist '(alpha 95 95))
 (setq auth-sources '("~/.authinfo"))
 
 (setq lsp-idle-delay 0.01)

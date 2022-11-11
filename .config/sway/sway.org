@@ -46,6 +46,14 @@ floating_modifier $mod normal
 
 titlebar_border_thickness 0
 titlebar_padding 5 0
+
+
+
+# seat seat0 xcursor_theme Adwaita 24
+output  "*" bg "~/Downloads/seealpsee-lake-alps-mountains-reflections-scenery-summer-7680x5363-8853.jpg" fill
+set $opacity 0.95
+for_window [class=".*"] opacity $opacity
+for_window [app_id=".*"] opacity $opacity
 #+end_src
 
 * Variables

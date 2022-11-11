@@ -9,7 +9,7 @@ set -x FZF_CTRL_T_COMMAND 'fd --hidden .'
 set -Ux BUN_INSTALL "/home/$USER/.bun"
 set -px --path PATH "/home/$USER/.bun/bin"
 
-fish_add_path -p ~/.nix-profile/bin ~/.emacs.d/bin ~/.config/fisactl/bin ~/.local/bin
+fish_add_path -p ~/.nix-profile/bin ~/.config/emacs/bin ~/.config/fisactl/bin ~/.local/bin
 
 set -U NIX_PATH ~/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels
 
