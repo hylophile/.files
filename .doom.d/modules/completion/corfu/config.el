@@ -1,9 +1,11 @@
 ;;; completion/corfu/config.el -*- lexical-binding: t; -*-
 
+(map! :i "C-SPC" #'completion-at-point)
+
 (use-package! corfu
   :custom
   (corfu-separator ?\s)
-  (corfu-auto t)
+  (corfu-auto nil)
   (corfu-auto-delay 0.2)
   (corfu-on-exact-match nil)
   (corfu-quit-no-match t)
@@ -38,6 +40,7 @@
             (lambda ()
               (setf (alist-get 'lsp-capf completion-category-defaults) '((styles . (orderless flex))))))
 
+
   (map! :map corfu-map
         "C-SPC"    #'corfu-insert-separator
         "C-n"      #'corfu-next
@@ -51,7 +54,7 @@
     (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map))
 
-;; (advice-add 'evil-escape-func :after 'corfu-quit)
+  ;; (advice-add 'evil-escape-func :after 'corfu-quit)
   ;; (add-hook! 'evil-normal-state-entry-hook #'corfu-quit)
   ;; (def)
 
@@ -156,8 +159,11 @@
 
 (use-package! corfu-quick
   :after corfu
+  :custom
+  (corfu-quick1 "tsraneiodh")
+  (corfu-quick2 nil)
   :bind (:map corfu-map
-              ("C-q" . corfu-quick-insert)))
+              ("C-t" . corfu-quick-insert)))
 
 
 (use-package! evil-collection-corfu

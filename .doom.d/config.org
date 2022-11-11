@@ -501,7 +501,7 @@ BEG and END narrow the scope where candidates are searched."
 ;;     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
 
 (load! "load/mail.el")
-(load! "load/dotfiles.el")
+;; (load! "load/dotfiles.el")
 ;;(load! "load/format-classes.el")
 ;; (after! org
 ;;   (add-to-list 'org-agenda-custom-commands
@@ -631,7 +631,7 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 ** company
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 
 (after! company
   (add-hook! 'evil-normal-state-entry-hook
@@ -643,12 +643,13 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
       (when company-candidates
         (company-abort))))
 
-  (setq company-idle-delay 0.3))
+  (setq company-idle-delay nil))
 
 (after! company-box
+  (push '(tab-bar-lines . 0) company-box-frame-parameters)
+  (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters)
   (push '(tab-bar-format . nil) company-box-frame-parameters))
 
-  ;; (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters))
 ;; ^ together with tab-bar-lines . 0
 #+end_src
 
