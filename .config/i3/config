@@ -181,11 +181,11 @@ bindsym $mod+s layout toggle split
 bindsym $mod+Shift+f floating toggle
 bindsym $mod+Shift+b border toggle
 
-bindsym $mod+Shift+p exec maim -s -u | xclip -selection clipboard -t image/png -i
-bindsym $mod+z exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
-bindsym $mod+Control+z exec maim -s -u | xclip -selection clipboard -t image/png -i
-bindsym Shift+F4 exec maim -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
-bindsym F4 exec maim -s -u | xclip -selection clipboard -t image/png -i
+bindsym $mod+Shift+p exec maim -o -s -u | xclip -selection clipboard -t image/png -i
+bindsym $mod+z exec maim -o -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
+bindsym $mod+Control+z -o exec maim -s -u | xclip -selection clipboard -t image/png -i
+bindsym $mod+Shift+F4 exec maim -o -s -u | convert -resize "50%" -sharpen 1 - - | xclip -selection clipboard -t image/png -i
+bindsym $mod+F4 exec maim -o -s -u | xclip -selection clipboard -t image/png -i
 # bindsym F5 nop
 bindsym F9 exec xprop > ~/test.xprop
 bindsym $mod+F12 exec ~/scripts/disable-laptop-peripherals.sh
