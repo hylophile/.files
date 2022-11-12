@@ -70,7 +70,7 @@
 }
 
 window#waybar {
-  background-color: @dr_bg0;
+  background-color: rgba(40,42,54, 0.95);
   color: @dr_fg;
   transition-property: background-color;
   transition-duration: 0.5s;

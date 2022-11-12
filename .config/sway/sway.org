@@ -40,7 +40,7 @@ title_align center
 workspace_layout tabbed
 # hide_edge_borders --i3 smart
 hide_edge_borders smart
-mouse_warping none
+# mouse_warping none
 
 floating_modifier $mod normal
 
@@ -81,11 +81,11 @@ output "BenQ Corporation BenQ EW3270U W8L04567019" {
     scale 1.5
 }
 
-output eDP-1 {
-    disable
-}
+# output eDP-1 {
+#     disable
+# }
 
-output * background "#000000" solid_color
+# output * background "#000000" solid_color
 #+end_src
 
 * Inputs
@@ -97,9 +97,15 @@ input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
 
 set $slimblade 1149:8257:Kensington_Slimblade_Trackball
 
+
 input 1149:8257:Kensington_Slimblade_Trackball {
     drag enabled
     middle_emulation enabled
+}
+
+set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
+input $elecom {
+      scroll_method on_button_down
 }
 
 bindsym --input-device=$slimblade --whole-window BTN_MIDDLE seat - cursor press button8
@@ -107,13 +113,17 @@ bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cur
 
 bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
 bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
+
+bindsym button6 --whole-window focus output next
+bindsym button7 --whole-window exec ~/.config/sway/swap-visible-workspaces.sh
+# bindsym button7 --whole-window focus output next
+bindcode 277 --whole-window move container to output next
+
 #+end_src
 
 * Startup
 
 #+begin_src conf-space :noweb yes
-exec swaybg --color "#000000"
-
 <<mullvad()>>
 
 exec nm-applet --indicator
@@ -154,6 +164,9 @@ bindsym $mod+d exec $menu
 
 # Reload the configuration file
 bindsym $mod+F5 reload
+
+bindsym $mod+F8 opacity 1
+bindsym $mod+Control+F8 opacity $opacity
 
 bindsym $mod+Shift+Control+e exec swaymsg exit
 
