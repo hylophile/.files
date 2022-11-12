@@ -50,7 +50,7 @@ titlebar_padding 5 0
 
 
 # seat seat0 xcursor_theme Adwaita 24
-output  "*" bg "~/Downloads/seealpsee-lake-alps-mountains-reflections-scenery-summer-7680x5363-8853.jpg" fill
+# output  "*" bg "~/Downloads/seealpsee-lake-alps-mountains-reflections-scenery-summer-7680x5363-8853.jpg" fill
 set $opacity 0.95
 for_window [class=".*"] opacity $opacity
 for_window [app_id=".*"] opacity $opacity
@@ -89,6 +89,7 @@ output "BenQ Corporation BenQ EW3270U W8L04567019" {
 #+end_src
 
 * Inputs
+
 
 #+begin_src conf-space
 input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {

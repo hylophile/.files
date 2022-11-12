@@ -13,8 +13,8 @@
     "name": "topbar",
     "layer": "top",
     "position": "top",
-    "spacing": 10,
-    // "height": 30,
+    "spacing": 5,
+    "height": 10,
     "modules-center": ["sway/workspaces"],
     "modules-left": [
         "tray",
@@ -67,6 +67,27 @@
   border-radius: 0;
   font-family: "Jost*";
   font-size: 18px;
+  color: @dr_fg;
+  font-weight: normal;
+}
+
+button {
+  color: @dr_fg;
+  font-weight: normal;
+  margin: 0px 0px;
+}
+
+label {
+  color: @dr_fg;
+  font-weight: normal;
+  margin: 0px 0px;
+}
+
+button:hover {
+  background: transparent;
+  box-shadow: inherit;
+  text-shadow: none;
+  font-weight: normal;
 }
 
 window#waybar {
@@ -77,12 +98,13 @@ window#waybar {
 }
 
 .modules-left {
-  padding-left: 10px;
+  padding-left: 3px;
 }
 
 .modules-right {
-  padding-right: 10px;
+  padding-right: 3px;
 }
+
 #+end_src
 
 
@@ -96,6 +118,8 @@ window#waybar {
 #+begin_src css
 .topbar {
   border-bottom: 3px solid @dr_bg1;
+  margin: 0px;
+  padding: 0px;
 }
 #+end_src
 
@@ -104,29 +128,31 @@ window#waybar {
 *** style
 
 #+begin_src css
-#workspaces button {
+#workspaces .text-button {
   min-width: 90px;
   /* margin-left: 5px; */
   background-color: transparent;
   color: @dr_fg;
 }
 
-#workspaces button:hover {
+#workspaces .text-button:hover {
   background: @dr_bg1;
+  /* background-color: transparent; */
+
   box-shadow: inset 0 3px @dr_cy;
 }
 
-#workspaces button.visible {
+#workspaces .text-button.visible {
   background-color: @dr_bg1;
   /* box-shadow: inset 0 3px @dr_cy; */
 }
 
-#workspaces button.focused {
+#workspaces .text-button.focused {
   background-color: @dr_bg1;
   box-shadow: inset 0 3px @dr_pi;
 }
 
-#workspaces button.urgent {
+#workspaces .text-button.urgent {
     box-shadow: inset 0 3px @dr_or;
 }
 #+end_src
@@ -225,20 +251,21 @@ window#waybar {
 *** style
 
 #+begin_src css
-#pulseaudio {
-    border-top-right-radius: 50px;
-    border-top-left-radius: 50px;
+#pulseaudio label {
+    /* border-top-right-radius: 50px; */
+    /* border-top-left-radius: 50px; */
     min-width: 50px;
+    margin: 0px 0px;
 }
 
-#pulseaudio.source:not(.source-muted) {
+#pulseaudio.source:not(.source-muted) label {
   color: @dr_gr;
-  background-color: @dr_bg1;
+  /* background-color: @dr_bg1; */
 }
 
-#pulseaudio.sink.sink-muted {
+#pulseaudio.sink.sink-muted label {
   color: @dr_or;
-  background-color: @dr_bg1;
+  /* background-color: @dr_bg1; */
 }
 #+end_src
 
@@ -328,12 +355,12 @@ fi
 **** style
 
 #+begin_src css
-#custom-azk {
+#custom-azk label {
   min-width: 150px;
   border-radius: 50px;
   border: 0px solid @dr_bg1;
   padding: 0px 0px;
-  margin: 8px 5px;
+  margin: 10px 0px;
   font-size: 0px;
   /* box-shadow: inset -1px -1px 2px @dr_fg, 2px 2px 2px #121319; */
   box-shadow: 2px 2px 2px #121319;
@@ -341,12 +368,12 @@ fi
   transition-duration: 0.5s;
 }
 
-#custom-azk.azk_break {
+#custom-azk.azk_break label {
   background-color: @dr_re;
     min-width: 500px;
 }
 
-#custom-azk.azk_working {
+#custom-azk.azk_working label {
   background-color: @dr_cy;
 }
 #+end_src
@@ -370,14 +397,14 @@ fi
 **** style
 
 #+begin_src css
-#custom-move {
+#custom-move label {
   min-width: 80px;
   border-radius: 5px;
   padding: 0px 10px;
-  margin: 5px 10px;
+  margin: 0px;
 }
 
-#custom-move.warn {
+#custom-move.warn label {
   background-color: @dr_re;
   color: @dr_bg0;
   font-weight: bold;
@@ -569,12 +596,12 @@ fi
 *** style
 
 #+begin_src css
-#taskbar button:hover {
+#taskbar .text-button:hover {
   background: rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 3px #ffffff;
 }
 
-#taskbar button.active {
+#taskbar .text-button.active {
   background-color: #64727d;
   box-shadow: inset 0 3px #ffffff;
 }
