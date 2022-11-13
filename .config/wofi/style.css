@@ -1,0 +1,61 @@
+window {
+  all: unset;
+  margin: 0px;
+  /* border: 1px solid #8be9fd; */
+  border: 1px solid #6272a4;
+  font-family: "Jost*";
+  font-size: 16px;
+  /* border-radius: 5px; */
+  opacity: 0.9;
+  background: #282a36;
+}
+
+#input {
+  all: unset;
+  /* border-radius: 5px; */
+  margin: 5px;
+  padding: 4px 10px;
+  border: none;
+  color: #f8f8f2;
+  background-color: #44475a;
+}
+
+#inner-box {
+  margin: 5px;
+  border: none;
+  background-color: #282a36;
+}
+
+#outer-box {
+  margin: 5px;
+  border: none;
+  background-color: #282a36;
+}
+
+#scroll {
+  margin: 0px;
+  border: none;
+}
+
+#text {
+  margin: 5px;
+  border: none;
+  color: #f8f8f2;
+}
+
+expander {
+  display: none;
+  width: 0px;
+}
+
+#entry {
+  all: unset;
+  padding-left: 10px;
+}
+
+#entry:selected {
+  all: unset;
+  padding-left: 10px;
+  /* border-radius: 5px; */
+  background-color: #44475a;
+}

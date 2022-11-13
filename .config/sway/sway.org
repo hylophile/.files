@@ -160,9 +160,11 @@ bindsym $mod+Return exec $term
 bindsym $mod+q kill
 
 # Start your launcher
-set $menu wofi --show drun -I | xargs swaymsg exec --
+set $menu wofi --show drun -I -a | xargs swaymsg exec --
 bindsym $mod+d exec $menu
+bindsym $mod+o exec $menu
 
+bindsym $mod+e exec ~/scripts/open-emacs-or-focus-wayland.sh
 # Reload the configuration file
 bindsym $mod+F5 reload
 
@@ -226,7 +228,9 @@ bindsym $mod+Shift+t move container to workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
 
-bindsym $mod+h exec env RUST_BACKTRACE=1 \
+bindsym $mod+i exec env RUST_BACKTRACE=1 \
+    swayr switch-window >> /tmp/swayr.log 2>&1
+bindsym $mod+comma exec env RUST_BACKTRACE=1 \
     swayr switch-window >> /tmp/swayr.log 2>&1
 
 # bindsym $mod+Delete exec env RUST_BACKTRACE=1 \
