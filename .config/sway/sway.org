@@ -356,7 +356,7 @@ for_window    [app_id="chrome-mailsrv.employer__owa_-Default"] title_format "<sp
 for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
 for_window    [app_id="chrome-discord.com__app-Default" title="Discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
 for_window    [app_id="firefox.*"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
-for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' face='file-icons'></span> %title"
+for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' rise='-3pt' face='file-icons'></span> %title"
 for_window    [app_id="kitty"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
 for_window    [app_id="telegramdesktop"]        title_format "<span foreground='#0088CC'><tt></tt></span> %title"
 for_window    [app_id="org.kde.dolphin"]        title_format "<span foreground='#33BFFF'></span> %title"
