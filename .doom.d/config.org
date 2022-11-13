@@ -27,7 +27,7 @@ always forget what this does exactly, but it's Good™
       +evil-want-o/O-to-continue-comments nil)
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
-;; (add-to-list 'default-frame-alist '(alpha 95 95))
+(add-to-list 'default-frame-alist '(alpha 100 100))
 (setq auth-sources '("~/.authinfo"))
 
 (setq lsp-idle-delay 0.01)
@@ -36,6 +36,14 @@ always forget what this does exactly, but it's Good™
 
 #+end_src
 #+begin_src emacs-lisp
+
+
+;; (defadvice! hy/keep-point (fun &rest args)
+;;   :around #'org-babel-execute-buffer
+;;   (let ((p (point)))
+;;     (apply fun args)
+;;     (goto-char p)))
+
 
 ;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -50,7 +58,6 @@ always forget what this does exactly, but it's Good™
 
 #+end_src
 #+begin_src emacs-lisp
-
 
 
 (setq-default
