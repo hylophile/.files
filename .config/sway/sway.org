@@ -127,6 +127,9 @@ bindcode 277 --whole-window move container to output next
 #+begin_src conf-space :noweb yes
 <<mullvad()>>
 
+exec swww init
+exec_always ~/scripts/random-sway-bg.fish
+
 exec nm-applet --indicator
 
 exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
