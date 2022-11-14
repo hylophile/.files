@@ -220,7 +220,8 @@ bindsym $mod+period scratchpad show
 # Swap focus between the tiling area and the floating area
 bindsym $mod+Shift+f floating toggle
 
-bindsym $mod+space focus output left
+bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
+
 bindsym $mod+Control+space exec ~/.config/sway/swap-visible-workspaces.sh
 bindsym $mod+Shift+space move window to output left
 
@@ -336,7 +337,7 @@ bindcode 199 exec ~/scripts/mute-all-sources.sh 0
 
 #+begin_src conf-space
 # select screenshot to clipboard
-bindsym $mod+z exec grim -s 1 -g "$(slurp)" - | wl-copy
+bindsym $mod+F4 exec grim -s 1 -g "$(slurp)" - | wl-copy
 # color picker to clipboard
 bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
