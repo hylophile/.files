@@ -115,6 +115,7 @@ bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cur
 bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
 bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
 
+bindsym $mod+F9 exec ~/scripts/new-bg-here-sway.fish
 bindsym button6 --whole-window focus output next
 bindsym button7 --whole-window exec ~/.config/sway/swap-visible-workspaces.sh
 # bindsym button7 --whole-window focus output next
