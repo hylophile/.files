@@ -379,6 +379,9 @@ BEG and END narrow the scope where candidates are searched."
 
 ;; (set-popup-rule! "^\\*lsp-help\\*" :side 'bottom)
 (set-popup-rule! "^\\*helpful" :side 'right :width 90 :vslot 1)
+(set-popup-rules!
+  '(("^\\*info\\*"
+     :slot 2 :vslot -2 :side left :width 83 :quit nil)))
 (set-popup-rule! "^\\*Flycheck errors\\*$" :quit nil)
 ;; (set-popup-rule! "^\\*helpful" :ignore t)
 ;; (setq +popup-defaults (list :side 'right :height 0.16 :width 80 :quit t :select #'ignore :ttl 5))
@@ -877,11 +880,11 @@ region into a snippet more streamlined"
 
 (map! :i "C-u" #'universal-argument)
 
-(map! :map minibuffer-local-map "C-u" #'universal-argument
-      )
+(map! :map minibuffer-local-map "C-u" #'universal-argument)
 
-(map! "C-s" #'save-buffer)
-(map! :leader "f s" nil)
+
+;; (map! "C-s" #'save-buffer)
+;; (map! :leader "f s" nil)
 (map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
 
 

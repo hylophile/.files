@@ -1,6 +1,6 @@
 #!/usr/bin/env -S guile -s
 !#
-(use-modules (ice-9 popen) (ice-9 rdelim) (rnrs io ports))
+(use-modules (ice-9 popen) (ice-9 rdelim))
 
 (define (println expr)
   (display expr)
@@ -11,14 +11,7 @@
   (call-with-port (open-input-pipe cmd)
     (lambda (port)
       (setvbuf port 'block)
-      (string-trim-both (get-string-all port)))))
-
-;; (define (subshell cmd)
-;;   "Runs command CMD and returns trimmed stdout."
-;;   (let* ((port (open-input-pipe cmd))
-;;          (str (read-line port)))
-;;     (close-pipe port)
-;;     (string-trim-both str)))
+      (string-trim-both (read-delimited "" port)))))
 
 (define (next-output outputs current-output)
   ; no idea how to do circular lists yet
