@@ -221,7 +221,7 @@ bindsym $mod+period scratchpad show
 # Swap focus between the tiling area and the floating area
 bindsym $mod+Shift+f floating toggle
 
-bindsym $mod+space exec ~/scripts/next_prev_output.clj prev
+bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
 # bindsym $mod+Control+space focus output left
 
 bindsym $mod+Control+space exec ~/.config/sway/swap-visible-workspaces.sh
