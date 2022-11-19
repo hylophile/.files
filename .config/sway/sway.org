@@ -204,7 +204,7 @@ bindsym $mod+f fullscreen
 # Toggle the current focus between tiling and floating mode
 # bindsym $mod+Shift+space floating toggle
 
-bindsym $mod+Ctrl+f focus mode_toggle
+bindsym $mod+ focus mode_toggle
 
 # focus the parent container
 # bindsym $mod+p focus parent
@@ -224,7 +224,7 @@ bindsym $mod+Shift+f floating toggle
 bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
 # bindsym $mod+Control+space focus output left
 
-bindsym $mod+Control+space exec ~/.config/sway/swap-visible-workspaces.sh
+bindsym $mod+Control+space exec ~/scripts/swap-visible-workspaces.scm
 bindsym $mod+Shift+space move window to output left
 
 bindsym $mod+a workspace next_on_output
@@ -274,7 +274,12 @@ bindsym $mod+Shift+0 move container to workspace number 10
 #+end_src
 
 ** (move to) new workspace
+#+begin_src conf-space
+bindsym $mod+n exec ~/scripts/new-workspace.scm focus
+bindsym $mod+Shift+n exec ~/scripts/new-workspace.scm move-to
+#+end_src
 
+*** old :ARCHIVE:
 #+begin_src conf-space
 bindsym $mod+n exec ~/.config/sway/new-workspace.sh
 #+end_src
@@ -317,7 +322,6 @@ if [ "$new_workspace" != -1 ]; then
 fi
 #+end_src
 
-*** TODO refactor
 
 ** Audio
 

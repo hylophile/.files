@@ -1,11 +1,13 @@
 #!/usr/bin/env -S guile -s
 !#
-(use-modules (gus base))
+(use-modules (gus base) (ice-9 match))
 
 (define sway-outputs (vector->list (subjson "swaymsg -t get_outputs")))
 
 (define current-output
-  (cdr (assoc "name" (car (filter (lambda (e) (assoc "focused" e)) sway-outputs)))))
+  (cdr (assoc "name" (car (filter
+                           (lambda (e) (eq? #t (cdr (assoc "focused" e))))
+                           sway-outputs)))))
 
 (define all-outputs
   (map (lambda (e) (cdr (assoc "name" e))) sway-outputs))
@@ -22,12 +24,9 @@
   (system (string-append "swaymsg focus output " output)))
 
 (let* ((params (cdr (command-line))))
-  (when (null? params)
-    (println "No params given (use 'next' or 'prev'). Exiting")
-    (exit 1))
-  (cond
-    ; is there a more elegant way, something like (safe-cadr (command-line))?
-    ((equal? (car params) "next") (swaymsg-focus-output (next-output all-outputs current-output)))
-    ((equal? (car params) "prev") (swaymsg-focus-output (prev-output all-outputs current-output)))
+  (match params
+    (("next") (swaymsg-focus-output (next-output all-outputs current-output)))
+    (( "prev") (swaymsg-focus-output (prev-output all-outputs current-output)))
     ; why does (#t) not work here?
-    ((eq? #t #t) (println "Invalid parameter. Use 'next' or 'prev'."))))
+    (_
+     (println "Invalid parameter. Use 'next' or 'prev'."))))
