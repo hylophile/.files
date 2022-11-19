@@ -1,17 +1,14 @@
 #!/usr/bin/env -S guile -s
 !#
-(use-modules (ice-9 popen) (ice-9 rdelim))
+(use-modules (gus base))
 
-(define (println expr)
-  (display expr)
-  (newline))
+(define sway-outputs (vector->list (subjson "swaymsg -t get_outputs")))
 
-(define (subshell cmd)
-  "Runs command CMD and returns trimmed stdout."
-  (call-with-port (open-input-pipe cmd)
-    (lambda (port)
-      (setvbuf port 'block)
-      (string-trim-both (read-delimited "" port)))))
+(define current-output
+  (cdr (assoc "name" (car (filter (lambda (e) (assoc "focused" e)) sway-outputs)))))
+
+(define all-outputs
+  (map (lambda (e) (cdr (assoc "name" e))) sway-outputs))
 
 (define (next-output outputs current-output)
   ; no idea how to do circular lists yet
@@ -24,11 +21,7 @@
 (define (swaymsg-focus-output output)
   (system (string-append "swaymsg focus output " output)))
 
-
-(let* ((all-outputs-str (subshell "swaymsg -t get_outputs | jq -r '.[] | .name'"))
-       (all-outputs (string-split all-outputs-str #\newline))
-       (current-output (subshell "swaymsg -t get_outputs | jq -r '.[] | select(.focused==true).name'"))
-       (params (cdr (command-line))))
+(let* ((params (cdr (command-line))))
   (when (null? params)
     (println "No params given (use 'next' or 'prev'). Exiting")
     (exit 1))
