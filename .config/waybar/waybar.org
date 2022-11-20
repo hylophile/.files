@@ -381,9 +381,9 @@ fi
 "custom/move": {
     "return-type": "json",
     "format": "{}",
-    "exec": "python $HOME/scripts/move.py diff",
-    "on-click": "python $HOME/scripts/move.py reset",
-    "interval": 300,
+    "exec": "guile $HOME/scripts/move.scm print",
+    "on-click": "guile $HOME/scripts/move.scm reset",
+    "interval": 5,
 },
 #+end_src
 
