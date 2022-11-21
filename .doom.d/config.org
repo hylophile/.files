@@ -15,6 +15,9 @@ always forget what this does exactly, but it's Good™
 (setq projectile-project-search-path '("~/code"))
 ;; (let ((projectile-project-search-path '("~/code/fisa" "~/code/kzk" "~/code/misc/" "~/code/uni")))
 ;;   (projectile-discover-projects-in-search-path))
+;; (load! "info-colors.el")
+;; (require 'info-colors)
+;; (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 #+end_src
 
 ** basics
@@ -625,7 +628,8 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 (use-package! apheleia
   :config
-  (apheleia-global-mode +1))
+  (apheleia-global-mode +1)
+  (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
 
 #+end_src
 
@@ -1269,6 +1273,11 @@ lsp-ui-doc-enable nil))
   :init
   (setq lsp-tailwindcss-add-on-mode t)
   :config)
+#+end_src
+** scheme
+#+begin_src emacs-lisp
+(set-popup-rule! "^\\*Geiser Debug\\*$" :side 'bottom :vslot -3)
+(set-popup-rule! "^\\*Geiser Documentation\\*$" :side 'bottom :vslot -3)
 #+end_src
 
 ** evil
