@@ -1278,6 +1278,9 @@ lsp-ui-doc-enable nil))
 #+begin_src emacs-lisp
 (set-popup-rule! "^\\*Geiser Debug\\*$" :side 'bottom :vslot -3)
 (set-popup-rule! "^\\*Geiser Documentation\\*$" :side 'bottom :vslot -3)
+
+(after! scheme
+  (setq geiser-mode-start-repl-p t))
 #+end_src
 
 ** evil
