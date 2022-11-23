@@ -23,7 +23,9 @@ always forget what this does exactly, but it's Good™
 ** basics
 
 #+begin_src emacs-lisp
+
 (setq doom-localleader-key ",")
+
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 ;; (setq evil-want-C-u-delete nil)
 (setq +default-want-RET-continue-comments nil
@@ -1279,8 +1281,18 @@ lsp-ui-doc-enable nil))
 (set-popup-rule! "^\\*Geiser Debug\\*$" :side 'bottom :vslot -3)
 (set-popup-rule! "^\\*Geiser Documentation\\*$" :side 'bottom :vslot -3)
 
+;; (map! :map geiser-debug-mode-map "," #'geiser-guile-debug-menu)
+
+(after! (evil geiser)
+   (evil-set-initial-state 'geiser-debug-mode 'emacs))
+
 (after! scheme
   (setq geiser-mode-start-repl-p t))
+#+end_src
+** exercism
+#+begin_src emacs-lisp
+(use-package! exercism-modern
+  :commands (exercism-modern-jump exercism-modern-view-tracks))
 #+end_src
 
 ** evil

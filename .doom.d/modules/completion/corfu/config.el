@@ -6,7 +6,7 @@
   :custom
   (corfu-separator ?\s)
   (corfu-auto t)
-  (corfu-auto-delay 1)
+  (corfu-auto-delay 0.3)
   (corfu-on-exact-match nil)
   (corfu-quit-no-match t)
   ;; (corfu-count 5)

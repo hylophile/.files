@@ -56,6 +56,9 @@
 ;; (unpin! company-box)
 (package! apheleia)
 
+(package! exercism-modern
+  :recipe (:files (:defaults "icons")
+           :host github :repo "elken/exercism-modern"))
 
 
 
