@@ -14,8 +14,11 @@
 
 (define bgs (list->vector (string-split (subshell "fd . /media/wallpapers/all") #\newline)))
 
+(define (rrr n)
+  (random n (seed->random-state (cdr (gettimeofday)))))
+
 (define (random-bg)
-  (vector-ref bgs (random (vector-length bgs))))
+  (vector-ref bgs (rrr (vector-length bgs))))
 
 (define (set-random-bg-for-output output)
   (system (string-append "swww img --transition-step 10 --outputs " output " " (random-bg))))
