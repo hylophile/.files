@@ -28,7 +28,7 @@
       <<azk()>>
       "pulseaudio#sink",
       "pulseaudio#source",
-      //"battery",
+      "battery",
       "custom/weather",
       "clock",
       "sway/mode",
@@ -244,7 +244,7 @@ window#waybar {
 *** style
 
 #+begin_src css
-#pulseaudio label {
+#pulseaudio {
     /* border-top-right-radius: 50px; */
     /* border-top-left-radius: 50px; */
     min-width: 40px;
@@ -252,13 +252,36 @@ window#waybar {
   color: @dr_gr;
 }
 
-#pulseaudio.source.source-muted label {
+#pulseaudio.source.source-muted {
     color: @dr_or;
 }
 
-#pulseaudio.sink.sink-muted label {
+#pulseaudio.sink.sink-muted {
   color: @dr_or;
   /* background-color: @dr_bg1; */
+}
+#+end_src
+** battery
+*** config
+#+begin_src json
+"battery": {
+    "interval": 60,
+    "states": {
+        "full": 95,
+        "warning": 30,
+        "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-icons": ["", "", "", "", ""],
+    "max-length": 25,
+    "full-at": 95,
+    "format-full": "a"
+},
+#+end_src
+
+#+begin_src css
+.plugged {
+    font-size: 0px;
 }
 #+end_src
 
@@ -340,6 +363,7 @@ fi
     "return-type": "json",
     "format": "{}",
     "exec": "sh $HOME/azk/show_azk.sh",
+    "exec-if": "nmcli | rg 'enp2s0f0: connected'",
     "on-click": "python $HOME/azk/azk_waybar.py stamp",
     "interval": 1,
 },
@@ -348,7 +372,7 @@ fi
 **** style
 
 #+begin_src css
-#custom-azk label {
+#custom-azk {
   min-width: 150px;
   border-radius: 50px;
   border: 0px solid @dr_bg1;
@@ -361,12 +385,12 @@ fi
   transition-duration: 0.5s;
 }
 
-#custom-azk.azk_break label {
+#custom-azk.azk_break {
   background-color: @dr_re;
     min-width: 500px;
 }
 
-#custom-azk.azk_working label {
+#custom-azk.azk_working {
   background-color: @dr_cy;
 }
 #+end_src
@@ -390,14 +414,14 @@ fi
 **** style
 
 #+begin_src css
-#custom-move label {
+#custom-move {
   min-width: 80px;
   border-radius: 5px;
   padding: 0px 10px;
   margin: 0px;
 }
 
-#custom-move.warn label {
+#custom-move.warn {
   background-color: @dr_re;
   color: @dr_bg0;
   font-weight: bold;
@@ -471,7 +495,7 @@ fi
 :header-args:css: :tangle no
 :END:
 
-** bottombar
+** bottombar :ARCHIVE:
 
 #+begin_src json
 {

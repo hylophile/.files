@@ -129,7 +129,7 @@ bindcode 277 --whole-window move container to output next
 <<mullvad()>>
 
 exec swww init
-exec_always ~/scripts/switch-bg.scm all
+# exec_always ~/scripts/switch-bg.scm all
 
 exec nm-applet --indicator
 
@@ -140,7 +140,7 @@ exec swayidle -w \
          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          before-sleep 'swaylock -f -c 000000'
 
-exec python ~/scripts/move.py reset
+exec ~/scripts/move.scm reset
 
 # exec sh ~/scripts/disable-laptop-output-if-others.sh
 
