@@ -561,7 +561,7 @@ BEG and END narrow the scope where candidates are searched."
 
   (push '(tab-bar-format . 0) eldoc-box-frame-parameters)
   (push '(tab-bar-lines . 0) eldoc-box-frame-parameters)
-  (push '(child-frame-border-width . 10) eldoc-box-frame-parameters)
+  (push '(child-frame-border-width . 3) eldoc-box-frame-parameters)
   (push '(tab-bar-lines-keep-state . 0) eldoc-box-frame-parameters)
 
   (defun my/eldoc-box--window-side ()
@@ -582,16 +582,17 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
     (pcase-let ((`(,offset-l ,offset-r ,offset-t) eldoc-box-offset))
       (cons (pcase (my/eldoc-box--window-side) ; x position + offset
               ;; display doc on right
-              ('left (- (frame-outer-width (selected-frame)) width 64))
+              ('left (- (frame-outer-width (selected-frame)) width 15))
               ;; display doc on left
               ('right offset-l))
             ;; y position + v-offset
-            (- (frame-outer-height (selected-frame)) height 120))))
+            5)))
+            ;; (- (frame-outer-height (selected-frame)) height 120))))
 
-  (setq eldoc-box-position-function #'my/eldoc-box--default-upper-corner-position-function)
+  (setq eldoc-box-position-function #'my/eldoc-box--default-upper-corner-position-function))
+(custom-set-faces! `(eldoc-box-border :background ,(doom-color 'grey)))
+  ;; (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background))))
 
-  (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background)))
-  )
 #+end_src
 
 ** affe
