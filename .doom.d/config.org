@@ -292,6 +292,7 @@ always forget what this does exactly, but it's Good™
         :map magit-mode-map :n "C-t" #'avy-goto-char-3
         :map evil-org-mode-map :i "C-t" #'avy-goto-char-3)
 
+(map! :nveom "S" #'avy-goto-char-2)
 (map! :g "C-l" #'avy-goto-line
       :map evil-org-mode-map :i "C-l" #'avy-goto-line)
 
@@ -1328,16 +1329,16 @@ lsp-ui-doc-enable nil))
   ;; (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
 
   (evil-define-key* '(motion normal) evil-snipe-local-mode-map
-    ;; "S" nil
-    "," nil
-    ;; "," 'evil-snipe-repeat
-    ;; ";" 'evil-snipe-repeat-reverse)
-    )
-  (evil-define-key* '(normal) evil-snipe-override-local-mode-map
+    "S" nil
     "," nil)
     ;; "," 'evil-snipe-repeat
     ;; ";" 'evil-snipe-repeat-reverse)
-  )
+
+  (evil-define-key* '(normal) evil-snipe-override-local-mode-map
+    "," nil))
+    ;; "," 'evil-snipe-repeat
+    ;; ";" 'evil-snipe-repeat-reverse)
+
 
 
 
