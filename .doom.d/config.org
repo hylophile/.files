@@ -268,13 +268,10 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 
-(setq)
-
 
 ;; (setq doom-theme (hylo/random-dark-theme))
 ;; (setq doom-theme 'ef-spring)
 (setq doom-theme 'doom-dracula)
-
 
 (use-package! ef-themes)
 #+end_src

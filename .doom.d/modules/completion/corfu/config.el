@@ -1,7 +1,5 @@
 ;;; completion/corfu/config.el -*- lexical-binding: t; -*-
 
-(map! :i "C-SPC" #'completion-at-point)
-
 (use-package! corfu
   :custom
   (corfu-separator ?\s)
@@ -9,13 +7,13 @@
   (corfu-auto-delay 0.3)
   (corfu-on-exact-match nil)
   (corfu-quit-no-match t)
-  ;; (corfu-count 5)
   (corfu-cycle t)
   (corfu-auto-prefix 2)
   (completion-cycle-threshold 1)
   (tab-always-indent 'complete)
   (corfu-min-width 80)
   (corfu-max-width corfu-min-width)
+  (corfu-preselect-first nil)
   :hook
   (doom-first-buffer . global-corfu-mode)
   :config
@@ -40,25 +38,26 @@
             (lambda ()
               (setf (alist-get 'lsp-capf completion-category-defaults) '((styles . (orderless flex))))))
 
+  (defun corfu-move-to-minibuffer ()
+    "Move current completions to the minibuffer"
+    (interactive)
+    (let ((completion-extra-properties corfu--extra)
+          completion-cycle-threshold completion-cycling)
+      (apply #'consult-completion-in-region completion-in-region--data)))
 
   (map! :map corfu-map
         "C-SPC"    #'corfu-insert-separator
         "C-n"      #'corfu-next
         "C-p"      #'corfu-previous
-        "<escape>" (cmd! (corfu-quit) (evil-normal-state))
+        "M-m"      #'corfu-move-to-minibuffer
         (:prefix "C-x"
                  "C-k"     #'cape-dict
                  "C-f"     #'cape-file))
+
   (after! evil
     (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
     (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
     (evil-make-overriding-map corfu-map))
-
-  ;; (advice-add 'evil-escape-func :after 'corfu-quit)
-  ;; (add-hook! 'evil-normal-state-entry-hook #'corfu-quit)
-  ;; (def)
-
-
 
   (defadvice! +corfu--org-return (orig) :around '+org/return
     (if (and (modulep! :completion corfu)
@@ -70,16 +69,6 @@
   (unless (display-graphic-p)
     (corfu-doc-terminal-mode)
     (corfu-terminal-mode)))
-
-
-(use-package! corfu-doc
-  :hook (corfu-mode . corfu-doc-mode)
-  :custom
-  (corfu-doc-delay 0)
-  :bind (:map corfu-map
-              ("M-n" . corfu-doc-scroll-down)
-              ("M-p" . corfu-doc-scroll-up)
-              ("M-d" . corfu-doc-toggle)))
 
 
 (use-package! orderless
@@ -96,7 +85,7 @@
   :custom
   (kind-icon-default-face 'corfu-default)
   :config
-  (setq kind-icon-use-icons nil
+  (setq kind-icon-use-icons t
         svg-lib-icons-dir (expand-file-name "svg-lib" doom-cache-dir)
         kind-icon-mapping
         '((array "a" :icon "code-brackets" :face font-lock-variable-name-face)
@@ -159,11 +148,22 @@
 
 (use-package! corfu-quick
   :after corfu
-  :custom
-  (corfu-quick1 "tsraneiodh")
-  (corfu-quick2 nil)
   :bind (:map corfu-map
-              ("C-t" . corfu-quick-insert)))
+              ("C-q" . corfu-quick-insert)))
+
+
+(use-package! corfu-echo
+  :after corfu
+  :hook (corfu-mode . corfu-echo-mode))
+
+
+(use-package! corfu-info
+  :after corfu)
+
+
+(use-package! corfu-popupinfo
+  :after corfu
+  :hook (corfu-mode . corfu-popupinfo-mode))
 
 
 (use-package! evil-collection-corfu
