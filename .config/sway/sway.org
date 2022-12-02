@@ -130,6 +130,7 @@ bindcode 277 --whole-window move container to output next
 
 exec swww init
 # exec_always ~/scripts/switch-bg.scm all
+exec ~/scripts/scale-up-edp.scm
 
 exec nm-applet --indicator
 
