@@ -166,6 +166,7 @@ bindsym $mod+q kill
 
 # Start your launcher
 set $menu wofi --show drun -I -a | xargs swaymsg exec --
+set $menu "rofi -show-icons -combi-modi window#drun -show combi"
 bindsym $mod+d exec $menu
 bindsym $mod+o exec $menu
 
@@ -237,8 +238,8 @@ bindsym $mod+Shift+t move container to workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
 
-bindsym $mod+i exec env RUST_BACKTRACE=1 \
-    swayr switch-window >> /tmp/swayr.log 2>&1
+# bindsym $mod+i exec env RUST_BACKTRACE=1 \
+#     swayr switch-window >> /tmp/swayr.log 2>&1
 # bindsym $mod+comma exec env RUST_BACKTRACE=1 \
 #     swayr switch-window >> /tmp/swayr.log 2>&1
 
