@@ -21,6 +21,11 @@ configuration {
 /*	window-match-fields: "all";*/
 /*	icon-theme: ;*/
 /*	drun-match-fields: "name,generic,exec,categories,keywords";*/
+combi-display-format: " {text}";
+window-format: "🌈 {t} {c}";
+combi {
+display-name: "";
+}
 /*	drun-categories: ;*/
 /*	drun-show-actions: false;*/
 /*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
