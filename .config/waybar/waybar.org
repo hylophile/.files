@@ -275,7 +275,7 @@ window#waybar {
     "format-icons": ["", "", "", "", ""],
     "max-length": 25,
     "full-at": 95,
-    "format-full": "a"
+    "format-full": ""
 },
 #+end_src
 
@@ -363,7 +363,7 @@ fi
     "return-type": "json",
     "format": "{}",
     "exec": "sh $HOME/azk/show_azk.sh",
-    "exec-if": "nmcli | rg 'enp2s0f0: connected'",
+    // "exec-if": "nmcli | rg 'enp2s0f0: connected'",
     "on-click": "python $HOME/azk/azk_waybar.py stamp",
     "interval": 1,
 },
@@ -701,31 +701,6 @@ echo "{\"text\": \"$textp\t|\t$textc\t\", \"class\": \"clipboard\"}"
     "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
     "on-click": "nm-connection-editor",
 },
-#+end_src
-
-** temperature (blink)
-
-#+begin_src css
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #000000;
-    }
-}
-
-#battery.bat2.critical:not(.charging) {
-    background-color: #f53c3c;
-    color: #ffffff;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-#temperature.critical {
-    background-color: #eb4d4b;
-}
 #+end_src
 
 * Fin
