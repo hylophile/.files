@@ -1267,8 +1267,12 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 (setq +format-with-lsp nil)
 (after! lsp-ui
-(setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
-lsp-ui-doc-enable nil))
+ (setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
+       lsp-ui-doc-enable nil
+       lsp-eldoc-render-all t))
+
+
+
 
 (use-package! lsp-tailwindcss
   :init
