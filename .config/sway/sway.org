@@ -104,6 +104,11 @@ input 1149:8257:Kensington_Slimblade_Trackball {
     middle_emulation enabled
 }
 
+input 1:1:AT_Translated_Set_2_keyboard {
+      xkb_layout us,de
+      xkb_options caps:escape
+}
+
 set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
 input $elecom {
       scroll_method on_button_down
