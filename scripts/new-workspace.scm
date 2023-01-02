@@ -1,12 +1,12 @@
 #!/usr/bin/env -S guile -s
 !#
-(use-modules (gus base) (ice-9 match))
+(use-modules (gus base) (ice-9 match) (srfi srfi-1))
 
 (define workspaces
   (map (lambda (w) (cdr (assoc "num" w)))
-    (vector->list(subjson "swaymsg -t get_workspaces"))))
+       (vector->list(subjson "swaymsg -t get_workspaces"))))
 
-(define new-workspace (1+ (apply max workspaces)))
+(define new-workspace (car (remove (lambda (x) (member x workspaces)) (iota 20 1))))
 
 (let* ((params (cdr (command-line))))
   (match params
