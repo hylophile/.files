@@ -157,7 +157,7 @@ window#waybar {
 #+begin_src json
 "clock": {
     "interval": 10,
-    "format": "{:%A  W%W  %Y‒%m‒%d  %H:%M}", // or %B
+    "format": "{:%a  W%W  %Y‒%m‒%d  %H:%M}", // or %B
     "format-alt": "{:%Y-%m-%d}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
 },
