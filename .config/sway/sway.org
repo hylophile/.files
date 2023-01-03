@@ -237,9 +237,9 @@ bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
 bindsym $mod+Control+space exec ~/scripts/swap-visible-workspaces.scm
 bindsym $mod+Shift+space move window to output left
 
-bindsym $mod+a workspace next_on_output
+bindsym $mod+a workspace prev_on_output
 bindsym $mod+Shift+a move container to workspace next_on_output
-bindsym $mod+t workspace prev_on_output
+bindsym $mod+t workspace next_on_output
 bindsym $mod+Shift+t move container to workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
