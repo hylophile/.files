@@ -232,24 +232,26 @@ always forget what this does exactly, but it's Good™
  ;; doom-font (font-spec :family "JetBrains Mono" :size 11.0)
  ;; doom-font (font-spec :family "DM Mono" :size 11.0)
  ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
- ;; doom-font (font-spec :family "Operator Mono" :weight 'semi-light :size 13.0)
- doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
+ ;; doom-font (font-spec :family "Operator Mono" :weight 'light :size 13.0)
+ doom-font (font-spec :family "mononoki" :size 12.0)
+ ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
  doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
 
+(setq doom-themes-enable-italic t)
 (setq doom-font-increment 1)
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :family "Victor Mono"))
-(custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
+;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
 
 ;; (custom-set-faces!
 ;;   '(nav-flash-face :inverse-video t :foreground unspecified :background unspecified))
 ;; (custom-set-faces!
 ;;   '(nav-flash-face :inherit cursor :foreground unspecified :background unspecified))
 (custom-set-faces!
-  '(nav-flash-face :background "#33bfff" :foreground "#0f172a" ))
+  '(nav-flash-face :background "#33bfff" :foreground "#0f172a"))
 (setq nav-flash-delay 0.3)
 #+end_src
 
