@@ -232,8 +232,10 @@ always forget what this does exactly, but it's Good™
  ;; doom-font (font-spec :family "JetBrains Mono" :size 11.0)
  ;; doom-font (font-spec :family "DM Mono" :size 11.0)
  ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
- ;; doom-font (font-spec :family "Operator Mono" :weight 'light :size 13.0)
- doom-font (font-spec :family "mononoki" :size 12.0)
+ ;; doom-font (font-spec :family "Operator Mono" :size 13.0)
+ doom-font (font-spec :family "Agave" :size 12.0)
+ ;; doom-font (font-spec :family "mononoki" :size 12.0)
+ ;; doom-font (font-spec :family "Hermit" :size 11.0)
  ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
@@ -244,7 +246,10 @@ always forget what this does exactly, but it's Good™
 (setq doom-themes-enable-italic t)
 (setq doom-font-increment 1)
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :family "Victor Mono"))
+;; (custom-set-faces! '(font-lock-comment-face :slant italic :family "Operator Mono"))
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
+
+;; arnpqeg
 
 ;; (custom-set-faces!
 ;;   '(nav-flash-face :inverse-video t :foreground unspecified :background unspecified))
