@@ -87,7 +87,7 @@ bindsym button7 --whole-window exec ~/.config/sway/swap-visible-workspaces.sh
 bindsym button10 --whole-window move container to output next
 
 bindsym $mod+w exec rofimoji --skin-tone light
-bindsym $mod+space focus output next
+bindsym $mod+space focus output next; focus output next
 bindsym $mod+Control+space exec ~/.config/sway/swap-visible-workspaces.sh
 bindsym $mod+Shift+space move window to output next
 
