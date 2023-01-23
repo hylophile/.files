@@ -3,6 +3,7 @@
 * {
   font: "Jost* 24";
   font: "IBM Plex Mono 11";
+  font: "Agave 14";
   foreground: #f8f8f2;
   background: #282a36;
   background-color: #282a36;
