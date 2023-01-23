@@ -65,7 +65,7 @@ for_window [app_id=".*"] opacity $opacity
 * Outputs
 
 #+begin_src conf-space
-output "Unknown 2460G4 0x00000BD5" {
+output "AOC 2460G4 0x00000BD5" {
     resolution 1920x1080
     position 0,0
 }
@@ -75,7 +75,7 @@ output "Unknown 2460G4 E99GBBA003029" {
     position 0,0
 }
 
-output "BenQ Corporation BenQ EW3270U W8L04567019" {
+output "BNQ BenQ EW3270U W8L04567019" {
     resolution 3840x2160
     position 1920,0
     scale 1.5
@@ -97,11 +97,11 @@ input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
 }
 
 set $slimblade 1149:8257:Kensington_Slimblade_Trackball
+set $irslim 1149:8257:input-remapper_Kensington_Slimblade_Trackball_forwarded
 
-
-input 1149:8257:Kensington_Slimblade_Trackball {
-    drag enabled
+input $slimblade {
     middle_emulation enabled
+    # drag enabled
 }
 
 input 1:1:AT_Translated_Set_2_keyboard {
@@ -112,13 +112,15 @@ input 1:1:AT_Translated_Set_2_keyboard {
 set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
 input $elecom {
       scroll_method on_button_down
+      pointer_accel -0.7
+      accel_profile adaptive
 }
 
-bindsym --input-device=$slimblade --whole-window BTN_MIDDLE seat - cursor press button8
-bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cursor release button8
+# bindsym --input-device=$slimblade --whole-window BTN_MIDDLE seat - cursor press button8
+# bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cursor release button8
 
-bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
-bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
+# bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
+# bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
 
 bindsym $mod+F9 exec ~/scripts/switch-bg.scm here
 bindsym button6 --whole-window focus output next
@@ -138,9 +140,14 @@ exec ~/scripts/switch-bg.scm all
 
 exec ~/scripts/scale-up-edp.scm
 
-exec nm-applet --indicator
+bindsym $mod+F10 output "*" dpms off
+bindsym $mod+F11 output "*" dpms on
 
-exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
+exec nm-applet --indicator
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec input-remapper-control --command autoload
+
+# exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 
 exec swayidle -w \
          timeout 300 'swaylock -f -c 000000' \
@@ -208,6 +215,8 @@ bindsym $mod+Control+t layout tabbed
 bindsym $mod+Control+s layout toggle split
 
 bindsym $mod+f fullscreen
+bindsym $mod+Control+f border toggle
+
 
 # Toggle the current focus between tiling and floating mode
 # bindsym $mod+Shift+space floating toggle
