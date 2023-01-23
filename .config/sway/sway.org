@@ -70,6 +70,16 @@ output "AOC 2460G4 0x00000BD5" {
     position 0,0
 }
 
+output "Synaptics Inc Non-PnP 0x0000FD4E" {
+    resolution 1920x1080@60.000Hz
+    position 0,0
+}
+
+output "AOC 2460G4 E99GBBA003029" {
+    resolution 1920x1080
+    position 0,0
+}
+
 output "Unknown 2460G4 E99GBBA003029" {
     resolution 1920x1080
     position 0,0
@@ -82,7 +92,7 @@ output "BNQ BenQ EW3270U W8L04567019" {
 }
 
 output eDP-1 {
-    position 0,1080
+position 0,1080
 }
 
 # output * background "#000000" solid_color
@@ -138,7 +148,7 @@ bindcode 277 --whole-window move container to output next
 exec swww init
 exec ~/scripts/switch-bg.scm all
 
-exec ~/scripts/scale-up-edp.scm
+exec_always ~/scripts/scale-up-edp.scm
 
 bindsym $mod+F10 output "*" dpms off
 bindsym $mod+F11 output "*" dpms on
