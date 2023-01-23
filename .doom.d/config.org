@@ -606,7 +606,7 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 (after! projectile
   (defun hy/affe-find-in-project ()
     (interactive)
-    (let ((affe-find-command "rg --color=never --files --hidden")
+    (let ((affe-find-command "rg --color=never --files --hidden --glob \"!.git\"")
           (project-root (projectile-acquire-root)))
       (funcall-interactively #'affe-find project-root))
     (run-hooks 'projectile-find-file-hook))
