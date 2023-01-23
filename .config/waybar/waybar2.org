@@ -14,7 +14,7 @@
     "name": "topbar",
     "layer": "top",
     "position": "right",
-    "spacing": 10,
+    "spacing": 15,
     // "height": 10,
     // "modules-center": ["sway/workspaces"],
     "modules-left": [
@@ -133,7 +133,7 @@ window#waybar {
 
 #+begin_src css
 #workspaces .text-button {
-  min-height: 90px;
+  min-height: 24px;
   /* margin-left: 5px; */
   background-color: transparent;
   color: @dr_fg;
@@ -300,11 +300,15 @@ window#waybar {
         "warning": 30,
         "critical": 15
     },
-    "format": "{capacity}% {icon}",
+    // "format": "{capacity}% {icon}",
+    "format": "{icon}",
     "format-icons": ["", "", "", "", ""],
-    "max-length": 25,
+    "max-length": 40,
     "full-at": 95,
-    "format-full": ""
+    "rotate": 90,
+    "format-full": "",
+    "format-charging": ""
+
 },
 #+end_src
 
