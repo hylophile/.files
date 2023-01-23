@@ -417,7 +417,8 @@ fi
 
 #custom-azk.azk_break {
   background-color: @dr_re;
-    min-width: 100px;
+    min-height: 50px;
+    margin: 5px;
 }
 
 #custom-azk.azk_working {
