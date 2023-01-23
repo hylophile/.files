@@ -14,28 +14,31 @@
     "name": "topbar",
     "layer": "top",
     "position": "right",
-    "spacing": 30,
+    "spacing": 10,
     // "height": 10,
     // "modules-center": ["sway/workspaces"],
     "modules-left": [
-        "sway/workspaces",
+        "sway/workspaces"
         // "tray",
-        <<urgency-teams()>>
+        //<<urgency-teams()>>
         // "custom/toggle-dpms",
         // "custom/toggle-big",
-        "custom/move",
+        //"custom/move",
     ],
     "modules-right": [
       <<azk()>>
+      <<urgency-teams()>>
       "pulseaudio#sink",
       "pulseaudio#source",
-        "custom/toggle-dpms",
-        "custom/toggle-big",
-        "tray",
+      "custom/toggle-dpms",
+      "custom/toggle-big",
+      "tray",
       "battery",
       "custom/weather",
-      "clock#vert2",
-      "clock#vert",
+      "clock#vertw",
+      "clock#vertd",
+      "clock#vertymd",
+      "clock#verthm",
       "sway/mode",
     ],
     <<modules>>
@@ -101,9 +104,9 @@ window#waybar {
   min-width: 24px;
 }
 
-.modules-right {
-  padding-bottom: 15px;
-}
+/* .modules-right { */
+/*   padding-bottom: 15px; */
+/* } */
 
 #+end_src
 
@@ -168,16 +171,24 @@ window#waybar {
     "format-alt": "{:%Y-%m-%d}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
 },
-"clock#vert": {
+"clock#vertw": {
     "interval": 10,
-    "format": "{:%y\n%m\n%d\n\n%H\n%M}", // or %B
+    "format": "{:%W}", // or %B
+},
+"clock#vertd": {
+    "interval": 10,
+    "format": "{:%a}", // or %B
+    "rotate": 270,
+},
+"clock#vertymd": {
+    "interval": 10,
+    "format": "{:%y\n%m\n%d}", // or %B
     "format-alt": "{:y%\n%m\n%d}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
 },
-"clock#vert2": {
+"clock#verthm": {
     "interval": 10,
-    "format": "{:W%W  %A}", // or %B
-    "rotate": 270,
+    "format": "{:%H\n%M}", // or %B
 },
 #+end_src
 
@@ -265,7 +276,7 @@ window#waybar {
 #pulseaudio {
     /* border-top-right-radius: 50px; */
     /* border-top-left-radius: 50px; */
-    min-height: 40px;
+    /* min-height: 40px; */
     margin: 0px 0px;
   color: @dr_gr;
 }
@@ -392,11 +403,11 @@ fi
 
 #+begin_src css
 #custom-azk {
-  min-width: 150px;
+  min-height: 50px;
   border-radius: 50px;
   border: 0px solid @dr_bg1;
   padding: 0px 0px;
-  margin: 10px 0px;
+  margin: 5px 10px;
   font-size: 0px;
   /* box-shadow: inset -1px -1px 2px @dr_fg, 2px 2px 2px #121319; */
   box-shadow: 2px 2px 2px #121319;
@@ -406,7 +417,7 @@ fi
 
 #custom-azk.azk_break {
   background-color: @dr_re;
-    min-width: 500px;
+    min-width: 100px;
 }
 
 #custom-azk.azk_working {
