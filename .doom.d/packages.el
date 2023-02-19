@@ -60,7 +60,13 @@
   :recipe (:files (:defaults "icons")
            :host github :repo "elken/exercism-modern"))
 
+(package! rg)
+(package! flymake-vale :recipe (:host github :repo "tpeacock19/flymake-vale"))
+;; adds popups, optional but reccomened
+(package! flymake-popon :recipe (:repo "https://codeberg.org/akib/emacs-flymake-popon"))
 
+
+(package! singularity-mode :recipe (:host github :repo "karljohanw/singularity-mode"))
 
 (unpin! vterm)
 (unpin! lsp-mode)
