@@ -30,8 +30,9 @@
       <<urgency-teams()>>
       "pulseaudio#sink",
       "pulseaudio#source",
-      "custom/toggle-dpms",
-      "custom/toggle-big",
+      "custom/rofi-menu",
+      // "custom/toggle-dpms",
+      // "custom/toggle-big",
       "tray",
       "battery",
       "custom/weather",
@@ -104,6 +105,10 @@ window#waybar {
   min-width: 24px;
 }
 
+.eDP-1 #workspaces * {
+    min-height: 96px;
+}
+
 /* .modules-right { */
 /*   padding-bottom: 15px; */
 /* } */
@@ -133,7 +138,8 @@ window#waybar {
 
 #+begin_src css
 #workspaces .text-button {
-  min-height: 24px;
+  /* min-height: 24px; */
+  min-height: 96px;
   /* margin-left: 5px; */
   background-color: transparent;
   color: @dr_fg;
@@ -463,7 +469,29 @@ fi
 }
 #+end_src
 
-*** toggle zoom
+*** toggle kb
+
+**** config
+
+#+begin_src json
+"custom/rofi-menu": {
+    "format": "",
+    "on-click": "~/.cargo/bin/simple-rofi-menu",
+},
+#+end_src
+
+*** toggle kb :ARCHIVE:
+
+**** config
+
+#+begin_src json
+"custom/toggle-kb": {
+    "format": "⌨",
+    "on-click": "kill -s 34 $(pidof wvkbd-mobintl)",
+},
+#+end_src
+
+*** toggle zoom :ARCHIVE:
 
 **** source
 
@@ -490,22 +518,24 @@ fi
 #+end_src
 
 
-*** toggle dpms
+*** toggle dpms :ARCHIVE:
 
 **** source
 
 #+begin_src sh :tangle scripts/toggle-dpms.sh
+#!/usr/bin/env bash
+
 output=$(swaymsg -t get_outputs| jq '.[] | select(.model == "2460G4")')
 name=$(echo "$output" | jq '.name')
-is_turned_on=$(echo "$output" | jq '.dpms')
+# is_turned_on=$(echo "$output" | jq '.dpms')
 
 if [ "$1" = "toggle" ]; then
-    swaymsg output "$name" dpms toggle
+    swaymsg output "$name" toggle
     exit
 fi
 
 if grep --silent rook /etc/hostname; then
-    if [ "$is_turned_on" = "false" ]; then
+    if swaymsg --pretty --type get_outputs | rg AOC | rg inactive; then
         echo "{\"text\": \"\", \"class\": \"dpms\"}"
     else
         echo "{\"text\": \"\", \"class\": \"dpms\"}"
