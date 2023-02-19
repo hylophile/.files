@@ -479,6 +479,7 @@ always forget what this does exactly, but it's Good™
   (run-at-time 0 nil `(lambda () (select-window ,orig t))))
 
 ;; (set-popup-rule! "^\\*lsp-help\\*" :side 'bottom)
+(set-popup-rule! "^\\*lsp-help\\*$" :side 'right :width 90 :vslot 1)
 (set-popup-rule! "^\\*helpful" :side 'right :width 90 :vslot 1)
 (set-popup-rules!
   '(("^\\*info\\*"
@@ -1048,6 +1049,8 @@ With prefix arg C-u, copy region instad of killing it."
 (setq org-tags-column 0)
 (setq org-agenda-tags-column 0)
 
+#+end_src
+#+begin_src emacs-lisp
 ;; (setq org-agenda-files (directory-files-recursively "~/org/" "\.org$"))
 (setq org-agenda-files '("~/org" "~/org/issues"))
 
@@ -1069,6 +1072,8 @@ With prefix arg C-u, copy region instad of killing it."
   `(org-agenda-diary :foreground ,(doom-color 'magenta) :weight bold))
 
 
+#+end_src
+#+begin_src emacs-lisp
 
 
 (after! doom-themes
@@ -1088,6 +1093,8 @@ With prefix arg C-u, copy region instad of killing it."
 (map! :localleader :map org-mode-map "~" (cmd! (org-toggle-checkbox '(16))))
 
 
+#+end_src
+#+begin_src emacs-lisp
 (setq org-cycle-max-level 5)
 
 
@@ -1108,6 +1115,8 @@ This hides them again."
                                                     "\n"
                                                     (org-agenda-format-date-aligned date))))
 
+#+end_src
+#+begin_src emacs-lisp
 (use-package! org-roam
   :config
   (setq org-roam-capture-last-used-template "d")
@@ -1165,6 +1174,8 @@ This hides them again."
  org-ellipsis "…")
 
 
+#+end_src
+#+begin_src emacs-lisp
 (defun unpackaged/org-fix-blank-lines (&optional prefix)
   "Ensure that blank lines exist between headings and between headings and their contents.
 With prefix, operate on whole buffer. Ensures that blank lines
@@ -1172,12 +1183,12 @@ exist after each headings's drawers."
   (interactive "P")
   (org-map-entries (lambda ()
 
-                     (org-with-wide-buffer
-                      ;; `org-map-entries' narrows the buffer, which prevents us from seeing
-                      ;; newlines before the current heading, so we do this part widened.
-                      (while (not (looking-back "\n\n" nil))
-                        ;; Insert blank lines before heading.
-                        (insert "\n")))
+                     ;; (org-with-wide-buffer
+                     ;;  ;; `org-map-entries' narrows the buffer, which prevents us from seeing
+                     ;;  ;; newlines before the current heading, so we do this part widened.
+                     ;;  (while (not (looking-back "\n\n" nil))
+                     ;;    ;; Insert blank lines before heading.
+                     ;;    (insert "\n")))
                      (let ((end (org-entry-end-position)))
                        ;; Insert blank lines before entry content
                        (forward-line)
