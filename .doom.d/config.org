@@ -18,6 +18,57 @@ always forget what this does exactly, but it's Good™
 ;; (load! "info-colors.el")
 ;; (require 'info-colors)
 ;; (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+
+;; (defun my/rerun-embark ()
+;;   (interactive)
+;;   (unwind-protect
+;;       (progn (add-hook 'consult--completion-candidate-hook #'embark-export)
+;;              (call-interactively #'revert-buffer))
+;;     (remove-hook 'consult--completion-candidate-hook #'embark-export)))
+
+;; (defun embark-reexport ()
+;;   (interactive)
+;;   (run-at-time 0 nil #'message "Reverting...")
+;;   (run-at-time
+;;    1 nil ;; Instead of a fixed time one could use polling here
+;;      (when-let (win (active-minibuffer-window))
+;;        (with-selected-window win
+;;          (embark-export))))) ;; embark-export or embark-collect, determine based on buffer name?
+;;   (revert-buffer))
+
+
+(defun my/update-rg-project ()
+  (when-let*
+      (((buffer-file-name (current-buffer)))
+       ((projectile-acquire-root))
+       (win (cl-some (lambda (w) (and
+                                  (string-match-p
+                                   "^*rg*"
+                                   (buffer-name (window-buffer w)))
+                                  w))
+                     (window-list)))
+       ((window-live-p win)))
+    (with-selected-window win
+        (rg-recompile))))
+
+(add-hook 'after-save-hook #'my/update-rg-project)
+
+(map! :leader "s P" #'rg-project)
+
+(set-popup-rule! "^\\*rg\\*" :side 'right :width 90)
+
+
+
+
+(defun my/time-to-talk-region (start end)
+  (interactive "r")
+  (let* ((nwords (count-words start end))
+         (wpm 140.0)
+         (minutes-float (/ nwords wpm))
+         (seconds-total (round (* minutes-float 60)))
+         (minutes (/ seconds-total 60))
+         (seconds (mod seconds-total 60)))
+    (message (format "Words: %d ⸺ Time to talk — %d:%02d" nwords minutes seconds))))
 #+end_src
 
 ** basics
@@ -126,7 +177,40 @@ always forget what this does exactly, but it's Good™
 (advice-add #'doom-modeline-segment--modals :override #'ignore)
 
 #+end_src
+** flymake
+#+begin_src emacs-lisp
 
+(use-package flymake
+  :defer t
+  :init
+  ;; as flymakes fail silently there is no need to activate it on a per major mode basis
+  (add-hook! (prog-mode text-mode) #'flymake-mode)
+  :config
+  (setq flymake-fringe-indicator-position 'right-fringe))
+
+(use-package flymake-popon
+  :hook (flymake-mode . flymake-popon-mode)
+  :config
+  (setq flymake-popon-method (if (modulep! :checkers syntax +childframe)
+                                 'postframe
+                               'popon)))
+;; (use-package! flymake-vale
+;;   :hook ((text-mode       . flymake-vale-load)
+;;          ;; is this needed? prob not, eh
+;;          (org-mode        . flymake-vale-load)
+;;          (markdown-mode   . flymake-vale-load)
+;;          (message-mode    . flymake-vale-load)))
+
+;; gives support for org msg if you use that
+;; (add-hook! 'org-msg-mode-hook
+;;   (setq flymake-vale-file-ext ".org")
+;;   (flymake-vale-load))
+
+#+end_src
+** singularity
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.recipe$" . singularity-mode))
+#+end_src
 ** magit
 
 #+begin_src emacs-lisp
@@ -221,6 +305,11 @@ always forget what this does exactly, but it's Good™
 ;; FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(\w+/)+(\w+\.)+\w+:[0-9]+:[0-9]+#$(dirs)/&#g"
 ;;λ FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(src/|test/)#$(pwd)/&#g"
 #+end_src
+** bib
+#+begin_src emacs-lisp
+(setq! bibtex-completion-bibliography '("~/tub/cse/seminar/references.bib"))
+(setq! citar-bibliography '("~/tub/cse/seminar/references.bib"))
+#+end_src
 
 ** fonts
 
@@ -240,8 +329,9 @@ always forget what this does exactly, but it's Good™
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :weight 'semi-bold :size 12.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
- ;; doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
- doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0))
+ doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
+ ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
+ )
 
 (setq doom-themes-enable-italic t)
 (setq doom-font-increment 1)
@@ -293,11 +383,11 @@ always forget what this does exactly, but it's Good™
   :config
   (setq avy-timeout-seconds 0.3)
   (setq avy-all-windows 'all-frames))
-(map! :nvieomg "C-t" #'avy-goto-char-3
-        :map magit-mode-map :n "C-t" #'avy-goto-char-3
-        :map evil-org-mode-map :i "C-t" #'avy-goto-char-3)
+;; (map! :nvieomg "C-t" #'avy-goto-char-3
+;;         :map magit-mode-map :n "C-t" #'avy-goto-char-3
+;;         :map evil-org-mode-map :i "C-t" #'avy-goto-char-3)
 
-(map! :nveom "S" #'avy-goto-char-2)
+(map! :n "S" #'avy-goto-char-2)
 (map! :g "C-l" #'avy-goto-line
       :map evil-org-mode-map :i "C-l" #'avy-goto-line)
 
@@ -305,11 +395,11 @@ always forget what this does exactly, but it's Good™
 (defun avy-action-lookup-documentation (pt)
   (save-excursion
     (goto-char pt)
-    (+lookup/documentation (doom-thing-at-point-or-region)))
+    (+lookup/documentation (doom-thing-at-point-or-region))))
   ;; (select-window
   ;;  (cdr (ring-ref avy-ring 0))
   ;;  t)
-  )
+
 
 (setf (alist-get ?h avy-dispatch-alist) 'avy-action-lookup-documentation)
 
@@ -319,44 +409,44 @@ always forget what this does exactly, but it's Good™
 
 (setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
 
-(defun avy-goto-char-3 (char1 char2 char3 &optional arg beg end)
-  "Jump to the currently visible CHAR1 followed by CHAR2.
-The window scope is determined by `avy-all-windows'.
-When ARG is non-nil, do the opposite of `avy-all-windows'.
-BEG and END narrow the scope where candidates are searched."
-  (interactive (list (let ((c1 (read-char "char 1: " t)))
-                       (if (memq c1 '(? ?\b))
-                           (keyboard-quit)
-                         c1))
-                     (let ((c2 (read-char "char 2: " t)))
-                       (cond ((eq c2 ?)
-                              (keyboard-quit))
-                             ((memq c2 avy-del-last-char-by)
-                              (keyboard-escape-quit))
-                             (t
-                              c2)))
-                     (let ((c3 (read-char "char 3: " t)))
-                       (cond ((eq c3 ?)
-                              (keyboard-quit))
-                             ((memq c3 avy-del-last-char-by)
-                              (keyboard-escape-quit)
-                              (call-interactively 'avy-goto-char-3))
-                             (t
-                              c3)))
-                     current-prefix-arg
-                     nil nil))
-  (when (eq char1 ?)
-    (setq char1 ?\n))
-  (when (eq char2 ?)
-    (setq char2 ?\n))
-  (when (eq char3 ?)
-    (setq char3 ?\n))
-  (avy-with avy-goto-char-3
-    (avy-jump
-     (regexp-quote (string char1 char2 char3))
-     :window-flip arg
-     :beg beg
-     :end end)))
+;; (defun avy-goto-char-3 (char1 char2 char3 &optional arg beg end)
+;;   "Jump to the currently visible CHAR1 followed by CHAR2.
+;; The window scope is determined by `avy-all-windows'.
+;; When ARG is non-nil, do the opposite of `avy-all-windows'.
+;; BEG and END narrow the scope where candidates are searched."
+;;   (interactive (list (let ((c1 (read-char "char 1: " t)))
+;;                        (if (memq c1 '(? ?\b))
+;;                            (keyboard-quit)
+;;                          c1))
+;;                      (let ((c2 (read-char "char 2: " t)))
+;;                        (cond ((eq c2 ?)
+;;                               (keyboard-quit))
+;;                              ((memq c2 avy-del-last-char-by)
+;;                               (keyboard-escape-quit))
+;;                              (t
+;;                               c2)))
+;;                      (let ((c3 (read-char "char 3: " t)))
+;;                        (cond ((eq c3 ?)
+;;                               (keyboard-quit))
+;;                              ((memq c3 avy-del-last-char-by)
+;;                               (keyboard-escape-quit)
+;;                               (call-interactively 'avy-goto-char-3))
+;;                              (t
+;;                               c3)))
+;;                      current-prefix-arg
+;;                      nil nil))
+;;   (when (eq char1 ?)
+;;     (setq char1 ?\n))
+;;   (when (eq char2 ?)
+;;     (setq char2 ?\n))
+;;   (when (eq char3 ?)
+;;     (setq char3 ?\n))
+;;   (avy-with avy-goto-char-3
+;;     (avy-jump
+;;      (regexp-quote (string char1 char2 char3))
+;;      :window-flip arg
+;;      :beg beg
+;;      :end end)))
 
 
 ;; (map! :map helpful-mode-map "M-x" #'execute-extended-command)
@@ -518,7 +608,6 @@ BEG and END narrow the scope where candidates are searched."
 ;;   (interactive)
 ;;   (let* ((cwd (file-name-directory (buffer-file-name)))
 ;;          (files (directory-files-recursively cwd ""))
-;;          (files-without-cwd (mapcar (lambda (f) (string-remove-prefix cwd f)) files)))
 ;;     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
 
 (load! "load/mail.el")
@@ -606,7 +695,7 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 (after! projectile
   (defun hy/affe-find-in-project ()
     (interactive)
-    (let ((affe-find-command "rg --color=never --files --hidden --glob \"!.git\"")
+    (let ((affe-find-command "rg --color=never --files --hidden --ignore --glob \"!.git\"")
           (project-root (projectile-acquire-root)))
       (funcall-interactively #'affe-find project-root))
     (run-hooks 'projectile-find-file-hook))
@@ -1179,12 +1268,13 @@ exist after each headings's drawers."
 (after! org-agenda
   (org-super-agenda-mode))
 
-(setq org-superstar-headline-bullets-list "•");"●⚬")
+;; (setq org-superstar-headline-bullets-list "•");"●⚬")
+(setq org-superstar-headline-bullets-list "❥⚘❥❦❥✿");"●⚬")
 
 (use-package! mixed-pitch
   :hook
-  (org-mode . mixed-pitch-mode)
-  )
+  (org-mode . mixed-pitch-mode))
+
 
 #+end_src
 
@@ -1252,6 +1342,10 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 #+end_src
 
+** calendar
+#+begin_src emacs-lisp
+(setq calendar-week-start-day 1)
+#+end_src
 
 ** lsp
 
@@ -1309,8 +1403,13 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ** evil
 
 #+begin_src emacs-lisp
+
+(map! :map org-mode-map :v "$" #'evil-end-of-line)
+
 (setq evil-disable-insert-mode-bindings t)
 (setq evil-ex-substitute-global t)
+
+(setq evil-v$-excludes-newline t)
 
 (defadvice! hy/center-line-after-search (&rest _)
 :after #'evil-ex-search-next
