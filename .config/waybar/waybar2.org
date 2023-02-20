@@ -137,8 +137,12 @@ window#waybar {
 *** style
 
 #+begin_src css
+
+.eDP-1 #workspaces .text-button {
+  min-height:48px;
+}
+
 #workspaces .text-button {
-  /* min-height: 24px; */
   min-height: 96px;
   /* margin-left: 5px; */
   background-color: transparent;
@@ -405,6 +409,7 @@ fi
     "exec": "sh $HOME/azk/show_azk.sh",
     // "exec-if": "nmcli | rg 'enp2s0f0: connected'",
     "on-click": "python $HOME/azk/azk_waybar.py stamp",
+    "on-click-middle": "python $HOME/azk/azk_waybar.py azk",
     "interval": 1,
 },
 #+end_src
