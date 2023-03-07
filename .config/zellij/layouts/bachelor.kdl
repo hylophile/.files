@@ -1,0 +1,19 @@
+//layout {
+//    pane size=1 borderless=true {
+//        plugin location="zellij:tab-bar"
+//    }
+//    pane
+//    pane size=2 borderless=true {
+//        plugin location="zellij:status-bar"
+//    }
+//}
+layout {
+    pane size=5
+    pane split_direction="vertical" {
+        pane size="80%"
+        pane size="20%"
+    }
+    pane size=4
+}
+
+// ls | entr -c -s 'kitty +kitten icat 2mm_100_samples_para.png'

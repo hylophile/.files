@@ -1,0 +1,13 @@
+layout {
+    pane split_direction="vertical" {
+        pane
+        pane split_direction="horizontal" {
+            pane command="fish" {
+                args "-c" "nt exa -l --color always"
+            }
+            pane command="git" {
+                args "log"
+            }
+        }
+    }
+}
