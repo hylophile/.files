@@ -83,7 +83,8 @@ always forget what this does exactly, but it's Good™
       +evil-want-o/O-to-continue-comments nil)
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
-(add-to-list 'default-frame-alist '(alpha 100 100))
+;; (add-to-list 'default-frame-alist '(alpha 100 100))
+(add-to-list 'default-frame-alist '(alpha-background . 90))
 (setq auth-sources '("~/.authinfo"))
 
 (setq lsp-idle-delay 0.01)
@@ -479,8 +480,11 @@ always forget what this does exactly, but it's Good™
   (run-at-time 0 nil `(lambda () (select-window ,orig t))))
 
 ;; (set-popup-rule! "^\\*lsp-help\\*" :side 'bottom)
-(set-popup-rule! "^\\*lsp-help\\*$" :side 'right :width 90 :vslot 1)
-(set-popup-rule! "^\\*helpful" :side 'right :width 90 :vslot 1)
+(plist-put +popup-defaults :side 'right)
+(plist-put +popup-defaults :width 82)
+
+;; (set-popup-rule! "^\\*lsp-help\\*" :side 'right :width 82 :vslot 1)
+(set-popup-rule! "^\\*helpful" :side 'right :width 82 :vslot 1)
 (set-popup-rules!
   '(("^\\*info\\*"
      :slot 2 :vslot -2 :side left :width 83 :quit nil)))
@@ -657,6 +661,8 @@ always forget what this does exactly, but it's Good™
 
   (push '(tab-bar-format . 0) eldoc-box-frame-parameters)
   (push '(tab-bar-lines . 0) eldoc-box-frame-parameters)
+  (push '(alpha-background . 100) eldoc-box-frame-parameters)
+
   (push '(child-frame-border-width . 3) eldoc-box-frame-parameters)
   (push '(tab-bar-lines-keep-state . 0) eldoc-box-frame-parameters)
 
