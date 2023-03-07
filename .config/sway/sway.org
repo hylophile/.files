@@ -49,9 +49,10 @@ titlebar_padding 5 0
 
 
 
+
 # seat seat0 xcursor_theme Adwaita 24
 # output  "*" bg "~/Downloads/seealpsee-lake-alps-mountains-reflections-scenery-summer-7680x5363-8853.jpg" fill
-set $opacity 0.95
+set $opacity 0.90
 for_window [class=".*"] opacity $opacity
 for_window [app_id=".*"] opacity $opacity
 #+end_src
@@ -408,6 +409,8 @@ for_window    [app_id="org.kde.dolphin"]        title_format "<span foreground='
 for_window    [app_id="mpv"]        title_format "<span foreground='#e557e5'></span> %title"
 for_window    [class="Mullvad VPN"]        floating disable, move container to workspace number 10, urgent deny
 for_window    [instance="mullvad vpn"]        urgent deny
+
+for_window [app_id="firefox.*"] opacity 1.0
 for_window [app_id="firefox.*" title="Picture-in-Picture"] floating enable, border none, resize set width 30ppt height 30ppt, opacity 1.0
 for_window [app_id="firefox.*" title=".* — Sharing Indicator"] floating enable, move container to workspace number 10
 
