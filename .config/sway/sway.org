@@ -52,7 +52,7 @@ titlebar_padding 5 0
 
 # seat seat0 xcursor_theme Adwaita 24
 # output  "*" bg "~/Downloads/seealpsee-lake-alps-mountains-reflections-scenery-summer-7680x5363-8853.jpg" fill
-set $opacity 0.90
+set $opacity 0.95
 for_window [class=".*"] opacity $opacity
 for_window [app_id=".*"] opacity $opacity
 #+end_src
@@ -184,7 +184,7 @@ exec ~/scripts/move.scm reset
 
 #+begin_src conf-space
 
-set $term kitty
+set $term ~/scripts/wezterm-start-on-current-workspace.fish
 bindsym $mod+Return exec $term
 
 # Kill focused window
@@ -404,6 +404,7 @@ for_window    [app_id="chrome-discord.com__app-Default" title="Discord"]        
 for_window    [app_id="firefox.*"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
 for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' rise='-3pt' face='file-icons'></span> %title"
 for_window    [app_id="kitty"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
+for_window    [app_id="org.wezfurlong.wezterm"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
 for_window    [app_id="telegramdesktop"]        title_format "<span foreground='#0088CC'><tt></tt></span> %title"
 for_window    [app_id="org.kde.dolphin"]        title_format "<span foreground='#33BFFF'></span> %title"
 for_window    [app_id="mpv"]        title_format "<span foreground='#e557e5'></span> %title"
@@ -452,11 +453,11 @@ bindsym $mod+r mode "resize"
 
 #+begin_src conf-space
 # class                 border  bground text    indicator child_border
-client.focused          #44475A #6272a4ff #F8F8F2 #44475A   #44475A
+client.focused          #44475A #6272a4 #F8F8F2 #44475A   #44475A
 client.focused_inactive #44475A #44475A #BFBFBF #44475A   #44475A
 client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
 client.urgent           #50fa7b #44475a #50fa7b #FF5555   #FF5555
-# client.urgent          #44475A #44475A #F8F8F2 #44475A   #44475A
+# client.urgent         #44475A #44475A #F8F8F2 #44475A   #44475A
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 #+end_src
 
