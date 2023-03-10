@@ -1,19 +1,27 @@
-//layout {
-//    pane size=1 borderless=true {
-//        plugin location="zellij:tab-bar"
-//    }
-//    pane
-//    pane size=2 borderless=true {
-//        plugin location="zellij:status-bar"
-//    }
-//}
 layout {
-    pane size=5
-    pane split_direction="vertical" {
-        pane size="80%"
-        pane size="20%"
+    default_tab_template {
+        // the default zellij tab-bar and status bar plugins
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
     }
-    pane size=4
+    tab name="HPC" cwd="/home/n/bachelor/hpc/" {
+        pane split_direction="vertical" {
+        pane command="nvim" borderless=true
+        pane size="25%" split_direction="horizontal" {
+            pane {
+                //command "ssh"
+                //args "nickname@gateway.hpc.uni.de"
+            }
+            pane size=3 {
+           //     # command "rclone"
+             //   # args "mount" "hpc:" "remote/"
+            }
+        }
+        }
+    }
 }
-
-// ls | entr -c -s 'kitty +kitten icat 2mm_100_samples_para.png'

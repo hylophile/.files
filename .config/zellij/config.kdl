@@ -1,5 +1,5 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
-keybinds {
+keybinds clear-defaults=true {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
@@ -37,15 +37,15 @@ keybinds {
         bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
         bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;}
     }
-    move {
-        bind "Ctrl h" { SwitchToMode "Normal"; }
-        bind "n" "Tab" { MovePane; }
-        bind "p" { MovePaneBackwards; }
-        bind "h" "Left" { MovePane "Left"; }
-        bind "j" "Down" { MovePane "Down"; }
-        bind "k" "Up" { MovePane "Up"; }
-        bind "l" "Right" { MovePane "Right"; }
-    }
+    //# move {
+    //#     bind "Ctrl h" { SwitchToMode "Normal"; }
+    //#     bind "n" "Tab" { MovePane; }
+    //#     bind "p" { MovePaneBackwards; }
+    //#     bind "h" "Left" { MovePane "Left"; }
+    //#     bind "j" "Down" { MovePane "Down"; }
+    //#     bind "k" "Up" { MovePane "Up"; }
+    //#     bind "l" "Right" { MovePane "Right"; }
+    //# }
     tab {
         bind "Ctrl t" { SwitchToMode "Normal"; }
         bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
