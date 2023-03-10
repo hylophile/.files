@@ -40,7 +40,7 @@ always forget what this does exactly, but it's Good™
 (defun my/update-rg-project ()
   (when-let*
       (((buffer-file-name (current-buffer)))
-       ((projectile-acquire-root))
+       ((projectile-project-root))
        (win (cl-some (lambda (w) (and
                                   (string-match-p
                                    "^*rg*"
@@ -699,24 +699,33 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 ** affe
 #+begin_src emacs-lisp
-(after! projectile
-  (defun hy/affe-find-in-project ()
-    (interactive)
-    (let ((affe-find-command "rg --color=never --files --hidden --ignore --glob \"!.git\"")
-          (project-root (projectile-acquire-root)))
-      (funcall-interactively #'affe-find project-root))
-    (run-hooks 'projectile-find-file-hook))
+;; (after! projectile
+;;   (defun hy/affe-find-in-project ()
+;;     (interactive)
+;;     (let ((affe-find-command "rg --color=never --files --hidden --ignore --glob \"!.git\"")
+;;           (project-root (projectile-project-root)))
+;;       (funcall-interactively #'affe-find project-root))
+;;     (run-hooks 'projectile-find-file-hook)))
 
-  (map! :leader "SPC" #'hy/affe-find-in-project))
+;;   ;; (map! :leader "SPC" #'hy/affe-find-in-project))
 
-(map! :leader "SPC" nil)
 
-(map! :leader
-      :desc "FuZzily find File in home"
-      "f z f" (cmd!! #'affe-find "~/"))
-(map! :leader
-      :desc "FuZzily find file in this Dir"
-      "f z d" (cmd!! #'affe-find))
+;; (map! :leader
+;;       :desc "FuZzily find File in home"
+;;       "f z f" (cmd!! #'affe-find "~/"))
+;; (map! :leader
+;;       :desc "FuZzily find file in this Dir"
+;;       "f z d" (cmd!! #'affe-find))
+
+
+(defun hy/projectile-find-file ()
+  (interactive)
+  (if (equal (expand-file-name "~/") (projectile-project-root))
+    (call-interactively #'find-file)
+    (projectile-find-file)))
+(map! :leader "SPC" #'hy/projectile-find-file)
+
+
 #+end_src
 
 ** eldoc
