@@ -26,18 +26,26 @@ end
 wezterm.on("spawn-bachelor", function(window, pane)
 	create_or_switch_to_workspace("bachelor", function(ws_name)
 		local project_dir = os.getenv("HOME") .. "/bachelor"
-		local tab, build_pane, window = mux.spawn_window({
+		local _, rclone_pane, hpc_window = mux.spawn_window({
 			workspace = ws_name,
-			cwd = project_dir,
-			-- args = args,
+			cwd = project_dir .. "/hpc",
 		})
-		local editor_pane = build_pane:split({
+		rclone_pane:send_text("rclone mount hpc: remote/\n")
+
+		local editor_pane = rclone_pane:split({
 			direction = "Right",
-			size = 0.3,
+			size = 0.7,
 			cwd = project_dir,
+		})
+
+		local tab, ssh_pane, _ = hpc_window:spawn_tab({})
+		ssh_pane:send_text("ssh nickname@gateway.hpc.uni.de\n")
+
+		local _, _, _ = ssh_pane:split({
+			direction = "Right",
+			cwd = project_dir .. "/polyperf",
 		})
 		-- may as well kick off a build in that pane
-		-- build_pane:send_text("echo hi")
 	end)
 	-- local tab, pane, window = mux.spawn_window({
 	-- 	workspace = "automation",
