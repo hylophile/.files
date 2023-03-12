@@ -1,0 +1,24 @@
+[[entries]]
+description = "Toggle movie mode"
+command = """
+~/.config/waybar/scripts/toggle-dpms.sh toggle && \
+~/.config/waybar/scripts/toggle-big.sh"""
+
+[[entries]]
+description = "Toggle virtual keyboard"
+command = "kill -s 34 $(pidof wvkbd-mobintl)"
+
+[[entries]]
+description = "Toggle zoom"
+command = "~/.config/waybar/scripts/toggle-big.sh"
+
+[[entries]]
+description = "mpv"
+command = "mpv --player-operation-mode=pseudo-gui"
+
+[[entries]]
+command = "dolphin"
+
+[[entries]]
+description = "firefox"
+command = "firefox-nightly"
