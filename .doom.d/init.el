@@ -103,7 +103,7 @@
        lookup              ; navigate your code and its documentation
        ;; (lsp +eglot)               ; M-x vscode
        lsp
-       (magit +forge)             ; a git porcelain for Emacs
+       magit; +forge             ; a git porcelain for Emacs
        ;; (magit )             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -158,7 +158,7 @@
        ;; +fold)
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
-       ;;lua               ; one-based indices? one-based indices
+       (lua +lsp +tree-sitter)               ; one-based indices? one-based indices
        (markdown +grip)          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
