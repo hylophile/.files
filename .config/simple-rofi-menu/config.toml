@@ -1,3 +1,11 @@
+args = [
+    "-dmenu",
+    "-p", "",
+    "-location", "5",
+    "-markup",
+    "-theme-str", "window {width: 20%; x-offset: -25; y-offset: -50;}",
+]
+
 [[entries]]
 description = "Toggle movie mode"
 command = """
