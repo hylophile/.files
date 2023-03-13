@@ -92,6 +92,12 @@ output "BNQ BenQ EW3270U W8L04567019" {
     scale 1.5
 }
 
+output "BenQ Corporation BenQ EW3270U W8L04567019" {
+    resolution 3840x2160
+    position 1920,0
+    scale 1.5
+}
+
 output eDP-1 {
 position 0,1080
 }
