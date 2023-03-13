@@ -74,6 +74,12 @@ end)
 -- end)
 
 return {
+	quick_select_patterns = {
+		-- match things that look like sha1 hashes
+		-- (this is actually one of the default patterns)
+		"'.+'",
+		"[^ ]{5,}",
+	},
 	keys = {
 		{ key = "F1", mods = "CTRL", action = act.SwitchToWorkspace({ name = "default" }) },
 		{ key = "F2", mods = "CTRL", action = act.EmitEvent("spawn-bachelor") },
