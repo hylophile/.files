@@ -2,29 +2,12 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 local mux = wezterm.mux
 
-local function contains(list, x)
-	for _, v in pairs(list) do
-		if v == x then
-			return true
-		end
-	end
-	return false
-end
+local ws = require("workspace-helpers")
 
-local function workspace_exists(ws)
-	return contains(mux.get_workspace_names(), ws)
-end
-
-local function create_or_switch_to_workspace(ws_name, callback)
-	if not workspace_exists(ws_name) then
-		callback(ws_name)
-	end
-
-	mux.set_active_workspace(ws_name)
-end
+require("workspaces").register()
 
 wezterm.on("spawn-bachelor", function(window, pane)
-	create_or_switch_to_workspace("bachelor", function(ws_name)
+	ws.create_or_switch_to_workspace("bachelor", function(ws_name)
 		local project_dir = os.getenv("HOME") .. "/bachelor"
 		local _, rclone_pane, hpc_window = mux.spawn_window({
 			workspace = ws_name,
@@ -83,6 +66,9 @@ return {
 	keys = {
 		{ key = "F1", mods = "CTRL", action = act.SwitchToWorkspace({ name = "default" }) },
 		{ key = "F2", mods = "CTRL", action = act.EmitEvent("spawn-bachelor") },
+		{ key = "F3", mods = "CTRL", action = act.EmitEvent("spawn-ws3") },
+		{ key = "F4", mods = "CTRL", action = act.EmitEvent("spawn-ws4") },
+		{ key = "F5", mods = "CTRL", action = act.EmitEvent("spawn-ws5") },
 		{ key = "x", mods = "ALT", action = act.ShowLauncher },
 		{ key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
 		{ key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
