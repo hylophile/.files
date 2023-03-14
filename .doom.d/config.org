@@ -13,6 +13,11 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 (setq projectile-project-search-path '("~/code"))
+
+
+(map! :leader "/" #'+vertico/project-search)
+
+
 ;; (let ((projectile-project-search-path '("~/code/fisa" "~/code/kzk" "~/code/misc/" "~/code/uni")))
 ;;   (projectile-discover-projects-in-search-path))
 ;; (load! "info-colors.el")
