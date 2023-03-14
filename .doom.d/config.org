@@ -243,6 +243,15 @@ always forget what this does exactly, but it's Good™
 (advice-add 'magit-process-environment
             :filter-return #'hy/magit-process-environment)
 
+(defun hy/magit-status-with-dotfiles-fallback ()
+  (interactive)
+  (if (magit-gitdir)
+      (magit-status)
+    (magit-status "~/")))
+
+(map! :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
+
+
 #+end_src
 
 ** follow file links with position
