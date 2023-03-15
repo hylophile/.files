@@ -78,7 +78,7 @@
 ,* {
   border: none;
   border-radius: 0;
-  font-family: "Jost*";
+  font-family: "Jost";
   font-size: 16px;
   color: @dr_fg;
   font-weight: normal;

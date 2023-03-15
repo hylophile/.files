@@ -3,7 +3,7 @@
 }
 
 #navigator-toolbox {
-  font-family: "Jost*" !important;
+  font-family: "Jost" !important;
   font-size: 1.1rem !important;
 }
  
@@ -46,3 +46,7 @@
 #sidebar-box {
   width: 40em;
 }
+
+/* sideberry
+ #root{ font-size: 1.2rem !important; font-family: "Jost" !important }
+ */
