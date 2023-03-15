@@ -344,7 +344,7 @@ always forget what this does exactly, but it's Good™
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :weight 'semi-bold :size 12.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
- doom-variable-pitch-font (font-spec :family "Jost*" :size 13.0)
+ doom-variable-pitch-font (font-spec :family "Jost" :size 13.0)
  ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
  )
 
@@ -1681,7 +1681,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 #+begin_src emacs-lisp
 
 (custom-set-faces!
-  '(+workspace-tab-face :inherit default :family "Jost*" :height 135)
+  '(+workspace-tab-face :inherit default :family "Jost" :height 135)
   '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
 (after! persp-mode
   (defun workspaces-formatted ()
