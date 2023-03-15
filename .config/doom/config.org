@@ -254,7 +254,7 @@ always forget what this does exactly, but it's Good™
       (magit-status)
     (magit-status "~/")))
 
-(map! :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
+(map! :after magit :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
 
 
 #+end_src
