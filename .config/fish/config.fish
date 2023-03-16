@@ -6,7 +6,7 @@ set -x FZF_ALT_C_COMMAND 'fd --type directory --hidden .'
 set -x FZF_CTRL_T_COMMAND 'fd --hidden .'
 
 fish_add_path -p ~/.config/emacs/bin
-fish_add_pah -p ~/.config/fisactl/bin
+fish_add_path -p ~/.config/fisactl/bin
 
 # set -U NIX_PATH ~/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels
 
