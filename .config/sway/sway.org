@@ -109,7 +109,7 @@ position 0,1080
 
 
 #+begin_src conf-space
-input 4617:13404:"https://github.com/stapelberg"_"kinT_(kint41)" {
+input 4617:13404:https://github.com/stapelberg_kinT_(kint41) {
     xkb_options compose:rwin
 }
 
@@ -157,14 +157,16 @@ exec ~/scripts/switch-bg.scm all
 
 exec_always ~/scripts/scale-up-edp.scm
 
-exec wvkbd-mobintl --hidden
+# exec wezterm-mux-server --daemonize
+
+# exec wvkbd-mobintl --hidden
 
 bindsym $mod+F10 output "*" dpms off
 bindsym $mod+F11 output "*" dpms on
 
 exec nm-applet --indicator
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec input-remapper-control --command autoload
+# exec input-remapper-control --command autoload
 
 # exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 
