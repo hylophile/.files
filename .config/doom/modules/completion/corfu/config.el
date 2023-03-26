@@ -85,7 +85,7 @@
   :custom
   (kind-icon-default-face 'corfu-default)
   :config
-  (setq kind-icon-use-icons t
+  (setq kind-icon-use-icons nil
         svg-lib-icons-dir (expand-file-name "svg-lib" doom-cache-dir)
         kind-icon-mapping
         '((array "a" :icon "code-brackets" :face font-lock-variable-name-face)
