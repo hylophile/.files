@@ -384,7 +384,7 @@ always forget what this does exactly, but it's Good™
 ;; (setq doom-theme (hylo/random-dark-theme))
 ;; (setq doom-theme 'ef-spring)
 ;; (setq doom-theme 'doom-dracula)
-(setq doom-theme 'doom-moonlight)
+(setq doom-theme 'doom-feather-light)
 
 (use-package! ef-themes)
 #+end_src
@@ -1018,7 +1018,7 @@ region into a snippet more streamlined"
 ;; (map! "C-s" #'save-buffer)
 ;; (map! :leader "f s" nil)
 (map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
-
+(add-hook 'helpful-mode-hook 'mixed-pitch-mode)
 
 
 #+end_src
