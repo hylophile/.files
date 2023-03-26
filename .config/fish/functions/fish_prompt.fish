@@ -49,6 +49,21 @@ function fish_prompt
     # echo -n '┬─'
     # set_color -o green
     # echo -n [
+    set_color normal
+    set_color cyan
+    echo -n (date +%H)
+    set_color $retc
+    echo -n ⁝
+    set_color normal
+    set_color cyan
+    echo -n (date +%M)
+    set_color $retc
+    echo -n ⁝
+    set_color normal
+    set_color cyan
+    echo -n (date +%S)
+    set_color $retc
+    echo -n ' — '
 
     if functions -q fish_is_root_user; and fish_is_root_user
         set_color red
@@ -57,7 +72,7 @@ function fish_prompt
     end
 
     echo -n $USER
-    set_color -o $retc
+    set_color $retc
     echo -n @
     set_color normal
 
@@ -75,7 +90,7 @@ function fish_prompt
         printf "~"
     end
     for i in (dirs | sed 's#/#\n#g' | tail -n +2)
-        set_color -o $retc
+        set_color $retc
         echo -n /
         set_color normal
         set_color cyan
