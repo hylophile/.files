@@ -68,6 +68,9 @@
 
 (package! singularity-mode :recipe (:host github :repo "karljohanw/singularity-mode"))
 
+(package! gptel)
+(package! olivetti)
+
 (unpin! vterm)
 (unpin! lsp-mode)
 ;; (unpin! lsp-dart)

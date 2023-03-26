@@ -160,7 +160,17 @@ always forget what this does exactly, but it's Good™
       "t t" #'+vterm/toggle
       "t T" #'+vterm/here)
 #+end_src
+** olivetti
 
+#+begin_src emacs-lisp
+(use-package! olivetti
+  :custom (olivetti-body-width 90))
+(map! :after olivetti :leader "t o" #'olivetti-mode)
+(add-hook 'text-mode-hook 'olivetti-mode)
+(add-hook 'prog-mode-hook 'olivetti-mode)
+(add-hook 'special-mode-hook 'olivetti-mode)
+
+#+end_src
 ** evil relative in normal, absolute in insert
 #+begin_src emacs-lisp :tangle no
 
@@ -337,7 +347,7 @@ always forget what this does exactly, but it's Good™
  ;; doom-font (font-spec :family "DM Mono" :size 11.0)
  ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
  ;; doom-font (font-spec :family "Operator Mono" :size 13.0)
- doom-font (font-spec :family "Agave" :size 12.0)
+ doom-font (font-spec :family "Agave" :size 14.0)
  ;; doom-font (font-spec :family "mononoki" :size 12.0)
  ;; doom-font (font-spec :family "Hermit" :size 11.0)
  ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
