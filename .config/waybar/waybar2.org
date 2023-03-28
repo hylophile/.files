@@ -166,7 +166,10 @@ window#waybar {
 }
 
 #workspaces .text-button.urgent {
-    box-shadow: inset 0 3px @dr_or;
+    box-shadow: inset 0 3px @dr_or, inset 3px 0 @dr_or, inset -3px 0 @dr_or, inset 0 -3px @dr_or;
+    /* border: 3px solid @dr_or; */
+    /* background-color: @dr_cy; */
+    /* color: @dr_bg0; */
 }
 #+end_src
 
