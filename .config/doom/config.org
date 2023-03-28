@@ -164,11 +164,32 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 (use-package! olivetti
-  :custom (olivetti-body-width 90))
+  :custom (olivetti-body-width 90)
+          (olivetti-style 'fancy))
 (map! :after olivetti :leader "t o" #'olivetti-mode)
 (add-hook 'text-mode-hook 'olivetti-mode)
 (add-hook 'prog-mode-hook 'olivetti-mode)
 (add-hook 'special-mode-hook 'olivetti-mode)
+
+;; (custom-set-faces! `(olivetti-fringe :background ,(doom-color 'grey)))
+(custom-set-faces! `(olivetti-fringe :inherit solaire-default-face))
+
+#+end_src
+** gptel
+
+#+begin_src emacs-lisp
+(after! gptel
+ (defun my/gptel-api-key-from-auth-source (&optional host user)
+   "Lookup api key in the auth source.
+By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
+   (if-let ((secret (plist-get (car (auth-source-search
+                                     :max 1
+                                     :host (or host "openai.com")
+                                     :user (or user "apikey")))
+                               :secret)))
+       (if (functionp secret) (funcall secret) secret)
+     (user-error "No `gptel-api-key' found in the auth source")))
+ (setq gptel-api-key #'my/gptel-api-key-from-auth-source))
 
 #+end_src
 ** evil relative in normal, absolute in insert
@@ -776,6 +797,8 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 #+begin_src emacs-lisp
 
 (after! flycheck
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow-hi-res [224]
+    nil nil '(center repeated))
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [224]
     nil nil '(center repeated)))
 
