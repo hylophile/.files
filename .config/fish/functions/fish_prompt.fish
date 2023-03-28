@@ -53,12 +53,12 @@ function fish_prompt
     set_color cyan
     echo -n (date +%H)
     set_color $retc
-    echo -n ⁝
+    echo -n ⋅
     set_color normal
     set_color cyan
     echo -n (date +%M)
     set_color $retc
-    echo -n ⁝
+    echo -n ⋅
     set_color normal
     set_color cyan
     echo -n (date +%S)
