@@ -171,10 +171,9 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 # exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 
-exec swayidle -w \
-         timeout 500 'swaylock -f -c 000000' \
-         timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000'
+exec swayidle -w timeout 900 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"'
+         # timeout 500 'swaylock -f -c 000000' \
+         # before-sleep 'swaylock -f -c 000000'
 
 exec ~/scripts/move.scm reset
 
@@ -387,7 +386,7 @@ bindcode 199 exec ~/scripts/mute-all-sources.sh 0
 
 #+begin_src conf-space
 # select screenshot to clipboard
-bindsym $mod+F4 exec grim -s 1 -g "$(slurp)" - | wl-copy
+bindsym $mod+F4 exec grim -g "$(slurp)" - | wl-copy
 # color picker to clipboard
 bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
@@ -407,11 +406,12 @@ bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
 
 #+begin_src conf-space
 
-for_window    [app_id="chrome-mailsrv.employer__owa_-Default"] title_format "<span foreground='#0072C6'><tt></tt></span> %title"
-for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
+for_window    [app_id="chrome-mailsrv.employer__owa_-Default"] title_format "<span foreground='#0072C6'><tt></tt></span> %title"
+for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
 for_window    [app_id="chrome-discord.com__app-Default" title="Discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
 for_window    [app_id="firefox.*"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
-for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' rise='-3pt' face='file-icons'></span> %title"
+for_window    [app_id="google-chrome"]            title_format "<span foreground='#f1fa8c' rise='0pt' face='file-icons'></span> %title"
+for_window    [app_id="emacs"]            title_format "<span foreground='#FF79C6' rise='-1pt' face='file-icons'></span> %title"
 for_window    [app_id="kitty"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
 for_window    [app_id="org.wezfurlong.wezterm"]              title_format "<span foreground='#50fa7b' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
 for_window    [app_id="telegramdesktop"]        title_format "<span foreground='#0088CC'><tt></tt></span> %title"
@@ -461,12 +461,22 @@ bindsym $mod+r mode "resize"
 * Colors
 
 #+begin_src conf-space
+# # class                 border  bground text    indicator child_border
+# set $nofocusbg #e4ddd2
+# set $nofocusfg #605a52
+# set $focusfg #605a52
+# set $focusbg #f7f3ee
+# set focusinfg
+# client.focused          $focusbg $focusbg $focusfg $focusbg $focusbg
+# client.focused_inactive #44475A #44475A #BFBFBF #44475A   #44475A
+# client.unfocused        $nofocusbg $nofocusbg #bfbfbf $nofocusbg   $nofocusbg
+# client.urgent           #50fa7b #44475a #50fa7b #FF5555   #FF5555
+# client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 # class                 border  bground text    indicator child_border
 client.focused          #44475A #6272a4 #F8F8F2 #44475A   #44475A
 client.focused_inactive #44475A #44475A #BFBFBF #44475A   #44475A
 client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
 client.urgent           #50fa7b #44475a #50fa7b #FF5555   #FF5555
-# client.urgent         #44475A #44475A #F8F8F2 #44475A   #44475A
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 #+end_src
 
