@@ -414,9 +414,9 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 
 
 ;; (setq doom-theme (hylo/random-dark-theme))
-;; (setq doom-theme 'ef-spring)
+(setq doom-theme 'ef-spring)
 ;; (setq doom-theme 'doom-dracula)
-(setq doom-theme 'doom-feather-light)
+;; (setq doom-theme 'doom-feather-light)
 
 (use-package! ef-themes)
 #+end_src
