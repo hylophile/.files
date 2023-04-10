@@ -43,8 +43,12 @@
   /* min-width: 40em; */
 }
 
+/* #sidebar-box { */
+/*   width: 40em; */
+/* } */
 #sidebar-box {
-  width: 40em;
+    max-width: none !important;
+    min-width: 50px !important;
 }
 
 /* sideberry
