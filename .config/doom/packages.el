@@ -49,7 +49,7 @@
 
 (package! eldoc-box)
 (package! org-fancy-priorities :disable t)
-;; (package! org-modern)
+(package! org-modern)
 (package! org-appear :recipe (:host github :repo "awth13/org-appear"))
 
 ;; (package! company-quickhelp)
