@@ -13,7 +13,8 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 (setq projectile-project-search-path '("~/code"))
-
+(after! org-fold-core
+  (setq org-fold-core-style 'overlays))
 
 (map! :leader "/" #'+vertico/project-search)
 
