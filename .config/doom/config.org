@@ -1411,6 +1411,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(flex))) ;; Configure flex
   :hook
+  (lsp-mode . lsp-headerline-breadcrumb-mode)
   (lsp-completion-mode . my/lsp-mode-setup-completion))
 
 (defun my/lsp-no-code-actions ()
