@@ -18,6 +18,12 @@ always forget what this does exactly, but it's Good™
 
 (map! :leader "/" #'+vertico/project-search)
 
+(use-package! git-auto-commit-mode
+  :custom
+  (gac-silent-message-p t)
+  (gac-debounce-interval 300))
+
+(run-at-time 1 nil #'add-to-list 'safe-local-variable-values '(gac-automatically-push-p . t))
 
 (custom-set-faces! '(tree-sitter-hl-face:punctuation :background nil))
 ;; (let ((projectile-project-search-path '("~/code/fisa" "~/code/kzk" "~/code/misc/" "~/code/uni")))

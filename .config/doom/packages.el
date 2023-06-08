@@ -52,6 +52,8 @@
 (package! org-modern)
 (package! org-appear :recipe (:host github :repo "awth13/org-appear"))
 
+
+(package! git-auto-commit-mode)
 ;; (package! company-quickhelp)
 ;; (unpin! company-box)
 (package! apheleia)
@@ -59,6 +61,9 @@
 (package! exercism-modern
   :recipe (:files (:defaults "icons")
            :host github :repo "elken/exercism-modern"))
+
+(package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
+
 
 (package! rg)
 (package! flymake-vale :recipe (:host github :repo "tpeacock19/flymake-vale"))
