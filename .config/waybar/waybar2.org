@@ -30,6 +30,7 @@
       <<urgency-teams()>>
       "pulseaudio#sink",
       "pulseaudio#source",
+      "custom/new-ws",
       "custom/rofi-menu",
       // "custom/toggle-dpms",
       // "custom/toggle-big",
@@ -487,6 +488,14 @@ fi
     "on-click": "~/.cargo/bin/simple-rofi-menu",
 },
 #+end_src
+*** new ws
+#+begin_src json
+"custom/new-ws": {
+    "format": "＋",
+    "on-click": "~/scripts/new-workspace.scm focus",
+},
+#+end_src
+
 
 *** toggle kb :ARCHIVE:
 
