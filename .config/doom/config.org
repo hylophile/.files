@@ -534,12 +534,14 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 (set-popup-rules!
   '(("^\\*info\\*"
      :slot 2 :vslot -2 :side left :width 83 :quit nil)))
+
 (set-popup-rule! "^\\*Flycheck errors\\*$" :quit nil)
 ;; (set-popup-rule! "^\\*helpful" :ignore t)
 ;; (setq +popup-defaults (list :side 'right :height 0.16 :width 80 :quit t :select #'ignore :ttl 5))
 ;; (set-popup-rule! :side 'bottom :height 0.16 :width 40 :quit t :select #'5 :ignore ttl)
 ;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.4 :quit nil :vslot -1)
 (after! org
+  (set-popup-rule! "^\\*Calendar" :side 'bottom)
   (set-popup-rule! "^\\*Org Src" :side 'right :size 0.31 :quit nil :select t :autosave t :modeline t :ttl nil))
 #+end_src
 
