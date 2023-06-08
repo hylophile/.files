@@ -1516,8 +1516,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 (setq evil-snipe-scope 'whole-buffer)
 
-(after! evil
-  (define-key evil-motion-state-map (kbd "RET") nil))
+;; (after! evil
+;;   (define-key evil-motion-state-map (kbd "RET") nil))
 
 
 #+end_src
