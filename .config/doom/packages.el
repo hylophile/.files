@@ -64,6 +64,9 @@
 
 (package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
 
+;; (unpin! persp-mode)
+(package! writeroom-mode)
+(package! mixed-pitch)
 
 (package! rg)
 (package! flymake-vale :recipe (:host github :repo "tpeacock19/flymake-vale"))
