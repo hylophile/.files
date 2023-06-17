@@ -18,6 +18,10 @@ always forget what this does exactly, but it's Good™
 
 (map! :leader "/" #'+vertico/project-search)
 
+(after! org
+  (push "notes" org-protecting-blocks)
+  (push "comment" org-protecting-blocks))
+
 (use-package! git-auto-commit-mode
   :custom
   (gac-silent-message-p t)
@@ -50,23 +54,23 @@ always forget what this does exactly, but it's Good™
 ;;   (revert-buffer))
 
 
-(defun my/update-rg-project ()
-  (when-let*
-      (((buffer-file-name (current-buffer)))
-       ((projectile-project-root))
-       (win (cl-some (lambda (w) (and
-                                  (string-match-p
-                                   "^*rg*"
-                                   (buffer-name (window-buffer w)))
-                                  w))
-                     (window-list)))
-       ((window-live-p win)))
-    (with-selected-window win
-        (rg-recompile))))
+;; (defun my/update-rg-project ()
+;;   (when-let*
+;;       (((buffer-file-name (current-buffer)))
+;;        ((projectile-project-root))
+;;        (win (cl-some (lambda (w) (and
+;;                                   (string-match-p
+;;                                    "^*rg*"
+;;                                    (buffer-name (window-buffer w)))
+;;                                   w))
+;;                      (window-list)))
+;;        ((window-live-p win)))
+;;     (with-selected-window win
+;;         (rg-recompile))))
 
-(add-hook 'after-save-hook #'my/update-rg-project)
+;; (add-hook 'after-save-hook #'my/update-rg-project)
 
-(map! :leader "s P" #'rg-project)
+;; (map! :leader "s P" #'rg-project)
 
 (set-popup-rule! "^\\*rg\\*" :side 'right :width 90)
 
@@ -177,7 +181,7 @@ always forget what this does exactly, but it's Good™
 (map! :after olivetti :leader "t o" #'olivetti-mode)
 (add-hook 'text-mode-hook 'olivetti-mode)
 (add-hook 'prog-mode-hook 'olivetti-mode)
-(add-hook 'special-mode-hook 'olivetti-mode)
+;; (add-hook 'special-mode-hook 'olivetti-mode)
 
 ;; (custom-set-faces! `(olivetti-fringe :background ,(doom-color 'grey)))
 (custom-set-faces! `(olivetti-fringe :inherit solaire-default-face))
@@ -300,7 +304,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 
 ** follow file links with position
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle nil
 (after! link-hint
   (link-hint-define-type 'file-link
     :next #'link-hint--next-file-link
@@ -663,6 +667,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 
 
 (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
+
 
 ;; (defun rc/find-file-recursive ()
 ;;   (interactive)
@@ -1673,26 +1678,26 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 #+begin_src emacs-lisp
 
-(defadvice! go-to-workspace-if-exists-mu4e (fun)
-  "Go back to the mu4e workspace if it exists, otherwise launch mu4e normally."
-  :around #'=mu4e
-  (run-at-time nil nil (lambda () (if (+workspace-get +mu4e-workspace-name t)
-                                      (+workspace-switch +mu4e-workspace-name)
-                                    (funcall fun))))
-  (ignore-errors (abort-recursive-edit)))
+;; (defadvice! go-to-workspace-if-exists-mu4e (fun)
+;;   "Go back to the mu4e workspace if it exists, otherwise launch mu4e normally."
+;;   :around #'=mu4e
+;;   (run-at-time nil nil (lambda () (if (+workspace-get +mu4e-workspace-name t)
+;;                                       (+workspace-switch +mu4e-workspace-name)
+;;                                     (funcall fun))))
+;;   (ignore-errors (abort-recursive-edit)))
 
 
-(after! mu4e
-  (setq sendmail-program (executable-find "msmtp")
-        send-mail-function #'smtpmail-send-it
-        message-sendmail-f-is-evil t
-        message-sendmail-extra-arguments '("--read-envelope-from")
-        message-send-mail-function #'message-send-mail-with-sendmail))
+;; (after! mu4e
+;;   (setq sendmail-program (executable-find "msmtp")
+;;         send-mail-function #'smtpmail-send-it
+;;         message-sendmail-f-is-evil t
+;;         message-sendmail-extra-arguments '("--read-envelope-from")
+;;         message-send-mail-function #'message-send-mail-with-sendmail))
 
-(after! mu4e-alert
-  (setq +mu4e-alert-bell-cmd nil))
-(setq mu4e-context-policy 'ask-if-none
-      mu4e-compose-context-policy 'always-ask)
+;; (after! mu4e-alert
+;;   (setq +mu4e-alert-bell-cmd nil))
+;; (setq mu4e-context-policy 'ask-if-none
+;;       mu4e-compose-context-policy 'always-ask)
 
 
 (defadvice! evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
