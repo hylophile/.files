@@ -65,7 +65,8 @@
 (package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
 
 ;; (unpin! persp-mode)
-(package! writeroom-mode)
+;; (package! writeroom-mode)
+(package! visual-fill-column)
 (package! mixed-pitch)
 
 (package! rg)
