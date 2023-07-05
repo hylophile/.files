@@ -13,6 +13,20 @@ local function write_config(name, window_config)
     end
 end
 
+local function get_layouts()
+    local layout_files = io.popen("ls " .. wezterm.config_dir .. "/layouts")
+
+    if layout_files then
+        local lines = {}
+        for line in layout_files:lines() do
+            local layout = string.gsub(line, ".json$", "")
+            table.insert(lines, layout)
+        end
+        layout_files:close()
+        return lines
+    end
+end
+
 function module.serialize_window(current_window, current_pane)
     local window_config = {}
     for i_tab, tab in pairs(current_window:mux_window():tabs()) do
@@ -32,9 +46,14 @@ function module.serialize_window(current_window, current_pane)
         end
     end
 
+    local saved_layouts = ""
+    for _, layout in pairs(get_layouts()) do
+        saved_layouts = saved_layouts .. "  " .. layout .. "\n"
+    end
+
     current_window:perform_action(
         act.PromptInputLine({
-            description = "Enter name for this session:",
+            description = "Saved layouts:\n\n" .. saved_layouts .. "\nEnter name for this layout:",
             action = wezterm.action_callback(function(_, _, line)
                 if line then
                     write_config(line, window_config)
@@ -61,7 +80,7 @@ local function load_other_panes(original_pane, tab_config)
 end
 
 local function load_window(filename)
-    local file = io.open(wezterm.config_dir .. "/layouts/" .. filename, "r")
+    local file = io.open(wezterm.config_dir .. "/layouts/" .. filename .. ".json", "r")
     if file then
         local window_config = wezterm.json_parse(file:read())
         file:close()
@@ -90,21 +109,18 @@ end
 
 function module.deserialize_window(current_window, current_pane)
     local choices = {}
-    local layout_files = io.popen("ls " .. wezterm.config_dir .. "/layouts")
-    if layout_files then
-        for layout_file in layout_files:lines() do
-            table.insert(choices, { label = layout_file })
-        end
+    for _, layout_file in pairs(get_layouts()) do
+        table.insert(choices, { label = layout_file })
     end
 
     current_window:perform_action(
         act.InputSelector({
-            action = wezterm.action_callback(function(_, _, _, label)
-                if label then
-                    load_window(label)
+            action = wezterm.action_callback(function(_, _, _, layout)
+                if layout then
+                    load_window(layout)
                 end
             end),
-            title = "Load session",
+            title = "Load layout:",
             choices = choices,
         }),
         current_pane

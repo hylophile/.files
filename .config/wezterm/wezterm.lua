@@ -3,7 +3,7 @@ local act = wezterm.action
 local mux = wezterm.mux
 
 local ws = require("workspace-helpers")
-local sessions = require("sessions")
+local layouts = require("layouts")
 
 -- require("workspaces").register()
 
@@ -73,8 +73,8 @@ return {
     keys = {
         { key = "Enter", mods = "CTRL", action = act.SpawnCommandInNewWindow },
         { key = "F1", mods = "CTRL", action = act.SwitchToWorkspace({ name = "default" }) },
-        { key = "F2", mods = "CTRL", action = wezterm.action_callback(sessions.serialize_window) },
-        { key = "F3", mods = "CTRL", action = wezterm.action_callback(sessions.deserialize_window) },
+        { key = "F2", mods = "CTRL", action = wezterm.action_callback(layouts.serialize_window) },
+        { key = "F3", mods = "CTRL", action = wezterm.action_callback(layouts.deserialize_window) },
         { key = "F4", mods = "CTRL", action = act.EmitEvent("spawn-ws4") },
         { key = "F5", mods = "CTRL", action = act.EmitEvent("spawn-ws5") },
         { key = "x", mods = "ALT", action = act.ActivateCommandPalette },
