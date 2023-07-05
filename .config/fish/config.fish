@@ -20,5 +20,13 @@ set -gx VISUAL nvim
 bind \cH backward-kill-word
 bind \cw backward-kill-bigword
 
+function set_wezterm_prog --on-event fish_preexec
+    printf "\033]1337;SetUserVar=%s=%s\007" WEZTERM_PROG (echo -n $argv | base64)
+end
+
+function unset_wezterm_prog --on-event fish_postexec
+    printf "\033]1337;SetUserVar=%s=%s\007" WEZTERM_PROG ""
+end
+
 zoxide init fish --cmd d | source
 direnv hook fish | source
