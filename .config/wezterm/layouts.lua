@@ -33,15 +33,21 @@ function module.serialize_window(current_window, current_pane)
         window_config[i_tab] = {}
 
         for j_pane, pane in pairs(tab:panes()) do
-            local prog = pane:get_user_vars().WEZTERM_PROG
+            local user_vars = pane:get_user_vars()
 
+            local prog = user_vars.WEZTERM_PROG
             if prog == "" then
                 prog = nil
             end
 
+            local cwd = user_vars.WEZTERM_CWD
+            if cwd == "" or cwd == nil then
+                cwd = pane:get_foreground_process_info().cwd
+            end
+
             window_config[i_tab][j_pane] = {
                 prog = prog,
-                cwd = pane:get_foreground_process_info().cwd,
+                cwd = cwd,
             }
         end
     end
