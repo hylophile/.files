@@ -371,7 +371,7 @@ echo "{\"text\": \"$text\", \"class\": \"weather\"}"
 **** source
 
 #+begin_src sh :tangle scripts/urgency.sh
-names=$(swaymsg -t get_tree | jq -r "recurse(.nodes[]?) | select(.app_id==\"$1\").name")
+names=$(swaymsg -t get_tree | jq -r "recurse(.nodes[]?) | select(.window_properties.instance==\"$1\").name")
 match=$(echo "$names" | grep -E -o '\([0-9]+\)')
 
 if [ "$2" = "show" ]; then
@@ -395,7 +395,7 @@ fi
 "custom/urgency-teams": {
     "return-type": "json",
     "format": "{}",
-    "exec": "sh $HOME/.config/waybar/scripts/urgency.sh chrome-teams.microsoft.com__-Default 🌈",
+    "exec": "~/.config/waybar/scripts/urgency.sh teams.microsoft.com 🌈",
     "interval": 5,
 },
 #+end_src
@@ -410,7 +410,7 @@ fi
 "custom/azk": {
     "return-type": "json",
     "format": "{}",
-    "exec": "sh $HOME/azk/show_azk.sh",
+    "exec": "~/azk/show_azk.sh",
     // "exec-if": "nmcli | rg 'enp2s0f0: connected'",
     "on-click": "python $HOME/azk/azk_waybar.py stamp",
     "on-click-middle": "python $HOME/azk/azk_waybar.py azk",

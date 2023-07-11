@@ -101,8 +101,7 @@
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
-       ;; (lsp +eglot)               ; M-x vscode
-       lsp
+       (lsp +eglot)               ; M-x vscode
        magit; +forge             ; a git porcelain for Emacs
        ;; (magit )             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs

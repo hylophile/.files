@@ -324,7 +324,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
                  "gitlab.employer/api/v4"
                  "gitlab.employer" forge-gitlab-repository)))
 
-(map! :map magit-mode-map
+(map! :map magit-status-mode-map
       "<escape>" #'+magit/quit)
 
 ;; from https://github.com/magit/magit/issues/460

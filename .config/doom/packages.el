@@ -74,6 +74,7 @@
 ;; adds popups, optional but reccomened
 (package! flymake-popon :recipe (:repo "https://codeberg.org/akib/emacs-flymake-popon"))
 
+(package! git-link)
 
 (package! singularity-mode :recipe (:host github :repo "karljohanw/singularity-mode"))
 
