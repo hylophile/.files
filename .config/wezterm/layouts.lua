@@ -1,11 +1,8 @@
 local wezterm = require("wezterm")
-
-local mux = wezterm.mux
 local act = wezterm.action
-
 local module = {}
 
-local function write_config(name, window_config)
+local function write_layout(name, window_config)
     local file = io.open(wezterm.config_dir .. "/layouts/" .. name .. ".json", "w")
     if file then
         file:write(wezterm.json_encode(window_config))
@@ -62,7 +59,7 @@ function module.serialize_window(current_window, current_pane)
             description = "Saved layouts:\n\n" .. saved_layouts .. "\nEnter name for this layout:",
             action = wezterm.action_callback(function(_, _, line)
                 if line then
-                    write_config(line, window_config)
+                    write_layout(line, window_config)
                 end
             end),
         }),
