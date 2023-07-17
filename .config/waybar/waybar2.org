@@ -206,6 +206,13 @@ window#waybar {
 },
 #+end_src
 
+** workspaces
+#+begin_src json
+"sway/workspaces": {
+    "warp-on-scroll": true
+},
+#+end_src
+
 ** tray
 
 *** config
