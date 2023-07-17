@@ -54,7 +54,7 @@ titlebar_padding 5 0
 # output  "*" bg "~/Downloads/seealpsee-lake-alps-mountains-reflections-scenery-summer-7680x5363-8853.jpg" fill
 set $opacity 0.95
 for_window [app_id="emacs"] opacity $opacity
-for_window [app_id="org.wezfurlong.wezterm"] opacity $opacity
+# for_window [app_id="org.wezfurlong.wezterm"] opacity $opacity
 # for_window [app_id=".*"] opacity $opacity
 #+end_src
 
@@ -439,6 +439,7 @@ for_window [app_id="^anki$" title="^Preview$"] floating enable
 
 
 assign [title="^Bevy App$"] workspace number 1
+assign [title="^Aperiodic"] workspace number 1
 #+end_src
 
 * Modes
