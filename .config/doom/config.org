@@ -238,6 +238,13 @@ always forget what this does exactly, but it's Good™
 
 (map! :after visual-fill-column :leader "t o" #'visual-fill-column-mode)
 #+end_src
+** darkman
+#+begin_src emacs-lisp :tangle no
+(let ((output (shell-command-to-string "darkman get")))
+    (if (string= (string-trim-right output) "light")
+        (load-theme 'ef-spring t)
+      (load-theme 'doom-dracula t)))
+#+end_src
 ** gptel
 
 #+begin_src emacs-lisp
@@ -475,8 +482,13 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 #+begin_src emacs-lisp
 
 
+(setq my/theme (let ((output (shell-command-to-string "darkman get")))
+                 (if (string= (string-trim-right output) "light")
+                     'ef-spring
+                   'doom-dracula)))
 ;; (setq doom-theme (hylo/random-dark-theme))
-(setq doom-theme 'ef-spring)
+(setq doom-theme my/theme)
+;; (setq doom-theme 'ef-spring)
 ;; (setq doom-theme 'doom-dracula)
 ;; (setq doom-theme 'doom-feather-light)
 
