@@ -21,7 +21,9 @@
   (vector-ref bgs (rrr (vector-length bgs))))
 
 (define (set-random-bg-for-output output)
-  (system (string-append "swww img --transition-step 10 --outputs " output " " (random-bg))))
+  ;; (system (string-append "swww img --transition-step 10 --outputs " output " " (random-bg))))
+  (system (string-append "pkill -f 'swaybg --output " output "'"))
+  (system (string-append "swaybg --output " output " --image " (random-bg) " &")))
 
 (let* ((params (cdr (command-line))))
   (match params

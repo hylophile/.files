@@ -159,7 +159,6 @@ bindcode 277 --whole-window move container to output next
 #+begin_src conf-space :noweb yes
 <<mullvad()>>
 
-exec swww init
 exec ~/scripts/switch-bg.scm all
 
 exec_always ~/scripts/scale-up-edp.scm
