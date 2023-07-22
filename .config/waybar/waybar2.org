@@ -77,12 +77,19 @@
 @define-color dr_ye #f1fa8c;
 
 ,* {
-  border: none;
+  font-family: "Jost";
+}
+
+window#waybar {
+  background-color: @dr_bg0;
   border-radius: 0;
+  border: none;
+  color: @dr_fg;
   font-family: "Jost";
   font-size: 16px;
-  color: @dr_fg;
   font-weight: normal;
+  transition-duration: 0.5s;
+  transition-property: background-color;
 }
 
 label {
@@ -90,13 +97,6 @@ label {
 }
 button {
     all: unset;
-}
-
-window#waybar {
-  background-color: @dr_bg0;
-  color: @dr_fg;
-  transition-property: background-color;
-  transition-duration: 0.5s;
 }
 
 .modules-left {
