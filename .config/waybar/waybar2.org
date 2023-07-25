@@ -4,7 +4,12 @@
 
 #+begin_src emacs-lisp :results silent
 (defun on-nsa (str)
-  (if (string= "nsa" (system-name)) (format "\"%s\"," str) ""))
+  (if
+   (thread-last
+     (shell-command-to-string "hostname")
+     string-trim
+     (string= "nsa"))
+   (format "\"%s\"," str) ""))
 #+end_src
 
 #+begin_src json :tangle config :noweb yes
@@ -417,7 +422,7 @@ fi
 "custom/azk": {
     "return-type": "json",
     "format": "{}",
-    "exec": "~/azk/show_azk.sh",
+    "exec": "sh $HOME/azk/show_azk.sh",
     // "exec-if": "nmcli | rg 'enp2s0f0: connected'",
     "on-click": "python $HOME/azk/azk_waybar.py stamp",
     "on-click-middle": "python $HOME/azk/azk_waybar.py azk",
