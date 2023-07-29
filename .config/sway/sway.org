@@ -392,6 +392,7 @@ bindcode 199 exec ~/scripts/mute-all-sources.sh 0
 #+begin_src conf-space
 # select screenshot to clipboard
 bindsym $mod+F4 exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+Ctrl+F4 exec grim -g "$(slurp)"
 # color picker to clipboard
 bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
