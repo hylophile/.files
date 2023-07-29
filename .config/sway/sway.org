@@ -146,7 +146,9 @@ input type:pointer {
 # bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
 # bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
 
-bindsym $mod+F9 exec ~/scripts/switch-bg.scm here
+# bindsym $mod+F9 exec ~/scripts/switch-bg.scm here
+bindsym $mod+F9 exec ~/scripts/switch-bg.clj new current
+bindsym $mod+Ctrl+Shift+F9 exec ~/scripts/switch-bg.clj discard current
 bindsym button6 --whole-window focus output next
 bindsym button7 --whole-window exec ~/.config/sway/swap-visible-workspaces.sh
 # bindsym button7 --whole-window focus output next
@@ -159,7 +161,8 @@ bindcode 277 --whole-window move container to output next
 #+begin_src conf-space :noweb yes
 <<mullvad()>>
 
-exec ~/scripts/switch-bg.scm all
+# exec ~/scripts/switch-bg.scm all
+exec ~/scripts/switch-bg.clj new all
 
 exec_always ~/scripts/scale-up-edp.scm
 
