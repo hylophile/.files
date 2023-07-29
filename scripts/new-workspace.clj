@@ -3,7 +3,7 @@
 (require '[utils.sway :as sway])
 
 (def new-workspace (as-> (range 1 20) $
-                     (remove (set (sway/workspaces 'nums)) $)
+                     (remove (set (:nums (sway/workspaces))) $)
                      (first $)))
 
 (condp = (first *command-line-args*)

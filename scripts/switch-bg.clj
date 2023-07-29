@@ -32,10 +32,10 @@
     ($ "name")))
 
 (defn replace-swaybg-on-output [output id]
-  (shell {:continue true} (format "pkill -f 'swaybg --output %s'" 
+  (shell {:continue true} (format "pkill -f 'swaybg --output %s'"
                                   output))
-  (process (format "swaybg --output %s --image %s" 
-                   output 
+  (process (format "swaybg --output %s --image %s"
+                   output
                    (str wallpapers-path (id->name id)))))
 
 (defn set-keys-for-ids [wallpapers ids & {:keys [used discarded] :or {used true discarded false}}]
@@ -70,15 +70,14 @@
     (process (format "notify-send 'Discarded wallpaper on %s' '%s'" output filename))
     (set-keys-for-ids wallpapers [id] :discarded true)))
 
-(let [current-output (sway/outputs 'current)
-      all-outputs (sway/outputs 'names)
+(let [{current-output :current all-outputs :names} (sway/outputs)
       help (fn [] (println (str "Available commands:\n"
-                            "  new all\n"
-                            "  new current\n"
-                            "\n"
-                            "  discard current\n"
-                            "\n"
-                            "  reset-used")))]
+                                "  new all\n"
+                                "  new current\n"
+                                "\n"
+                                "  discard current\n"
+                                "\n"
+                                "  reset-used")))]
   (condp = (first *command-line-args*)
     "new" (condp = (second *command-line-args*)
             "all" (new-wallpapers-on-outputs wallpaper-data all-outputs)

@@ -4,7 +4,6 @@
 
 (require '[cheshire.core :as json])
 (require '[clojure.string :as str])
-(require '[clojure.core.match :refer [match]])
 (require '[babashka.process :refer [shell]])
 
 (defn msg [& args]
@@ -15,7 +14,7 @@
        :out
        (json/parse-string)))
 
-(defn outputs [& args]
+(defn outputs []
   (let [outputs-json (msg "-t get_outputs")
         current (as-> outputs-json $
                   (filter #(% "focused") $)
@@ -28,28 +27,19 @@
         succ (fn [xs] (second (drop-while #(not= current %) xs)))
         next (-> outputs-list succ)
         prev (-> outputs-list reverse succ)]
-    (condp = (first args)
-      'current current
-      'names names
-      'next next
-      'prev prev
-      "Unknown argument provided.")))
+      {:current current
+       :names names
+       :next next
+       :prev prev}))
 
-; (pprint (swaymsg-outputs 'names))
-
-(defn workspaces [& args]
+(defn workspaces []
   (let [outputs-json (msg "-t get_workspaces")]
-    (condp = (first args)
-      'current (as-> outputs-json $
-                 (filter #(% "focused") $)
-                 (first $)
-                 ($ "name"))
-      'nums (map #(% "num") outputs-json)
-      'visible-nums (->> outputs-json
-                         (filter #(% "visible"))
-                         (map #(% "num")))
-      "Unknown argument provided.")))
-
-; (print (workspaces 'visible-nums))
-
+    {:current (as-> outputs-json $
+                (filter #(% "focused") $)
+                (first $)
+                ($ "name"))
+     :nums (map #(% "num") outputs-json)
+     :visible-nums (->> outputs-json
+                        (filter #(% "visible"))
+                        (map #(% "num")))}))
 
