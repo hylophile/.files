@@ -16,28 +16,40 @@
        (json/parse-string)))
 
 (defn outputs [& args]
-  (let [outputs-json (msg "-t get_outputs")]
-    (match (first args)
-      'current (as-> outputs-json $
-                 (filter #(% "focused") $)
-                 (first $)
-                 ($ "name"))
-      'names (map #(% "name") outputs-json)
-      :else "Unknown argument provided.")))
+  (let [outputs-json (msg "-t get_outputs")
+        current (as-> outputs-json $
+                  (filter #(% "focused") $)
+                  (first $)
+                  ($ "name"))
+        names (map #(% "name") outputs-json)
+        outputs-list (->> names
+                          (repeat 2)
+                          flatten)
+        succ (fn [xs] (second (drop-while #(not= current %) xs)))
+        next (-> outputs-list succ)
+        prev (-> outputs-list reverse succ)]
+    (condp = (first args)
+      'current current
+      'names names
+      'next next
+      'prev prev
+      "Unknown argument provided.")))
 
 ; (pprint (swaymsg-outputs 'names))
 
 (defn workspaces [& args]
-  (let [outputs-json (msg "-t get_workspaces")
-        option (first args)]
-    (cond
-    ; (= option 'current) (as-> outputs-json $
-    ;                       (filter #(% "focused") $)
-    ;                       (first $)
-    ;                       ($ "name"))
-    ;                               
-      (= option 'nums) (map #(% "num") outputs-json)
-      :else "Unknown argument provided.")))
+  (let [outputs-json (msg "-t get_workspaces")]
+    (condp = (first args)
+      'current (as-> outputs-json $
+                 (filter #(% "focused") $)
+                 (first $)
+                 ($ "name"))
+      'nums (map #(% "num") outputs-json)
+      'visible-nums (->> outputs-json
+                         (filter #(% "visible"))
+                         (map #(% "num")))
+      "Unknown argument provided.")))
 
-()
-; (pprint (swaymsg-workspaces 'nums))
+; (print (workspaces 'visible-nums))
+
+

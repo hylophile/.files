@@ -200,7 +200,8 @@ exec ~/scripts/move.scm reset
 
 #+begin_src conf-space
 
-set $term ~/scripts/wezterm-start-on-current-workspace.fish
+# set $term ~/scripts/wezterm-start-on-current-workspace.fish
+set $term wezterm
 bindsym $mod+Return exec $term
 
 # Kill focused window
@@ -212,7 +213,7 @@ set $menu "rofi -show-icons -combi-modi window#drun -show combi"
 bindsym $mod+d exec $menu
 bindsym $mod+o exec $menu
 
-bindsym $mod+e exec ~/scripts/open-emacs-or-focus-wayland.scm
+bindsym $mod+e exec ~/scripts/open-emacs-or-focus-wayland.clj
 # Reload the configuration file
 bindsym $mod+F5 reload
 
@@ -272,10 +273,11 @@ bindsym F23 focus left
 # Swap focus between the tiling area and the floating area
 bindsym $mod+Shift+f floating toggle
 
-bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
+# bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
+bindsym $mod+space exec ~/scripts/next-prev-output.clj prev
 # bindsym $mod+Control+space focus output left
 
-bindsym $mod+Control+space exec ~/scripts/swap-visible-workspaces.scm
+bindsym $mod+Control+space exec ~/scripts/swap-visible-workspaces.clj
 bindsym $mod+Shift+space move window to output left
 
 bindsym $mod+a workspace prev_on_output
@@ -326,8 +328,8 @@ bindsym $mod+Shift+0 move container to workspace number 10
 
 ** (move to) new workspace
 #+begin_src conf-space
-bindsym $mod+n exec ~/scripts/new-workspace.scm focus
-bindsym $mod+Shift+n exec ~/scripts/new-workspace.scm move-to
+bindsym $mod+n exec ~/scripts/new-workspace.clj focus
+bindsym $mod+Shift+n exec ~/scripts/new-workspace.clj move-to
 #+end_src
 
 *** old :ARCHIVE:

@@ -32,8 +32,11 @@
     ($ "name")))
 
 (defn replace-swaybg-on-output [output id]
-  (shell {:continue true} (str "pkill -f 'swaybg --output " output "'"))
-  (process (str "swaybg --output " output " --image " wallpapers-path (id->name id))))
+  (shell {:continue true} (format "pkill -f 'swaybg --output %s'" 
+                                  output))
+  (process (format "swaybg --output %s --image %s" 
+                   output 
+                   (str wallpapers-path (id->name id)))))
 
 (defn set-keys-for-ids [wallpapers ids & {:keys [used discarded] :or {used true discarded false}}]
   (let [set-key-val (fn [wss idx k v]
@@ -75,8 +78,7 @@
                             "\n"
                             "  discard current\n"
                             "\n"
-                            "  reset-used"))
-                  (System/exit 1))]
+                            "  reset-used")))]
   (condp = (first *command-line-args*)
     "new" (condp = (second *command-line-args*)
             "all" (new-wallpapers-on-outputs wallpaper-data all-outputs)
