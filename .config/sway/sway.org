@@ -119,6 +119,10 @@ input 1:1:AT_Translated_Set_2_keyboard {
       xkb_options caps:escape
 }
 
+input type:keyboard {
+    xkb_options compose:rwin
+}
+
 input type:pointer {
       accel_profile flat
       pointer_accel 0
@@ -175,6 +179,7 @@ bindsym $mod+F11 output "*" dpms on
 
 exec nm-applet --indicator
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec udiskie
 # exec input-remapper-control --command autoload
 
 # exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
@@ -211,9 +216,9 @@ bindsym $mod+q kill
 set $menu wofi --show drun -I -a | xargs swaymsg exec --
 set $menu "rofi -show-icons -combi-modi window#drun -show combi"
 bindsym $mod+d exec $menu
-bindsym $mod+o exec $menu
+# bindsym $mod+o exec $menu
 
-bindsym $mod+e exec ~/scripts/open-emacs-or-focus-wayland.clj
+bindsym $mod+u exec ~/scripts/open-emacs-or-focus-wayland.clj
 # Reload the configuration file
 bindsym $mod+F5 reload
 
@@ -231,14 +236,24 @@ bindsym $mod+$down focus down
 bindsym $mod+$up focus up
 bindsym $mod+$right focus right
 
+bindsym $mod+n focus left
+bindsym $mod+e focus down
+bindsym $mod+i focus up
+bindsym $mod+o focus right
+
 bindsym $mod+Shift+$left move left
 bindsym $mod+Shift+$down move down
 bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
 
+bindsym $mod+Shift+n move left
+bindsym $mod+Shift+e move down
+bindsym $mod+Shift+i move up
+bindsym $mod+Shift+o move right
 
-bindsym $mod+h splith
-bindsym $mod+v splitv
+
+bindsym $mod+Shift+h splith
+bindsym $mod+Shift+v splitv
 
 # bindsym $mod+s layout stacking
 bindsym $mod+Control+t layout tabbed
@@ -255,6 +270,7 @@ bindsym $mod+period focus mode_toggle
 
 # focus the parent container
 bindsym $mod+Control+c focus parent
+
 
 # focus the child container
 bindsym $mod+c focus child
@@ -328,8 +344,8 @@ bindsym $mod+Shift+0 move container to workspace number 10
 
 ** (move to) new workspace
 #+begin_src conf-space
-bindsym $mod+n exec ~/scripts/new-workspace.clj focus
-bindsym $mod+Shift+n exec ~/scripts/new-workspace.clj move-to
+bindsym $mod+w exec ~/scripts/new-workspace.clj focus
+bindsym $mod+Shift+w exec ~/scripts/new-workspace.clj move-to
 #+end_src
 
 *** old :ARCHIVE:
@@ -441,6 +457,7 @@ for_window [app_id="firefox.*" title=".* — Sharing Indicator"] floating enable
 for_window [app_id="^chrome-.*"] shortcuts_inhibitor disable
 for_window [app_id="^anki$" title="^Add$"] floating enable
 for_window [app_id="^anki$" title="^Preview$"] floating enable
+for_window [app_id="^wezterm-floating$"] floating enable, border pixel 5
 
 
 assign [title="^Bevy App$"] workspace number 1
