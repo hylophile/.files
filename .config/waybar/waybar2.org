@@ -504,7 +504,7 @@ fi
 #+begin_src json
 "custom/new-ws": {
     "format": "＋",
-    "on-click": "~/scripts/new-workspace.scm focus",
+    "on-click": "~/scripts/new-workspace.clj focus",
 },
 #+end_src
 
