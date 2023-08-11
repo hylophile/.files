@@ -18,6 +18,8 @@ always forget what this does exactly, but it's Good™
 
 (map! :leader "/" #'+vertico/project-search)
 
+(setq! evil-disable-insert-state-bindings t)
+
 (after! org
   (push "notes" org-protecting-blocks)
   (push "comment" org-protecting-blocks))
