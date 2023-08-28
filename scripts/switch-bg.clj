@@ -6,11 +6,12 @@
 (require '[babashka.process :refer [process shell]])
 (require '[utils.sway :as sway])
 
-(def wallpapers-path (let [laptop-path "~/media/wallpapers/all/"
-                           tower-path "/media/wallpapers/all/"]
-                       (if (fs/directory? laptop-path)
-                         laptop-path
-                         tower-path)))
+(def wallpapers-path "~/sync/")
+;; (def wallpapers-path (let [laptop-path "~/media/wallpapers/all/"
+;;                            tower-path "/media/wallpapers/all/"]
+;;                        (if (fs/directory? laptop-path)
+;;                          laptop-path
+;;                          tower-path)))
 
 (def wallpapers-config (-> wallpapers-path fs/parent (str "/wallpapers.json")))
 
