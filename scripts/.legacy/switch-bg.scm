@@ -12,7 +12,7 @@
 (define all-outputs
   (map (lambda (e) (cdr (assoc "name" e))) sway-outputs))
 
-(define bgs (list->vector (string-split (subshell "fd . /media/wallpapers/all") #\newline)))
+(define bgs (list->vector (string-split (subshell "fd . ~/media/wallpapers/all") #\newline)))
 
 (define (rrr n)
   (random n (seed->random-state (cdr (gettimeofday)))))
