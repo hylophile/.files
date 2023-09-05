@@ -383,7 +383,7 @@ echo "{\"text\": \"$text\", \"class\": \"weather\"}"
 **** source
 
 #+begin_src sh :tangle scripts/urgency.sh
-names=$(swaymsg -t get_tree | jq -r "recurse(.nodes[]?) | select(.window_properties.instance==\"$1\").name")
+names=$(swaymsg -t get_tree | jq -r "recurse(.nodes[]?) | select(.app_id != null and (.app_id | contains(\"$1\"))).name")
 match=$(echo "$names" | grep -E -o '\([0-9]+\)')
 
 if [ "$2" = "show" ]; then
