@@ -1843,9 +1843,53 @@ name as well to trigger updates"
   ;; same for renaming and deleting (and saving, but oh well)
   (advice-add #'+workspace-message :override #'ignore))
 
-;; (customize-set-variable 'tab-bar-mode t)
-
-
 ;; need to run this later for it to not break frame size for some reason
-  (run-at-time nil nil (cmd! (tab-bar-mode +1)))
+(run-at-time nil nil (cmd! (tab-bar-mode +1)))
+#+end_src
+** session restore
+#+begin_src emacs-lisp
+(defadvice! restore-no-confirm-session-quickload-a (_)
+   "Restore the no confirm quickload of workspace sessions"
+   :override #'doom/quickload-session
+   (message "Restoring session...")
+   (doom-load-session)
+   (message "Session restored. Welcome back."))
+
+(setq +doom-dashboard-menu-sections
+  '(("Reload last session"
+     :icon (all-the-icons-octicon "history" :face 'doom-dashboard-menu-title)
+     :when (cond ((modulep! :ui workspaces)
+                  (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir)))
+                 ((require 'desktop nil t)
+                  (file-exists-p (desktop-full-file-name))))
+     :face (:inherit (doom-dashboard-menu-title bold))
+     :action doom/quickload-session)
+    ("Open org-agenda"
+     :icon (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
+     :when (fboundp 'org-agenda)
+     :action org-agenda)
+    ("Recently opened files"
+     :icon (all-the-icons-octicon "file-text" :face 'doom-dashboard-menu-title)
+     :action recentf-open-files)
+    ("Open project"
+     :icon (all-the-icons-octicon "briefcase" :face 'doom-dashboard-menu-title)
+     :action projectile-switch-project)
+    ("Jump to bookmark"
+     :icon (all-the-icons-octicon "bookmark" :face 'doom-dashboard-menu-title)
+     :action bookmark-jump)
+    ("Open private configuration"
+     :icon (all-the-icons-octicon "tools" :face 'doom-dashboard-menu-title)
+     :when (file-directory-p doom-user-dir)
+     :action doom/open-private-config)
+    ("Open documentation"
+     :icon (all-the-icons-octicon "book" :face 'doom-dashboard-menu-title)
+     :action doom/help)))
+#+end_src
+** work config
+#+begin_src emacs-lisp
+(load! "work.el" nil t)
+(setq js-indent-level 2)
+
+(setf (alist-get 'prettier-json apheleia-formatters)
+      '(npx "prettier" "--stdin-filepath" filepath "--parser=json"))
 #+end_src
