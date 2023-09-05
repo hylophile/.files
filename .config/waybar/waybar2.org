@@ -351,7 +351,7 @@ button {
 **** source
 
 #+begin_src sh :tangle scripts/weather.sh
-temp=$(curl --silent "https://api.brightsky.dev/current_weather?lat=52.52&lon=13.29"|jq ".weather.temperature")
+temp=$(curl --silent "https://api.brightsky.dev/current_weather?lat=52.52&lon=13.4&tz=Europe%2FBerlin"|jq ".weather.temperature")
 
 if [ "$(echo "$temp" | head -c 1)" = "-" ]; then
     text="$temp°C"
@@ -371,7 +371,7 @@ echo "{\"text\": \"$text\", \"class\": \"weather\"}"
 #+begin_src json
 "custom/weather": {
     "return-type": "json",
-    "exec": "sh $HOME/.config/waybar/scripts/weather.sh",
+    "exec": "$HOME/.config/waybar/scripts/weather.sh",
     "interval": 300,
     "rotate": 270,
     "on-click": "firefox-nightly https://www.wetter.de/deutschland/wetter-berlin-18228265.html",
