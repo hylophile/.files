@@ -53,7 +53,7 @@
 
 @media (prefers-color-scheme:dark) {
   html {
-    --toolbar-bgcolor: #2F343F !important;
+    --toolbar-bgcolor: #262833 !important;
   }
 }
 
