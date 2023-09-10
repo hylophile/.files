@@ -357,7 +357,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
       (magit-status)
     (magit-status "~/")))
 
-(map! :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
+(map! :after magit :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
 
 
 #+end_src
