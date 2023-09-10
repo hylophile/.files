@@ -518,19 +518,12 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 
 #+begin_src conf-space
 bar {
-    swaybar_command waybar
-    # position top
-
-    # # When the status_command prints a new line to stdout, swaybar updates.
-    # # The default just shows the current date and time.
-    # status_command while date +'W%W   %A   %Y-%m-%d   %H:%M %p'; do sleep 60; done
-
-    # colors {
-    #     statusline #ffffff
-    #     background #323232
-    #     inactive_workspace #32323200 #32323200 #5c5c5c
-    # }
+    mode invisible
 }
+
+exec eww open-many bar-0 bar-1
+
+exec_always eww reload
 #+end_src
 
 * Fin
