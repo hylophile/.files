@@ -137,12 +137,11 @@ input type:pointer {
 # }
 
 
-# set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
-# input $elecom {
-#       scroll_method on_button_down
-#       pointer_accel -0.7
-#       accel_profile adaptive
-# }
+set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
+input $elecom {
+      pointer_accel -0.5
+      accel_profile flat
+}
 
 # bindsym --input-device=$slimblade --whole-window BTN_MIDDLE seat - cursor press button8
 # bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cursor release button8
