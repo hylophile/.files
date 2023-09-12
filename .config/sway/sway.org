@@ -422,12 +422,6 @@ bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
 
 #+end_src
 
-** t
-
-#+begin_src conf-space
-
-#+end_src
-
 * Window-specific settings
 
 #+begin_src conf-space
@@ -521,7 +515,7 @@ bar {
     mode invisible
 }
 
-exec eww open-many bar-0 bar-1
+exec eww open-many bar-0 bar-1 bar-2
 
 exec_always eww reload
 #+end_src
