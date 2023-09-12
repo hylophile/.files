@@ -165,6 +165,8 @@ bindcode 277 --whole-window move container to output next
 # exec ~/scripts/switch-bg.scm all
 exec ~/scripts/switch-bg.clj new all
 
+exec ~/scripts/notify.clj
+
 exec_always ~/scripts/scale-up-edp.scm
 
 exec ~/scripts/dynamic-opacity.clj
@@ -217,8 +219,9 @@ set $menu wofi --show drun -I -a | xargs swaymsg exec --
 set $menu "rofi -show-icons -combi-modi window#drun -show combi"
 bindsym $mod+d exec $menu
 # bindsym $mod+o exec $menu
+bindsym $mod+u [urgent=first] focus
 
-bindsym $mod+u exec ~/scripts/open-emacs-or-focus-wayland.clj
+bindsym $mod+e exec ~/scripts/open-emacs-or-focus-wayland.clj
 # Reload the configuration file
 bindsym $mod+F5 reload
 
@@ -237,7 +240,7 @@ bindsym $mod+$up focus up
 bindsym $mod+$right focus right
 
 bindsym $mod+n focus left
-bindsym $mod+e focus down
+# bindsym $mod+e focus down
 bindsym $mod+i focus up
 bindsym $mod+o focus right
 
