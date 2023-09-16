@@ -103,7 +103,7 @@ always forget what this does exactly, but it's Good™
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
 ;; (add-to-list 'default-frame-alist '(alpha 100 100))
-;; (add-to-list 'default-frame-alist '(alpha-background . 90))
+(add-to-list 'default-frame-alist '(alpha-background . 95))
 (setq auth-sources '("~/.authinfo"))
 
 (setq lsp-idle-delay 0.01)
@@ -425,8 +425,8 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 #+end_src
 ** bib
 #+begin_src emacs-lisp
-(setq! bibtex-completion-bibliography '("~/tub/cse/seminar/references.bib"))
-(setq! citar-bibliography '("~/tub/cse/seminar/references.bib"))
+(setq! bibtex-completion-bibliography '("~/tub/mono/cgp-ss23-aperiodic-monotile/documentation/website/mono.bib"))
+(setq! citar-bibliography '("~/tub/mono/cgp-ss23-aperiodic-monotile/documentation/website/mono.bib"))
 #+end_src
 
 ** fonts
@@ -447,9 +447,9 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :weight 'semi-bold :size 12.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
- doom-variable-pitch-font (font-spec :family "Jost" :size 13.0)
+ doom-variable-pitch-font (font-spec :family "Jost" :size 13.0))
  ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
- )
+
 
 (setq doom-themes-enable-italic t)
 (setq doom-font-increment 1)
@@ -474,10 +474,21 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
   (map! :map emmet-mode-keymap
         [tab] nil))
 
-(after! web-mode
-  (setq web-mode-script-padding 2))
+;; (after! web-mode
+;;   (setq web-mode-script-padding 2))
 
 #+end_src
+
+** recent files cleanup
+#+begin_src emacs-lisp
+;; (after! recentf
+;;   (add-to-list 'recentf-exclude (abbreviate-file-name (doom-session-file))
+;;    (add-to-list 'recentf-exclude (abbreviate-file-name bookmark-default-file))))
+
+;; (delete (doom-session-file) recentf-list)
+;; (delete bookmark-default-file recentf-list)
+#+end_src
+
 
 ** theme
 
@@ -1896,4 +1907,12 @@ name as well to trigger updates"
 
 (setf (alist-get 'prettier-json apheleia-formatters)
       '(npx "prettier" "--stdin-filepath" filepath "--parser=json"))
+#+end_src
+** yuck
+#+begin_src emacs-lisp
+(use-package! yuck-mode
+  :hook (yuck-mode . parinfer-rust-mode)
+  :config (add-to-list 'apheleia-mode-alist '(yuck-mode . lisp-indent)))
+
+(add-to-list 'auto-mode-alist '("\\.yuck\\'" . yuck-mode))
 #+end_src

@@ -177,7 +177,9 @@ bindsym $mod+F11 output "*" dpms on
 
 exec nm-applet --indicator
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec udiskie
+
 # exec input-remapper-control --command autoload
 
 # exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
@@ -221,7 +223,7 @@ bindsym $mod+u exec ~/scripts/open-emacs-or-focus-wayland.clj
 bindsym $mod+F5 reload
 
 bindsym $mod+F8 opacity 1
-bindsym $mod+Control+F8 opacity $opacity
+# bindsym $mod+Control+F8 opacity $opacity
 
 bindsym $mod+Shift+Control+e exec swaymsg exit
 
@@ -454,11 +456,11 @@ assign [title="^Bevy App$"]                                              workspa
 assign [title="^Aperiodic"]                                              workspace number 1
 
 
-set $opacity 0.95
-for_window [app_id="org.wezfurlong.wezterm"] opacity 1.0
-for_window [app_id="emacs"] opacity 1.0
-for_window [app_id="neovide"] opacity 1.0
-for_window [app_id=".*"] opacity $opacity
+# set $opacity 0.95
+# for_window [app_id="org.wezfurlong.wezterm"] opacity 1.0
+# for_window [app_id="emacs"] opacity 1.0
+# for_window [app_id="neovide"] opacity 1.0
+# for_window [app_id=".*"] opacity $opacity
 # for_window [app_id=".*firefox.*"] opacity $opacity
 # for_window [app_id=".*firefox.*"] opacity $opacity
 #+end_src

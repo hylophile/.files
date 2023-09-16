@@ -21,6 +21,9 @@
                     name (:name container)
                     app-id (:app_id container)]
                (if (or (= (:type container) "floating_con")
+                       (= app-id "neovide")
+                       (= app-id "emacs")
+                       (= app-id "org.wezfurlong.wezterm")
                        (and
                            (= app-id "firefoxdeveloperedition")
                            (str/includes? name "YouTube")))
