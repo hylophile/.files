@@ -515,9 +515,11 @@ bar {
     mode invisible
 }
 
-exec eww open-many bar-0 bar-1 bar-2
+set $eww_init eww open-many bar-0 bar-1 bar-2
 
-exec_always eww reload
+exec $eww_init
+
+exec_always eww kill; $eww_init
 #+end_src
 
 * Fin
