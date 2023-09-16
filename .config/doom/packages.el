@@ -70,6 +70,7 @@
 (package! mixed-pitch)
 
 (package! rg)
+(package! dts-mode)
 (package! flymake-vale :recipe (:host github :repo "tpeacock19/flymake-vale"))
 ;; adds popups, optional but reccomened
 (package! flymake-popon :recipe (:repo "https://codeberg.org/akib/emacs-flymake-popon"))
@@ -121,3 +122,4 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
+(package! yuck-mode)

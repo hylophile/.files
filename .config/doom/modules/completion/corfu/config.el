@@ -55,20 +55,21 @@
                  "C-f"     #'cape-file))
 
   (after! evil
-    (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
-    (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
-    (evil-make-overriding-map corfu-map))
+        (add-hook 'evil-insert-state-exit-hook #'corfu-quit)
+        (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
+        (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
+        (evil-make-overriding-map corfu-map)))
 
-  (defadvice! +corfu--org-return (orig) :around '+org/return
-    (if (and (modulep! :completion corfu)
-             corfu-mode
-             (>= corfu--index 0))
-        (corfu-insert)
-      (funcall orig)))
+(defadvice! +corfu--org-return (orig) :around '+org/return
+  (if (and (modulep! :completion corfu)
+           corfu-mode
+           (>= corfu--index 0))
+      (corfu-insert)
+    (funcall orig)))
 
-  (unless (display-graphic-p)
-    (corfu-doc-terminal-mode)
-    (corfu-terminal-mode)))
+(unless (display-graphic-p)
+  (corfu-doc-terminal-mode)
+  (corfu-terminal-mode))
 
 
 (use-package! orderless

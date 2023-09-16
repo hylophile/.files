@@ -6,13 +6,13 @@
 (require '[babashka.process :refer [process shell]])
 (require '[utils.sway :as sway])
 
-(def wallpapers-path (let [laptop-path (str (System/getenv "HOME") "/wallpapers/all/")
+(def wallpapers-path (let [laptop-path "~/media/wallpapers/all/"
                            tower-path "/media/wallpapers/all/"]
                        (if (fs/directory? laptop-path)
                          laptop-path
                          tower-path)))
 
-(def wallpapers-config (str (System/getenv "HOME") "/sync/wallpapers.json"))
+(def wallpapers-config (-> wallpapers-path fs/parent (str "/wallpapers.json")))
 
 (def wallpaper-data (->>  wallpapers-config
                           (io/reader)
@@ -34,9 +34,9 @@
 (defn replace-swaybg-on-output [output id]
   (shell {:continue true} (format "pkill -f 'swaybg --output %s'"
                                   output))
-  (process "sh" "-c" (format "swaybg --output %s --image %s"
-                             output
-                             (str wallpapers-path (id->name id)))))
+  (process (format "swaybg --output %s --image %s"
+                   output
+                   (str wallpapers-path (id->name id)))))
 
 (defn set-keys-for-ids [wallpapers ids & {:keys [used discarded] :or {used true discarded false}}]
   (let [set-key-val (fn [wss idx k v]
