@@ -459,12 +459,12 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 
 ;; arnpqeg
 
-;; (custom-set-faces!
-;;   '(nav-flash-face :inverse-video t :foreground unspecified :background unspecified))
+(custom-set-faces!
+  '(nav-flash-face :inverse-video t :foreground unspecified :background unspecified))
 ;; (custom-set-faces!
 ;;   '(nav-flash-face :inherit cursor :foreground unspecified :background unspecified))
-(custom-set-faces!
-  '(nav-flash-face :background "#33bfff" :foreground "#0f172a"))
+;; (custom-set-faces!
+;;   '(nav-flash-face :background "#33bfff" :foreground "#0f172a"))
 (setq nav-flash-delay 0.3)
 #+end_src
 
