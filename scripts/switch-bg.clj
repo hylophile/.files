@@ -12,7 +12,7 @@
                          laptop-path
                          tower-path)))
 
-(def wallpapers-config (-> wallpapers-path fs/parent (str "/wallpapers.json")))
+(def wallpapers-config (str (System/getenv "HOME") "/sync/wallpapers.json"))
 
 (def wallpaper-data (->>  wallpapers-config
                           (io/reader)
