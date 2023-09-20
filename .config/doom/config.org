@@ -736,14 +736,22 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
           (tab-bar-format . 0)
           (tab-bar-lines . 0)
           (tab-bar-lines-keep-state . 0)
-          (internal-border-width . 10))
-        )
-  )
+          (internal-border-width . 10))))
 
 
 
-(delete "Noto Color Emoji" doom-emoji-fallback-font-families)
 
+
+;; (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
+;; (setq doom-emoji-fallback-font-families
+;;   '("Noto Color Emoji"))
+;; (add-to-list 'doom-emoji-fallback-font-families "Symbols Nerd Font")
+;; (add-to-list 'doom-symbol-fallback-font-families "Symbols Nerd Font")
+(after! nerd-icons
+  (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend))
+
+
+(run-at-time 5 nil #'set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend)
 
 ;; (defun rc/find-file-recursive ()
 ;;   (interactive)
