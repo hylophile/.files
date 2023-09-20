@@ -6,7 +6,7 @@
 (require '[babashka.process :refer [process shell]])
 (require '[utils.sway :as sway])
 
-(def wallpapers-path (let [laptop-path "~/media/wallpapers/all/"
+(def wallpapers-path (let [laptop-path (str (System/getenv "HOME") "/wallpapers/all/")
                            tower-path "/media/wallpapers/all/"]
                        (if (fs/directory? laptop-path)
                          laptop-path
