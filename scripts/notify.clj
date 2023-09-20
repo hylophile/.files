@@ -10,7 +10,8 @@
 
 (defn process-window [window]
   (let [container (:container window)]
-    (when (-> container :name (str/includes? "(1)"))
+    (when (some-> container :name (str/includes? "(1)"))
+      (println (format "Enabling urgent for '%s'" (:name container)))
       (shell (format "swaymsg [con_id=%s] urgent enable" (:id container))))))
 
 (with-open [rdr (io/reader (:out workspace-stream))]
