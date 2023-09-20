@@ -162,6 +162,8 @@ bindcode 277 --whole-window move container to output next
 #+begin_src conf-space :noweb yes
 <<mullvad()>>
 
+<<fixoutputs()>>
+
 # exec ~/scripts/switch-bg.scm all
 exec ~/scripts/switch-bg.clj new all
 
@@ -170,12 +172,10 @@ exec ~/scripts/notify.clj
 exec_always ~/scripts/scale-up-edp.scm
 
 exec ~/scripts/dynamic-opacity.clj
+
 # exec wezterm-mux-server --daemonize
 
 # exec wvkbd-mobintl --hidden
-
-bindsym $mod+F10 output "*" dpms off
-bindsym $mod+F11 output "*" dpms on
 
 exec nm-applet --indicator
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
@@ -199,6 +199,11 @@ exec ~/scripts/move.scm reset
 #+name: mullvad
 #+begin_src elisp
 (on-rook "exec mullvad-vpn")
+#+end_src
+
+#+name: fixoutputs
+#+begin_src elisp
+(on-nsa "exec swayidle after-resume \"swaymsg 'output * dpms off'; swaymsg 'output * dpms on'\"")
 #+end_src
 
 * Key bindings
