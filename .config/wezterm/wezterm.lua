@@ -5,42 +5,6 @@ local mux = wezterm.mux
 local ws = require("workspace-helpers")
 local layouts = require("layouts")
 
--- require("workspaces").register()
-
--- wezterm.on("spawn-bachelor", function(window, pane)
--- 	serialize_window(window, pane)
--- pane:send_text(3)
--- pane:send_text(tostring(window:tabs_with_info()))
--- ws.create_or_switch_to_workspace("bachelor", function(ws_name)
--- 	local project_dir = os.getenv("HOME") .. "/bachelor"
--- 	local _, rclone_pane, hpc_window = mux.spawn_window({
--- 		workspace = ws_name,
--- 		cwd = project_dir .. "/hpc",
--- 	})
--- 	rclone_pane:send_text("rclone mount hpc: remote/\n")
-
--- 	local editor_pane = rclone_pane:split({
--- 		direction = "Right",
--- 		size = 0.7,
--- 		cwd = project_dir,
--- 	})
-
--- 	local tab, ssh_pane, _ = hpc_window:spawn_tab({})
--- 	ssh_pane:send_text("ssh nickname@gateway.hpc.uni.de\n")
-
--- 	local _, _, _ = ssh_pane:split({
--- 		direction = "Right",
--- 		cwd = project_dir .. "/polyperf",
-
--- 	})
--- 	-- may as well kick off a build in that pane
--- end)
--- local tab, pane, window = mux.spawn_window({
---     workspace = "automation",
---     -- args = { "ssh", "vault" },
--- })
--- end)
-
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
     -- if tab.is_active then
     --   return {
