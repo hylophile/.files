@@ -326,13 +326,6 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 
 
 
-(after! forge
-  (setq forge-add-pullreq-refspec nil)
-  (add-to-list 'forge-alist
-               '("gitlab.employer"
-                 "gitlab.employer/api/v4"
-                 "gitlab.employer" forge-gitlab-repository)))
-
 (map! :map magit-status-mode-map
       "<escape>" #'+magit/quit)
 
@@ -770,7 +763,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 
 
 (nsa!
- (load! "load/work-work.el" nil t))
+ (load! "load/work.el" nil t))
 
 
 

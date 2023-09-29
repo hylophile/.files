@@ -221,7 +221,6 @@ for_window [class="^kitty_float"] floating enable, border pixel 1, resize set wi
 
 
 
-for_window    [instance="mailsrv.employer__owa"] title_format "<span foreground='#0072C6' face='Font Awesome 6 Brands'></span> %title"
 for_window    [instance="teams.microsoft.com"] title_format "<span foreground='#7B83EC'><tt></tt></span> %title"
 # for_window    [class="discord"]            title_format "<span foreground='#33BFFF'><tt></tt></span> %title"
 
