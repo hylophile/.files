@@ -427,7 +427,7 @@ bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixe
 
 bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
 
-bindsym $mod+F1 exec sh ~/scripts/toggle-work.sh
+bindsym $mod+F1 exec sh ~/scripts/toggle-work-vpn.sh
 
 #+end_src
 
