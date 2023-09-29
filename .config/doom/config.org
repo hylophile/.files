@@ -174,7 +174,7 @@ always forget what this does exactly, but it's Good™
       "t t" #'+vterm/toggle
       "t T" #'+vterm/here)
 #+end_src
-** olivetti
+** olivetti :ARCHIVE:
 
 #+begin_src emacs-lisp
 ;; (use-package! olivetti
@@ -214,8 +214,8 @@ always forget what this does exactly, but it's Good™
 ;;                                 #'olivetti-set-environment nil t))
 ;;                 (setq persp-olivetti-buffers-backup nil)))
 #+end_src
-** writeroom
-#+begin_src emacs-lisp :tangle nil
+** writeroom :ARCHIVE:
+#+begin_src emacs-lisp
 ;; (require 'writeroom-mode)
 ;; (global-writeroom-mode +1)
 
@@ -240,8 +240,8 @@ always forget what this does exactly, but it's Good™
 
 (map! :after visual-fill-column :leader "t o" #'visual-fill-column-mode)
 #+end_src
-** darkman
-#+begin_src emacs-lisp :tangle no
+** darkman :ARCHIVE:
+#+begin_src emacs-lisp
 (let ((output (shell-command-to-string "darkman get")))
     (if (string= (string-trim-right output) "light")
         (load-theme 'ef-spring t)
@@ -264,8 +264,8 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
  (setq gptel-api-key #'my/gptel-api-key-from-auth-source))
 
 #+end_src
-** evil relative in normal, absolute in insert
-#+begin_src emacs-lisp :tangle no
+** evil relative in normal, absolute in insert :ARCHIVE:
+#+begin_src emacs-lisp
 
 (add-hook 'evil-normal-state-entry-hook
           (cmd! (when (doom-real-buffer-p (current-buffer))
@@ -376,9 +376,9 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 #+end_src
 
-** follow file links with position
+** follow file links with position :ARCHIVE:
 
-#+begin_src emacs-lisp :tangle nil
+#+begin_src emacs-lisp
 (after! link-hint
   (link-hint-define-type 'file-link
     :next #'link-hint--next-file-link
@@ -879,8 +879,8 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 #+end_src
 
-** eldoc
-#+begin_src emacs-lisp :tangle no
+** eldoc :ARCHIVE:
+#+begin_src emacs-lisp
 
 (after! eldoc
   (delete #'eldoc-display-in-echo-area eldoc-display-functions))
@@ -1744,8 +1744,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (add-to-list 'rotate-text-words '("false" "true")))
 #+end_src
 
-** no idea
-#+begin_src emacs-lisp :tangle no
+** no idea :ARCHIVE:
+#+begin_src emacs-lisp
 
 
 (setq find-file-visit-truename nil)
