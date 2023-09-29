@@ -320,14 +320,22 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.recipe$" . singularity-mode))
 #+end_src
-** magit
+** dotfiles
+A bit of setup for managing a bare dotfile repository.
 
+Whenever we're not in a git directory, we open the =magit-status= of our dotfiles repo.
 #+begin_src emacs-lisp
+(defun hy/magit-status-with-dotfiles-fallback ()
+  (interactive)
+  (if (magit-gitdir)
+      (magit-status)
+    (magit-status "~/")))
 
+(map! :after magit :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
+#+end_src
 
-
-(map! :map magit-status-mode-map
-      "<escape>" #'+magit/quit)
+Then, this advice takes over and sets the git environment appropriately:
+#+begin_src emacs-lisp
 
 ;; from https://github.com/magit/magit/issues/460
 
@@ -344,14 +352,27 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 (advice-add 'magit-process-environment
             :filter-return #'hy/magit-process-environment)
 
-(defun hy/magit-status-with-dotfiles-fallback ()
+#+end_src
+
+Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= in our dotfiles. We call =find-file= instead. There's probably a better solution for this.
+#+begin_src emacs-lisp
+(defun hy/projectile-find-file ()
   (interactive)
-  (if (magit-gitdir)
-      (magit-status)
-    (magit-status "~/")))
+  (if (equal (expand-file-name "~/") (projectile-project-root))
+    (call-interactively #'find-file)
+    (projectile-find-file)))
 
-(map! :after magit :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
+(map! :leader "SPC" #'hy/projectile-find-file)
+#+end_src
 
+** magit
+
+#+begin_src emacs-lisp
+
+
+
+(map! :map magit-status-mode-map
+      "<escape>" #'+magit/quit)
 
 #+end_src
 
@@ -854,12 +875,6 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 ;;       "f z d" (cmd!! #'affe-find))
 
 
-(defun hy/projectile-find-file ()
-  (interactive)
-  (if (equal (expand-file-name "~/") (projectile-project-root))
-    (call-interactively #'find-file)
-    (projectile-find-file)))
-(map! :leader "SPC" #'hy/projectile-find-file)
 
 
 #+end_src
