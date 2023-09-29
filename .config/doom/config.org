@@ -759,7 +759,6 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 ;;          (files (directory-files-recursively cwd ""))
 ;;     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
 
-(load! "load/mail.el")
 ;; (load! "load/dotfiles.el")
 ;;(load! "load/format-classes.el")
 ;; (after! org
