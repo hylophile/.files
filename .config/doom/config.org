@@ -535,7 +535,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;;         :map magit-mode-map :n "C-t" #'avy-goto-char-3
 ;;         :map evil-org-mode-map :i "C-t" #'avy-goto-char-3)
 
-(map! :n "S" #'avy-goto-char-2)
+(map! :nv "S" #'avy-goto-char-2)
 (map! :g "C-l" #'avy-goto-line
       :map evil-org-mode-map :i "C-l" #'avy-goto-line)
 
