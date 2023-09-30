@@ -351,7 +351,19 @@ Then, this advice takes over and sets the git environment appropriately:
 
 (advice-add 'magit-process-environment
             :filter-return #'hy/magit-process-environment)
+#+end_src
+With this, we can stage the current (untracked) dotfile with =SPC g S=.
+#+begin_src emacs-lisp
+(defun hy/magit-stage-file ()
+  (interactive)
+  (if (magit-gitdir)
+      (call-interactively #'magit-stage-file)
+      (shell-command (concat
+                      "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME add "
+                      (buffer-file-name))
+                     t)))
 
+(map! :after magit :leader "g S" #'hy/magit-stage-file)
 #+end_src
 
 Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= in our dotfiles. We call =find-file= instead. There's probably a better solution for this.
