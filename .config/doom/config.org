@@ -323,8 +323,9 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 ** dotfiles
 A bit of setup for managing a bare dotfile repository.
 
+We check whether the current =default-directory= belongs to our dotfiles with =git ls-files=. If it does, we add our dotfile environment. We also memoize previous calls to =git=, since magit calls =magit-process-environment= quite often (~25 times per =magit-status=), which slows down every =magit=-command with our advice.
 #+begin_src emacs-lisp
-;; inspired by https://github.com/magit/magit/issues/460
+;; inspired by https://github.com/magit/magit/issues/460#issuecomment-1475082958
 
 (setq hy/dotfile-dirs ())
 
@@ -348,6 +349,20 @@ A bit of setup for managing a bare dotfile repository.
 
 (advice-add 'magit-process-environment
             :filter-return #'hy/magit-process-environment)
+#+end_src
+
+When we want to add a new untracked dotfile in a new directory, we have no way of knowing that it's a dotfile with the above advice. As a workaround, we just stage the file in our dotfiles if there's no =magit-gitdir=, and otherwise fallback to =magit-stage-file= (which otherwise works as expected in known dotfile directories, even for untracked files).
+#+begin_src emacs-lisp
+(defun hy/magit-stage-file ()
+  (interactive)
+  (if (magit-gitdir)
+      (call-interactively #'magit-stage-file)
+      (shell-command (concat
+                      "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME add "
+                      (buffer-file-name))
+                     t)))
+
+(map! :after magit :leader "g S" #'hy/magit-stage-file)
 #+end_src
 
 Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= in our dotfiles. We call =find-file= instead. There's probably a better solution for this.
