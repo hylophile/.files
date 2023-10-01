@@ -34,7 +34,7 @@
 (defn replace-swaybg-on-output [output id]
   (shell {:continue true} (format "pkill -f 'swaybg --output %s'"
                                   output))
-  (process (format "swaybg --output %s --image %s"
+  (process (format "swaybg --output %s --mode fill --image %s"
                    output
                    (str wallpapers-path (id->name id)))))
 
