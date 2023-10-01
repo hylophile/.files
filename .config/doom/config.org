@@ -323,47 +323,31 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 ** dotfiles
 A bit of setup for managing a bare dotfile repository.
 
-Whenever we're not in a git directory, we open the =magit-status= of our dotfiles repo.
 #+begin_src emacs-lisp
-(defun hy/magit-status-with-dotfiles-fallback ()
-  (interactive)
-  (if (magit-gitdir)
-      (magit-status)
-    (magit-status "~/")))
+;; inspired by https://github.com/magit/magit/issues/460
 
-(map! :after magit :leader "g g" #'hy/magit-status-with-dotfiles-fallback)
-#+end_src
-
-Then, this advice takes over and sets the git environment appropriately:
-#+begin_src emacs-lisp
-
-;; from https://github.com/magit/magit/issues/460
+(setq hy/dotfile-dirs ())
 
 (defun hy/magit-process-environment (env)
-  "Add GIT_DIR and GIT_WORK_TREE to ENV when in a special directory."
-  (let ((default (file-name-as-directory (expand-file-name default-directory)))
-        (home (expand-file-name "~/")))
-    (when (string= default home)
-      (let ((gitdir (expand-file-name "~/.dotfiles/")))
-        (push (format "GIT_WORK_TREE=%s" home) env)
-        (push (format "GIT_DIR=%s" gitdir) env))))
+  "Detect and set git -bare repo env vars when in tracked dotfile directories."
+  (let* ((git-dir (expand-file-name "~/.dotfiles/"))
+         (work-tree (expand-file-name "~/"))
+         (default (file-name-as-directory (expand-file-name default-directory))))
+    (unless (assoc default hy/dotfile-dirs)
+      (push (cons default (eq 0 (call-process "/usr/bin/git" nil nil nil
+                                 (format "--git-dir=%s" git-dir)
+                                 (format "--work-tree=%s" work-tree)
+                                 "ls-files"
+                                 "--error-unmatch"
+                                 default)))
+            hy/dotfile-dirs))
+    (when (cdr-safe (assoc default hy/dotfile-dirs))
+      (push (format "GIT_WORK_TREE=%s" work-tree) env)
+      (push (format "GIT_DIR=%s" git-dir) env)))
   env)
 
 (advice-add 'magit-process-environment
             :filter-return #'hy/magit-process-environment)
-#+end_src
-With this, we can stage the current (untracked) dotfile with =SPC g S=.
-#+begin_src emacs-lisp
-(defun hy/magit-stage-file ()
-  (interactive)
-  (if (magit-gitdir)
-      (call-interactively #'magit-stage-file)
-      (shell-command (concat
-                      "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME add "
-                      (buffer-file-name))
-                     t)))
-
-(map! :after magit :leader "g S" #'hy/magit-stage-file)
 #+end_src
 
 Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= in our dotfiles. We call =find-file= instead. There's probably a better solution for this.
@@ -376,16 +360,33 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 (map! :leader "SPC" #'hy/projectile-find-file)
 #+end_src
+** dofiles bench :ARCHIVE:
+#+begin_src emacs-lisp :tangle yes
+(defun my/magit-process-environment (env)
+  "Detect and set git -bare repo env vars when in tracked dotfile directories."
+  (let* ((default (file-name-as-directory (expand-file-name default-directory)))
+         (git-dir (expand-file-name "~/.dotfiles/"))
+         (work-tree (expand-file-name "~/"))
+         (dotfile-dirs
+          (-map (apply-partially 'concat work-tree)
+                (-uniq (-keep #'file-name-directory (split-string (shell-command-to-string
+                (format "/usr/bin/git --git-dir=%s --work-tree=%s ls-tree --full-tree --name-only -r HEAD"
+                        git-dir work-tree))))))))
+    (push work-tree dotfile-dirs)
+    (when (member default dotfile-dirs)
+      (push (format "GIT_WORK_TREE=%s" work-tree) env)
+      (push (format "GIT_DIR=%s" git-dir) env)))
+  env)
+
+(advice-add 'magit-process-environment
+            :filter-return #'my/magit-process-environment)
+#+end_src
 
 ** magit
 
 #+begin_src emacs-lisp
-
-
-
 (map! :map magit-status-mode-map
       "<escape>" #'+magit/quit)
-
 #+end_src
 
 ** follow file links with position :ARCHIVE:
@@ -484,7 +485,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;; (custom-set-faces! '(font-lock-comment-face :slant italic :weight normal))
 
 ;; arnpqeg
-
+;;
 (custom-set-faces!
   '(nav-flash-face :inverse-video t :foreground unspecified :background unspecified))
 ;; (custom-set-faces!
@@ -566,6 +567,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 
 ;; (define-key org-mode-map (kbd "C-l") #'avy-goto-line)
+;;
 
 (setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
 
