@@ -1,3 +1,3 @@
 function fish_greeting
-    fortune all
+    true
 end
