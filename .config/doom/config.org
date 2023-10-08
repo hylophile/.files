@@ -1901,6 +1901,15 @@ name as well to trigger updates"
 ;; need to run this later for it to not break frame size for some reason
 (run-at-time nil nil (cmd! (tab-bar-mode +1)))
 #+end_src
+
+
+#+begin_src emacs-lisp
+(after! persp-mode
+  (map! :ni "C-<tab>" #'+workspace:switch-next)
+  (map! :ni "C-S-<iso-lefttab>" #'+workspace:switch-previous))
+
+#+end_src
+
 ** session restore
 #+begin_src emacs-lisp
 (defadvice! restore-no-confirm-session-quickload-a (_)
