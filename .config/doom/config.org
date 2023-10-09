@@ -1890,7 +1890,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                                            '+workspace-tab-face)
                                                                :slant italic
                                                                :family "Agave"))))
-                                " "))))
+                                "   "))))
 
   (defun hy/invisible-current-workspace ()
     "The tab bar doesn't update when only faces change (i.e. the
