@@ -1866,11 +1866,13 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (after! persp-mode
   (defun workspaces-formatted ()
     (+doom-dashboard--center (frame-width)
-                             (let ((names (or persp-names-cache nil))
-                                   (current-name (safe-persp-name (get-current-persp))))
+                             (let* ((names (or persp-names-cache nil))
+                                    (current-name (safe-persp-name (get-current-persp)))
+                                    (dirs (mapcar (lambda (p) (persp-parameter 'dir (persp-get-by-name p))) names)))
                                (mapconcat
                                 #'identity
                                 (cl-loop for name in names
+                                         for dir in dirs
                                          for i to (length names)
                                          collect
                                          (concat (propertize (format " %d" (1+ i)) 'face
@@ -1881,7 +1883,13 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                  (propertize (format " %s " name) 'face
                                                              (if (equal current-name name)
                                                                  '+workspace-tab-selected-face
-                                                               '+workspace-tab-face))))
+                                                               '+workspace-tab-face))
+                                                 (propertize (if dir (format "(%s)" dir) "") 'face
+                                                             `(:inherit ,(if (equal current-name name)
+                                                                             '+workspace-tab-selected-face
+                                                                           '+workspace-tab-face)
+                                                               :slant italic
+                                                               :family "Agave"))))
                                 " "))))
 
   (defun hy/invisible-current-workspace ()
@@ -1900,10 +1908,25 @@ name as well to trigger updates"
 
 ;; need to run this later for it to not break frame size for some reason
 (run-at-time nil nil (cmd! (tab-bar-mode +1)))
-#+end_src
 
 
-#+begin_src emacs-lisp
+(defun abbreviate-directory-path (path)
+  "Turn `~/code/test/project` into `~/c/t/project`"
+  (let* ((directories (seq-filter (lambda (s) (not (string= s ""))) (split-string path "/")))
+         (last-dir (car (last directories)))
+         (abbreviated-dirs (mapcar (lambda (dir)
+                                     (if (string= dir last-dir)
+                                         dir
+                                       (substring dir 0 (if (string-prefix-p "." dir) 2 1))))
+                                   directories)))
+    (mapconcat 'identity abbreviated-dirs "/")))
+
+(defun hy/nice-name (&rest _)
+  (let ((dir (abbreviate-directory-path (abbreviate-file-name (or (projectile-project-root) default-directory)))))
+    (set-persp-parameter 'dir dir)))
+
+(advice-add #'+workspace-switch :before #'hy/nice-name)
+
 (after! persp-mode
   (map! :ni "C-<tab>" #'+workspace:switch-next)
   (map! :ni "C-S-<iso-lefttab>" #'+workspace:switch-previous))
