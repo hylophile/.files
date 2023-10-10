@@ -1,0 +1,48 @@
+#+title: UserChrome
+* Setup
+This is the setup for tangling one =userChrome= source block to all existing firefox profiles.
+#+name: fun
+#+begin_src emacs-lisp :tangle no :eval yes
+(defun lit/profile-path-n (n)
+  "Returns the path of the nth firefox profile."
+  (nth n (let ((result '()))
+           (dolist (item (directory-files "./dir" t))
+             (when (and (file-directory-p item)
+                        (file-exists-p (concat item "/extensions.json")))
+               (push item result)))
+           result)))
+
+(defun lit/userChrome.css (n)
+  "Returns the path of the `userChrome.css` for the `nth` firefox profile."
+  (if-let ((profile-path (lit/profile-path-n n)))
+    (format "%s/chrome/userChrome.css" (lit/profile-path-n n))
+    "/tmp/dummy"))
+
+nil
+#+end_src
+
+This will convince =org-mode= to evaluate our functions above so that they're available when tangling the following blocks.
+#+begin_src emacs-lisp :noweb yes :tangle /tmp/dummy
+<<fun()>>
+#+end_src
+
+Now we tangle =userChrome= below a couple of times, at least as many times as we have firefox profiles.
+#+begin_src css :mkdirp yes :noweb yes :tangle (lit/userChrome.css 0)
+<<userChrome>>
+#+end_src
+
+#+begin_src css :mkdirp yes :noweb yes :tangle (lit/userChrome.css 1)
+<<userChrome>>
+#+end_src
+
+#+begin_src css :mkdirp yes :noweb yes :tangle (lit/userChrome.css 2)
+<<userChrome>>
+#+end_src
+
+* CSS
+#+name: userChrome
+#+begin_src css :mkdirp yes
+.main {
+    color: blue;
+}
+#+end_src
