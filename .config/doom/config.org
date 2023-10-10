@@ -1884,13 +1884,14 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                              (if (equal current-name name)
                                                                  '+workspace-tab-selected-face
                                                                '+workspace-tab-face))
-                                                 (propertize (if dir (format "(%s)" dir) "") 'face
+                                                 (propertize (if dir (format "(%s) " dir) "") 'face
                                                              `(:inherit ,(if (equal current-name name)
                                                                              '+workspace-tab-selected-face
                                                                            '+workspace-tab-face)
                                                                :slant italic
-                                                               :family "Agave"))))
-                                "   "))))
+                                                               :family "Agave"
+                                                               :foreground ,(face-attribute 'shadow :foreground)))))
+                                "  "))))
 
   (defun hy/invisible-current-workspace ()
     "The tab bar doesn't update when only faces change (i.e. the
@@ -1922,10 +1923,14 @@ name as well to trigger updates"
     (mapconcat 'identity abbreviated-dirs "/")))
 
 (defun hy/nice-name (&rest _)
-  (let ((dir (abbreviate-directory-path (abbreviate-file-name (or (projectile-project-root) default-directory)))))
+  (let ((dir (abbreviate-directory-path
+              (abbreviate-file-name
+               (or (projectile-project-root) default-directory)))))
     (set-persp-parameter 'dir dir)))
 
-(advice-add #'+workspace-switch :before #'hy/nice-name)
+;; (advice-add #'+workspace-switch :before #'hy/nice-name)
+(add-hook 'doom-switch-buffer-hook #'hy/nice-name)
+
 
 (after! persp-mode
   (map! :ni "C-<tab>" #'+workspace:switch-next)
