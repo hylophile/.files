@@ -11,7 +11,10 @@ We create symbolic links in every firefox profile which link to one =userChrome.
     (let* ((chrome-dir (concat profile-dir "/chrome"))
            (user-chrome (concat chrome-dir "/userChrome.css")))
       (make-directory chrome-dir t)
-      (make-symbolic-link "../../../userChrome.css" user-chrome t))))
+      (make-symbolic-link
+       (expand-file-name "~/.mozilla/firefox/userChrome.css")
+       user-chrome
+       t))))
 #+end_src
 
 We just need to convince org to evaluate the src block above whenever we tangle this file. To achieve that, we evaluate our setup block and tangle it anywhere, for example as a CSS comment.
