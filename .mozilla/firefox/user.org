@@ -1,10 +1,11 @@
 #+title: UserChrome
 #+property: header-args :results silent
+#+property: header-args:css :tangle userChrome.css
 * Setup
 We create symbolic links in every firefox profile which link to one =userChrome.css=.
 #+name: setup
 #+begin_src emacs-lisp
-(dolist (profile-dir (directory-files "./dir" t))
+(dolist (profile-dir (directory-files "." t))
   (when (and (file-directory-p profile-dir)
              (file-exists-p (concat profile-dir "/extensions.json")))
     (let* ((chrome-dir (concat profile-dir "/chrome"))
@@ -13,12 +14,81 @@ We create symbolic links in every firefox profile which link to one =userChrome.
       (make-symbolic-link "../../../userChrome.css" user-chrome t))))
 #+end_src
 
-* CSS
-We just need to convince org to evaluate the src block above whenever we tangle this file. To achieve that, we evaluate our setup block in a CSS comment.
-#+begin_src css :noweb yes :tangle userChrome.css
+We just need to convince org to evaluate the src block above whenever we tangle this file. To achieve that, we evaluate our setup block and tangle it anywhere, for example as a CSS comment.
+#+begin_src css :noweb yes
 /* <<setup()>> */
-
-.main {
-    color: blue;
-}
 #+end_src
+
+* CSS
+#+begin_src css
+#TabsToolbar {
+  visibility: collapse !important;
+}
+
+#navigator-toolbox {
+  font-family: "Jost" !important;
+  font-size: 1.1rem !important;
+}
+
+#sidebar-header {
+  /* display: none; */
+  font-size: 1em;
+  padding: 0px !important;
+  border: 0px !important;
+  background-color: var(--toolbar-bgcolor);
+  /* #2B2A33 */
+}
+
+#navigator-toolbox {
+  border-bottom: 0px !important;
+}
+
+#sidebar-close {
+  display: none;
+}
+
+#sidebar-switcher-arrow {
+  display: none;
+}
+
+#sidebar-switcher-target {
+  flex: 0 1 100% !important;
+  padding: 10px !important;
+  margin: 0px !important;
+}
+
+#sidebar-title {
+  display: none;
+}
+
+#sidebar {
+  max-width: none !important;
+  width: 100% !important;
+  /* min-width: 10% !important; */
+  /* min-width: 40em; */
+}
+
+/* #sidebar-box { */
+/*   width: 40em; */
+/* } */
+#sidebar-box {
+    max-width: none !important;
+    min-width: 50px !important;
+}
+
+@media (prefers-color-scheme:dark) {
+  html {
+    --toolbar-bgcolor: #262833 !important;
+  }
+}
+
+
+/* sideberry
+ #root{ font-size: 1.2rem !important; font-family: "Jost" !important }
+ */
+#+end_src
+
+* Fin
+# Local Variables:
+# eval: (add-hook 'after-save-hook #'org-babel-tangle t t)
+# End:
