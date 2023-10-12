@@ -1,7 +1,7 @@
 function ls --wraps=lsd --description 'alias ls=lsd'
-    if command -v lsd
+    if command -v lsd >/dev/null
         lsd $argv
     else
-        builtin ls $argv
+        command ls --color $argv
     end
 end
