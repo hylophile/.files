@@ -55,7 +55,7 @@ return {
         "[^ ]{5,}",
     },
 
-    term = "wezterm",
+    -- term = "wezterm",
     window_background_opacity = 0.9,
     --"Dracula",
     color_scheme = "Dracula",
