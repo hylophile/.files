@@ -66,10 +66,11 @@ function fish_prompt
     if test "$CONTAINER_ID" = ""
         set_color cyan
     else
-        set_color green
+        set_color --underline cyan
     end
 
     echo -n (cat /etc/hostname)
+    set_color normal
 
     # echo -n " "(pwd)
     # set_color -o $retc
