@@ -12,5 +12,5 @@
 (let* ((file (pop argv)))
   (with-current-buffer (find-file-noselect file)
     (org-export-expand-include-keyword)
-    (ignore-errors (org-babel-execute-buffer))
+    ;; (ignore-errors (org-babel-execute-buffer))
     (org-babel-tangle nil nil)))
