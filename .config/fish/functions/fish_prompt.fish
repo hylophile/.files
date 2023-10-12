@@ -1,25 +1,4 @@
 function fish_prompt
-    # This prompt shows:
-    # - green lines if the last return command is OK, red otherwise
-    # - your user name, in red if root or yellow otherwise
-    # - your hostname, in cyan if ssh or blue otherwise
-    # - the current path (with prompt_pwd)
-    # - date +%X
-    # - the current virtual environment, if any
-    # - the current git status, if any, with fish_git_prompt
-    # - the current battery state, if any, and if your power cable is unplugged, and if you have "acpi"
-    # - current background jobs, if any
-
-    # It goes from:
-    # ┬─[nim@Hattori:~]─[11:39:00]
-    # ╰─>$ echo here
-
-    # To:
-    # ┬─[nim@Hattori:~/w/dashboard]─[11:37:14]─[V:django20]─[G:master↑1|●1✚1…1]─[B:85%, 05:41:42 remaining]
-    # │ 2    15054    0%    arrêtée    sleep 100000
-    # │ 1    15048    0%    arrêtée    sleep 100000
-    # ╰─>$ echo there
-
     set -l retc red
     test $status = 0; and set retc brmagenta
 
@@ -45,13 +24,15 @@ function fish_prompt
         echo -n ')'
     end
 
-    # set_color $retc
-    # echo -n '┬─'
-    # set_color -o green
-    # echo -n [
+
     set_color normal
     set_color cyan
     echo
+
+    # if test "$CONTAINER_ID" != ""
+    #     printf "󰆢 "
+    # end
+
     echo -n (date +%H)
     set_color $retc
     echo -n ⋅
@@ -77,15 +58,22 @@ function fish_prompt
     echo -n @
     set_color normal
 
-    if [ -z "$SSH_CLIENT" ]
+    # if [ -z "$SSH_CLIENT" ]
+    #     set_color cyan
+    # else
+    #     set_color cyan
+    # end
+    if test "$CONTAINER_ID" = ""
         set_color cyan
     else
-        set_color cyan
+        set_color green
     end
 
-    echo -n (prompt_hostname)
+    echo -n (cat /etc/hostname)
+
     # echo -n " "(pwd)
     # set_color -o $retc
+    set_color cyan
     echo -n " "
     if string match -q -- "$HOME*" "$PWD"
         printf "~"
@@ -169,6 +157,9 @@ function fish_prompt
         echo -n 'nix:'
     end
 
+    # if test "$CONTAINER_ID" != ""
+    #     printf "󰆢 "
+    # end
     echo -n 'λ '
     set_color normal
 end
