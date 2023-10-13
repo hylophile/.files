@@ -132,10 +132,10 @@ function fish_prompt
     # echo (fish_git_prompt)
 
     # Battery status
-    type -q acpi
-    and test (acpi -a 2> /dev/null | string match -r off)
-    and _nim_prompt_wrapper $retc B (acpi -b | cut -d' ' -f 4-)
-
+    # type -q acpi
+    # and test (acpi -a 2> /dev/null | string match -r off)
+    # and _nim_prompt_wrapper $retc B (acpi -b | cut -d' ' -f 4-)
+    #
     # New line
     echo
 
