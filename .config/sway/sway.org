@@ -169,7 +169,7 @@ exec ~/scripts/switch-bg.clj new all
 
 exec ~/scripts/notify.clj
 
-exec_always ~/scripts/scale-up-edp.scm
+exec_always ~/scripts/scale-up-edp.clj
 
 exec ~/scripts/dynamic-opacity.clj
 
