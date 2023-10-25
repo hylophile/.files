@@ -3,7 +3,7 @@
 #+property: header-args:sh :shebang #!/usr/bin/env sh :mkdirp yes
 #+startup: fold
 
-
+#+name: side-effects
 #+begin_src emacs-lisp :results silent
 (defun on-nsa (str)
    (if (string= "nsa" (system-name)) str ""))
@@ -160,6 +160,8 @@ bindcode 277 --whole-window move container to output next
 * Startup
 
 #+begin_src conf-space :noweb yes
+# <<side-effects()>>
+
 <<mullvad()>>
 
 <<fixoutputs()>>
@@ -176,6 +178,7 @@ exec ~/scripts/dynamic-opacity.clj
 # exec wezterm-mux-server --daemonize
 
 # exec wvkbd-mobintl --hidden
+exec gammastep
 
 exec nm-applet --indicator
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
@@ -298,8 +301,8 @@ bindsym F23 focus left
 bindsym $mod+Shift+f floating toggle
 
 # bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
-bindsym $mod+space exec ~/scripts/next-prev-output.clj prev
-# bindsym $mod+Control+space focus output left
+# bindsym $mod+space exec ~/scripts/next-prev-output.clj prev
+bindsym $mod+space focus output left
 
 bindsym $mod+Control+space exec ~/scripts/swap-visible-workspaces.clj
 bindsym $mod+Shift+space move window to output left
@@ -318,9 +321,10 @@ bindsym $mod+b workspace back_and_forth
 
 # bindsym $mod+Delete exec env RUST_BACKTRACE=1 \
 #     swayr quit-window >> /tmp/swayr.log 2>&1
+# bindsym $mod+p workspace back_and_forth
 
-bindsym $mod+p exec env RUST_BACKTRACE=1 \
-    swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
+# bindsym $mod+p exec env RUST_BACKTRACE=1 \
+#     swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
 
 #+end_src
 
@@ -457,6 +461,9 @@ for_window [app_id="firefox.*" title="Picture-in-Picture"]               floatin
 for_window [app_id="firefox.*" title=".* — Sharing Indicator"]           floating enable, move container to workspace number 10
 
 #for_window [app_id="^chrome-.*__-.*$"]                                  shortcuts_inhibitor disable
+
+
+for_window    [app_id="org.kde.dolphin" title="^Copying.*"]                      floating enable
 
 for_window [app_id="^chrome-.*"]                                         shortcuts_inhibitor disable
 for_window [app_id="^anki$" title="^Add$"]                               floating enable
