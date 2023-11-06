@@ -1,0 +1,30 @@
+#!/usr/bin/env bb
+(require '[babashka.process :as p :refer [shell process destroy-tree]]
+         '[cheshire.core :as json]
+         '[clojure.java.io :as io])
+
+(def workspace-stream
+  (process
+   {:err :inherit
+    :shutdown destroy-tree}
+   (str "swaymsg -t subscribe -m \"['workspace']\"")))
+
+(defn- output []
+  (as-> (str "swaymsg -t get_outputs") $
+    (shell {:out :string} $)
+    (:out $)
+    (json/parse-string $ true)
+    (filter #(:focused %) $)
+    (first $)
+    {:name (:name $)}
+    (json/generate-string $)
+    (println $)))
+
+(output)
+
+(with-open [rdr (io/reader (:out workspace-stream))]
+  (binding [*in* rdr]
+    (loop []
+      (when-let [_line (read-line)]
+        (output)
+        (recur)))))

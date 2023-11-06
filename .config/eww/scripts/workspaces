@@ -1,0 +1,62 @@
+#!/usr/bin/env bb
+(require '[babashka.process :as p :refer [shell process destroy-tree]]
+         '[clojure.java.io :as io])
+
+(def workspace-stream
+  (process
+   {:err :inherit
+    :shutdown destroy-tree}
+   (str "swaymsg -t subscribe -m \"['workspace', 'window']\"")))
+
+(defn- sway-cmd [type]
+  (as-> (str "swaymsg -t " type) clients
+    (shell {:out :string} clients)
+    (:out clients)
+    (json/parse-string clients true)))
+
+(defn- get-tree []
+  (sway-cmd "get_tree"))
+
+(defn- get-displays []
+  (as-> (get-tree) tree
+    (:nodes tree)
+    (remove (fn [cand] (#{"__i3"} (:name cand))) tree)))
+
+(defn- some-in-tree [key tree]
+  (true? (or (some key tree)
+             (some (fn [container]
+                     (some key (:nodes container)))
+                   tree))))
+
+(defn workspace-tree []
+  (reduce
+   (fn [result display]
+     (let [nodes (:nodes display)]
+       (conj
+        result
+        (map (fn [workspace]
+               {:name (:name workspace)
+                :focused (or (and (empty? (:nodes workspace))
+                                  (some-in-tree :focused (:nodes display)))
+                             (some-in-tree :focused (:nodes workspace)))
+                :visible (or (empty? (:nodes workspace))
+                             (some-in-tree :visible (:nodes workspace)))
+                :urgent (some-in-tree :urgent (:nodes workspace))})
+
+             nodes))))
+   []
+   (get-displays)))
+
+(defn output []
+  (->> (workspace-tree)
+       json/generate-string
+       println))
+
+(output)
+
+(with-open [rdr (io/reader (:out workspace-stream))]
+  (binding [*in* rdr]
+    (loop []
+      (when-let [line (-> (read-line) (json/parse-string true))]
+        (output)
+        (recur)))))

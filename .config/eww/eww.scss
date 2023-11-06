@@ -1,0 +1,237 @@
+$dr_bg0: #282a36;
+$dr_bg1: #44475a;
+$dr_bg2: #6272a4;
+$dr_fg0: #f8f8f2;
+$dr_fg1: #bfbfbf;
+$dr_cy: #8be9fd;
+$dr_gr: #50fa7b;
+$dr_or: #ffb86c;
+$dr_pi: #ff79c6;
+$dr_pu: #bd93f9;
+$dr_re: #ff5555;
+$dr_ye: #f1fa8c;
+
+* {
+  all: unset; //Unsets everything so you can style everything from scratch
+  font-family: Jost, "Symbols Nerd Font Mono";
+  font-size: 18px;
+}
+
+window {
+  color: $dr_fg1;
+}
+
+.background {
+  background-color: $dr_bg0;
+}
+
+.workspace-wrapper {
+  min-height: 6em;
+  min-width: 1.5em;
+  color: $dr_fg1;
+  transition: all 0.25s;
+}
+
+.workspace-wrapper.visible {
+  background-color: $dr_bg1;
+}
+
+.workspace-wrapper.focused {
+  background-color: $dr_bg2;
+  color: $dr_fg0;
+}
+
+.workspace-wrapper.urgent {
+  background-color: $dr_pu;
+  color: $dr_bg0;
+}
+
+.workspace-wrapper:hover {
+  background-color: $dr_bg1;
+  color: $dr_fg0;
+}
+
+.workspace-wrapper.focused:hover {
+  background-color: $dr_bg2;
+}
+
+tooltip {
+  border: 0.05em $dr_bg1 solid;
+
+  & label {
+    padding: 0 1em;
+    font-size: 1.1em;
+  }
+}
+
+menubar {
+  & > menuitem {
+    padding: 0.25em 0;
+  }
+
+  & menuitem:hover {
+    background-color: $dr_bg2;
+  }
+
+  & menu {
+    border: 0.05em $dr_bg1 solid;
+    background-color: $dr_bg0;
+
+    separator {
+      border-bottom: 0.05em $dr_bg1 solid;
+    }
+
+    & menuitem {
+      padding: 0.25em;
+
+      &:disabled {
+        color: $dr_fg1;
+      }
+
+      &:hover {
+        background-color: $dr_bg1;
+      }
+    }
+  }
+}
+
+check {
+  border-radius: 10em;
+  min-width: 0.5em;
+  min-height: 0.5em;
+  background-color: $dr_bg1;
+  margin: 0 0.5em;
+}
+
+check:checked {
+  background-color: $dr_gr;
+}
+
+menu > menuitem check:checked ~ label {
+  font-weight: 500;
+}
+
+// menu > menuitem label:hover ~ check:checked {
+//   background-color: $dr_fg1;
+// }
+
+.muted {
+  color: $dr_or;
+}
+
+.unmuted {
+  color: $dr_gr;
+}
+
+.azk {
+  transition: all 0.5s;
+  background-color: $dr_re;
+  border-radius: 10em;
+  margin: 0.25em;
+  min-height: 5em;
+}
+
+.azk.work {
+  background-color: $dr_cy;
+  min-height: 1em;
+}
+
+window widget box.focused {
+  color: $dr_fg0;
+}
+
+scale trough highlight {
+  background-color: $dr_bg2;
+}
+
+scale trough {
+  min-height: 8em;
+  min-width: 1em;
+  background-color: $dr_bg1;
+}
+
+scale trough highlight {
+  border-radius: 10em;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+scale trough {
+  border-radius: 10em;
+}
+
+.p-2 {
+  padding: 0.5em;
+}
+
+.m-2 {
+  margin: 0.5em;
+}
+
+.mb-1 {
+  margin-bottom: 0.25em;
+}
+
+.mb-2 {
+  margin-bottom: 0.5em;
+}
+
+.-mb-1 {
+  margin-bottom: -0.25em;
+}
+
+.-mb-2 {
+  margin-bottom: -0.5em;
+}
+
+.mt-1 {
+  margin-top: 0.25em;
+}
+
+.mt-2 {
+  margin-top: 0.5em;
+}
+
+.-mt-1 {
+  margin-top: -0.25em;
+}
+
+.-mt-2 {
+  margin-top: -0.5em;
+}
+
+.mb-4 {
+  margin-bottom: 1em;
+}
+
+.my-1 {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.my-2 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.my-4 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.menu {
+  transition: all 0.5s;
+  padding: 0.125em;
+
+  & .button {
+    padding: 0.125em 0.5em;
+    min-width: 200px;
+    background-color: $dr_bg1;
+    margin: 0.125em;
+  }
+
+  & .button:hover {
+    color: $dr_fg0;
+    background-color: $dr_bg2;
+  }
+}

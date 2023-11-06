@@ -1,0 +1,191 @@
+(defpoll outputs :interval "3600s" "swaymsg -t get_outputs | jq '.[] .name' | jq -sc")
+
+(deflisten workspaces :initial "[[],[],[],[]]" "scripts/workspaces")
+(deflisten current-output "scripts/output-name")
+
+(defwidget workspace-widget [spaces]
+           (box
+            :space-evenly false
+            :valign "fill"
+            :class "workspaces-wrapper"
+            :orientation "v"
+            (for workspace in spaces
+                 (button
+                  :onclick "swaymsg workspace number ${workspace.name}"
+                  :valign "center"
+                  :class "workspace-wrapper ${workspace.visible ? 'visible' : ''} ${workspace.focused ? 'focused' : ''} ${workspace.urgent ? 'urgent' : ''}"
+                  (label :text {workspace.name})))))
+
+(defpoll battery :interval "300s" "scripts/battery")
+(defwidget bat []
+           (box
+            :visible {battery.supported && battery.capacity < 90}
+            :class "my-1"
+            (label :text {battery.icon}
+                   :tooltip "${battery.capacity}%, Remaining: ${battery.time}")))
+
+
+(deflisten volume-status :initial '{"source":0,"sink":0}' "scripts/volume")
+(defvar sink-expanded false)
+(defwidget volume []
+           (box :orientation "v"
+                :space-evenly false
+                :visible {!volume-status.error}
+                (eventbox :onhover {volume-status.sink > 0 ? 'eww update sink-expanded=true' : ''}
+                          :onhoverlost "eww update sink-expanded=false"
+                          (box :orientation "v"
+                               :space-evenly false
+                               (revealer :reveal {sink-expanded && volume-status.sink > 0}
+                                         :transition "slidedown"
+                                         :duration "400ms"
+                                         (scale :min 0
+                                                :max 101
+                                                :orientation "v"
+                                                :class "mb-2"
+                                                :flipped true
+                                                :value {volume-status.sink}
+                                                :onchange "./scripts/volume @DEFAULT_AUDIO_SINK@ {}"))
+                               (eventbox :onclick "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+                                         :class "volume-sink"
+                                         (label :class {volume-status.sink > 0 ? 'unmuted' : 'muted'}
+                                                :text {volume-status.bt ? '󰂯' : volume-status.sink > 0 ? '󰕾' : '󰖁'}))))
+
+                (eventbox :class "mt-2"
+                          :visible {volume-status.source_is_mic}
+                          :onclick "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+                          (label :class {volume-status.source > 0 ? 'unmuted' : 'muted'}
+                                 :text {volume-status.source > 0 ? '󰍬' : '󰍭'}))))
+
+
+(defpoll date-weekday :interval "5s" "date '+%a'")
+(defpoll date-year :interval "5s" "date '+%y'")
+(defpoll date-month :interval "5s" "date '+%m'")
+(defpoll date-day :interval "5s" "date '+%d'")
+(defpoll date-hour :interval "5s" "date '+%H'")
+(defpoll date-minute :interval "5s" "date '+%M'")
+(defwidget clock []
+           (box :orientation "v"
+                :space-evenly false
+                (label :text date-year :class "-mb-2")
+                (label :text date-month :class "-mb-2")
+                (label :text date-day :class "mb-2")
+                (label :text date-weekday :angle -90 :class "mb-2")
+                (label :text date-hour :class "-mb-2")
+                (label :text date-minute)))
+
+
+(defpoll temperature :interval "600s" "scripts/weather.clj")
+(defwidget weather []
+           (label :class "my-2" :text temperature :angle -90))
+
+
+(deflisten azk-state "~/azk/show_azk.sh")
+(defwidget azk [visible]
+           (button :visible visible
+                   :class "my-2 azk ${azk-state.state}"
+                   :onclick "~/azk/azk.py stamp"))
+
+
+(defwidget left [index]
+           (workspace-widget
+            :spaces {workspaces[index]}))
+
+(defwidget center []
+           (box))
+
+(defwidget right [output]
+           (box
+            :space-evenly false
+            :valign "end"
+            :orientation "v"
+            (azk :visible {output == 'eDP-1' ? true : false})
+            (volume)
+            (menu-toggle)
+            (systray :class "mt-2 mb-1"
+                     :icon-size 16
+                     :pack-direction "ttb")
+            (bat)
+            (weather)
+            (clock)))
+
+(defwidget sidebar [index output]
+           (eventbox
+            :onclick "swaymsg focus output ${output}"
+            :onscroll "swaymsg focus output ${output} && \
+                       [ {} = up ] && swaymsg workspace prev_on_output; \
+                       [ {} = down ] && swaymsg workspace next_on_output"
+            (centerbox
+             :orientation "v"
+             :class "${output} ${current-output.name == output ? 'focused' : ''}"
+             (left
+              :index index)
+             (center)
+             (right :output output))))
+
+(defwidget menu-toggle []
+           (button :class "mt-2" :onclick "eww open-many --toggle menu-0 menu-1" (label :text "󰍜")))
+
+(defwidget menu [output]
+           (box
+            :visible {output == current-output.name}
+            :class "menu"
+            :orientation "v"
+            (button :class "button"
+                    :onclick "scripts/menu.clj rofi"
+                    :timeout "20000ms"
+                    (label :text "Rofi"))
+            (button :class "button"
+                    :onclick "scripts/menu.clj zoom ${output}"
+                    (label :text "Toggle zoom"))
+            (button :class "button"
+                    :onclick "scripts/menu.clj next-output"
+                    (label :text "Next output"))))
+
+(defwindow menu-0
+           :monitor 0
+           :stacking "overlay"
+           :geometry (geometry :anchor "bottom right"
+                               :y "250px"
+                               :x "10px")
+           (menu :output {outputs[0]}))
+
+(defwindow menu-1
+           :monitor 1
+           :stacking "overlay"
+           :geometry (geometry :anchor "bottom right"
+                               :y "250px"
+                               :x "10px")
+
+           (menu :output {outputs[1]}))
+
+
+
+(defwindow bar-0
+           :monitor 0
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :height "100%"
+                               :anchor "center right")
+           :stacking "fg"
+           :exclusive true
+           (sidebar :index 0 :output {outputs[0]}))
+
+(defwindow bar-1
+           :monitor 1
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :height "100%"
+                               :anchor "center right")
+           :stacking "fg"
+           :exclusive true
+           (sidebar :index 1 :output {outputs[1]}))
+
+(defwindow bar-2
+           :monitor 2
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :height "100%"
+                               :anchor "center right")
+           :stacking "fg"
+           :exclusive true
+           (sidebar :index 2 :output {outputs[2]}))

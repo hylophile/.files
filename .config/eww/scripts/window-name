@@ -1,0 +1,63 @@
+#!/usr/bin/env bb
+(require '[babashka.process :as p :refer [shell process destroy-tree]]
+         '[clojure.java.io :as io])
+
+(defn split [cmd]
+  (str/split cmd #"\|"))
+
+(def window-stream
+  (process
+   {:err :inherit
+    :shutdown destroy-tree}
+   (str "swaymsg -t subscribe -m \"['window']\"")))
+
+(defn gtk-theme []
+  (-> {:out :string}
+      (shell "gsettings get org.gnome.desktop.interface icon-theme")
+      :out
+      str/split-lines
+      first
+      (str/replace #"'" "")))
+
+(defn get-icon [name]
+  (when name
+    (first
+     (filter
+      fs/exists?
+      (flatten
+       (for [theme [(gtk-theme) "hicolor"]]
+         (for [path ["/scalable/apps/" "/apps/scalable/"]]
+           (for [file [name (str/lower-case name)]]
+             (str "/usr/share/icons/" theme path file ".svg")))))))))
+
+(defn- get-tree []
+  (as-> (str "swaymsg -t get_tree") clients
+    (shell {:out :string} clients)
+    (:out clients)
+    (json/parse-string clients true)))
+
+(->>
+ (tree-seq map? :nodes (get-tree))
+ (keep (fn [{:keys [focused name app_id window_properties]}]
+         (when focused
+           {:name name
+            :icon (or (get-icon app_id)
+                      (get-icon (:instance window_properties))
+                      (get-icon (:class window_properties))
+                      "")})))
+ first
+ json/generate-string
+ println)
+
+(with-open [rdr (io/reader (:out window-stream))]
+  (binding [*in* rdr]
+    (loop []
+      (when-let [line (-> (read-line) (json/parse-string true))]
+        (->> {:name (get-in line [:container :name])
+              :icon (or (get-icon (get-in line [:container :app_id]))
+                        (get-icon (get-in line [:container :window_properties :instance]))
+                        (get-icon (get-in line [:container :window_properties :class]))
+                        "")}
+             json/generate-string
+             println)
+        (recur)))))

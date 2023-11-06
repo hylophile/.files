@@ -1,0 +1,5 @@
+#+title: EWW
+
+My delectable bar config.
+
+Adapted from [[https://github.com/elken/eww][elken's config]].

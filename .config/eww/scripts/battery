@@ -1,0 +1,42 @@
+#!/usr/bin/env bb
+(require '[clojure.java.shell :refer [sh]]
+         '[clojure.string :as str])
+
+(def battery-low "󱊡")
+(def battery-medium "󱊢")
+(def battery-full "󱊣")
+(def battery-charging "󰂄")
+(def battery-danger "󰂃")
+
+(defn percentage->icon [percentage]
+  (condp <= percentage
+    90 battery-full
+    40 battery-medium
+    20 battery-low
+    battery-danger))
+
+(defn parse-output [output]
+  (if (or (= output "")
+          (str/includes? output "rate information unavailable"))
+    {:supported false}
+    (let [[status percentage left] (str/split output #",")
+          percentage (parse-long (re-find #"\d+" percentage))
+          status (nth (str/split status #" ") 2)]
+      {:supported true
+       :capacity percentage
+       :status status
+       :time (when left
+               (nth (str/split left #" ") 1))
+       :icon (if (= "Charging" status)
+               battery-charging
+               (percentage->icon percentage))
+       :class (if (<= percentage 10) "danger" "")})))
+
+(->> (list "acpi" "-b")
+     (apply sh)
+     :out
+     str/split-lines
+     first
+     parse-output
+     json/generate-string
+     println)
