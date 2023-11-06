@@ -79,9 +79,11 @@
            (label :class "my-2" :text temperature :angle -90))
 
 
+;(defpoll eduroam-p :interval "600s" "nmcli con show --active | grep d15a2958")
+(defpoll ethernet-p :interval "600s" "nmcli con show --active | grep 5a30382a")
 (deflisten azk-state "~/azk/show_azk.sh")
-(defwidget azk [visible]
-           (button :visible visible
+(defwidget azk [output]
+           (button :visible {(output == 'eDP-1' ? true : false) && (ethernet-p != "")}
                    :class "my-2 azk ${azk-state.state}"
                    :onclick "~/azk/azk.py stamp"))
 
@@ -98,7 +100,7 @@
             :space-evenly false
             :valign "end"
             :orientation "v"
-            (azk :visible {output == 'eDP-1' ? true : false})
+            (azk :output output)
             (volume)
             (menu-toggle)
             (systray :class "mt-2 mb-1"
