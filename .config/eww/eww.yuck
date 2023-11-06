@@ -138,6 +138,9 @@
                     :onclick "scripts/menu.clj zoom ${output}"
                     (label :text "Toggle zoom"))
             (button :class "button"
+                    :onclick "scripts/menu.clj gamma"
+                    (label :text "Toggle gammastep"))
+            (button :class "button"
                     :onclick "scripts/menu.clj next-output"
                     (label :text "Next output"))))
 
