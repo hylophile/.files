@@ -765,26 +765,6 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;; (setq doom-leader-alt-key "<f8>")
 ;; (setq doom-localleader-alt-key "<f8> m")
 
-(after! emacs-everywhere
-  (defadvice! my/emacs-everywhere-position ()
-    :override #'emacs-everywhere-set-frame-position
-    ())
-  (remove-hook 'emacs-everywhere-init-hooks #'org-mode)
-  (add-hook 'emacs-everywhere-init-hooks #'org-mode)
-  ;; (add-hook 'emacs-everywhere-init-hooks (run-at-time nil nil (cmd! (text-scale-increase 1))))
-  ;; (add-hook 'emacs-everywhere-init-hooks (cmd! (toggle-frame-tab-bar)))
-  (setq emacs-everywhere-frame-parameters
-        '((name . "emacs-everywhere")
-          (width . 80)
-          (height . 12)
-          (tab-bar-format . 0)
-          (tab-bar-lines . 0)
-          (tab-bar-lines-keep-state . 0)
-          (internal-border-width . 10))))
-
-
-
-
 
 ;; (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
 ;; (setq doom-emoji-fallback-font-families
