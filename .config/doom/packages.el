@@ -78,7 +78,8 @@
 
 (package! git-link)
 
-(package! singularity-mode :recipe (:host github :repo "karljohanw/singularity-mode"))
+;; (package! singularity-mode :recipe (:host github :repo "karljohanw/singularity-mode"))
+(package! org-timeblock :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
 
 (package! gptel)
 (package! olivetti)
