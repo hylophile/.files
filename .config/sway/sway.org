@@ -28,7 +28,7 @@ set $right Right
 
 set $font pango:Jost
 set $weight Light
-set $size 12
+set $size 13
 
 font $font $size
 
