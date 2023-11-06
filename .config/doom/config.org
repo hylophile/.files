@@ -672,7 +672,8 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.4 :quit nil :vslot -1)
 (after! org
   (set-popup-rule! "^\\*Calendar" :side 'bottom)
-  (set-popup-rule! "^\\*Org Src" :side 'right :size 0.31 :quit nil :select t :autosave t :modeline t :ttl nil))
+  (set-popup-rule! "^\\*Org Src" :ignore t))
+  ;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.31 :quit nil :select t :autosave t :modeline t :ttl nil))
 #+end_src
 
 
