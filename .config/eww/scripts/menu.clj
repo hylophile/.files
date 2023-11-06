@@ -13,11 +13,18 @@
                   (* 2 $)
                   (/ $ 2))]))
 
+(defn gamma []
+  (if (-> (shell {:continue :true} "pgrep gammastep") :exit (= 0))
+    (shell "pkill gammastep")
+    (process "gammastep")))
+
 (def menu-items {:rofi ["rofi -show-icons -combi-modi window#drun -show combi"]
                  :zoom ["sh -c 'swaymsg output %s scale %s && eww reload'" zoom]
+                 :gamma ["echo side-effect" gamma]
                  :next-output ["swaymsg focus output left"]})
 
-(shell "eww close menu-0 menu-1")
+
+(shell {:continue :true} "eww close menu-0 menu-1")
 
 (let [[cmd & args] *command-line-args*
       [cmd func] (->> cmd keyword (get menu-items))]
