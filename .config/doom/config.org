@@ -863,6 +863,13 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
   ;; (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background))))
 
 #+end_src
+** org-timeblock
+#+begin_src emacs-lisp
+(use-package! org-timeblock
+  :custom
+  (org-timeblock-n-days-view 7)
+  (org-timeblock-show-outline-path t))
+#+end_src
 
 ** affe
 #+begin_src emacs-lisp
