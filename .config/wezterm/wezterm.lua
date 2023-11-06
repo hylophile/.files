@@ -55,6 +55,18 @@ return {
         "[^ ]{5,}",
     },
 
+    ssh_domains = {
+        {
+            -- This name identifies the domain
+            name = "beemo",
+            -- The hostname or address to connect to. Will be used to match settings
+            -- from your ssh config file
+            remote_address = "beemo",
+            -- The username to use on the remote host
+            username = "pi",
+        },
+    },
+
     -- term = "wezterm",
     window_background_opacity = 0.9,
     --"Dracula",
