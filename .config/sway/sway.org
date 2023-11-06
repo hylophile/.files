@@ -70,6 +70,11 @@ output "AOC 2460G4 0x00000BD5" {
     position 0,0
 }
 
+output "Dell Inc. DELL P2217H RH81R79A566B" {
+    resolution 1920x1080
+    position 0,0
+}
+
 output "Synaptics Inc Non-PnP 0x0000FD4E" {
     resolution 1920x1080@60.000Hz
     position 0,0
