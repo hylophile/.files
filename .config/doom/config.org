@@ -865,10 +865,31 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 #+end_src
 ** org-timeblock
 #+begin_src emacs-lisp
+(setq org-file-tags '("todo"))
+
 (use-package! org-timeblock
   :custom
   (org-timeblock-n-days-view 7)
-  (org-timeblock-show-outline-path t))
+  (org-timeblock-current-time-indicator t)
+  (org-timeblock-show-outline-path t)
+  (org-timeblock-scale-options nil)
+  (org-timeblock-tag-colors
+   '(("@uni" "#9bf6ff" "")
+     ("zoom" "#caffbf")
+     ("homework" "#bdb2ff")
+     ("work" "#ffc6ff")
+     ("todo" "#ffadad"))))
+ ;; "#ffadad";
+ ;; "#ffd6a5";
+ ;; "#fdffb6";
+ ;; "#caffbf";
+ ;; "#9bf6ff";
+ ;; "#a0c4ff";
+ ;; "#bdb2ff";
+ ;; "#ffc6ff";
+ ;; "#fffffc")
+ ;
+
 #+end_src
 
 ** affe
