@@ -539,8 +539,8 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 (setq my/theme (let ((output (shell-command-to-string "darkman get")))
                  (if (string= (string-trim-right output) "light")
-                     'ef-spring
-                   'doom-dracula)))
+                     'ef-tritanopia-light
+                   'doom-rouge)))
 ;; (setq doom-theme (hylo/random-dark-theme))
 (setq doom-theme my/theme)
 ;; (setq doom-theme 'ef-spring)
