@@ -39,17 +39,19 @@ let
     '';
   };
 
-in
-{
+in {
   environment.systemPackages = with pkgs; [
     alacritty # gpu accelerated terminal
     dbus-sway-environment
     configure-gtk
     wayland
     xdg-utils # for opening default programs when clicking links
+    arc-theme
+    libsForQt5.qt5ct
+    arc-kde-theme
     glib # gsettings
     dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme  # default gnome cursors
+    gnome3.adwaita-icon-theme # default gnome cursors
     swaylock
     swayidle
     swaybg

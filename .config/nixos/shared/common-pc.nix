@@ -7,31 +7,18 @@
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  imports = [ # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ./sway.nix
-  ];
+  nixpkgs.config.allowUnfree = true;
 
-  boot.supportedFilesystems = [ "ntfs" ];
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  # boot.supportedFilesystems = [ "ntfs" ];
+  # # Bootloader.
+  # boot.loader.systemd-boot.enable = true;
 
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  # boot.loader.grub.enable = true;
-  # boot.loader.grub.device = "/dev/sda";
-  # boot.loader.grub.useOSProber = true;
-  fileSystems."/mnt/media" = {
-    device = "/dev/disk/by-uuid/01D4C223DAD568D0";
-    fsType = "ntfs-3g";
-    options = [ "rw" "uid=n" ];
-  };
-  fileSystems."/mnt/data" = {
-    device = "/dev/disk/by-uuid/01D652F1F13E5B80";
-    fsType = "ntfs-3g";
-    options = [ "rw" "uid=n" ];
-  };
+  # boot.initrd.kernelModules = [ "amdgpu" ];
+  # # boot.loader.grub.enable = true;
+  # # boot.loader.grub.device = "/dev/sda";
+  # # boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "rook"; # Define your hostname.
+  # networking.hostName = "rook"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -98,9 +85,6 @@
     #media-session.enable = true;
   };
 
-  services.mullvad-vpn.enable = true;
-  services.mullvad-vpn.package = pkgs.mullvad-vpn;
-
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot =
     true; # powers up the default Bluetooth controller on boot
@@ -108,17 +92,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.n = {
-    isNormalUser = true;
-    description = "n";
-    extraGroups = [ "networkmanager" "wheel" ];
-  };
-
   users.defaultUserShell = pkgs.fish;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   virtualisation = {
     podman = {
@@ -157,7 +131,6 @@
     rclone
     git
     nixfmt
-    mullvad-vpn
     qbittorrent
     eww.packages."${pkgs.system}".eww-wayland
     libnotify # for notify-send
@@ -166,9 +139,29 @@
     networkmanager
     networkmanagerapplet
     inotify-tools
+
+    nix-index
+
+    # zig
+    ranger
+    ncdu
+
+    imv
+
+    darkman
   ];
 
   programs.fish.enable = true;
+
+  # qt = {
+  #   enable = true;
+  #   platformTheme = "qt5ct";
+  #   style = {
+  #     package = pkgs.arc-kde-theme;
+  #     name = "Arc";
+  #   };
+  # };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

@@ -14,15 +14,15 @@
     # Official NixOS package source, using nixos-23.11 branch here
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     # home-manager, used for managing user configuration
-#    home-manager = {
-#      url = "github:nix-community/home-manager/release-23.11";
-#      # The `follows` keyword in inputs is used for inheritance.
-#      # Here, `inputs.nixpkgs` of home-manager is kept consistent with
-#      # the `inputs.nixpkgs` of the current flake,
-#      # to avoid problems caused by different versions of nixpkgs.
-#      inputs.nixpkgs.follows = "nixpkgs";
-#    };
-	eww.url = "github:ralismark/eww/tray-3";
+    #    home-manager = {
+    #      url = "github:nix-community/home-manager/release-23.11";
+    #      # The `follows` keyword in inputs is used for inheritance.
+    #      # Here, `inputs.nixpkgs` of home-manager is kept consistent with
+    #      # the `inputs.nixpkgs` of the current flake,
+    #      # to avoid problems caused by different versions of nixpkgs.
+    #      inputs.nixpkgs.follows = "nixpkgs";
+    #    };
+    eww.url = "github:ralismark/eww/tray-3";
   };
 
   # `outputs` are all the build result of the flake.
@@ -89,12 +89,12 @@
         # `specialArgs`. 
         # you must use `specialArgs` by uncomment the following line:
         #
-        specialArgs = inputs;  # pass custom arguments into all sub module.
+        specialArgs = inputs; # pass custom arguments into all sub module.
         modules = [
           # Import the configuration.nix here, so that the
           # old configuration file can still take effect.
           # Note: configuration.nix itself is also a Nixpkgs Module,
-          ./configuration.nix
+          ./hosts/rook/configuration.nix
         ];
       };
     };
