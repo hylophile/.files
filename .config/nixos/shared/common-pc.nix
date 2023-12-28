@@ -133,6 +133,7 @@
     ripgrep
     rclone
     imv
+    gron
 
     # dev
     babashka

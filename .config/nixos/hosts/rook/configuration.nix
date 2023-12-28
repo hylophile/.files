@@ -3,8 +3,8 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, eww, ... }:
-
-{
+let uid = "n";
+in {
   imports = [
     ./hardware-configuration.nix
     ../../shared/sway.nix # a
@@ -22,12 +22,12 @@
   fileSystems."/mnt/media" = {
     device = "/dev/disk/by-uuid/01D4C223DAD568D0";
     fsType = "ntfs-3g";
-    options = [ "rw" "uid=n" ];
+    options = [ "rw" "uid=${uid}" ];
   };
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/01D652F1F13E5B80";
     fsType = "ntfs-3g";
-    options = [ "rw" "uid=n" ];
+    options = [ "rw" "uid=${uid}" ];
   };
 
   networking.hostName = "rook"; # Define your hostname.
@@ -42,13 +42,19 @@
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
+  services.syncthing = {
+    enable = true;
+    user = uid;
+    dataDir = "/home/${uid}/Documents";
+    configDir = "/home/${uid}/.config/syncthing";
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.n = {
+  users.users."${uid}" = {
     isNormalUser = true;
-    description = "n";
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
