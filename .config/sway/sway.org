@@ -121,6 +121,16 @@ position 0,1080
 input 4617:13404:https://github.com/stapelberg_kinT_(kint41) {
     xkb_options compose:rwin
 }
+# seat rem attach 0:0:remvd
+# input 0:0:remvd {
+# tap enabled
+#                 }
+input 0:0:remarkable_touchpad {
+      tap enabled
+      natural_scroll enabled
+      scroll_factor 0.5
+#       # pointer_accel 1
+                     }
 
 input 1:1:AT_Translated_Set_2_keyboard {
       xkb_layout us,de
@@ -147,7 +157,7 @@ input type:pointer {
 
 set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
 input $elecom {
-      pointer_accel -0.5
+      pointer_accel -0.25
       accel_profile flat
 }
 
@@ -175,6 +185,7 @@ bindcode 277 --whole-window move container to output next
 <<mullvad()>>
 
 <<fixoutputs()>>
+
 
 # exec ~/scripts/switch-bg.scm all
 exec ~/scripts/switch-bg.clj new all
@@ -494,7 +505,7 @@ assign [title="^Aperiodic"]                                              workspa
 # for_window [app_id=".*firefox.*"] opacity $opacity
 #+end_src
 
-* Modes
+* Modes :ARCHIVE:
 
 ** Resize
 
@@ -562,6 +573,10 @@ exec_always eww kill; $eww_init
 * Fin
 
 #+begin_src conf-space
+
+exec dbus-sway-environment
+exec configure-gtk
+
 include /etc/sway/config.d/*
 #+end_src
 
