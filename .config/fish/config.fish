@@ -14,3 +14,14 @@ end
 function unset_wezterm_prog --on-event fish_postexec
     printf "\033]1337;SetUserVar=%s=%s\007" WEZTERM_PROG ""
 end
+
+set -U XDG_CURRENT_DESKTOP sway
+set -U MOZ_ENABLE_WAYLAND 1
+set -U QT_QPA_PLATFORMTHEME qt5ct
+set -U _JAVA_AWT_WM_NONREPARENTING 1
+
+
+fish_add_path ~/.nix-profile/bin
+fish_add_path ~/.local/bin
+fish_add_path ~/.cargo/bin
+fish_add_path ~/.config/emacs/bin
