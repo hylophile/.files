@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, eww, ... }:
 
 let
   # bash script to let dbus know about important env variables and
@@ -41,29 +41,37 @@ let
 
 in {
   environment.systemPackages = with pkgs; [
-    alacritty # gpu accelerated terminal
     dbus-sway-environment
     configure-gtk
     wayland
     xdg-utils # for opening default programs when clicking links
+
+    glib # gsettings
     arc-theme
     libsForQt5.qt5ct
     arc-kde-theme
-    glib # gsettings
     dracula-theme # gtk theme
     gnome3.adwaita-icon-theme # default gnome cursors
+
     swaylock
     swayidle
     swaybg
+
     grim # screenshot functionality
     slurp # screenshot functionality
-    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    # bemenu # wayland clone of dmenu
-    #mako # notification system developed by swaywm maintainer
-    dunst
-    wdisplays # tool to configure displays
+    wl-clipboard
+    dunst # notifications
+    wdisplays
     rofi-wayland
-    #eww-wayland
+
+    eww.packages."${pkgs.system}".eww-wayland
+    libnotify # for notify-send
+    jq
+    acpi # battery status
+    networkmanager
+    networkmanagerapplet
+    inotify-tools
+
   ];
 
   services.pipewire = {

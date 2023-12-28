@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, eww, ... }:
+{ config, pkgs, ... }:
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -108,46 +108,47 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    # editors
     neovim
     neovide
+    emacs29-pgtk
+    emacsPackages.vterm
+
+    # terminal
     wezterm
     kitty
+
+    # gui
     libsForQt5.dolphin
     libsForQt5.dolphin-plugins
-    wget
     firefox
     mpv
-    #   krita
+    qbittorrent
+
+    # shell
+    wget
     zoxide
     direnv
     bat
     ripgrep
-    emacs29-pgtk
-    emacsPackages.vterm
-    dua
-    distrobox
-    babashka
     rclone
-    git
-    nixfmt
-    qbittorrent
-    eww.packages."${pkgs.system}".eww-wayland
-    libnotify # for notify-send
-    jq
-    acpi
-    networkmanager
-    networkmanagerapplet
-    inotify-tools
-
-    nix-index
-
-    # zig
-    ranger
-    ncdu
-
     imv
 
+    # dev
+    babashka
+    distrobox
+    git
+    nixfmt
+
+    # files
+    ranger
+    ncdu
+    dua
+
+    # misc
+    nix-index # todo: figure me out
+    gammastep
+    udiskie
     darkman
   ];
 
