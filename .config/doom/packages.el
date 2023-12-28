@@ -79,7 +79,8 @@
 (package! git-link)
 
 ;; (package! singularity-mode :recipe (:host github :repo "karljohanw/singularity-mode"))
-(package! org-timeblock :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
+;; (package! org-timeblock :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
+(package! org-timeblock :recipe (:local-repo "~/code/misc/org-timeblock/" :build (:not compile)))
 
 (package! gptel)
 (package! olivetti)
