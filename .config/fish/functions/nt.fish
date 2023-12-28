@@ -1,5 +1,5 @@
 function nt
     while true
-        ls -d * | entr -d -c -r $argv
+        ls -d * | entr -d -cc -r $argv
     end
 end
