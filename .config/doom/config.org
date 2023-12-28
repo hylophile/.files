@@ -335,7 +335,8 @@ We check whether the current =default-directory= belongs to our dotfiles with =g
          (work-tree (expand-file-name "~/"))
          (default (file-name-as-directory (expand-file-name default-directory))))
     (unless (assoc default hy/dotfile-dirs)
-      (push (cons default (eq 0 (call-process "/usr/bin/git" nil nil nil
+      (push (cons default (eq 0 (call-process "/usr/bin/env" nil nil nil
+                                 "git"
                                  (format "--git-dir=%s" git-dir)
                                  (format "--work-tree=%s" work-tree)
                                  "ls-files"
