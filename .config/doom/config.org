@@ -870,10 +870,11 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 (use-package! org-timeblock
   :custom
-  (org-timeblock-n-days-view 7)
+  (org-timeblock-n-days-view 4)
   (org-timeblock-current-time-indicator t)
   (org-timeblock-show-outline-path t)
   (org-timeblock-scale-options nil)
+  (org-timeblock-scale-options '(8 . 20))
   (org-timeblock-tag-colors
    '(("@uni" "#9bf6ff" "")
      ("zoom" "#caffbf")
