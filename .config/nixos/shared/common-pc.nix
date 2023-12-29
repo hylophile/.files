@@ -30,6 +30,10 @@
 
   networking.extraHosts = ''
     167.235.153.26 minivee
+    10.11.99.1 remarkable-usb
+    192.168.0.123 remarkable-wifi
+    192.168.0.159 seki
+    192.168.0.52 beemo
   '';
 
   # Set your time zone.
