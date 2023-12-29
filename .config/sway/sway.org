@@ -188,7 +188,7 @@ bindcode 277 --whole-window move container to output next
 
 
 # exec ~/scripts/switch-bg.scm all
-exec ~/scripts/switch-bg.clj new all
+exec sleep 60 && ~/scripts/switch-bg.clj new all
 
 exec ~/scripts/notify.clj
 
