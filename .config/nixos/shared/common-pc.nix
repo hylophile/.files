@@ -36,6 +36,14 @@
     192.168.0.52 beemo
   '';
 
+  # for virtual input devices without root
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+  '';
+  users.extraGroups = {
+    uinput = { }; # a
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 

@@ -66,4 +66,6 @@ in {
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
+  users.groups.uinput.members = [ "${uid}" ];
+
 }
