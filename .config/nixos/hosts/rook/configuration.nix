@@ -13,7 +13,15 @@ in {
 
   boot.supportedFilesystems = [ "ntfs" ];
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    # extraEntries = {
+    #   "z_Windows.conf" = ''
+    #     title Windows
+    #     efi /boot/EFI/BOOT/BOOTX64.EFI
+    #   '';
+    # };
+  };
 
   boot.initrd.kernelModules = [ "amdgpu" ];
   # boot.loader.grub.enable = true;
