@@ -9,6 +9,7 @@ in {
     ./hardware-configuration.nix
     ../../shared/sway.nix # a
     ../../shared/common-pc.nix
+    ../../shared/uni-seclab.nix
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
