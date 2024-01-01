@@ -16,29 +16,34 @@ function unset_wezterm_prog --on-event fish_postexec
 end
 
 if command -q distrobox; and command -q direnv
-    function distrobox-exit-auto --on-event fish_postexec
-        if test -f /run/.containerenv; and direnv status | rg "No .envrc or .env found" >/dev/null
-            set -U DISTROBOX_PRE_EXIT_PWD (pwd)
-            exit
-        end
-    end
-
     function distrobox-enter-auto --on-event fish_prompt
-        if not set --query DISTROBOX_ENTER_NAME
-            return
-        end
+        if test -f /run/.containerenv # in container
+            set --local current_container (rg ^name= /run/.containerenv | cut -d\" -f2)
+            if test "$DISTROBOX_ENTER_NAME" = $current_container
+                # in correct container
+                return
+            end
 
-        if not test -f /run/.containerenv
-            if distrobox list | cut -d' ' -f3 | rg $DISTROBOX_ENTER_NAME >/dev/null
-                distrobox enter $DISTROBOX_ENTER_NAME #-- fish -C 'direnv reload'
-                # this runs after exiting the distrobox
-                if set --query DISTROBOX_PRE_EXIT_PWD
-                    cd $DISTROBOX_PRE_EXIT_PWD
-                    set -U --erase DISTROBOX_PRE_EXIT_PWD
+            set -U DISTROBOX_PRE_EXIT_PWD (pwd)
+            set_color magenta
+            printf "(exiting %s)\n" $current_container
+            exit
+        else
+            if set --query DISTROBOX_ENTER_NAME
+                if distrobox list | cut -d' ' -f3 | rg $DISTROBOX_ENTER_NAME >/dev/null
+                    set_color magenta
+                    printf "(entering %s)\n" $DISTROBOX_ENTER_NAME
+                    distrobox enter $DISTROBOX_ENTER_NAME -- fish -C 'direnv reload'
+                    # this runs after exiting the distrobox
+                    if set --query DISTROBOX_PRE_EXIT_PWD
+                        cd $DISTROBOX_PRE_EXIT_PWD
+                        set -U --erase DISTROBOX_PRE_EXIT_PWD
+                    end
+                    distrobox-enter-auto
+                else
+                    printf "Tried entering container %s, but it doesn't exist.\n" $DISTROBOX_ENTER_NAME
+                    set status 1
                 end
-            else
-                printf "Tried entering container %s, but it doesn't exist.\n" $DISTROBOX_ENTER_NAME
-                set status 1
             end
         end
     end
