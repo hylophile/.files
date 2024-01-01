@@ -150,6 +150,13 @@ scale trough {
   background-color: $dr_bg1;
 }
 
+scale trough slider {
+  border-radius: 0;
+  min-height: 2em;
+  min-width: 1em;
+  background-color: transparent;
+}
+
 scale trough highlight {
   border-radius: 10em;
   border-top-left-radius: 0;
