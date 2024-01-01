@@ -25,14 +25,18 @@ if command -q distrobox; and command -q direnv
             end
 
             set -U DISTROBOX_PRE_EXIT_PWD (pwd)
+            set_color cyan
+            printf "exit container: "
             set_color magenta
-            printf "(exiting %s)\n" $current_container
+            printf "%s\n" $current_container
             exit
         else
             if set --query DISTROBOX_ENTER_NAME
                 if distrobox list | cut -d' ' -f3 | rg $DISTROBOX_ENTER_NAME >/dev/null
+                    set_color cyan
+                    printf "enter container: "
                     set_color magenta
-                    printf "(entering %s)\n" $DISTROBOX_ENTER_NAME
+                    printf "%s\n" $DISTROBOX_ENTER_NAME
                     distrobox enter $DISTROBOX_ENTER_NAME -- fish -C 'direnv reload'
                     # this runs after exiting the distrobox
                     if set --query DISTROBOX_PRE_EXIT_PWD
@@ -41,8 +45,8 @@ if command -q distrobox; and command -q direnv
                     end
                     distrobox-enter-auto
                 else
-                    printf "Tried entering container %s, but it doesn't exist.\n" $DISTROBOX_ENTER_NAME
-                    set status 1
+                    set_color red
+                    printf "Tried to enter container '%s', but it doesn't exist.\n" $DISTROBOX_ENTER_NAME
                 end
             end
         end
