@@ -12,7 +12,8 @@
     # which represents the GitHub repository URL + branch/commit-id/tag.
 
     # Official NixOS package source, using nixos-23.11 branch here
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url =
+      "github:NixOS/nixpkgs/d65bceaee0fb1e64363f7871bc43dc1c6ecad99f";
     # home-manager, used for managing user configuration
     #    home-manager = {
     #      url = "github:nix-community/home-manager/release-23.11";
