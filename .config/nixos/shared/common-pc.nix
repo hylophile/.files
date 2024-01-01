@@ -148,6 +148,7 @@
     rclone
     imv
     gron
+    fd
 
     # dev
     babashka
