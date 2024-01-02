@@ -23,14 +23,16 @@ printf "starting:\n"
 printf "- stopping xochitl\n"
 ssh root@$rem_ip 'systemctl stop xochitl'
 
-if test $argv[1] != --pen
-    printf "- forwarding touchpad\n"
-    ssh root@$rem_ip 'cat /dev/input/event2' | $rem_bin touchpad &
-end
+if test (count $argv) -eq 1
+    if test $argv[1] != --pen
+        printf "- forwarding touchpad\n"
+        ssh root@$rem_ip 'cat /dev/input/event2' | $rem_bin touchpad &
+    end
 
-if test $argv[1] != --touchpad
-    printf "- forwarding pen\n"
-    ssh root@$rem_ip 'cat /dev/input/event1' | $rem_bin pen &
+    if test $argv[1] != --touchpad
+        printf "- forwarding pen\n"
+        ssh root@$rem_ip 'cat /dev/input/event1' | $rem_bin pen &
+    end
 end
 
 printf "started!\n"
