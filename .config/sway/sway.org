@@ -195,7 +195,7 @@ exec ~/scripts/notify.clj
 
 exec_always ~/scripts/scale-up-edp.clj
 
-exec ~/scripts/dynamic-opacity.clj
+# exec ~/scripts/dynamic-opacity.clj
 
 # exec wezterm-mux-server --daemonize
 
