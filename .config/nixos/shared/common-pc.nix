@@ -149,6 +149,7 @@
     imv
     gron
     fd
+    fzf
 
     # dev
     babashka
@@ -162,13 +163,14 @@
     dua
 
     # misc
-    nix-index # todo: figure me out
+    # nix-index # todo: figure me out
     gammastep
     udiskie
     darkman
   ];
 
   programs.fish.enable = true;
+  # programs.nix-index.enable = true;
 
   # qt = {
   #   enable = true;
