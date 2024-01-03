@@ -167,7 +167,7 @@ input $elecom {
 
 # bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
 # bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
-
+bindsym $mod+F3 exec swaymsg "splith, exec wezterm start --class wezterm-600px"
 # bindsym $mod+F9 exec ~/scripts/switch-bg.scm here
 bindsym $mod+F9 exec ~/scripts/switch-bg.clj new current
 bindsym $mod+Ctrl+Shift+F9 exec ~/scripts/switch-bg.clj discard current
@@ -491,6 +491,7 @@ for_window [app_id="^chrome-.*"]                                         shortcu
 for_window [app_id="^anki$" title="^Add$"]                               floating enable
 for_window [app_id="^anki$" title="^Preview$"]                           floating enable
 for_window [app_id="^wezterm-floating$"]                                 floating enable, border pixel 5
+for_window [app_id="^wezterm-600px$"]                                 resize set width 600px
 
 
 assign [title="^Bevy App$"]                                              workspace number 1
