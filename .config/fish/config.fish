@@ -18,7 +18,7 @@ end
 if command -q distrobox; and command -q direnv
     function distrobox-enter-auto --on-event fish_prompt
         if test -f /run/.containerenv # in container
-            set --local current_container (rg ^name= /run/.containerenv | cut -d\" -f2)
+            set --local current_container (grep ^name= /run/.containerenv | cut -d\" -f2)
             if test "$DBX_NAME" = $current_container
                 # in correct container
                 return
@@ -32,7 +32,7 @@ if command -q distrobox; and command -q direnv
             exit
         else
             if set --query DBX_NAME
-                if distrobox list | cut -d' ' -f3 | rg $DBX_NAME >/dev/null
+                if distrobox list | cut -d' ' -f3 | grep $DBX_NAME >/dev/null
                     set_color cyan
                     printf "enter container: "
                     set_color magenta
