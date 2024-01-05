@@ -80,7 +80,7 @@
 
 
 ;(defpoll eduroam-p :interval "600s" "nmcli con show --active | grep d15a2958")
-(defpoll ethernet-p :interval "600s" "nmcli con show --active | grep 5a30382a")
+(defpoll ethernet-p :interval "600s" "nmcli con show --active | grep ethernet")
 (deflisten azk-state "~/azk/show_azk.sh")
 (defwidget azk [output]
            (button :visible {(output == 'eDP-1' ? true : false) && (ethernet-p != "")}
