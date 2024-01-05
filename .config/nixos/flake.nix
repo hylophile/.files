@@ -12,8 +12,8 @@
     # which represents the GitHub repository URL + branch/commit-id/tag.
 
     # Official NixOS package source, using nixos-23.11 branch here
-    nixpkgs.url =
-      "github:NixOS/nixpkgs/d65bceaee0fb1e64363f7871bc43dc1c6ecad99f";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+#    nixpkgs.url = "github:NixOS/nixpkgs/d65bceaee0fb1e64363f7871bc43dc1c6ecad99f";
     # home-manager, used for managing user configuration
     #    home-manager = {
     #      url = "github:nix-community/home-manager/release-23.11";
@@ -49,9 +49,6 @@
       # Run the following command in the flake's directory to
       # deploy this configuration on any NixOS system:
       #   sudo nixos-rebuild switch --flake .#nixos-test
-      "rook" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-
         # The Nix module system can modularize configuration,
         # improving the maintainability of configuration.
         #
@@ -90,12 +87,26 @@
         # `specialArgs`. 
         # you must use `specialArgs` by uncomment the following line:
         #
+      "rook" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
         specialArgs = inputs; # pass custom arguments into all sub module.
         modules = [
           # Import the configuration.nix here, so that the
           # old configuration file can still take effect.
           # Note: configuration.nix itself is also a Nixpkgs Module,
           ./hosts/rook/configuration.nix
+        ];
+      };
+      "knight" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        specialArgs = inputs; # pass custom arguments into all sub module.
+        modules = [
+          # Import the configuration.nix here, so that the
+          # old configuration file can still take effect.
+          # Note: configuration.nix itself is also a Nixpkgs Module,
+          ./hosts/knight/configuration.nix
         ];
       };
     };

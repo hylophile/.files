@@ -122,6 +122,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # editors
+    vim
     neovim
     neovide
     emacs29-pgtk
