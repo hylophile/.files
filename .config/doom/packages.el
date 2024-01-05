@@ -34,13 +34,13 @@
                                         ;  :recipe (:local-repo "~/.doom.d/packages/ever"))
 
 ;; (package! emacs-everywhere :recipe (:local-repo "~/code/emacs-everywhere/" :build (:not compile)))
-(package! ef-themes :recipe (:local-repo "~/code/misc/doom-ef-themes/" :build (:not compile)))
+;; (package! ef-themes :recipe (:local-repo "~/code/misc/doom-ef-themes/" :build (:not compile)))
+(package! ef-themes :recipe (:host nil :repo "https://git.sr.ht/~protesilaos/ef-themes"))
 
 (package! page-break-lines)
 (package! minibuffer-header)
 
 (package! tempel)
-;; (package! ef-themes :recipe (:host nil :repo "https://git.sr.ht/~protesilaos/ef-themes"))
 
 (package! vundo :recipe (:host github :repo "casouri/vundo"))
 
