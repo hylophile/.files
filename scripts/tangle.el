@@ -1,4 +1,4 @@
-#!/usr/bin/emacs --script
+#!/usr/bin/env -S emacs --script
 
 (require 'org)
 (require 'ox)
