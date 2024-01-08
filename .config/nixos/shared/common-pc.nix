@@ -140,6 +140,7 @@
     mpv
     qbittorrent
     xournalpp
+    zathura
 
     # shell
     wget
