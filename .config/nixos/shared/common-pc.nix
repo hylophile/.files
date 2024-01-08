@@ -139,6 +139,7 @@
     ungoogled-chromium
     mpv
     qbittorrent
+    xournalpp
 
     # shell
     wget
