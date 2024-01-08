@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, wezterm, ... }:
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -129,7 +129,7 @@
     emacsPackages.vterm
 
     # terminal
-    wezterm
+    wezterm.packages."${pkgs.system}".default
     kitty
 
     # gui
