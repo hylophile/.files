@@ -6,13 +6,21 @@ in {
     ../../shared/sway.nix # a
     ../../shared/common-pc.nix
     ../../shared/uni-seclab.nix
+    ./pki.nix
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
   boot.loader.systemd-boot.enable = true;
-  boot.initrd.kernelModules = [ "amdgpu" ];
+
+  # boot.kernelParams = [ "module_blacklist=amdgpu" ];
+  # boot.initrd.kernelModules = [ "amdgpu" ];
 
   networking.hostName = "knight"; # Define your hostname.
+
+  networking.networkmanager = {
+    enable = true;
+    plugins = [ pkgs.networkmanager-openconnect ];
+  };
 
   services.syncthing = {
     enable = true;
@@ -28,7 +36,8 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    libreoffice-still
+    libreoffice-still # a
+    python3
   ];
 
   users.groups.uinput.members = [ "${uid}" ];
