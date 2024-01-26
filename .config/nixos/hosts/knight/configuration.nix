@@ -38,6 +38,8 @@ in {
   environment.systemPackages = with pkgs; [
     libreoffice-still # a
     python3
+    nodejs_20
+    tmux
   ];
 
   users.groups.uinput.members = [ "${uid}" ];
