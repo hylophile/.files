@@ -170,6 +170,9 @@
     gammastep
     udiskie
     darkman
+
+    # fish
+    fishPlugins.done
   ];
 
   programs.fish.enable = true;
