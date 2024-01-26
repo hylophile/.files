@@ -3,12 +3,12 @@
 {
   services.pcscd.enable = true;
 
-  programs.firefox = {
-    enable = true;
-    # nativeMessagingHosts.euwebid = true;
-    policies.SecurityDevices.p11-kit-proxy =
-      "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
-  };
+  # programs.firefox = {
+  #   enable = true;
+  #   # nativeMessagingHosts.euwebid = true;
+  #   policies.SecurityDevices.p11-kit-proxy =
+  #     "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
+  # };
   # Tell p11-kit to load/proxy opensc-pkcs11.so, providing all available slots
   # (PIN1 for authentication/decryption, PIN2 for signing).
   environment.etc."pkcs11/modules/opensc-pkcs11".text = ''
