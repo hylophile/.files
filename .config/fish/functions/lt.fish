@@ -1,4 +1,3 @@
-function lt --wraps='ls --tree' --description 'alias lt=ls --tree'
-  ls --tree $argv
-        
+function lt --wraps='lsd --tree' --description 'alias lt=lsd --tree'
+    lsd --tree $argv
 end

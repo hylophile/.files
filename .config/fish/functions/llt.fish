@@ -1,4 +1,4 @@
-function llt --wraps='ls -alrt' --description 'alias llt=ls -alrt'
-  ls -alrt $argv
-        
+function llt --wraps='lsd -alrt' --description 'alias llt=lsd -alrt'
+    lsd -alrt $argv
+
 end
