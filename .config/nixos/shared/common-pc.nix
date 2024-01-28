@@ -153,12 +153,22 @@
     gron
     fd
     fzf
+    atool
+    unzip
+    entr
+    btop
+    lsd
 
     # dev
-    babashka
     distrobox
     git
     nixfmt
+
+    # lang
+    babashka
+    python3
+    nodePackages.prettier
+    nodejs_20
 
     # files
     ranger
@@ -167,6 +177,7 @@
 
     # misc
     # nix-index # todo: figure me out
+    imagemagick
     gammastep
     udiskie
     darkman
