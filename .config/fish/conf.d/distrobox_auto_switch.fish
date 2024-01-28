@@ -9,11 +9,11 @@ function distrobox_auto_setup
                 end
 
                 set -U DISTROBOX_PRE_EXIT_PWD (pwd)
-                set_color cyan
-                printf "exit container: "
-                set_color magenta
-                printf "%s\n" $current_container
-                exit
+                # set_color cyan
+                # printf "exit container: "
+                # set_color magenta
+                # printf "%s\n" $current_container
+                # exit
             else
                 if set --query DBX_NAME
                     if distrobox list | cut -d' ' -f3 | grep $DBX_NAME >/dev/null
