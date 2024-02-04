@@ -153,7 +153,6 @@
     # shell
     wget
     zoxide
-    direnv
     bat
     ripgrep
     rclone
@@ -189,13 +188,16 @@
     gammastep
     udiskie
     darkman
+    texliveFull
 
     # fish
     fishPlugins.done
   ];
 
   programs.fish.enable = true;
-  # programs.nix-index.enable = true;
+  programs.nix-index.enable = true;
+  programs.direnv.enable = true;
+  programs.command-not-found.enable = false;
 
   # qt = {
   #   enable = true;
