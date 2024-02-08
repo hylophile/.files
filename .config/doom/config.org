@@ -468,8 +468,8 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 #+end_src
 ** bib
 #+begin_src emacs-lisp
-(setq! bibtex-completion-bibliography '("~/tub/mono/cgp-ss23-aperiodic-monotile/documentation/website/mono.bib"))
-(setq! citar-bibliography '("~/tub/mono/cgp-ss23-aperiodic-monotile/documentation/website/mono.bib"))
+(setq! bibtex-completion-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
+(setq! citar-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
 #+end_src
 
 ** fonts
@@ -930,11 +930,17 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 ** apheleia formatting
 
 #+begin_src emacs-lisp
+(setq +format-with-lsp nil)
 
-(use-package! apheleia
-  :config
-  (apheleia-global-mode +1)
-  (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
+(setq-hook! 'haskell-mode-hook +format-with 'fourmolu)
+(after! apheleia
+ (push '(fourmolu . ("fourmolu" "--stdin-input-file" (or (buffer-file-name) (buffer-name))))
+       apheleia-formatters))
+
+;; (use-package! apheleia
+;;   :config
+;;   (apheleia-global-mode +1)
+;;   (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
 
 #+end_src
 
@@ -1742,7 +1748,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   :config
   (setq aw-scope 'visible)
   (setq aw-dispatch-always t)
-  (ace-window-posframe-mode +1)
+  (when (display-graphic-p)
+   (ace-window-posframe-mode +1))
   (after! treemacs
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   (ace-window-display-mode t)
@@ -1998,14 +2005,18 @@ reordering."
 (load! "work.el" nil t)
 (setq js-indent-level 2)
 
-(setf (alist-get 'prettier-json apheleia-formatters)
-      '(npx "prettier" "--stdin-filepath" filepath "--parser=json"))
+(after! apheleia
+ (setf (alist-get 'prettier-json apheleia-formatters)
+      '(npx "prettier" "--stdin-filepath" filepath "--parser=json")))
+
 #+end_src
 ** yuck
 #+begin_src emacs-lisp
+(after! apheleia
 (use-package! yuck-mode
   :hook (yuck-mode . parinfer-rust-mode)
   :config (add-to-list 'apheleia-mode-alist '(yuck-mode . lisp-indent)))
+)
 
 (add-to-list 'auto-mode-alist '("\\.yuck\\'" . yuck-mode))
 #+end_src

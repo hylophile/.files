@@ -161,6 +161,7 @@
     fd
     fzf
     atool
+    zip
     unzip
     entr
     btop
