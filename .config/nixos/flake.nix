@@ -25,6 +25,7 @@
     #    };
     eww.url = "github:ralismark/eww/tray-3";
     wezterm.url = "github:edmundmiller/wezterm/nix-ci?dir=nix";
+    idris2.url = "github:idris-lang/idris2";
   };
 
   # `outputs` are all the build result of the flake.

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, wezterm, ... }:
+{ config, pkgs, wezterm, idris2, ... }:
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -177,6 +177,7 @@
     python3
     nodePackages.prettier
     nodejs_20
+    idris2.packages."${pkgs.system}".default
 
     # files
     ranger
@@ -189,7 +190,13 @@
     gammastep
     udiskie
     darkman
-    texliveFull
+    (pkgs.texlive.combine {
+      inherit (pkgs.texlive)
+        scheme-basic dvisvgm dvipng # for preview and export as html
+        wrapfig amsmath ulem hyperref capt-of;
+      #(setq org-latex-compiler "lualatex")
+      #(setq org-preview-latex-default-process 'dvisvgm)
+    })
 
     # fish
     fishPlugins.done
