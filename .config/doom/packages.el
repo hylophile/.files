@@ -10,16 +10,16 @@
                                         ;(package! some-package)
 ;; (package! vue-mode)
 ;; (package! polymode)
-(package! prism :recipe (:host github :repo "alphapapa/prism.el"))
-(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+;; (package! prism :recipe (:host github :repo "alphapapa/prism.el"))
+;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! svelte-mode :recipe (:host github :repo "leafoftree/svelte-mode"))
 (package! org-super-agenda)
-(package! websocket)
-(package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
-(package! lsp-volar :recipe (:host github :repo "jadestrong/lsp-volar"))
+;; (package! websocket)
+;; (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
+;; (package! lsp-volar :recipe (:host github :repo "jadestrong/lsp-volar"))
 ;; (package! web-mode :recipe (:local-repo "~/.doom.d/p/web-mode"))
 ;;(package! ein :pin "e354ea77c29e8c20b6b1a9ee00d86e6a9512bc0d")
-(unpin! web-mode)
+;; (unpin! web-mode)
 
 (unpin! ace-window)
 ;;(package! everforest-hard-dark-theme
@@ -40,9 +40,9 @@
 (package! page-break-lines)
 (package! minibuffer-header)
 
-(package! tempel)
+;; (package! tempel)
 
-(package! vundo :recipe (:host github :repo "casouri/vundo"))
+;; (package! vundo :recipe (:host github :repo "casouri/vundo"))
 
 ;; (package! spookfox :recipe (:host github :repo "bitspook/spookfox" :files ("lisp/*.el" "lisp/apps/*.el")))
 
@@ -57,13 +57,13 @@
 (package! git-auto-commit-mode)
 ;; (package! company-quickhelp)
 ;; (unpin! company-box)
-(package! apheleia)
+;; (package! apheleia)
 
-(package! exercism-modern
-  :recipe (:files (:defaults "icons")
-           :host github :repo "elken/exercism-modern"))
+;; (package! exercism-modern
+;;   :recipe (:files (:defaults "icons")
+;;            :host github :repo "elken/exercism-modern"))
 
-(package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
+;; (package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
 
 ;; (unpin! persp-mode)
 ;; (package! writeroom-mode)
@@ -72,9 +72,9 @@
 
 (package! rg)
 (package! dts-mode)
-(package! flymake-vale :recipe (:host github :repo "tpeacock19/flymake-vale"))
+;; (package! flymake-vale :recipe (:host github :repo "tpeacock19/flymake-vale"))
 ;; adds popups, optional but reccomened
-(package! flymake-popon :recipe (:repo "https://codeberg.org/akib/emacs-flymake-popon"))
+;; (package! flymake-popon :recipe (:repo "https://codeberg.org/akib/emacs-flymake-popon"))
 
 (package! git-link)
 
@@ -82,15 +82,18 @@
 ;; (package! org-timeblock :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
 (package! org-timeblock :recipe (:local-repo "~/code/misc/org-timeblock/" :build (:not compile)))
 
-(package! gptel)
-(package! olivetti)
+;; (package! gptel)
+;; (package! olivetti)
 
 (unpin! vterm)
 (unpin! lsp-mode)
 ;; (unpin! lsp-dart)
-(unpin! forge)
-(when (featurep! :completion corfu)
-  (unpin! evil-collection))
+;; (unpin! forge)
+;; (when (featurep! :completion corfu)
+;;   (unpin! evil-collection))
+
+(package! idris2 :recipe (:host github :repo "jeroendehaas/idris2-mode" :branch "fix-completion-error"))
+(package! prop-menu)
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify

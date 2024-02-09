@@ -247,7 +247,7 @@ always forget what this does exactly, but it's Good™
         (load-theme 'ef-spring t)
       (load-theme 'doom-rouge t)))
 #+end_src
-** gptel
+** gptel :ARCHIVE:
 
 #+begin_src emacs-lisp
 (after! gptel
@@ -286,7 +286,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 (advice-add #'doom-modeline-segment--modals :override #'ignore)
 
 #+end_src
-** flymake
+** flymake :ARCHIVE:
 #+begin_src emacs-lisp
 
 (use-package flymake
@@ -316,7 +316,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 ;;   (flymake-vale-load))
 
 #+end_src
-** singularity
+** singularity :ARCHIVE:
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.recipe$" . singularity-mode))
 #+end_src
@@ -894,7 +894,7 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 #+end_src
 
-** affe
+** affe :ARCHIVE:
 #+begin_src emacs-lisp
 ;; (after! projectile
 ;;   (defun hy/affe-find-in-project ()
@@ -927,7 +927,7 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 #+end_src
 
-** apheleia formatting
+** apheleia formatting :ARCHIVE:
 
 #+begin_src emacs-lisp
 (setq +format-with-lsp nil)
@@ -981,7 +981,7 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 ;; ^ together with tab-bar-lines . 0
 #+end_src
 
-** tempel
+** tempel :ARCHIVE:
 #+begin_src emacs-lisp
 
 
@@ -1283,8 +1283,8 @@ With prefix arg C-u, copy region instad of killing it."
 
 (custom-set-faces!
   '(org-document-title :height 1.1))
-(custom-set-faces!
-  `(org-agenda-diary :foreground ,(doom-color 'magenta) :weight bold))
+;; (custom-set-faces!
+;;   `(org-agenda-diary :foreground ,(doom-color 'magenta) :weight bold))
 
 
 #+end_src
@@ -1369,17 +1369,17 @@ This hides them again."
 
 
 
-(use-package! org-roam-ui
-  :after org-roam ;; or :after org
-  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-  ;;         a hookable mode anymore, you're advised to pick something yourself
-  ;;         if you don't care about startup time, use
-  ;;  :hook (after-init . org-roam-ui-mode)
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+;;(use-package! org-roam-ui
+;;  :after org-roam ;; or :after org
+;;  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;  ;;         a hookable mode anymore, you're advised to pick something yourself
+;;  ;;         if you don't care about startup time, use
+;;  ;;  :hook (after-init . org-roam-ui-mode)
+;;  :config
+;;  (setq org-roam-ui-sync-theme t
+;;        org-roam-ui-follow t
+;;        org-roam-ui-update-on-save t
+;;        org-roam-ui-open-on-start t))
 
 
 
@@ -1579,6 +1579,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
        lsp-eldoc-render-all t))
 
 
+#+end_src
+** tailwind :ARCHIVE:
+#+begin_src
 
 
 (use-package! lsp-tailwindcss
@@ -1599,7 +1602,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (after! scheme
   (setq geiser-mode-start-repl-p t))
 #+end_src
-** exercism
+** exercism :ARCHIVE:
 #+begin_src emacs-lisp
 (use-package! exercism-modern
   :commands (exercism-modern-jump exercism-modern-view-tracks))
@@ -2020,3 +2023,14 @@ reordering."
 
 (add-to-list 'auto-mode-alist '("\\.yuck\\'" . yuck-mode))
 #+end_src
+** idris
+#+begin_src emacs-lisp
+(use-package! idris2-mode
+  :custom
+  (idris2-stay-in-current-window-on-compiler-error t))
+;; (use-package! idris-mode
+;;   :custom
+;;   (idris-interpreter-path "idris2"))
+
+#+end_src
+** archive
