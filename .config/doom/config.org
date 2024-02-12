@@ -545,11 +545,10 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;;   '("Noto Color Emoji"))
 ;; (add-to-list 'doom-emoji-fallback-font-families "Symbols Nerd Font")
 ;; (add-to-list 'doom-symbol-fallback-font-families "Symbols Nerd Font")
-(after! nerd-icons
-  (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend))
 
-
-(run-at-time 5 nil #'set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend)
+;; (after! nerd-icons
+;;   (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend))
+;; (run-at-time 5 nil #'set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend)
 
 ;; (defun rc/find-file-recursive ()
 ;;   (interactive)
@@ -1356,8 +1355,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (meow-motion-overwrite-define-key
    ;; Use e to move up, n to move down.
    ;; Since special modes usually use n to move down, we only overwrite e here.
-   '("e" . meow-next)
-   '("i" . meow-prev)
+   ;; '("e" . meow-next)
+   ;; '("i" . meow-prev)
    '("<escape>" . ignore))
   (meow-leader-define-key
    '("?" . meow-cheatsheet)
@@ -1440,26 +1439,35 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("z" . meow-pop-selection)
    ;; '("Z" . meow-swap-grab)
    '("'" . repeat)
-   '("<escape>" . ignore)))
+   '("<escape>" . ignore))
+ (meow-leader-define-key
+  '("c" . "<f6> c")
+  '("i" . "<f6> i")
+  '("n" . "<f6> n")
+  '("p" . "<f6> p")
+  '("f" . "<f6> f")
+  '("q" . "<f6> q")
+  '("t" . "<f6> t")
+  '("s" . "<f6> s")
+  '("v" . "<f6> v")
+  '("w" . ace-window)
+  '("a" . ace-window)
+  '("," . consult-buffer)
+  '("l" . "<f7>")
+  '("SPC" . projectile-find-file)))
+#+end_src
 
+#+begin_src emacs-lisp
 (require 'meow)
 (meow-setup)
 (meow-global-mode 1)
-(meow-leader-define-key '("c" . "<f6> c"))
-(meow-leader-define-key '("i" . "<f6> i"))
-(meow-leader-define-key '("n" . "<f6> n"))
-(meow-leader-define-key '("p" . "<f6> p"))
-;; (meow-leader-define-key '("b" . "<f6> b"))
-(meow-leader-define-key '("f" . "<f6> f"))
-(meow-leader-define-key '("q" . "<f6> q"))
-(meow-leader-define-key '("t" . "<f6> t"))
-(meow-leader-define-key '("s" . "<f6> s"))
-(meow-leader-define-key '("v" . "<f6> v"))
-(meow-leader-define-key '("w" . ace-window))
-(meow-leader-define-key '("a" . ace-window))
-(meow-leader-define-key '("," . consult-buffer))
-(meow-leader-define-key '("l" . "<f7>"))
-(meow-leader-define-key '("SPC" . projectile-find-file))
+(setq
+ meow-replace-state-name-list `((normal . "N")
+                                (motion . "M")
+                                (keypad . "K")
+                                (insert . "I")
+                                (beacon . "B")))
+;; (meow-leader-define-key '("b" . "<f6> b")) ???? where u at
 
 (setq doom-leader-alt-key "<f6>")
 (setq meow-expand-hint-remove-delay 2.5)
@@ -1492,6 +1500,78 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 ;; (map! :map doom-leader-)
 
+
+
+(use-package embrace
+   :config
+    (map! "M-s c" #'embrace-change
+          "M-s a" #'embrace-add
+          "M-s d" #'embrace-delete))
+
+(map! "C-," #'er/expand-region)
+
+(define-key org-mode-map (kbd "C-,") #'er/expand-region)
+
+;; The fwollowing code will turn off corfu only when the edits are being applied
+;; (add-hook 'macrursors-pre-finish-hook 'meow-global-mode)
+;; (add-hook 'macrursors-post-finish-hook 'meow-global-mode)
+#+end_src
+
+
+
+#+begin_src emacs-lisp
+(delete-selection-mode -1)
+
+(after! meow
+ (defun toggle-meow-during-macro ()
+    (if (bound-and-true-p macrursors-mode)
+        (meow-global-mode -1)
+      (meow-global-mode 1)))
+
+ (add-hook 'macrursors-mode-hook 'toggle-meow-during-macro)
+
+ (defun meow--maybe-toggle-beacon-state ())
+ (add-hook 'meow-insert-exit-hook #'corfu-quit))
+#+end_src
+
+#+begin_src emacs-lisp
+(after! doom-modeline
+
+  (doom-modeline-def-segment modals
+   (when (bound-and-true-p meow-mode)
+     (doom-modeline--modal-icon
+      meow--indicator
+      (cond
+       ((meow-normal-mode-p) 'doom-modeline-evil-normal-state)
+       ((meow-insert-mode-p) 'doom-modeline-evil-insert-state)
+       ((meow-keypad-mode-p) 'doom-modeline-evil-visual-state)
+       ((meow-motion-mode-p) 'doom-modeline-evil-operator-state)
+       (t 'doom-modeline-evil-normal-state))
+      meow--indicator
+      (cond
+       ((meow-normal-mode-p) "nf-md-alpha_n")
+       ((meow-insert-mode-p) "nf-md-alpha_i")
+       ((meow-keypad-mode-p) "nf-md-alpha_k")
+       ((meow-motion-mode-p) "nf-md-alpha_m")
+       (t "nf-md-alpha_n_circle"))
+      (cond
+       ((meow-normal-mode-p) "🅝")
+       ((meow-insert-mode-p) "🅘")
+       ((meow-motion-mode-p) "🅜")
+       (t "🅝"))))))
+
+#+end_src
+
+#+begin_src emacs-lisp
+(add-hook 'git-commit-setup-hook #'meow-insert-mode)
+
+;; go to matching parens
+;; magit commit -> insert mode
+;; magit status -> nothing?
+#+end_src
+
+** macrursors
+#+begin_src emacs-lisp
 (use-package macrursors
   :config
   (dolist (mode '(corfu-mode goggles-mode beacon-mode))
@@ -1512,39 +1592,47 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (define-key macrursors-mark-map (kbd "s") #'macrursors-mark-all-symbols)
   (define-key macrursors-mark-map (kbd "e") #'macrursors-mark-all-sexps)
   (define-key macrursors-mark-map (kbd "f") #'macrursors-mark-all-defuns)
-  (define-key macrursors-mark-map (kbd "n") #'macrursors-mark-all-numbers)
+  (define-key macrursors-mark-map (kbd "n") #'macrursors-mark-next-line)
+  (define-key macrursors-mark-map (kbd "n") #'macrursors-mark-previous-line)
   (define-key macrursors-mark-map (kbd "Q") #'macrursors-mark-all-sentences)
   (define-key macrursors-mark-map (kbd "r") #'macrursors-mark-all-lines))
 
-(use-package embrace
-   :config
-    (map! "M-s c" #'embrace-change
-          "M-s a" #'embrace-add
-          "M-s d" #'embrace-delete))
+(after! doom-modeline
+ (defun doom-modeline--macrursors ()
+  (when (bound-and-true-p macrursors-mode)
+        (let ((cursors-curr (1+ (cl-count-if (lambda (p) (< p (point))) macrursors--overlays
+                                            :key #'overlay-start)))
+              (cursors-count (1+ (length macrursors--overlays)))
+              (face 'doom-modeline-panel))
+             (concat
+                     (or (doom-modeline-icon 'mdicon "nf-md-multicast" "" "" :face face)
+                         (propertize "I"
+                                     'face `(:inherit ,face :height 1.4 :weight normal)
+                                     'display '(raise -0.1)))
+                     (propertize (doom-modeline-vspc)
+                                 'face `(:inherit (variable-pitch ,face)))
+                     (propertize (format "%d/%d " cursors-curr cursors-count) 'face face)))))
 
-(map! "C-," #'er/expand-region)
+ (doom-modeline-def-segment matches
+   "Displays matches.
 
-(define-key org-mode-map (kbd "C-,") #'er/expand-region)
-
-;; The fwollowing code will turn off corfu only when the edits are being applied
-;; (add-hook 'macrursors-pre-finish-hook 'meow-global-mode)
-;; (add-hook 'macrursors-post-finish-hook 'meow-global-mode)
-
-(delete-selection-mode -1)
-
-(after! meow
- (defun toggle-meow-during-macro ()
-    (if (bound-and-true-p macrursors-mode)
-        (meow-global-mode -1)
-      (meow-global-mode 1)))
-
- (add-hook 'macrursors-mode-hook 'toggle-meow-during-macro)
-
- (defun meow--maybe-toggle-beacon-state ()))
-;; macrursors in doom modeline!
-;; go to matching parens
+Including:
+1. the currently recording macro, 2. A current/total for the
+current search term (with `anzu'), 3. The number of substitutions being
+conducted with `evil-ex-substitute', and/or 4. The number of active `iedit'
+regions, 5. The current/total for the highlight term (with `symbol-overlay'),
+6. The number of active `multiple-cursors'."
+   (let ((meta (concat (doom-modeline--macro-recording)
+                       (doom-modeline--anzu)
+                       (doom-modeline--phi-search)
+                       (doom-modeline--evil-substitute)
+                       (doom-modeline--iedit)
+                       (doom-modeline--symbol-overlay)
+                       (doom-modeline--multiple-cursors)
+                       (doom-modeline--macrursors))))
+     (or (and (not (string-empty-p meta)) meta)
+         (doom-modeline--buffer-size)))))
 #+end_src
-
 ** workspaces
 
 #+begin_src emacs-lisp
@@ -1632,7 +1720,6 @@ reordering."
   (map! :ni "C-<tab>" #'+workspace:switch-next)
   (map! :ni "C-S-<iso-lefttab>" #'+workspace:switch-previous))
 #+end_src
-
 ** session restore
 #+begin_src emacs-lisp
 (defadvice! restore-no-confirm-session-quickload-a (_)
