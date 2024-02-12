@@ -1459,9 +1459,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (meow-leader-define-key '("a" . ace-window))
 (meow-leader-define-key '("," . consult-buffer))
 (meow-leader-define-key '("l" . "<f7>"))
+(meow-leader-define-key '("SPC" . projectile-find-file))
 
 (setq doom-leader-alt-key "<f6>")
-
 (setq meow-expand-hint-remove-delay 2.5)
 ;; (map! :map meow-leader-keymap
 (map! :map doom-leader-versioning-map "v" #'magit-status)
@@ -1490,7 +1490,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
  "M-9"   #'+workspace/switch-to-8
  "M-0"   #'+workspace/switch-to-final)
 
-
+;; (map! :map doom-leader-)
 
 (use-package macrursors
   :config
@@ -1498,7 +1498,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
     (add-hook 'macrursors-pre-finish-hook mode)
     (add-hook 'macrursors-post-finish-hook mode))
   (define-prefix-command 'macrursors-mark-map)
-  (global-set-key (kbd "C-c SPC") #'macrursors-select)
+  ;; (global-set-key (kbd "C-c SPC") #'macrursors-select)
   (global-set-key (kbd "C->") #'macrursors-mark-next-instance-of)
   (global-set-key (kbd "C-<") #'macrursors-mark-previous-instance-of)
   (global-set-key (kbd "M-n") #'macrursors-mark-next-instance-of)
@@ -1542,6 +1542,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
  (defun meow--maybe-toggle-beacon-state ()))
 ;; macrursors in doom modeline!
+;; go to matching parens
 #+end_src
 
 ** workspaces
