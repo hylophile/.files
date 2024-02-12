@@ -7,7 +7,7 @@
 ;;; Packages
 (use-package! corfu
   :defer t
-  :hook (doom-first-buffer-hook . global-corfu-mode)
+  :hook (doom-first-input . global-corfu-mode)
   :config
   (setq corfu-auto t
         corfu-auto-delay 0.1
@@ -32,6 +32,8 @@
         ;; However, it should otherwise behave like normal, whatever normal was.
         tab-always-indent (if (modulep! +tng) 'complete tab-always-indent))
   (add-to-list 'completion-category-overrides `(lsp-capf (styles ,@completion-styles)))
+
+  (add-to-list 'corfu-continue-commands #'+corfu-move-to-minibuffer)
 
   (add-hook! 'minibuffer-setup-hook
     (defun +corfu-enable-in-minibuffer ()
