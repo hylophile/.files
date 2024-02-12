@@ -174,58 +174,6 @@ always forget what this does exactly, but it's Good™
       "t t" #'+vterm/toggle
       "t T" #'+vterm/here)
 #+end_src
-** olivetti :ARCHIVE:
-
-#+begin_src emacs-lisp
-;; (use-package! olivetti
-;;   :custom (olivetti-body-width 100)
-;;           (olivetti-style 'fancy))
-;; (map! :after olivetti :leader "t o" #'olivetti-mode)
-;; (add-hook 'text-mode-hook 'olivetti-mode)
-;; (add-hook 'prog-mode-hook 'olivetti-mode)
-;; ;; (add-hook 'special-mode-hook 'olivetti-mode)
-
-;; ;; (custom-set-faces! `(olivetti-fringe :background ,(doom-color 'grey)))
-;; (custom-set-faces! `(olivetti-fringe :inherit solaire-default-face))
-
-
-;; (after! (olivetti persp-mode)
-;;         (defvar persp-olivetti-buffers-backup nil)
-;;         (add-hook 'persp-before-deactivate-functions
-;;                 #'(lambda (fow))
-;;                 (dolist (b (mapcar #'window-buffer
-;;                                         (window-list (selected-frame)
-;;                                                 'no-minibuf)))
-;;                         (with-current-buffer b)
-;;                         (when (eq 'olivetti-split-window-sensibly
-;;                                 split-window-preferred-function))
-;;                         (push b persp-olivetti-buffers-backup)
-;;                         (remove-hook 'window-configuration-change-hook
-;;                                         #'olivetti-set-environment t)
-;;                         (setq-local split-window-preferred-function nil)
-;;                         (olivetti-reset-all-windows)))
-;;         (add-hook 'persp-activated-functions
-;;                 #'(lambda (fow))
-;;                 (dolist (b persp-olivetti-buffers-backup)
-;;                         (with-current-buffer b)
-;;                         (setq-local split-window-preferred-function
-;;                                 'olivetti-split-window-sensibly)
-;;                         (add-hook 'window-configuration-change-hook
-;;                                 #'olivetti-set-environment nil t))
-;;                 (setq persp-olivetti-buffers-backup nil)))
-#+end_src
-** writeroom :ARCHIVE:
-#+begin_src emacs-lisp
-;; (require 'writeroom-mode)
-;; (global-writeroom-mode +1)
-
-
-;; (setq writeroom-global-effects nil)
-;; (setq writeroom-maximize-window nil)
-;; (setq writeroom-mode-line t)
-;; (setq writeroom-width 100)
-;; (setq writeroom-major-modes '(text-mode prog-mode special-mode))
-#+end_src
 ** center all text
 #+begin_src emacs-lisp
 (use-package! visual-fill-column
@@ -239,86 +187,6 @@ always forget what this does exactly, but it's Good™
   (special-mode . visual-fill-column-mode))
 
 (map! :after visual-fill-column :leader "t o" #'visual-fill-column-mode)
-#+end_src
-** darkman :ARCHIVE:
-#+begin_src emacs-lisp
-(let ((output (shell-command-to-string "darkman get")))
-    (if (string= (string-trim-right output) "light")
-        (load-theme 'ef-spring t)
-      (load-theme 'doom-rouge t)))
-#+end_src
-** gptel :ARCHIVE:
-
-#+begin_src emacs-lisp
-(after! gptel
- (defun my/gptel-api-key-from-auth-source (&optional host user)
-   "Lookup api key in the auth source.
-By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
-   (if-let ((secret (plist-get (car (auth-source-search
-                                     :max 1
-                                     :host (or host "openai.com")
-                                     :user (or user "apikey")))
-                               :secret)))
-       (if (functionp secret) (funcall secret) secret)
-     (user-error "No `gptel-api-key' found in the auth source")))
- (setq gptel-api-key #'my/gptel-api-key-from-auth-source))
-
-#+end_src
-** evil relative in normal, absolute in insert :ARCHIVE:
-#+begin_src emacs-lisp
-
-(add-hook 'evil-normal-state-entry-hook
-          (cmd! (when (doom-real-buffer-p (current-buffer))
-                  (let (message-log-max)
-                    (with-temp-message (or (current-message) "")
-                      (menu-bar--display-line-numbers-mode-relative))))))
-
-(add-hook 'evil-insert-state-entry-hook
-          (cmd! (let (message-log-max)
-                  (with-temp-message (or (current-message) "")
-                    (menu-bar--display-line-numbers-mode-absolute)))))
-#+end_src
-
-** modeline
-#+begin_src emacs-lisp
-(setq doom-modeline-modal-icon nil)
-
-(advice-add #'doom-modeline-segment--modals :override #'ignore)
-
-#+end_src
-** flymake :ARCHIVE:
-#+begin_src emacs-lisp
-
-(use-package flymake
-  :defer t
-  :init
-  ;; as flymakes fail silently there is no need to activate it on a per major mode basis
-  (add-hook! (prog-mode text-mode) #'flymake-mode)
-  :config
-  (setq flymake-fringe-indicator-position 'right-fringe))
-
-(use-package flymake-popon
-  :hook (flymake-mode . flymake-popon-mode)
-  :config
-  (setq flymake-popon-method (if (modulep! :checkers syntax +childframe)
-                                 'postframe
-                               'popon)))
-;; (use-package! flymake-vale
-;;   :hook ((text-mode       . flymake-vale-load)
-;;          ;; is this needed? prob not, eh
-;;          (org-mode        . flymake-vale-load)
-;;          (markdown-mode   . flymake-vale-load)
-;;          (message-mode    . flymake-vale-load)))
-
-;; gives support for org msg if you use that
-;; (add-hook! 'org-msg-mode-hook
-;;   (setq flymake-vale-file-ext ".org")
-;;   (flymake-vale-load))
-
-#+end_src
-** singularity :ARCHIVE:
-#+begin_src emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.recipe$" . singularity-mode))
 #+end_src
 ** dotfiles
 A bit of setup for managing a bare dotfile repository.
@@ -336,12 +204,12 @@ We check whether the current =default-directory= belongs to our dotfiles with =g
          (default (file-name-as-directory (expand-file-name default-directory))))
     (unless (assoc default hy/dotfile-dirs)
       (push (cons default (eq 0 (call-process "/usr/bin/env" nil nil nil
-                                 "git"
-                                 (format "--git-dir=%s" git-dir)
-                                 (format "--work-tree=%s" work-tree)
-                                 "ls-files"
-                                 "--error-unmatch"
-                                 default)))
+                                              "git"
+                                              (format "--git-dir=%s" git-dir)
+                                              (format "--work-tree=%s" work-tree)
+                                              "ls-files"
+                                              "--error-unmatch"
+                                              default)))
             hy/dotfile-dirs))
     (when (cdr-safe (assoc default hy/dotfile-dirs))
       (push (format "GIT_WORK_TREE=%s" work-tree) env)
@@ -358,10 +226,10 @@ When we want to add a new untracked dotfile in a new directory, we have no way o
   (interactive)
   (if (magit-gitdir)
       (call-interactively #'magit-stage-file)
-      (shell-command (concat
-                      "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME add "
-                      (buffer-file-name))
-                     t)))
+    (shell-command (concat
+                    "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME add "
+                    (buffer-file-name))
+                   t)))
 
 (map! :after magit :leader "g S" #'hy/magit-stage-file)
 #+end_src
@@ -371,100 +239,10 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 (defun hy/projectile-find-file ()
   (interactive)
   (if (equal (expand-file-name "~/") (projectile-project-root))
-    (call-interactively #'find-file)
+      (call-interactively #'find-file)
     (projectile-find-file)))
 
-(map! :leader "SPC" #'hy/projectile-find-file)
-#+end_src
-** dofiles bench :ARCHIVE:
-#+begin_src emacs-lisp :tangle yes
-(defun my/magit-process-environment (env)
-  "Detect and set git -bare repo env vars when in tracked dotfile directories."
-  (let* ((default (file-name-as-directory (expand-file-name default-directory)))
-         (git-dir (expand-file-name "~/.dotfiles/"))
-         (work-tree (expand-file-name "~/"))
-         (dotfile-dirs
-          (-map (apply-partially 'concat work-tree)
-                (-uniq (-keep #'file-name-directory (split-string (shell-command-to-string
-                (format "/usr/bin/git --git-dir=%s --work-tree=%s ls-tree --full-tree --name-only -r HEAD"
-                        git-dir work-tree))))))))
-    (push work-tree dotfile-dirs)
-    (when (member default dotfile-dirs)
-      (push (format "GIT_WORK_TREE=%s" work-tree) env)
-      (push (format "GIT_DIR=%s" git-dir) env)))
-  env)
-
-(advice-add 'magit-process-environment
-            :filter-return #'my/magit-process-environment)
-#+end_src
-
-** magit
-
-#+begin_src emacs-lisp
-(map! :map magit-status-mode-map
-      "<escape>" #'+magit/quit)
-#+end_src
-
-** follow file links with position :ARCHIVE:
-
-#+begin_src emacs-lisp
-(after! link-hint
-  (link-hint-define-type 'file-link
-    :next #'link-hint--next-file-link
-    :at-point-p #'ffap-file-at-point
-    ;; TODO consider making file links opt-in (use :vars)
-    :not-vars '(org-mode Info-mode)
-    :open #'hylo/find-file-at-point-with-pos
-    :copy #'kill-new))
-
-  (defun hylo/find-file-at-point-with-pos ()
-    "goto line and column number of file at point, for example
-~/woop.el:202:13. useful for link-hint-open-link"
-    ;; (interactive)
-  (save-match-data
-    (let* ((line-content (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-           (matched (string-match ":\\([0-9]+\\):?\\([0-9]*\\)" line-content))
-           (line-number (and matched
-                             (match-string 1 line-content)
-                             (string-to-number (match-string 1 line-content))))
-           (col-number (and matched
-                            (match-string 2 line-content)
-                            (string-to-number (match-string 2 line-content))))
-           (filename (ffap-guesser)))
-      (when (boundp 'hy/current-frame)
-        (select-frame-set-input-focus hy/current-frame))
-      (when (boundp 'hy/current-window)
-        (select-window hy/current-window))
-      (find-file filename)
-      (when line-number
-        (goto-char (point-min))
-        (forward-line (- line-number 1)))
-      (when (> col-number 0)
-        (move-to-column (- col-number 1)))
-        )))
-
-
-
-(defun hylo/find-file-with-pos-here ()
-  (interactive)
-  (let ((hy/current-frame (selected-frame))
-        (hy/current-window (selected-window)))
-    (link-hint-open-link)))
-
-(map! :leader :prefix "s"  (:desc "hi" "t" #'hylo/find-file-with-pos-here))
-
-
-(defun touch-file ()
-  "Force modification of current file, unless already modified."
-  (interactive)
-  (if (and (verify-visited-file-modtime (current-buffer))
-           (not (buffer-modified-p)))
-      (progn
-        (set-buffer-modified-p t)
-        (save-buffer 0))))
-
-;; FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(\w+/)+(\w+\.)+\w+:[0-9]+:[0-9]+#$(dirs)/&#g"
-;;λ FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(src/|test/)#$(pwd)/&#g"
+;;(map! :leader "SPC" #'hy/projectile-find-file)
 #+end_src
 ** bib
 #+begin_src emacs-lisp
@@ -491,7 +269,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
  ;; doom-font (font-spec :family "Victor Mono" :weight 'semi-bold :size 12.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  doom-variable-pitch-font (font-spec :family "Jost" :size 13.0))
- ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
+;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
 
 
 (setq doom-themes-enable-italic t)
@@ -532,7 +310,6 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;; (delete bookmark-default-file recentf-list)
 #+end_src
 
-
 ** theme
 
 #+begin_src emacs-lisp
@@ -541,7 +318,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 (setq my/theme (let ((output (shell-command-to-string "darkman get")))
                  (if (string= (string-trim-right output) "light")
                      'ef-tritanopia-light
-                   'doom-rouge)))
+                   'modus-vivendi)))
 ;; (setq doom-theme (hylo/random-dark-theme))
 (setq doom-theme my/theme)
 ;; (setq doom-theme 'ef-spring)
@@ -550,8 +327,6 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 (use-package! ef-themes)
 #+end_src
-
-** vterm
 
 ** avy
 
@@ -564,18 +339,18 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;;         :map magit-mode-map :n "C-t" #'avy-goto-char-3
 ;;         :map evil-org-mode-map :i "C-t" #'avy-goto-char-3)
 
-(map! :nv "S" #'avy-goto-char-2)
-(map! :g "C-l" #'avy-goto-line
-      :map evil-org-mode-map :i "C-l" #'avy-goto-line)
+;; (map! :nv "S" #'avy-goto-char-2)
+;; (map! :g "C-l" #'avy-goto-line
+;;       :map evil-org-mode-map :i "C-l" #'avy-goto-line)
 
 
 (defun avy-action-lookup-documentation (pt)
   (save-excursion
     (goto-char pt)
     (+lookup/documentation (doom-thing-at-point-or-region))))
-  ;; (select-window
-  ;;  (cdr (ring-ref avy-ring 0))
-  ;;  t)
+;; (select-window
+;;  (cdr (ring-ref avy-ring 0))
+;;  t)
 
 
 (setf (alist-get ?h avy-dispatch-alist) 'avy-action-lookup-documentation)
@@ -674,9 +449,8 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 (after! org
   (set-popup-rule! "^\\*Calendar" :side 'bottom)
   (set-popup-rule! "^\\*Org Src" :ignore t))
-  ;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.31 :quit nil :select t :autosave t :modeline t :ttl nil))
+;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.31 :quit nil :select t :autosave t :modeline t :ttl nil))
 #+end_src
-
 
 
 ** dired
@@ -685,7 +459,6 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 (setq dired-dwim-target t)
 #+end_src
-
 
 ** all stuff
 
@@ -857,11 +630,11 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
               ('right offset-l))
             ;; y position + v-offset
             5)))
-            ;; (- (frame-outer-height (selected-frame)) height 120))))
+  ;; (- (frame-outer-height (selected-frame)) height 120))))
 
   (setq eldoc-box-position-function #'my/eldoc-box--default-upper-corner-position-function))
 (custom-set-faces! `(eldoc-box-border :background ,(doom-color 'grey)))
-  ;; (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background))))
+;; (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background))))
 
 #+end_src
 ** org-timeblock
@@ -881,66 +654,16 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
      ("homework" "#bdb2ff")
      ("work" "#ffc6ff")
      ("todo" "#ffadad"))))
- ;; "#ffadad";
- ;; "#ffd6a5";
- ;; "#fdffb6";
- ;; "#caffbf";
- ;; "#9bf6ff";
- ;; "#a0c4ff";
- ;; "#bdb2ff";
- ;; "#ffc6ff";
- ;; "#fffffc")
- ;
-
-#+end_src
-
-** affe :ARCHIVE:
-#+begin_src emacs-lisp
-;; (after! projectile
-;;   (defun hy/affe-find-in-project ()
-;;     (interactive)
-;;     (let ((affe-find-command "rg --color=never --files --hidden --ignore --glob \"!.git\"")
-;;           (project-root (projectile-project-root)))
-;;       (funcall-interactively #'affe-find project-root))
-;;     (run-hooks 'projectile-find-file-hook)))
-
-;;   ;; (map! :leader "SPC" #'hy/affe-find-in-project))
-
-
-;; (map! :leader
-;;       :desc "FuZzily find File in home"
-;;       "f z f" (cmd!! #'affe-find "~/"))
-;; (map! :leader
-;;       :desc "FuZzily find file in this Dir"
-;;       "f z d" (cmd!! #'affe-find))
-
-
-
-
-#+end_src
-
-** eldoc :ARCHIVE:
-#+begin_src emacs-lisp
-
-(after! eldoc
-  (delete #'eldoc-display-in-echo-area eldoc-display-functions))
-
-#+end_src
-
-** apheleia formatting :ARCHIVE:
-
-#+begin_src emacs-lisp
-(setq +format-with-lsp nil)
-
-(setq-hook! 'haskell-mode-hook +format-with 'fourmolu)
-(after! apheleia
- (push '(fourmolu . ("fourmolu" "--stdin-input-file" (or (buffer-file-name) (buffer-name))))
-       apheleia-formatters))
-
-;; (use-package! apheleia
-;;   :config
-;;   (apheleia-global-mode +1)
-;;   (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
+;; "#ffadad";
+;; "#ffd6a5";
+;; "#fdffb6";
+;; "#caffbf";
+;; "#9bf6ff";
+;; "#a0c4ff";
+;; "#bdb2ff";
+;; "#ffc6ff";
+;; "#fffffc")
+                                        ;
 
 #+end_src
 
@@ -981,110 +704,14 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 ;; ^ together with tab-bar-lines . 0
 #+end_src
 
-** tempel :ARCHIVE:
-#+begin_src emacs-lisp
-
-
-(use-package tempel
-  ;; Require trigger prefix before template name when completing.
-  ;; :custom
-  ;; (tempel-trigger-prefix "<")
-
-  :bind (("M-t" . tempel-complete) ;; Alternative tempel-expand
-         ("C-M-t" . tempel-insert)
-         )
-
-  :init
-
-  ;; Setup completion at point
-  (defun tempel-setup-capf ()
-    ;; Add the Tempel Capf to `completion-at-point-functions'.
-    ;; `tempel-expand' only triggers on exact matches. Alternatively use
-    ;; `tempel-complete' if you want to see all matches, but then you
-    ;; should also configure `tempel-trigger-prefix', such that Tempel
-    ;; does not trigger too often when you don't expect it. NOTE: We add
-    ;; `tempel-expand' *before* the main programming mode Capf, such
-    ;; that it will be tried first.
-    (after! lsp-mode
-      (setq-local completion-at-point-functions
-                  (cons #'tempel-expand
-                        completion-at-point-functions))))
-
-  (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  (add-hook 'text-mode-hook 'tempel-setup-capf)
-
-  ;; Optionally make the Tempel templates available to Abbrev,
-  ;; either locally or globally. `expand-abbrev' is bound to C-x '.
-  ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
-  ;; (global-tempel-abbrev-mode)
-
-  (map! :map tempel-map
-        "<tab>" #'tempel-next
-        "<backtab>" #'tempel-previous
-        "C-<tab>" #'tempel-next
-        "C-S-<tab>" #'tempel-previous ;???
-        "M-<right>" #'tempel-next
-        "M-<left>" #'tempel-previous)
-
-  :custom
-  (tempel-path (concat doom-user-dir "templates"))
-  )
-
-
-(when (modulep! :completion corfu)
-  (map! :map corfu-map
-        (:prefix "C-x"
-                 "C-t" #'tempel-complete)))
-
-(defadvice! hy/tempel-insert-evil-insert (&rest _)
-  "always go to evil insert mode after inserting a template"
-  :after #'tempel-insert
-  (evil-insert 0))
-(defadvice! hy/tempel-complete-evil-insert (&rest _)
-  "always go to evil insert mode after inserting a template"
-  :after #'tempel-complete
-  (evil-insert 0))
-
-(defadvice! hy/tempel-complete-trim-newline-in-region (&rest _)
-  "trim a trailing newline in the region to make inserting the
-region into a snippet more streamlined"
-  :before #'tempel-complete
-  (remove-trailing-whitespace-in-region))
-
-(defadvice! hy/tempel-insert-trim-newline-in-region (&rest _)
-  "trim a trailing newline in the region to make inserting the
-region into a snippet more streamlined"
-  :before #'tempel-insert
-  (remove-trailing-whitespace-in-region))
-
-
-(defun remove-trailing-whitespace-in-region ()
-  (when (use-region-p)
-    (when (> (mark) (point)) (exchange-point-and-mark))
-    (when (looking-at "\n")
-      (re-search-backward "[^\n]+"))
-    (goto-char (1+ (point)))))
-
-
-
-(defun hy/eh ()
-  (interactive)
-  (message (format "\"%s\"" (buffer-substring-no-properties (point) (mark)))))
-#+end_src
-
-*** TODO how to check if region exists? region-active-p doesn't work
-
-*** TODO trim region before insert, so that `V M-t` works
-*** TODO after tempel-insert -> insert mode
-
 ** embark
 
 #+begin_src emacs-lisp
 (map! :map embark-file-map "f" #'hy/find-file-in-fair-split)
 
 (defun hy/find-file-in-fair-split (file) (interactive "FFile: ")
-                                 (hylo/split-window-fair-and-follow)
-                                 (find-file file))
+       (hylo/split-window-fair-and-follow)
+       (find-file file))
 
 #+end_src
 
@@ -1131,9 +758,9 @@ region into a snippet more streamlined"
 
 
 
-(map! :ni "C-+" #'doom/increase-font-size)
-(map! :ni "C-=" #'doom/reset-font-size)
-(map! :ni "C--" #'doom/decrease-font-size)
+(map! "C-+" #'doom/increase-font-size)
+(map! "C-=" #'doom/reset-font-size)
+(map! "C--" #'doom/decrease-font-size)
 
 
 
@@ -1251,12 +878,12 @@ With prefix arg C-u, copy region instad of killing it."
         (insert (format org-refile-region-format text))))))
 
 
-(map! :map org-mode-map
-      :localleader
-      (:prefix ("SPC" . "mine")
-      ;; "r" #'org-refile-region ; bugged
-      "d" (cmd! (org-todo "DONE"))
-      "D" #'org-archive-done-tasks))
+;;(map! :map org-mode-map
+;;      :localleader
+;;      (:prefix ("SzzPCaa" . "mine")
+;;      ;; "r" #'org-refile-region ; bugged
+;;      "d" (cmd! (org-todo "DONE"))
+;;      "D" #'org-archive-done-tasks))
 
 (remove-hook 'org-mode-hook #'doom-disable-show-paren-mode-h)
 
@@ -1401,9 +1028,9 @@ This hides them again."
                             (next-level (progn
                                           (ignore-errors (outline-next-heading))
                                           (org-current-level))))
-                         (when (and (< next-level current-level)
-                                    (not (looking-back "\n\n" nil)))
-                           (insert "\n")))))))
+                        (when (and (< next-level current-level)
+                                   (not (looking-back "\n\n" nil)))
+                          (insert "\n")))))))
 
 #+end_src
 #+begin_src emacs-lisp
@@ -1574,20 +1201,11 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 (setq +format-with-lsp nil)
 (after! lsp-ui
- (setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
-       lsp-ui-doc-enable nil
-       lsp-eldoc-render-all t))
+  (setq lsp-ui-sideline-enable nil  ; no more useful than flycheck
+        lsp-ui-doc-enable nil
+        lsp-eldoc-render-all t))
 
 
-#+end_src
-** tailwind :ARCHIVE:
-#+begin_src
-
-
-(use-package! lsp-tailwindcss
-  :init
-  (setq lsp-tailwindcss-add-on-mode t)
-  :config)
 #+end_src
 ** scheme
 #+begin_src emacs-lisp
@@ -1597,15 +1215,10 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;; (map! :map geiser-debug-mode-map "," #'geiser-guile-debug-menu)
 
 (after! (evil geiser)
-   (evil-set-initial-state 'geiser-debug-mode 'emacs))
+  (evil-set-initial-state 'geiser-debug-mode 'emacs))
 
 (after! scheme
   (setq geiser-mode-start-repl-p t))
-#+end_src
-** exercism :ARCHIVE:
-#+begin_src emacs-lisp
-(use-package! exercism-modern
-  :commands (exercism-modern-jump exercism-modern-view-tracks))
 #+end_src
 ** org-modern
 #+begin_src emacs-lisp
@@ -1615,65 +1228,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda))
-
-#+end_src
-
-** evil
-
-#+begin_src emacs-lisp
-
-(map! :map org-mode-map :v "$" #'evil-end-of-line)
-
-(setq evil-disable-insert-mode-bindings t)
-(setq evil-ex-substitute-global t)
-
-(setq evil-v$-excludes-newline t)
-
-(defadvice! hy/center-line-after-search (&rest _)
-:after #'evil-ex-search-next
-:after #'evil-ex-search-previous
-(evil-scroll-line-to-center nil))
-
-(map! :after evil :nv "'" #'evil-goto-mark)
-
-(setq evil-visual-update-x-selection-p t)
-(setq evil-cross-lines t)
-(setq evil-want-minibuffer t)
-#+end_src
-
-*** evil snipe
-#+begin_src emacs-lisp
-;; (map!
-;;  :after (evil-snipe evil)
-;;                     :m "," #'evil-snipe-repeat)
-;; (setq evil-snipe-override-evil-repeat-keys nil)
-
-(after! evil-snipe
-  ;; (when evil-snipe-override-evil-repeat-keys
-  (define-key evil-snipe-parent-transient-map "," nil)
-  ;; (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
-  ;; (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
-
-  (evil-define-key* '(motion normal) evil-snipe-local-mode-map
-    "S" nil
-    "," nil)
-    ;; "," 'evil-snipe-repeat
-    ;; ";" 'evil-snipe-repeat-reverse)
-
-  (evil-define-key* '(normal) evil-snipe-override-local-mode-map
-    "," nil))
-    ;; "," 'evil-snipe-repeat
-    ;; ";" 'evil-snipe-repeat-reverse)
-
-
-
-
-
-(setq evil-snipe-scope 'whole-buffer)
-
-;; (after! evil
-;;   (define-key evil-motion-state-map (kbd "RET") nil))
-
 
 #+end_src
 
@@ -1714,12 +1268,22 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 #+end_src
 
-** windows
+** ace-window
 
 #+begin_src emacs-lisp
 
 (map! :leader
       "a" #'ace-window)
+(defun split-window-right-and-focus ()
+  "Split window to the right and focus the new window."
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+(defun split-window-below-and-focus ()
+  "Split window to the right and focus the new window."
+  (interactive)
+  (split-window-below)
+  (other-window 1))
 
 (defun hylo/split-window-fair-and-follow ()
   "Split current window vertically or horizontally, based on its
@@ -1729,10 +1293,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
          (w (window-body-width window))
          (h (window-body-height window)))
     (if (< (* h 2.2) w)
-        (let ((evil-vsplit-window-right (not evil-vsplit-window-right)))
-          (call-interactively #'evil-window-vsplit))
-      (let ((evil-split-window-below (not evil-split-window-below)))
-        (call-interactively #'evil-window-split)))))
+        (split-window-right-and-focus)
+      (split-window-below-and-focus))))
 
 (map! :map evil-window-map "s" #'hylo/split-window-fair-and-follow)
 
@@ -1757,7 +1319,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   (ace-window-display-mode t)
   (setq aw-background nil)
-  (setq aw-keys '(?t ?n ?e ?r ?i ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v))
+  (setq aw-keys '(?t ?n ?e ?r ?i ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m))
 
   (defun delete-selected-window ()
     (delete-window (selected-window)))
@@ -1765,8 +1327,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
   (setq aw-dispatch-alist
         ;; no docstring means dont prompt for window, use current (weird but ok)
-        '((?K delete-selected-window)
-          (?k aw-delete-window "Delete Window")
+        '((?k delete-selected-window)
+          (?K aw-delete-window "Delete Window")
           (?m aw-move-window "Move Window")
           (?M delete-other-windows)
           (?c aw-copy-window "Copy Window")
@@ -1779,112 +1341,220 @@ items in the alltodo agenda, so we dynamically remove it when using that."
           (?R +popup/raise "Raise Window")
           ;; (?v aw-split-window-vert "Split Vert Window")
           ;; (?h aw-split-window-horz "Split Horz Window")
-          (?v +evil/window-vsplit-and-follow)
-          (?h +evil/window-split-and-follow)
+          (?v split-window-below-and-focus)
+          (?h split-window-right-and-focus)
+
           (?? aw-show-dispatch-help))))
 #+end_src
 
 
-
-** rotate text
-
-#+begin_src emacs-lisp
-(after! rotate-text
-  (add-to-list 'rotate-text-words '("false" "true")))
-#+end_src
-
-** no idea :ARCHIVE:
+** meow
 #+begin_src emacs-lisp
 
+(defun meow-setup ()
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-colemak-dh)
+  (meow-motion-overwrite-define-key
+   ;; Use e to move up, n to move down.
+   ;; Since special modes usually use n to move down, we only overwrite e here.
+   '("e" . meow-next)
+   '("i" . meow-prev)
+   '("<escape>" . ignore))
+  (meow-leader-define-key
+   '("?" . meow-cheatsheet)
+   ;; To execute the originally e in MOTION state, use SPC e.
+   '("e" . "H-e")
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument))
+  (meow-normal-define-key
+   '("0" . meow-expand-0)
+   '("1" . meow-expand-1)
+   '("2" . meow-expand-2)
+   '("3" . meow-expand-3)
+   '("4" . meow-expand-4)
+   '("5" . meow-expand-5)
+   '("6" . meow-expand-6)
+   '("7" . meow-expand-7)
+   '("8" . meow-expand-8)
+   '("9" . meow-expand-9)
+   '("-" . negative-argument)
+   '(";" . meow-reverse)
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("[" . meow-beginning-of-thing)
+   '("]" . meow-end-of-thing)
+   '("{" . backward-paragraph)
+   '("}" . forward-paragraph)
+   '("/" . meow-visit)
+   '("a" . meow-append)
+   '("A" . meow-open-below)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("c" . meow-change)
+   '("C" . meow-comment)
+   '("d" . meow-delete)
+   '("D" . meow-backward-delete)
+   ;; '("e" . meow-next)
+   ;; '("E" . meow-next-expand)
+   '("f" . meow-find)
+   '("g" . meow-cancel-selection)
+   ;; '("G" . meow-grab)
+   '("h" . meow-block)
+   '("H" . meow-to-block)
+   ;; '("i" . meow-prev)
+   ;; '("I" . meow-prev-expand)
+   '("j" . meow-join)
+   '("k" . meow-kill)
+   '("l" . meow-line)
+   '("L" . avy-goto-line)
+   '("m" . meow-mark-word)
+   '("M" . meow-mark-symbol)
+   ;; '("n" . meow-left)
+   ;; '("N" . meow-left-expand)
+   ;; '("o" . meow-right)
+   ;; '("O" . meow-right-expand)
+   '("p" . meow-yank)
+   '("P" . meow-yank-pop)
+   ;; '("q" . meow-ca)
+   '("r" . meow-replace)
+   '("R" . meow-replace-pop)
+   '("s" . meow-insert)
+   '("S" . meow-open-above)
+   '("t" . meow-till)
+   ;; '("T" . avy-goto-char-2)
+   '("u" . meow-undo)
+   '("U" . undo-redo)
+   ;; '("U" . meow-undo-in-selection)
+   '("v" . meow-search)
+   '("w" . meow-next-word)
+   '("W" . meow-next-symbol)
+   '("x" . avy-goto-char-2)
+   '("y" . meow-save)
+   '("z" . meow-pop-selection)
+   ;; '("Z" . meow-swap-grab)
+   '("'" . repeat)
+   '("<escape>" . ignore)))
 
-(setq find-file-visit-truename nil)
-(setq find-file-existing-other-name nil)
-;; (defun my/todo-org-is-unreal (buf)
-;;       (string= (buffer-name buf) "todo.org"))
-;; (push #'my/todo-org-is-unreal doom-unreal-buffer-functions)
+(require 'meow)
+(meow-setup)
+(meow-global-mode 1)
+(meow-leader-define-key '("c" . "<f6> c"))
+(meow-leader-define-key '("i" . "<f6> i"))
+(meow-leader-define-key '("n" . "<f6> n"))
+(meow-leader-define-key '("p" . "<f6> p"))
+;; (meow-leader-define-key '("b" . "<f6> b"))
+(meow-leader-define-key '("f" . "<f6> f"))
+(meow-leader-define-key '("q" . "<f6> q"))
+(meow-leader-define-key '("t" . "<f6> t"))
+(meow-leader-define-key '("s" . "<f6> s"))
+(meow-leader-define-key '("v" . "<f6> v"))
+(meow-leader-define-key '("w" . ace-window))
+(meow-leader-define-key '("a" . ace-window))
+(meow-leader-define-key '("," . consult-buffer))
+(meow-leader-define-key '("l" . "<f7>"))
+
+(setq doom-leader-alt-key "<f6>")
+
+(setq meow-expand-hint-remove-delay 2.5)
+;; (map! :map meow-leader-keymap
+(map! :map doom-leader-versioning-map "v" #'magit-status)
+;;   "w" #'meow-keypad-start)
+(setq doom-localleader-alt-key "<f7>")
+;; (map! :map meow-leader-keymap
+;;   "l" #'meow-keypad-start)
+;; (defun meow--maybe-toggle-beacon-state () nil)
+
+;; embrace-change
+
+(setq meow-use-clipboard t)
+(map!
+ "C-S-t"   #'+workspace/new
+ "C-S-w"   #'+workspace/delete
+ "C-<tab>" #'+workspace/cycle
+ "C-S-<iso-lefttab>" (cmd! (+workspace/cycle -1))
+ "M-1"   #'+workspace/switch-to-0
+ "M-2"   #'+workspace/switch-to-1
+ "M-3"   #'+workspace/switch-to-2
+ "M-4"   #'+workspace/switch-to-3
+ "M-5"   #'+workspace/switch-to-4
+ "M-6"   #'+workspace/switch-to-5
+ "M-7"   #'+workspace/switch-to-6
+ "M-8"   #'+workspace/switch-to-7
+ "M-9"   #'+workspace/switch-to-8
+ "M-0"   #'+workspace/switch-to-final)
 
 
-(setq iedit-toggle-key-default nil)
 
+(use-package macrursors
+  :config
+  (dolist (mode '(corfu-mode goggles-mode beacon-mode))
+    (add-hook 'macrursors-pre-finish-hook mode)
+    (add-hook 'macrursors-post-finish-hook mode))
+  (define-prefix-command 'macrursors-mark-map)
+  (global-set-key (kbd "C-c SPC") #'macrursors-select)
+  (global-set-key (kbd "C->") #'macrursors-mark-next-instance-of)
+  (global-set-key (kbd "C-<") #'macrursors-mark-previous-instance-of)
+  (global-set-key (kbd "M-n") #'macrursors-mark-next-instance-of)
+  (global-set-key (kbd "M-p") #'macrursors-mark-previous-instance-of)
+  (global-set-key (kbd "C-;") 'macrursors-mark-map)
+  (define-key macrursors-mark-map (kbd "C-;") #'macrursors-mark-all-lines-or-instances)
+  (define-key macrursors-mark-map (kbd "SPC") #'macrursors-select)
+  (define-key macrursors-mark-map (kbd ".") #'macrursors-mark-all-instances-of)
+  (define-key macrursors-mark-map (kbd ";") #'macrursors-mark-all-lines-or-instances)
+  (define-key macrursors-mark-map (kbd "l") #'macrursors-mark-all-lists)
+  (define-key macrursors-mark-map (kbd "s") #'macrursors-mark-all-symbols)
+  (define-key macrursors-mark-map (kbd "e") #'macrursors-mark-all-sexps)
+  (define-key macrursors-mark-map (kbd "f") #'macrursors-mark-all-defuns)
+  (define-key macrursors-mark-map (kbd "n") #'macrursors-mark-all-numbers)
+  (define-key macrursors-mark-map (kbd "Q") #'macrursors-mark-all-sentences)
+  (define-key macrursors-mark-map (kbd "r") #'macrursors-mark-all-lines))
 
-;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
+(use-package embrace
+   :config
+    (map! "M-s c" #'embrace-change
+          "M-s a" #'embrace-add
+          "M-s d" #'embrace-delete))
 
+(map! "C-," #'er/expand-region)
+
+(define-key org-mode-map (kbd "C-,") #'er/expand-region)
+
+;; The fwollowing code will turn off corfu only when the edits are being applied
+;; (add-hook 'macrursors-pre-finish-hook 'meow-global-mode)
+;; (add-hook 'macrursors-post-finish-hook 'meow-global-mode)
+
+(delete-selection-mode -1)
+
+(after! meow
+ (defun toggle-meow-during-macro ()
+    (if (bound-and-true-p macrursors-mode)
+        (meow-global-mode -1)
+      (meow-global-mode 1)))
+
+ (add-hook 'macrursors-mode-hook 'toggle-meow-during-macro)
+
+ (defun meow--maybe-toggle-beacon-state ()))
+;; macrursors in doom modeline!
 #+end_src
-
-
-
-
-** mail
-
-#+begin_src emacs-lisp
-
-;; (defadvice! go-to-workspace-if-exists-mu4e (fun)
-;;   "Go back to the mu4e workspace if it exists, otherwise launch mu4e normally."
-;;   :around #'=mu4e
-;;   (run-at-time nil nil (lambda () (if (+workspace-get +mu4e-workspace-name t)
-;;                                       (+workspace-switch +mu4e-workspace-name)
-;;                                     (funcall fun))))
-;;   (ignore-errors (abort-recursive-edit)))
-
-
-;; (after! mu4e
-;;   (setq sendmail-program (executable-find "msmtp")
-;;         send-mail-function #'smtpmail-send-it
-;;         message-sendmail-f-is-evil t
-;;         message-sendmail-extra-arguments '("--read-envelope-from")
-;;         message-send-mail-function #'message-send-mail-with-sendmail))
-
-;; (after! mu4e-alert
-;;   (setq +mu4e-alert-bell-cmd nil))
-;; (setq mu4e-context-policy 'ask-if-none
-;;       mu4e-compose-context-policy 'always-ask)
-
-
-(defadvice! evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
-  "Advise `evil-delete-char' to set default REGISTER to the black hole register."
-  :around #'evil-delete-char
-  (unless register (setq register ?_))
-  (funcall fn beg end type register))
-
-(defadvice! hy/evil-scroll-advice (fn count)
-  :around #'evil-scroll-down
-  :around #'evil-scroll-up
-  (setq count (/ (window-body-height) 4))
-  (funcall fn count))
-
-(map! :after evil-collection :niv "C-y" #'yank)
-
-
-
-;; (use-package! cape-yasnippet
-;;   :after cape
-;;   :init
-;;   (add-to-list 'completion-at-point-functions #'cape-yasnippet)
-;;   (after! lsp-mode
-;;     (add-hook 'lsp-managed-mode-hook #'cape-yasnippet--lsp))
-;;   (after! eglot
-;;     (add-hook 'eglot-managed-mode-hook #'cape-yasnippet--eglot)))
-
-
-
-;; (use-package!)
-;; (after! vterm
-;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
-;;
-
-#+end_src
-
-
 
 ** workspaces
 
 #+begin_src emacs-lisp
-
 (custom-set-faces!
   '(+workspace-tab-face :inherit default :family "Jost" :height 135)
   '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
 
 (after! persp-mode
+  (defun my/h ())
+
+
   (defun workspaces-formatted ()
     (+doom-dashboard--center (frame-width)
                              (let* ((names (or persp-names-cache nil))
@@ -1905,6 +1575,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                              (if (equal current-name name)
                                                                  '+workspace-tab-selected-face
                                                                '+workspace-tab-face))
+
                                                  (propertize (if dir (format "(%s) " dir) "") 'face
                                                              `(:inherit ,(if (equal current-name name)
                                                                              '+workspace-tab-selected-face
@@ -1913,19 +1584,20 @@ items in the alltodo agenda, so we dynamically remove it when using that."
                                                                :family "Agave"
                                                                :foreground ,(face-attribute 'shadow :foreground)))))
                                 "  "))))
-
+  ;; (defun workspaces-formatted ()
+  ;;                            (buttonize "     hi" (lambda (_) (message "hi"))))
   (defun hy/invisible-current-workspace ()
     "The tab bar doesn't update when only faces change (i.e. the
 current workspace), so we invisibly print the current workspace
 name as well to trigger updates"
     (propertize (safe-persp-name(get-current-persp)) 'invisible t))
 
-  (customize-set-variable 'tab-bar-format '(workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
-
+ (customize-set-variable 'tab-bar-format '(workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
+;; (customize-set-variable 'tab-bar-format '(workspaces-formatted))
   ;; don't show current workspaces when we switch, since we always see them
-  (advice-add #'+workspace/display :override #'ignore)
+ (advice-add #'+workspace/display :override #'ignore)
   ;; same for renaming and deleting (and saving, but oh well)
-  (advice-add #'+workspace-message :override #'ignore))
+ (advice-add #'+workspace-message :override #'ignore))
 
 ;; need to run this later for it to not break frame size for some reason
 (run-at-time nil nil (cmd! (tab-bar-mode +1)))
@@ -2034,3 +1706,518 @@ reordering."
 
 #+end_src
 ** archive
+*** olivetti :ARCHIVE:
+
+#+begin_src emacs-lisp
+;; (use-package! olivetti
+;;   :custom (olivetti-body-width 100)
+;;           (olivetti-style 'fancy))
+;; (map! :after olivetti :leader "t o" #'olivetti-mode)
+;; (add-hook 'text-mode-hook 'olivetti-mode)
+;; (add-hook 'prog-mode-hook 'olivetti-mode)
+;; ;; (add-hook 'special-mode-hook 'olivetti-mode)
+
+;; ;; (custom-set-faces! `(olivetti-fringe :background ,(doom-color 'grey)))
+;; (custom-set-faces! `(olivetti-fringe :inherit solaire-default-face))
+
+
+;; (after! (olivetti persp-mode)
+;;         (defvar persp-olivetti-buffers-backup nil)
+;;         (add-hook 'persp-before-deactivate-functions
+;;                 #'(lambda (fow))
+;;                 (dolist (b (mapcar #'window-buffer
+;;                                         (window-list (selected-frame)
+;;                                                 'no-minibuf)))
+;;                         (with-current-buffer b)
+;;                         (when (eq 'olivetti-split-window-sensibly
+;;                                 split-window-preferred-function))
+;;                         (push b persp-olivetti-buffers-backup)
+;;                         (remove-hook 'window-configuration-change-hook
+;;                                         #'olivetti-set-environment t)
+;;                         (setq-local split-window-preferred-function nil)
+;;                         (olivetti-reset-all-windows)))
+;;         (add-hook 'persp-activated-functions
+;;                 #'(lambda (fow))
+;;                 (dolist (b persp-olivetti-buffers-backup)
+;;                         (with-current-buffer b)
+;;                         (setq-local split-window-preferred-function
+;;                                 'olivetti-split-window-sensibly)
+;;                         (add-hook 'window-configuration-change-hook
+;;                                 #'olivetti-set-environment nil t))
+;;                 (setq persp-olivetti-buffers-backup nil)))
+#+end_src
+*** writeroom :ARCHIVE:
+#+begin_src emacs-lisp
+;; (require 'writeroom-mode)
+;; (global-writeroom-mode +1)
+
+
+;; (setq writeroom-global-effects nil)
+;; (setq writeroom-maximize-window nil)
+;; (setq writeroom-mode-line t)
+;; (setq writeroom-width 100)
+;; (setq writeroom-major-modes '(text-mode prog-mode special-mode))
+#+end_src
+*** darkman :ARCHIVE:
+#+begin_src emacs-lisp
+(let ((output (shell-command-to-string "darkman get")))
+  (if (string= (string-trim-right output) "light")
+      (load-theme 'ef-spring t)
+    (load-theme 'doom-rouge t)))
+#+end_src
+*** gptel :ARCHIVE:
+
+#+begin_src emacs-lisp
+(after! gptel
+  (defun my/gptel-api-key-from-auth-source (&optional host user)
+    "Lookup api key in the auth source.
+By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
+    (if-let ((secret (plist-get (car (auth-source-search
+                                      :max 1
+                                      :host (or host "openai.com")
+                                      :user (or user "apikey")))
+                                :secret)))
+        (if (functionp secret) (funcall secret) secret)
+      (user-error "No `gptel-api-key' found in the auth source")))
+  (setq gptel-api-key #'my/gptel-api-key-from-auth-source))
+
+#+end_src
+*** evil relative in normal, absolute in insert :ARCHIVE:
+#+begin_src emacs-lisp
+
+(add-hook 'evil-normal-state-entry-hook
+          (cmd! (when (doom-real-buffer-p (current-buffer))
+                  (let (message-log-max)
+                    (with-temp-message (or (current-message) "")
+                      (menu-bar--display-line-numbers-mode-relative))))))
+
+(add-hook 'evil-insert-state-entry-hook
+          (cmd! (let (message-log-max)
+                  (with-temp-message (or (current-message) "")
+                    (menu-bar--display-line-numbers-mode-absolute)))))
+#+end_src
+*** flymake :ARCHIVE:
+#+begin_src emacs-lisp
+
+(use-package flymake
+  :defer t
+  :init
+  ;; as flymakes fail silently there is no need to activate it on a per major mode basis
+  (add-hook! (prog-mode text-mode) #'flymake-mode)
+  :config
+  (setq flymake-fringe-indicator-position 'right-fringe))
+
+(use-package flymake-popon
+  :hook (flymake-mode . flymake-popon-mode)
+  :config
+  (setq flymake-popon-method (if (modulep! :checkers syntax +childframe)
+                                 'postframe
+                               'popon)))
+;; (use-package! flymake-vale
+;;   :hook ((text-mode       . flymake-vale-load)
+;;          ;; is this needed? prob not, eh
+;;          (org-mode        . flymake-vale-load)
+;;          (markdown-mode   . flymake-vale-load)
+;;          (message-mode    . flymake-vale-load)))
+
+;; gives support for org msg if you use that
+;; (add-hook! 'org-msg-mode-hook
+;;   (setq flymake-vale-file-ext ".org")
+;;   (flymake-vale-load))
+
+#+end_src
+*** singularity :ARCHIVE:
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.recipe$" . singularity-mode))
+#+end_src
+*** dofiles bench :ARCHIVE:
+#+begin_src emacs-lisp :tangle yes
+(defun my/magit-process-environment (env)
+  "Detect and set git -bare repo env vars when in tracked dotfile directories."
+  (let* ((default (file-name-as-directory (expand-file-name default-directory)))
+         (git-dir (expand-file-name "~/.dotfiles/"))
+         (work-tree (expand-file-name "~/"))
+         (dotfile-dirs
+          (-map (apply-partially 'concat work-tree)
+                (-uniq (-keep #'file-name-directory (split-string (shell-command-to-string
+                                                                                                                      (format "/usr/bin/git --git-dir=%s --work-tree=%s ls-tree --full-tree --name-only -r HEAD"
+                                                                                                                              git-dir work-tree))))))))
+    (push work-tree dotfile-dirs)
+    (when (member default dotfile-dirs)
+      (push (format "GIT_WORK_TREE=%s" work-tree) env)
+      (push (format "GIT_DIR=%s" git-dir) env)))
+  env)
+
+(advice-add 'magit-process-environment
+            :filter-return #'my/magit-process-environment)
+#+end_src
+*** follow file links with position :ARCHIVE:
+
+#+begin_src emacs-lisp
+(after! link-hint
+  (link-hint-define-type 'file-link
+    :next #'link-hint--next-file-link
+    :at-point-p #'ffap-file-at-point
+    ;; TODO consider making file links opt-in (use :vars)
+    :not-vars '(org-mode Info-mode)
+    :open #'hylo/find-file-at-point-with-pos
+    :copy #'kill-new))
+
+efun hylo/find-file-at-point-with-pos ()
+"goto line and column number of file at point, for example
+~/woop.el:202:13. useful for link-hint-open-link"
+;; (interactive)
+(save-match-data
+  (let* ((line-content (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+         (matched (string-match ":\\([0-9]+\\):?\\([0-9]*\\)" line-content))
+         (line-number (and matched
+                           (match-string 1 line-content)
+                           (string-to-number (match-string 1 line-content))))
+         (col-number (and matched
+                          (match-string 2 line-content)
+                          (string-to-number (match-string 2 line-content))))
+         (filename (ffap-guesser)))
+    (when (boundp 'hy/current-frame)
+      (select-frame-set-input-focus hy/current-frame))
+    (when (boundp 'hy/current-window)
+      (select-window hy/current-window))
+    (find-file filename)
+    (when line-number
+      (goto-char (point-min))
+      (forward-line (- line-number 1)))
+    (when (> col-number 0)
+      (move-to-column (- col-number 1))))))
+
+
+
+
+(defun hylo/find-file-with-pos-here ()
+  (interactive)
+  (let ((hy/current-frame (selected-frame))
+        (hy/current-window (selected-window)))
+    (link-hint-open-link)))
+
+(map! :leader :prefix "s"  (:desc "hi" "t" #'hylo/find-file-with-pos-here))
+
+
+(defun touch-file ()
+  "Force modification of current file, unless already modified."
+  (interactive)
+  (if (and (verify-visited-file-modtime (current-buffer))
+           (not (buffer-modified-p)))
+      (progn
+        (set-buffer-modified-p t)
+        (save-buffer 0))))
+
+;; FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(\w+/)+(\w+\.)+\w+:[0-9]+:[0-9]+#$(dirs)/&#g"
+;;λ FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(src/|test/)#$(pwd)/&#g"
+#+end_src
+*** affe :ARCHIVE:
+#+begin_src emacs-lisp
+;; (after! projectile
+;;   (defun hy/affe-find-in-project ()
+;;     (interactive)
+;;     (let ((affe-find-command "rg --color=never --files --hidden --ignore --glob \"!.git\"")
+;;           (project-root (projectile-project-root)))
+;;       (funcall-interactively #'affe-find project-root))
+;;     (run-hooks 'projectile-find-file-hook)))
+
+;;   ;; (map! :leader "SPC" #'hy/affe-find-in-project))
+
+
+;; (map! :leader
+;;       :desc "FuZzily find File in home"
+;;       "f z f" (cmd!! #'affe-find "~/"))
+;; (map! :leader
+;;       :desc "FuZzily find file in this Dir"
+;;       "f z d" (cmd!! #'affe-find))
+
+
+
+
+#+end_src
+*** eldoc :ARCHIVE:
+#+begin_src emacs-lisp
+
+(after! eldoc
+  (delete #'eldoc-display-in-echo-area eldoc-display-functions))
+
+#+end_src
+*** apheleia formatting :ARCHIVE:
+
+#+begin_src emacs-lisp
+(setq +format-with-lsp nil)
+
+(setq-hook! 'haskell-mode-hook +format-with 'fourmolu)
+(after! apheleia
+  (push '(fourmolu . ("fourmolu" "--stdin-input-file" (or (buffer-file-name) (buffer-name))))
+        apheleia-formatters))
+
+;; (use-package! apheleia
+;;   :config
+;;   (apheleia-global-mode +1)
+;;   (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
+
+#+end_src
+*** tempel :ARCHIVE:
+#+begin_src emacs-lisp
+
+
+(use-package tempel
+  ;; Require trigger prefix before template name when completing.
+  ;; :custom
+  ;; (tempel-trigger-prefix "<")
+
+  :bind (("M-t" . tempel-complete) ;; Alternative tempel-expand
+         ("C-M-t" . tempel-insert)
+         )
+
+  :init
+
+  ;; Setup completion at point
+  (defun tempel-setup-capf ()
+    ;; Add the Tempel Capf to `completion-at-point-functions'.
+    ;; `tempel-expand' only triggers on exact matches. Alternatively use
+    ;; `tempel-complete' if you want to see all matches, but then you
+    ;; should also configure `tempel-trigger-prefix', such that Tempel
+    ;; does not trigger too often when you don't expect it. NOTE: We add
+    ;; `tempel-expand' *before* the main programming mode Capf, such
+    ;; that it will be tried first.
+    (after! lsp-mode
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand
+                        completion-at-point-functions))))
+
+  (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf)
+
+  ;; Optionally make the Tempel templates available to Abbrev,
+  ;; either locally or globally. `expand-abbrev' is bound to C-x '.
+  ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+  ;; (global-tempel-abbrev-mode)
+
+  (map! :map tempel-map
+        "<tab>" #'tempel-next
+        "<backtab>" #'tempel-previous
+        "C-<tab>" #'tempel-next
+        "C-S-<tab>" #'tempel-previous ;???
+        "M-<right>" #'tempel-next
+        "M-<left>" #'tempel-previous)
+
+  :custom
+  (tempel-path (concat doom-user-dir "templates"))
+  )
+
+
+(when (modulep! :completion corfu)
+  (map! :map corfu-map
+        (:prefix "C-x"
+                 "C-t" #'tempel-complete)))
+
+(defadvice! hy/tempel-insert-evil-insert (&rest _)
+  "always go to evil insert mode after inserting a template"
+  :after #'tempel-insert
+  (evil-insert 0))
+(defadvice! hy/tempel-complete-evil-insert (&rest _)
+  "always go to evil insert mode after inserting a template"
+  :after #'tempel-complete
+  (evil-insert 0))
+
+(defadvice! hy/tempel-complete-trim-newline-in-region (&rest _)
+  "trim a trailing newline in the region to make inserting the
+region into a snippet more streamlined"
+  :before #'tempel-complete
+  (remove-trailing-whitespace-in-region))
+
+(defadvice! hy/tempel-insert-trim-newline-in-region (&rest _)
+  "trim a trailing newline in the region to make inserting the
+region into a snippet more streamlined"
+  :before #'tempel-insert
+  (remove-trailing-whitespace-in-region))
+
+
+(defun remove-trailing-whitespace-in-region ()
+  (when (use-region-p)
+    (when (> (mark) (point)) (exchange-point-and-mark))
+    (when (looking-at "\n")
+      (re-search-backward "[^\n]+"))
+    (goto-char (1+ (point)))))
+
+
+
+(defun hy/eh ()
+  (interactive)
+  (message (format "\"%s\"" (buffer-substring-no-properties (point) (mark)))))
+#+end_src
+
+**** TODO how to check if region exists? region-active-p doesn't work
+
+**** TODO trim region before insert, so that `V M-t` works
+**** TODO after tempel-insert -> insert mode
+*** rotate text
+
+#+begin_src emacs-lisp
+(after! rotate-text
+  (add-to-list 'rotate-text-words '("false" "true")))
+#+end_src
+*** tailwind :ARCHIVE:
+#+begin_src
+
+
+(use-package! lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  :config)
+#+end_src
+*** exercism :ARCHIVE:
+#+begin_src emacs-lisp
+(use-package! exercism-modern
+  :commands (exercism-modern-jump exercism-modern-view-tracks))
+#+end_src
+*** no idea :ARCHIVE:
+#+begin_src emacs-lisp
+
+
+(setq find-file-visit-truename nil)
+(setq find-file-existing-other-name nil)
+;; (defun my/todo-org-is-unreal (buf)
+;;       (string= (buffer-name buf) "todo.org"))
+;; (push #'my/todo-org-is-unreal doom-unreal-buffer-functions)
+
+
+(setq iedit-toggle-key-default nil)
+
+
+;;(use-package! prism :config (prism-set-colors :colors (-map #'doom-color '(red orange yellow green blue violet))))
+
+#+end_src
+*** evil
+
+#+begin_src emacs-lisp
+
+(map! :map org-mode-map :v "$" #'evil-end-of-line)
+
+(setq evil-disable-insert-mode-bindings t)
+(setq evil-ex-substitute-global t)
+
+(setq evil-v$-excludes-newline t)
+
+(defadvice! hy/center-line-after-search (&rest _)
+   :after #'evil-ex-search-next
+  :after #'evil-ex-search-previous
+  (evil-scroll-line-to-center nil))
+
+(map! :after evil :nv "'" #'evil-goto-mark)
+
+(setq evil-visual-update-x-selection-p t)
+(setq evil-cross-lines t)
+(setq evil-want-minibuffer t)
+#+end_src
+
+**** evil snipe
+#+begin_src emacs-lisp
+;; (map!
+;;  :after (evil-snipe evil)
+;;                     :m "," #'evil-snipe-repeat)
+;; (setq evil-snipe-override-evil-repeat-keys nil)
+
+(after! evil-snipe
+  ;; (when evil-snipe-override-evil-repeat-keys
+  (define-key evil-snipe-parent-transient-map "," nil)
+  ;; (define-key evil-snipe-parent-transient-map "," #'evil-snipe-repeat)
+  ;; (define-key evil-snipe-parent-transient-map ";" #'evil-snipe-repeat-reverse)
+
+  (evil-define-key* '(motion normal) evil-snipe-local-mode-map
+                    "S" nil
+                    "," nil)
+  ;; "," 'evil-snipe-repeat
+  ;; ";" 'evil-snipe-repeat-reverse)
+
+  (evil-define-key* '(normal) evil-snipe-override-local-mode-map
+                    "," nil))
+;; "," 'evil-snipe-repeat
+;; ";" 'evil-snipe-repeat-reverse)
+
+
+
+
+
+(setq evil-snipe-scope 'whole-buffer)
+
+;; (after! evil
+;;   (define-key evil-motion-state-map (kbd "RET") nil))
+
+
+#+end_src
+*** mail
+
+#+begin_src emacs-lisp
+
+;; (defadvice! go-to-workspace-if-exists-mu4e (fun)
+;;   "Go back to the mu4e workspace if it exists, otherwise launch mu4e normally."
+;;   :around #'=mu4e
+;;   (run-at-time nil nil (lambda () (if (+workspace-get +mu4e-workspace-name t)
+;;                                       (+workspace-switch +mu4e-workspace-name)
+;;                                     (funcall fun))))
+;;   (ignore-errors (abort-recursive-edit)))
+
+
+;; (after! mu4e
+;;   (setq sendmail-program (executable-find "msmtp")
+;;         send-mail-function #'smtpmail-send-it
+;;         message-sendmail-f-is-evil t
+;;         message-sendmail-extra-arguments '("--read-envelope-from")
+;;         message-send-mail-function #'message-send-mail-with-sendmail))
+
+;; (after! mu4e-alert
+;;   (setq +mu4e-alert-bell-cmd nil))
+;; (setq mu4e-context-policy 'ask-if-none
+;;       mu4e-compose-context-policy 'always-ask)
+
+
+(defadvice! evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
+  "Advise `evil-delete-char' to set default REGISTER to the black hole register."
+  :around #'evil-delete-char
+  (unless register (setq register ?_))
+  (funcall fn beg end type register))
+
+(defadvice! hy/evil-scroll-advice (fn count)
+  :around #'evil-scroll-down
+  :around #'evil-scroll-up
+  (setq count (/ (window-body-height) 4))
+  (funcall fn count))
+
+(map! :after evil-collection :niv "C-y" #'yank)
+
+
+
+;; (use-package! cape-yasnippet
+;;   :after cape
+;;   :init
+;;   (add-to-list 'completion-at-point-functions #'cape-yasnippet)
+;;   (after! lsp-mode
+;;     (add-hook 'lsp-managed-mode-hook #'cape-yasnippet--lsp))
+;;   (after! eglot
+;;     (add-hook 'eglot-managed-mode-hook #'cape-yasnippet--eglot)))
+
+
+
+;; (use-package!)
+;; (after! vterm
+;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
+;;
+
+#+end_src
+*** modeline
+#+begin_src emacs-lisp
+;; (setq doom-modeline-modal-icon nil)
+
+;; (advice-add #'doom-modeline-segment--modals :override #'ignore)
+
+#+end_src
+*** magit
+
+#+begin_src emacs-lisp
+(map! :map magit-status-mode-map
+      "<escape>" #'+magit/quit)
+#+end_src

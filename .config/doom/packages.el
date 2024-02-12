@@ -95,6 +95,12 @@
 (package! idris2 :recipe (:host github :repo "jeroendehaas/idris2-mode" :branch "fix-completion-error"))
 (package! prop-menu)
 
+(package! meow)
+
+(package! embrace)
+
+(package! macrursors :recipe (:host github :repo "corytertel/macrursors"))
+
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
