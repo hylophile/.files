@@ -335,95 +335,114 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
   :config
   (setq avy-timeout-seconds 0.3)
   (setq avy-all-windows 'all-frames))
-;; (map! :nvieomg "C-t" #'avy-goto-char-3
-;;         :map magit-mode-map :n "C-t" #'avy-goto-char-3
-;;         :map evil-org-mode-map :i "C-t" #'avy-goto-char-3)
-
-;; (map! :nv "S" #'avy-goto-char-2)
-;; (map! :g "C-l" #'avy-goto-line
-;;       :map evil-org-mode-map :i "C-l" #'avy-goto-line)
-
+(defun avy-goto-char-3 (char1 char2 char3 &optional arg beg end)
+  "Jump to the currently visible CHAR1 followed by CHAR2.
+The window scope is determined by `avy-all-windows'.
+When ARG is non-nil, do the opposite of `avy-all-windows'.
+BEG and END narrow the scope where candidates are searched."
+  (interactive (list (let ((c1 (read-char "char 1: " t)))
+                       (if (memq c1 '(? ?\b))
+                           (keyboard-quit)
+                         c1))
+                     (let ((c2 (read-char "char 2: " t)))
+                       (cond ((eq c2 8)
+                              (keyboard-quit))
+                             ((memq c2 avy-del-last-char-by)
+                              (keyboard-escape-quit))
+                             (t
+                              c2)))
+                     (let ((c3 (read-char "char 3: " t)))
+                       (cond ((eq c3 8)
+                              (keyboard-quit))
+                             ((memq c3 avy-del-last-char-by)
+                              (keyboard-escape-quit)
+                              (call-interactively 'avy-goto-char-3))
+                             (t
+                              c3)))
+                     current-prefix-arg
+                     nil nil))
+  (when (eq char1 13)
+    (setq char1 ?\n))
+  (when (eq char2 13)
+    (setq char2 ?\n))
+  (when (eq char3 13)
+    (setq char3 ?\n))
+  (avy-with avy-goto-char-3
+    (avy-jump
+     (regexp-quote (string char1 char2 char3))
+     :window-flip arg
+     :beg beg
+     :end end)))
 
 (defun avy-action-lookup-documentation (pt)
   (save-excursion
     (goto-char pt)
     (+lookup/documentation (doom-thing-at-point-or-region))))
-;; (select-window
-;;  (cdr (ring-ref avy-ring 0))
-;;  t)
+
+(defun avy-action-helpful (pt)
+  (save-excursion
+    (goto-char pt)
+    (helpful-at-point))
+  (select-window
+   (cdr (ring-ref avy-ring 0)))
+  t)
+
+(defun avy-action-copy-whole-line (pt)
+  (save-excursion
+    (goto-char pt)
+    (cl-destructuring-bind (start . end)
+        (bounds-of-thing-at-point 'line)
+      (copy-region-as-kill start end)))
+  (select-window
+   (cdr
+    (ring-ref avy-ring 0)))
+  t)
+
+(defun avy-action-yank-whole-line (pt)
+  (avy-action-copy-whole-line pt)
+  (save-excursion (yank))
+  t)
 
 
-(setf (alist-get ?h avy-dispatch-alist) 'avy-action-lookup-documentation)
+(defun avy-action-kill-whole-line (pt)
+  (save-excursion
+    (goto-char pt)
+    (kill-whole-line))
+  (select-window
+   (cdr
+    (ring-ref avy-ring 0)))
+  t)
 
+(defun avy-action-teleport-whole-line (pt)
+    (avy-action-kill-whole-line pt)
+    (save-excursion (yank)) t)
 
+(defun avy-action-embark (pt)
+  (unwind-protect
+      (save-excursion
+        (goto-char pt)
+        (embark-act))
+    (select-window
+     (cdr (ring-ref avy-ring 0))))
+  t)
 
-;; (define-key org-mode-map (kbd "C-l") #'avy-goto-line)
-;;
+(setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?f))
+;; ?t ??????????????
+(setq avy-dispatch-alist
+ '((?h . avy-action-lookup-documentation)
+   (?H . avy-action-helpful)
+   (?k . avy-action-kill-stay)
+   (?K . avy-action-kill-whole-line)
+   (?m . avy-action-mark)
+   (?p . avy-action-teleport)           ; pull
+   (?P . avy-action-teleport-whole-line)
+   (?w . avy-action-copy)
+   (?W . avy-action-copy-whole-line)
+   (?y . avy-action-yank)
+   (?Y . avy-action-yank-whole-line)
+   (?. . avy-action-embark)
+   (?? . avy-show-dispatch-help)))
 
-(setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m ?v ?k))
-
-;; (defun avy-goto-char-3 (char1 char2 char3 &optional arg beg end)
-;;   "Jump to the currently visible CHAR1 followed by CHAR2.
-;; The window scope is determined by `avy-all-windows'.
-;; When ARG is non-nil, do the opposite of `avy-all-windows'.
-;; BEG and END narrow the scope where candidates are searched."
-;;   (interactive (list (let ((c1 (read-char "char 1: " t)))
-;;                        (if (memq c1 '(? ?\b))
-;;                            (keyboard-quit)
-;;                          c1))
-;;                      (let ((c2 (read-char "char 2: " t)))
-;;                        (cond ((eq c2 ?)
-;;                               (keyboard-quit))
-;;                              ((memq c2 avy-del-last-char-by)
-;;                               (keyboard-escape-quit))
-;;                              (t
-;;                               c2)))
-;;                      (let ((c3 (read-char "char 3: " t)))
-;;                        (cond ((eq c3 ?)
-;;                               (keyboard-quit))
-;;                              ((memq c3 avy-del-last-char-by)
-;;                               (keyboard-escape-quit)
-;;                               (call-interactively 'avy-goto-char-3))
-;;                              (t
-;;                               c3)))
-;;                      current-prefix-arg
-;;                      nil nil))
-;;   (when (eq char1 ?)
-;;     (setq char1 ?\n))
-;;   (when (eq char2 ?)
-;;     (setq char2 ?\n))
-;;   (when (eq char3 ?)
-;;     (setq char3 ?\n))
-;;   (avy-with avy-goto-char-3
-;;     (avy-jump
-;;      (regexp-quote (string char1 char2 char3))
-;;      :window-flip arg
-;;      :beg beg
-;;      :end end)))
-
-
-;; (map! :map helpful-mode-map "M-x" #'execute-extended-command)
-
-;; (defun +my/emacs-lisp--in-package-buffer-p ()
-;;   (interactive)
-;;   (let* ((file-path (buffer-file-name (buffer-base-buffer)))
-;;          (file-base (if file-path (file-name-base file-path))))
-;;     (and (derived-mode-p 'emacs-lisp-mode)
-;;          (or (null file-base)
-;;              (locate-file file-base (custom-theme--load-path) '(".elc" ".el"))
-;;              (save-excursion
-;;                (save-restriction
-;;                  (widen)
-;;                  (goto-char (point-max))
-;;                  (when (re-search-backward "^ *\\((provide\\)\\(?:-theme\\)? +'"
-;;                                            (max (point-min) (- (point-max) 512))
-;;                                            t)
-;;                    (goto-char (match-beginning 1))
-;;                    (ignore-errors
-;;                      (and (stringp file-base)
-;;                           (equal (symbol-name (doom-unquote (nth 1 (read (current-buffer)))))
-;;                                  file-base)))))))
-;;          (not (locate-dominating-file default-directory ".doommodule")))))
 #+end_src
 
 ** popup
@@ -1326,8 +1345,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
   (setq aw-dispatch-alist
         ;; no docstring means dont prompt for window, use current (weird but ok)
-        '((?k delete-selected-window)
-          (?K aw-delete-window "Delete Window")
+        '((?k aw-delete-window "Delete Window")
+          (?K delete-selected-window)
           (?m aw-move-window "Move Window")
           (?M delete-other-windows)
           (?c aw-copy-window "Copy Window")
@@ -1384,7 +1403,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("8" . meow-expand-8)
    '("9" . meow-expand-9)
    '("-" . negative-argument)
-   '(";" . meow-reverse)
+   '(";" . meow-comment)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
    '("[" . meow-beginning-of-thing)
@@ -1402,7 +1421,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("D" . meow-backward-delete)
    ;; '("e" . meow-next)
    ;; '("E" . meow-next-expand)
-   '("f" . meow-find)
+   '("f" . meow-next-word)
+   '("F" . meow-next-symbol)
+   ;; '("f" . meow-find)
    '("g" . meow-cancel-selection)
    ;; '("G" . meow-grab)
    '("h" . meow-block)
@@ -1410,32 +1431,36 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    ;; '("i" . meow-prev)
    ;; '("I" . meow-prev-expand)
    '("j" . meow-join)
+   '("J" . delete-indentation) ; hmmmmmmmmmmmmmmmmmmmm
    '("k" . meow-kill)
    '("l" . meow-line)
    '("L" . avy-goto-line)
    '("m" . meow-mark-word)
    '("M" . meow-mark-symbol)
-   ;; '("n" . meow-left)
-   ;; '("N" . meow-left-expand)
+   '("n" . meow-next)
+   '("N" . meow-next-expand)
    ;; '("o" . meow-right)
    ;; '("O" . meow-right-expand)
-   '("p" . meow-yank)
-   '("P" . meow-yank-pop)
+   '("p" . meow-prev)
+   '("P" . meow-prev-expand)
    ;; '("q" . meow-ca)
    '("r" . meow-replace)
    '("R" . meow-replace-pop)
-   '("s" . meow-insert)
-   '("S" . meow-open-above)
+   '("s" . avy-goto-char-3)
+   ;; '("S" . meow-open-above)
    '("t" . meow-till)
    ;; '("T" . avy-goto-char-2)
    '("u" . meow-undo)
    '("U" . undo-redo)
    ;; '("U" . meow-undo-in-selection)
    '("v" . meow-search)
-   '("w" . meow-next-word)
-   '("W" . meow-next-symbol)
-   '("x" . avy-goto-char-2)
-   '("y" . meow-save)
+   '("w" . meow-save)
+   ;; '("W" . meow-next-symbol)
+   ;; '("x" . avy-goto-char-2)
+   '("x" . exchange-point-and-mark)
+   '("X" . pop-global-mark)
+   '("y" . meow-yank)
+   '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
    ;; '("Z" . meow-swap-grab)
    '("'" . repeat)
@@ -1455,19 +1480,21 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   '("," . consult-buffer)
   '("l" . "<f7>")
   '("SPC" . projectile-find-file)))
-#+end_src
 
-#+begin_src emacs-lisp
 (require 'meow)
 (meow-setup)
 (meow-global-mode 1)
-(setq
- meow-replace-state-name-list `((normal . "N")
-                                (motion . "M")
-                                (keypad . "K")
-                                (insert . "I")
-                                (beacon . "B")))
-;; (meow-leader-define-key '("b" . "<f6> b")) ???? where u at
+
+#+end_src
+
+#+begin_src emacs-lisp
+;; (setq
+;;  meow-replace-state-name-list `((normal . "N")
+;;                                 (motion . "M")
+;;                                 (keypad . "K")
+;;                                 (insert . "I")
+;;                                 (beacon . "B")))
+;; ;; (meow-leader-define-key '("b" . "<f6> b")) ???? where u at
 
 (setq doom-leader-alt-key "<f6>")
 (setq meow-expand-hint-remove-delay 2.5)
@@ -1566,7 +1593,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (add-hook 'git-commit-setup-hook #'meow-insert-mode)
 
 ;; go to matching parens
-;; magit commit -> insert mode
 ;; magit status -> nothing?
 #+end_src
 
@@ -1596,6 +1622,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (define-key macrursors-mark-map (kbd "n") #'macrursors-mark-previous-line)
   (define-key macrursors-mark-map (kbd "Q") #'macrursors-mark-all-sentences)
   (define-key macrursors-mark-map (kbd "r") #'macrursors-mark-all-lines))
+
+
+;; (global-set-key (kbd "C-i") #'next-line)
 
 (after! doom-modeline
  (defun doom-modeline--macrursors ()
