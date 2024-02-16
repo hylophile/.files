@@ -2,7 +2,7 @@
 #+author: hylo
 #+property: header-args:emacs-lisp :tangle yes :comments link :results silent
 
-* aall
+* root
 
 ** hi
 
@@ -10,51 +10,17 @@ always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
 ;;; -*- lexical-binding: t; -*-
 #+end_src
-
-#+begin_src emacs-lisp
-(setq projectile-project-search-path '("~/code"))
-(after! org-fold-core
-  (setq org-fold-core-style 'overlays))
-
+** vertico
+#+begin_src emacs-lisp :tangle yes
 (map! :leader "/" #'+vertico/project-search)
+#+end_src
+** projectile
+#+begin_src emacs-lisp :tangle yes
+(setq projectile-project-search-path '("~/code"))
 
-(setq! evil-disable-insert-state-bindings t)
-
-(after! org
-  (push "notes" org-protecting-blocks)
-  (push "comment" org-protecting-blocks))
-
-(use-package! git-auto-commit-mode
-  :custom
-  (gac-silent-message-p t)
-  (gac-debounce-interval 300))
-
-(run-at-time 1 nil #'add-to-list 'safe-local-variable-values '(gac-automatically-push-p . t))
-
-(custom-set-faces! '(tree-sitter-hl-face:punctuation :background nil))
-;; (let ((projectile-project-search-path '("~/code/fisa" "~/code/kzk" "~/code/misc/" "~/code/uni")))
-;;   (projectile-discover-projects-in-search-path))
-;; (load! "info-colors.el")
-;; (require 'info-colors)
-;; (add-hook 'Info-selection-hook 'info-colors-fontify-node)
-
-;; (defun my/rerun-embark ()
-;;   (interactive)
-;;   (unwind-protect
-;;       (progn (add-hook 'consult--completion-candidate-hook #'embark-export)
-;;              (call-interactively #'revert-buffer))
-;;     (remove-hook 'consult--completion-candidate-hook #'embark-export)))
-
-;; (defun embark-reexport ()
-;;   (interactive)
-;;   (run-at-time 0 nil #'message "Reverting...")
-;;   (run-at-time
-;;    1 nil ;; Instead of a fixed time one could use polling here
-;;      (when-let (win (active-minibuffer-window))
-;;        (with-selected-window win
-;;          (embark-export))))) ;; embark-export or embark-collect, determine based on buffer name?
-;;   (revert-buffer))
-
+#+end_src
+** rg
+#+begin_src emacs-lisp :tangle yes
 
 ;; (defun my/update-rg-project ()
 ;;   (when-let*
@@ -75,9 +41,10 @@ always forget what this does exactly, but it's Good™
 ;; (map! :leader "s P" #'rg-project)
 
 (set-popup-rule! "^\\*rg\\*" :side 'right :width 90)
-
-
-
+#+end_src
+** time to talk n words
+#+begin_src emacs-lisp
+;; (custom-set-faces! '(tree-sitter-hl-face:punctuation :background nil))
 
 (defun my/time-to-talk-region (start end)
   (interactive "r")
@@ -89,6 +56,15 @@ always forget what this does exactly, but it's Good™
          (seconds (mod seconds-total 60)))
     (message (format "Words: %d ⸺ Time to talk — %d:%02d" nwords minutes seconds))))
 #+end_src
+** git auto-commit-mode
+#+begin_src emacs-lisp :tangle yes
+(use-package! git-auto-commit-mode
+  :custom
+  (gac-silent-message-p t)
+  (gac-debounce-interval 300))
+
+(run-at-time 1 nil #'add-to-list 'safe-local-variable-values '(gac-automatically-push-p . t))
+#+end_src
 
 ** basics
 
@@ -97,18 +73,14 @@ always forget what this does exactly, but it's Good™
 (setq doom-localleader-key ",")
 
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
-;; (setq evil-want-C-u-delete nil)
-(setq +default-want-RET-continue-comments nil
-      +evil-want-o/O-to-continue-comments nil)
+(setq +default-want-RET-continue-comments nil)
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
 ;; (add-to-list 'default-frame-alist '(alpha 100 100))
 (add-to-list 'default-frame-alist '(alpha-background . 95))
 (setq auth-sources '("~/.authinfo"))
 
-(setq lsp-idle-delay 0.01)
-
-(set-file-template! "emacs-everywhere-[[:digit:]]+-[[:digit:]]+" :ignore t)
+;; (setq lsp-idle-delay 0.01)
 
 #+end_src
 #+begin_src emacs-lisp
@@ -121,7 +93,6 @@ always forget what this does exactly, but it's Good™
 ;;     (goto-char p)))
 
 
-;; (map! :after evil :v "i" #'evil-forward-char)
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "name"
@@ -131,7 +102,6 @@ always forget what this does exactly, but it's Good™
 (setq which-key-idle-delay 0.3)
 
 (global-visual-line-mode)
-
 #+end_src
 #+begin_src emacs-lisp
 
@@ -142,7 +112,6 @@ always forget what this does exactly, but it's Good™
  x-stretch-cursor t)                              ; Stretch cursor to the glyph width
 
 (setq undo-limit 80000000                         ; Raise undo-limit to 80Mb
-      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
       auto-save-default t                         ; Nobody likes to loose work, I certainly don't
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
@@ -164,6 +133,8 @@ always forget what this does exactly, but it's Good™
  window-divider-default-right-width 5)
 
 #+end_src
+
+** toggles
 #+begin_src emacs-lisp
 
 (add-hook! 'rainbow-mode-hook
@@ -244,12 +215,6 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 ;;(map! :leader "SPC" #'hy/projectile-find-file)
 #+end_src
-** bib
-#+begin_src emacs-lisp
-(setq! bibtex-completion-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
-(setq! citar-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
-#+end_src
-
 ** fonts
 
 #+begin_src emacs-lisp
@@ -289,7 +254,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 (setq nav-flash-delay 0.3)
 #+end_src
 
-** web
+** stop emmet
 #+begin_src emacs-lisp
 (after! emmet-mode
   (map! :map emmet-mode-keymap
@@ -300,7 +265,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 #+end_src
 
-** recent files cleanup
+** recent files cleanup (doesn't work)
 #+begin_src emacs-lisp
 ;; (after! recentf
 ;;   (add-to-list 'recentf-exclude (abbreviate-file-name (doom-session-file))
@@ -326,6 +291,84 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;; (setq doom-theme 'doom-feather-light)
 
 (use-package! ef-themes)
+#+end_src
+
+** repeat
+#+begin_src emacs-lisp :tangle yes
+(repeat-mode 1)
+(defvar structural-edit-map
+  (let ((map (make-sparse-keymap)))
+    (pcase-dolist (`(,k . ,f)
+                   '(("u" . backward-up-list)
+                     ("f" . forward-sexp)
+                     ("b" . backward-sexp)
+                     ("d" . down-list)
+                     ("k" . kill-sexp)
+                     ("n" . sp-next-sexp)
+                     ("p" . sp-previous-sexp)
+                     ("K" . sp-kill-hybrid-sexp)
+                     ("]" . sp-forward-slurp-sexp)
+                     ("[" . sp-backward-slurp-sexp)
+                     ("}" . sp-forward-barf-sexp)
+                     ("{" . sp-backward-barf-sexp)
+                     ("C" . sp-convolute-sexp)
+                     ("J" . sp-join-sexp)
+                     ("S" . sp-split-sexp)
+                     ("R" . sp-raise-sexp)
+                     ("\\" . indent-region)
+                     ("/" . undo)
+                     ("t" . transpose-sexps)
+                     ("x" . eval-defun)))
+      (define-key map (kbd k) f))
+    map))
+
+(map-keymap
+ (lambda (_ cmd)
+   (put cmd 'repeat-map 'structural-edit-map))
+ structural-edit-map)
+
+(defvar isearch-repeat-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "s") #'isearch-repeat-forward)
+    (define-key map (kbd "r") #'isearch-repeat-backward)
+    map))
+
+(dolist (cmd '(isearch-repeat-forward isearch-repeat-backward))
+  (put cmd 'repeat-map 'isearch-repeat-map))
+
+
+
+;; Disable the built-in repeat-mode hinting
+;; (custom-set-variables repeat-echo-function #'ignore)
+(setq repeat-echo-function #'ignore)
+
+;; Spawn or hide a which-key popup
+(after! which-key
+  (defun my/repeat-help (keymap)
+    (if keymap
+        (run-at-time
+         0 nil
+         (lambda (keymap)
+           (which-key--create-buffer-and-show nil keymap))
+         keymap)
+      (which-key--hide-popup)))
+  (setq repeat-echo-function #'my/repeat-help))
+
+;; ;; Spawn or hide a which-key popup
+;; (after! which-key
+;;   (advice-add 'repeat-post-hook :after
+;;               (defun repeat-help--which-key-popup ()
+;;                 (if-let ((cmd (or this-command real-this-command))
+;;                          (keymap (or repeat-map
+;;                                      (repeat--command-property 'repeat-map))))
+;;                     (run-at-time
+;;                      0 nil
+;;                      (lambda (keymap)
+;;                        (which-key--create-buffer-and-show
+;;                         nil (symbol-value keymap)))
+;;                      keymap)
+
+;;                   (which-key--hide-popup)))))
 #+end_src
 
 ** avy
@@ -426,14 +469,35 @@ BEG and END narrow the scope where candidates are searched."
      (cdr (ring-ref avy-ring 0))))
   t)
 
+
+(defun avy-action-push (pt)
+  (unwind-protect
+      (kill-region (region-beginning) (region-end))
+      (deactivate-mark)
+      (save-excursion
+        (goto-char pt)
+        (yank))
+    (select-window
+     (cdr (ring-ref avy-ring 0))))
+  t)
+
+(defun avy-action-exchange (pt)
+  "Exchange sexp at PT with the one at point."
+  (save-excursion
+    (set-mark pt)
+    (transpose-sexps 0)))
+
+
 (setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?f))
 ;; ?t ??????????????
 (setq avy-dispatch-alist
  '((?h . avy-action-lookup-documentation)
+   (?q . avy-action-exchange)
    (?H . avy-action-helpful)
    (?k . avy-action-kill-stay)
    (?K . avy-action-kill-whole-line)
    (?m . avy-action-mark)
+   (?p . avy-action-push)
    (?t . avy-action-teleport)           ; pull
    (?T . avy-action-teleport-whole-line)
    (?w . avy-action-copy)
@@ -441,6 +505,8 @@ BEG and END narrow the scope where candidates are searched."
    (?y . avy-action-yank)
    (?Y . avy-action-yank-whole-line)
    (?. . avy-action-embark)))
+
+(global-set-key (kbd "M-j") #'avy-goto-char-3)
 
 #+end_src
 
@@ -471,16 +537,7 @@ BEG and END narrow the scope where candidates are searched."
   (set-popup-rule! "^\\*Org Src" :ignore t))
 ;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.31 :quit nil :select t :autosave t :modeline t :ttl nil))
 #+end_src
-
-
-** dired
-
-#+begin_src emacs-lisp
-
-(setq dired-dwim-target t)
-#+end_src
-
-** all stuff
+** misc
 
 #+begin_src emacs-lisp
 
@@ -493,14 +550,11 @@ BEG and END narrow the scope where candidates are searched."
 (setq doom-themes-treemacs-theme "doom-colors")
 
 #+end_src
+** vterm
 #+begin_src emacs-lisp
 (setq vterm-always-compile-module t)
-;; (custom-set-faces! '((flycheck-fringe-error) :width expanded))
-
-;; (map! :leader :desc "Actions" "e" #'embark-act)
-
-
 #+end_src
+** host macros
 #+begin_src emacs-lisp
 
 (defmacro nsa! (&rest body)
@@ -508,34 +562,12 @@ BEG and END narrow the scope where candidates are searched."
 
 (defmacro rook! (&rest body)
   `(when (string= "rook" (system-name)) ,@body))
+(nsa!
+ (load! "load/work.el" nil t))
 
 #+end_src
+** embark
 #+begin_src emacs-lisp
-
-
-(setq which-key-allow-multiple-replacements t)
-(after! which-key
-  (pushnew!
-   which-key-replacement-alist
-   '(("" . "\\`+?evil[-:/]?\\(?:a-\\)?\\(.*\\)") . (nil . "ຯ\\1"))
-   '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))))
-
-
-
-(map! :v "u" #'undo
-      :v "C-r" #'undo-redo)
-
-
-
-
-#+end_src
-#+begin_src emacs-lisp
-
-
-;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
-;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
-;; 10
-
 ;; (map! :map embark-general-map "e" #'+vertico/embark-export-write)
 (map! :nv "C-." #'embark-act)
 (map! [remap describe-bindings] #'embark-bindings
@@ -544,71 +576,46 @@ BEG and END narrow the scope where candidates are searched."
       (:map minibuffer-local-map
             "C-."               #'embark-act
             "C-c C-."           #'embark-export))
-
+#+end_src
+** latex
+#+begin_src emacs-lisp
 (after! latex
   (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)))
 (setq +latex-viewers '(zathura pdf-tools evince okular skim sumatrapdf))
 
 (map! :map cdlatex-mode-map "'" nil)
 
-
-;; (setq web-mode-script-padding 4)
-
+#+end_src
+** misc settings
+#+begin_src emacs-lisp
 (setq doom-modeline-vcs-max-length 30)
 
-;; (setq doom-leader-alt-key "<f8>")
-;; (setq doom-localleader-alt-key "<f8> m")
-
-
-;; (delete "Noto Color Emoji" doom-emoji-fallback-font-families)
-;; (setq doom-emoji-fallback-font-families
-;;   '("Noto Color Emoji"))
-;; (add-to-list 'doom-emoji-fallback-font-families "Symbols Nerd Font")
-;; (add-to-list 'doom-symbol-fallback-font-families "Symbols Nerd Font")
-
-;; (after! nerd-icons
-;;   (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend))
-;; (run-at-time 5 nil #'set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil 'prepend)
-
-;; (defun rc/find-file-recursive ()
-;;   (interactive)
-;;   (let* ((cwd (file-name-directory (buffer-file-name)))
-;;          (files (directory-files-recursively cwd ""))
-;;     (find-file (completing-read (format "Find file [%s]: " cwd) files-without-cwd nil t))))
-
-;; (load! "load/dotfiles.el")
-;;(load! "load/format-classes.el")
-;; (after! org
-;;   (add-to-list 'org-agenda-custom-commands
-;;                '("y" "year"
-;;                  agenda ""
-;;                  ((org-agenda-span 'year)))))
 (remove-hook! 'doom-modeline-mode-hook #'size-indication-mode)
 
 
-(nsa!
- (load! "load/work.el" nil t))
+#+end_src
+
+*** misc
+
+#+begin_src emacs-lisp
+
+(use-package! page-break-lines
+  :hook
+  (emacs-lisp-mode . page-break-lines-mode))
+
+(map! :leader :desc "Undo tree" :n "U" #'vundo)
+(after! vundo
+  (map! :map vundo-mode-map "<escape>" #'vundo-quit)
+  (setq vundo-glyph-alist vundo-unicode-symbols))
+
+(defun rename-buffers-with-annoying-names ()
+  (when (member (buffer-name) '("index.ts" "package.json"))
+    (when (string-match "[^/]+/[^/]+$" (buffer-file-name))
+      (rename-buffer (match-string 0 (buffer-file-name)) t))))
+
+(add-hook 'change-major-mode-hook #'rename-buffers-with-annoying-names)
 
 
-
-
-;; (Use-package! spookfox
-;;   :config
-;;   (setq spookfox-saved-tabs-target
-;;         `(file+headline ,(expand-file-name "spookfox.org" org-directory) "Tabs"))
-;;   (spookfox-init))
-
-
-
-(defun save-all ()
-  (interactive)
-  (save-some-buffers t))
-
-
-;; (add-function :after after-focus-change-function (cmd! (save-some-buffers t)))
-
-;; (map! :map emmet-mode-keymap
-;;       [tab] #'indent-for-tab-command)
 #+end_src
 
 ** eldoc-box
@@ -656,36 +663,6 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 ;; (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background))))
 
 #+end_src
-** org-timeblock
-#+begin_src emacs-lisp
-(setq org-file-tags '("todo"))
-
-(use-package! org-timeblock
-  :custom
-  (org-timeblock-n-days-view 4)
-  (org-timeblock-current-time-indicator t)
-  (org-timeblock-show-outline-path t)
-  (org-timeblock-scale-options nil)
-  (org-timeblock-scale-options '(8 . 20))
-  (org-timeblock-tag-colors
-   '(("@uni" "#9bf6ff" "")
-     ("zoom" "#caffbf")
-     ("homework" "#bdb2ff")
-     ("work" "#ffc6ff")
-     ("todo" "#ffadad"))))
-;; "#ffadad";
-;; "#ffd6a5";
-;; "#fdffb6";
-;; "#caffbf";
-;; "#9bf6ff";
-;; "#a0c4ff";
-;; "#bdb2ff";
-;; "#ffc6ff";
-;; "#fffffc")
-                                        ;
-
-#+end_src
-
 ** flycheck
 
 #+begin_src emacs-lisp
@@ -695,79 +672,6 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
     nil nil '(center repeated))
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [224]
     nil nil '(center repeated)))
-
-#+end_src
-
-** company
-
-#+begin_src emacs-lisp
-
-(after! company
-  (add-hook! 'evil-normal-state-entry-hook
-    (defun +company-abort-h ()
-      ;; HACK `company-abort' doesn't no-op if company isn't active; causing
-      ;;      unwanted side-effects, like the suppression of messages in the
-      ;;      echo-area.
-      ;; REVIEW Revisit this to refactor; shouldn't be necessary!
-      (when company-candidates
-        (company-abort))))
-
-  ;; (setq company-idle-delay nil)
-  )
-
-(after! company-box
-  (push '(tab-bar-lines . 0) company-box-frame-parameters)
-  (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters)
-  (push '(tab-bar-format . nil) company-box-frame-parameters))
-
-;; ^ together with tab-bar-lines . 0
-#+end_src
-
-** embark
-
-#+begin_src emacs-lisp
-(map! :map embark-file-map "f" #'hy/find-file-in-fair-split)
-
-(defun hy/find-file-in-fair-split (file) (interactive "FFile: ")
-       (hylo/split-window-fair-and-follow)
-       (find-file file))
-
-#+end_src
-
-** helpful
-
-#+begin_src emacs-lisp
-;; (defun my/info-buffer-p (buf)
-;;   (string= (buffer-name buf) "*info*"))
-;; (push 'my/info-buffer-p doom-real-buffer-functions)
-
-;; (defun my/helpful-buffer-p (buf)
-;;   (string-prefix-p "*helpful" (buffer-name buf)))
-;; (push 'my/helpful-buffer-p doom-real-buffer-functions)
-
-
-;; (map! :map helpful-mode-map :n
-;;       ;; "K" #'+popup/raise
-;;       "<ESC>" #'+popup/quit-window)
-
-;; (defun my/search-info-org ()
-;;   (interactive)
-;;   (info "org")
-;;   (+popup/raise (selected-window))
-;;   (+default/search-buffer))
-;; (defun my/search-info-elisp ()
-;;   (interactive)
-;;   (info "elisp")
-;;   (+popup/raise (selected-window))
-;;   (+default/search-buffer))
-;; (defun my/search-emacsd ()
-;;   (interactive)
-;;   (+vertico/project-search t nil "~/.emacs.d"))
-;; (map! :leader :prefix "s"
-;;       ;; "e" #'my/search-emacsd
-;;       "E" #'my/search-info-elisp
-;;       "n" #'my/search-info-org)
-
 
 #+end_src
 
@@ -785,80 +689,16 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 
 (map! :leader
       "," #'consult-buffer
-      ">" #'+vertico/switch-workspace-buffer
-      "g p" #'magit-push
-      "R" #'+popup/raise
-      "|" #'+popup/raise)
+      )
 
-(defun insert-primary ()
-  (interactive)
-  (insert-for-yank (gui-get-primary-selection)))
-
-;; (map! :nv "s" #'avy-goto-char-2)
-
-(map! :niv "<269025133>" #'insert-primary)
-
-(map! :map evil-window-map
-      "n" #'evil-window-left
-      "r" #'evil-window-down
-      "t" #'evil-window-up
-      "d" #'evil-window-right
-
-      "S-n" #'+evil/window-move-left
-      "S-r" #'+evil/window-move-down
-      "S-t" #'+evil/window-move-up
-      "S-d" #'+evil/window-move-right
-
-      ;; "n" #'evil-window-new
-      ;; "r" #'evil-window-rotate-downwards
-      ;; "R" #'evil-window-rotate-upwards
-      ;; "t" #'evil-window-top-left
-      ;; "T" #'tear-off-window
-      ;; "k" #'+workspace/close-window-or-workspace
-
-      "k" #'evil-window-delete
-
-      "v" #'+evil/window-vsplit-and-follow
-      "V" #'evil-window-vsplit
-      "h" #'+evil/window-split-and-follow
-      "H" #'evil-window-split
-      "C-h" nil
-      "j" nil
-      "J" nil
-      "C-j" nil
-      "k" nil
-      "K" nil
-      "C-k" nil
-      "l" nil
-      "L" nil
-      "C-l" nil
-      "s" nil
-      "S" nil
-      "C-s" nil)
-
-(map! :leader "TAB p" #'+workspace/other)
-
-(map! :n [mouse-8] #'better-jumper-jump-backward
-      :n [mouse-9] #'better-jumper-jump-forward)
-
-
-(map! :i "C-u" #'universal-argument)
-
-(map! :map minibuffer-local-map "C-u" #'universal-argument)
-
-
-;; (map! "C-s" #'save-buffer)
-;; (map! :leader "f s" nil)
-(map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
 (add-hook 'helpful-mode-hook 'mixed-pitch-mode)
 
 
 #+end_src
 
-** org mode
+** org-mode
 
 #+begin_src emacs-lisp
-
 (setq org-directory "~/org/")
 
 (defvar org-refile-region-format "\n%s\n")
@@ -1007,6 +847,13 @@ This hides them again."
       :if-new (file+head "%<%Y%m%d%H%M%S>-uni-cg-${slug}.org" "#+title: ${title}\n")
       :unnarrowed t))))
 
+(after! org-fold-core
+  (setq org-fold-core-style 'overlays))
+
+(after! org
+  (push "notes" org-protecting-blocks)
+  (push "comment" org-protecting-blocks))
+
 
 
 
@@ -1125,7 +972,7 @@ This hides them again."
   :hook
   (org-mode . mixed-pitch-mode))
 
-
+(setq org-use-speed-commands t)
 #+end_src
 
 *** org super agenda
@@ -1189,12 +1036,52 @@ items in the alltodo agenda, so we dynamically remove it when using that."
         ("inbox" (#("🌊")) nil nil :ascent center)
         ("" (#("🌈")) nil nil :ascent center)))
 
+#+end_src
+
+*** calendar
+#+begin_src emacs-lisp
+(setq calendar-week-start-day 1)
+#+end_src
+
+*** org-modern
+#+begin_src emacs-lisp
+(use-package! org-modern
+  :custom
+  (org-modern-star '("❥" "⚘" "❥" "❦" "❥" "✿"))
+  :hook
+  (org-mode . org-modern-mode)
+  (org-agenda-finalize . org-modern-agenda))
 
 #+end_src
 
-** calendar
+*** org-timeblock
 #+begin_src emacs-lisp
-(setq calendar-week-start-day 1)
+(setq org-file-tags '("todo"))
+
+(use-package! org-timeblock
+  :custom
+  (org-timeblock-n-days-view 4)
+  (org-timeblock-current-time-indicator t)
+  (org-timeblock-show-outline-path t)
+  (org-timeblock-scale-options nil)
+  (org-timeblock-scale-options '(8 . 20))
+  (org-timeblock-tag-colors
+   '(("@uni" "#9bf6ff" "")
+     ("zoom" "#caffbf")
+     ("homework" "#bdb2ff")
+     ("work" "#ffc6ff")
+     ("todo" "#ffadad"))))
+;; "#ffadad";
+;; "#ffd6a5";
+;; "#fdffb6";
+;; "#caffbf";
+;; "#9bf6ff";
+;; "#a0c4ff";
+;; "#bdb2ff";
+;; "#ffc6ff";
+;; "#fffffc")
+                                        ;
+
 #+end_src
 
 ** lsp
@@ -1239,17 +1126,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (after! scheme
   (setq geiser-mode-start-repl-p t))
 #+end_src
-** org-modern
-#+begin_src emacs-lisp
-(use-package! org-modern
-  :custom
-  (org-modern-star '("❥" "⚘" "❥" "❦" "❥" "✿"))
-  :hook
-  (org-mode . org-modern-mode)
-  (org-agenda-finalize . org-modern-agenda))
-
-#+end_src
-
 ** ediff
 #+begin_src emacs-lisp
 (after! ediff
@@ -1262,29 +1138,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "f" 'ediff-copy-both-to-C))
 (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
 )
-#+end_src
-
-** misc
-
-#+begin_src emacs-lisp
-
-(use-package! page-break-lines
-  :hook
-  (emacs-lisp-mode . page-break-lines-mode))
-
-(map! :leader :desc "Undo tree" :n "U" #'vundo)
-(after! vundo
-  (map! :map vundo-mode-map "<escape>" #'vundo-quit)
-  (setq vundo-glyph-alist vundo-unicode-symbols))
-
-(defun rename-buffers-with-annoying-names ()
-  (when (member (buffer-name) '("index.ts" "package.json"))
-    (when (string-match "[^/]+/[^/]+$" (buffer-file-name))
-      (rename-buffer (match-string 0 (buffer-file-name)) t))))
-
-(add-hook 'change-major-mode-hook #'rename-buffers-with-annoying-names)
-
-
 #+end_src
 
 ** ace-window
@@ -1864,7 +1717,7 @@ reordering."
 ;;                                 #'olivetti-set-environment nil t))
 ;;                 (setq persp-olivetti-buffers-backup nil)))
 #+end_src
-*** writeroom :ARCHIVE:
+*** writeroom
 #+begin_src emacs-lisp
 ;; (require 'writeroom-mode)
 ;; (global-writeroom-mode +1)
@@ -1876,14 +1729,14 @@ reordering."
 ;; (setq writeroom-width 100)
 ;; (setq writeroom-major-modes '(text-mode prog-mode special-mode))
 #+end_src
-*** darkman :ARCHIVE:
+*** darkman
 #+begin_src emacs-lisp
 (let ((output (shell-command-to-string "darkman get")))
   (if (string= (string-trim-right output) "light")
       (load-theme 'ef-spring t)
     (load-theme 'doom-rouge t)))
 #+end_src
-*** gptel :ARCHIVE:
+*** gptel
 
 #+begin_src emacs-lisp
 (after! gptel
@@ -1900,21 +1753,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
   (setq gptel-api-key #'my/gptel-api-key-from-auth-source))
 
 #+end_src
-*** evil relative in normal, absolute in insert :ARCHIVE:
-#+begin_src emacs-lisp
-
-(add-hook 'evil-normal-state-entry-hook
-          (cmd! (when (doom-real-buffer-p (current-buffer))
-                  (let (message-log-max)
-                    (with-temp-message (or (current-message) "")
-                      (menu-bar--display-line-numbers-mode-relative))))))
-
-(add-hook 'evil-insert-state-entry-hook
-          (cmd! (let (message-log-max)
-                  (with-temp-message (or (current-message) "")
-                    (menu-bar--display-line-numbers-mode-absolute)))))
-#+end_src
-*** flymake :ARCHIVE:
+*** flymake
 #+begin_src emacs-lisp
 
 (use-package flymake
@@ -1944,11 +1783,11 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 ;;   (flymake-vale-load))
 
 #+end_src
-*** singularity :ARCHIVE:
+*** singularity
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.recipe$" . singularity-mode))
 #+end_src
-*** dofiles bench :ARCHIVE:
+*** dofiles bench
 #+begin_src emacs-lisp :tangle yes
 (defun my/magit-process-environment (env)
   "Detect and set git -bare repo env vars when in tracked dotfile directories."
@@ -1969,7 +1808,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 (advice-add 'magit-process-environment
             :filter-return #'my/magit-process-environment)
 #+end_src
-*** follow file links with position :ARCHIVE:
+*** follow file links with position
 
 #+begin_src emacs-lisp
 (after! link-hint
@@ -2030,7 +1869,7 @@ efun hylo/find-file-at-point-with-pos ()
 ;; FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(\w+/)+(\w+\.)+\w+:[0-9]+:[0-9]+#$(dirs)/&#g"
 ;;λ FORCE_COLOR=true node_modules/.bin/vitest | sed -E "s#(src/|test/)#$(pwd)/&#g"
 #+end_src
-*** affe :ARCHIVE:
+*** affe
 #+begin_src emacs-lisp
 ;; (after! projectile
 ;;   (defun hy/affe-find-in-project ()
@@ -2054,14 +1893,14 @@ efun hylo/find-file-at-point-with-pos ()
 
 
 #+end_src
-*** eldoc :ARCHIVE:
+*** eldoc
 #+begin_src emacs-lisp
 
 (after! eldoc
   (delete #'eldoc-display-in-echo-area eldoc-display-functions))
 
 #+end_src
-*** apheleia formatting :ARCHIVE:
+*** apheleia formatting
 
 #+begin_src emacs-lisp
 (setq +format-with-lsp nil)
@@ -2077,7 +1916,7 @@ efun hylo/find-file-at-point-with-pos ()
 ;;   (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
 
 #+end_src
-*** tempel :ARCHIVE:
+*** tempel
 #+begin_src emacs-lisp
 
 
@@ -2172,13 +2011,14 @@ region into a snippet more streamlined"
 
 **** TODO trim region before insert, so that `V M-t` works
 **** TODO after tempel-insert -> insert mode
+
 *** rotate text
 
 #+begin_src emacs-lisp
 (after! rotate-text
   (add-to-list 'rotate-text-words '("false" "true")))
 #+end_src
-*** tailwind :ARCHIVE:
+*** tailwind
 #+begin_src
 
 
@@ -2187,12 +2027,12 @@ region into a snippet more streamlined"
   (setq lsp-tailwindcss-add-on-mode t)
   :config)
 #+end_src
-*** exercism :ARCHIVE:
+*** exercism
 #+begin_src emacs-lisp
 (use-package! exercism-modern
   :commands (exercism-modern-jump exercism-modern-view-tracks))
 #+end_src
-*** no idea :ARCHIVE:
+*** no idea
 #+begin_src emacs-lisp
 
 
@@ -2267,6 +2107,21 @@ region into a snippet more streamlined"
 
 
 #+end_src
+
+**** evil relative in normal, absolute in insert
+#+begin_src emacs-lisp
+
+(add-hook 'evil-normal-state-entry-hook
+          (cmd! (when (doom-real-buffer-p (current-buffer))
+                  (let (message-log-max)
+                    (with-temp-message (or (current-message) "")
+                      (menu-bar--display-line-numbers-mode-relative))))))
+
+(add-hook 'evil-insert-state-entry-hook
+          (cmd! (let (message-log-max)
+                  (with-temp-message (or (current-message) "")
+                    (menu-bar--display-line-numbers-mode-absolute)))))
+#+end_src
 *** mail
 
 #+begin_src emacs-lisp
@@ -2338,4 +2193,180 @@ region into a snippet more streamlined"
 #+begin_src emacs-lisp
 (map! :map magit-status-mode-map
       "<escape>" #'+magit/quit)
+#+end_src
+*** evil stuff
+#+begin_src emacs-lisp
+
+;; (map! :n "C-a" #'evil-numbers/inc-at-pt-incremental)
+;; (map! :n "C-x" #'evil-numbers/inc-at-pt-incremental)
+;; 10
+
+
+;; (map! :after evil :v "i" #'evil-forward-char)
+(setq evil-want-fine-undo t)
+
+(setq! evil-disable-insert-state-bindings t)
+(setq +evil-want-o/O-to-continue-comments nil)
+
+(setq which-key-allow-multiple-replacements t)
+(after! which-key
+  (pushnew!
+   which-key-replacement-alist
+   '(("" . "\\`+?evil[-:/]?\\(?:a-\\)?\\(.*\\)") . (nil . "ຯ\\1"))
+   '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "ຯ\\1"))))
+
+
+(map! :v "u" #'undo
+      :v "C-r" #'undo-redo)
+
+(map! :leader
+      "," #'consult-buffer
+      ">" #'+vertico/switch-workspace-buffer
+      "g p" #'magit-push
+      "R" #'+popup/raise
+      "|" #'+popup/raise)
+
+(defun insert-primary ()
+  (interactive)
+  (insert-for-yank (gui-get-primary-selection)))
+
+;; (map! :nv "s" #'avy-goto-char-2)
+
+(map! :niv "<269025133>" #'insert-primary)
+
+(map! :map evil-window-map
+      "n" #'evil-window-left
+      "r" #'evil-window-down
+      "t" #'evil-window-up
+      "d" #'evil-window-right
+
+      "S-n" #'+evil/window-move-left
+      "S-r" #'+evil/window-move-down
+      "S-t" #'+evil/window-move-up
+      "S-d" #'+evil/window-move-right
+
+      ;; "n" #'evil-window-new
+      ;; "r" #'evil-window-rotate-downwards
+      ;; "R" #'evil-window-rotate-upwards
+      ;; "t" #'evil-window-top-left
+      ;; "T" #'tear-off-window
+      ;; "k" #'+workspace/close-window-or-workspace
+
+      "k" #'evil-window-delete
+
+      "v" #'+evil/window-vsplit-and-follow
+      "V" #'evil-window-vsplit
+      "h" #'+evil/window-split-and-follow
+      "H" #'evil-window-split
+      "C-h" nil
+      "j" nil
+      "J" nil
+      "C-j" nil
+      "k" nil
+      "K" nil
+      "C-k" nil
+      "l" nil
+      "L" nil
+      "C-l" nil
+      "s" nil
+      "S" nil
+      "C-s" nil)
+
+(map! :leader "TAB p" #'+workspace/other)
+
+(map! :n [mouse-8] #'better-jumper-jump-backward
+      :n [mouse-9] #'better-jumper-jump-forward)
+
+
+(map! :i "C-u" #'universal-argument)
+
+(map! :map minibuffer-local-map "C-u" #'universal-argument)
+
+
+;; (map! "C-s" #'save-buffer)
+;; (map! :leader "f s" nil)
+(map! :map minibuffer-local-map doom-leader-alt-key #'doom/leader)
+
+
+#+end_src
+*** dired
+
+#+begin_src emacs-lisp
+
+(setq dired-dwim-target t)
+#+end_src
+*** company
+
+#+begin_src emacs-lisp
+
+(after! company
+  (add-hook! 'evil-normal-state-entry-hook
+    (defun +company-abort-h ()
+      ;; HACK `company-abort' doesn't no-op if company isn't active; causing
+      ;;      unwanted side-effects, like the suppression of messages in the
+      ;;      echo-area.
+      ;; REVIEW Revisit this to refactor; shouldn't be necessary!
+      (when company-candidates
+        (company-abort))))
+
+  ;; (setq company-idle-delay nil)
+  )
+
+(after! company-box
+  (push '(tab-bar-lines . 0) company-box-frame-parameters)
+  (push '(tab-bar-lines-keep-state . 0) company-box-frame-parameters)
+  (push '(tab-bar-format . nil) company-box-frame-parameters))
+
+;; ^ together with tab-bar-lines . 0
+#+end_src
+*** embark
+
+#+begin_src emacs-lisp
+(map! :map embark-file-map "f" #'hy/find-file-in-fair-split)
+
+(defun hy/find-file-in-fair-split (file) (interactive "FFile: ")
+       (hylo/split-window-fair-and-follow)
+       (find-file file))
+
+#+end_src
+*** helpful
+
+#+begin_src emacs-lisp
+;; (defun my/info-buffer-p (buf)
+;;   (string= (buffer-name buf) "*info*"))
+;; (push 'my/info-buffer-p doom-real-buffer-functions)
+
+;; (defun my/helpful-buffer-p (buf)
+;;   (string-prefix-p "*helpful" (buffer-name buf)))
+;; (push 'my/helpful-buffer-p doom-real-buffer-functions)
+
+
+;; (map! :map helpful-mode-map :n
+;;       ;; "K" #'+popup/raise
+;;       "<ESC>" #'+popup/quit-window)
+
+;; (defun my/search-info-org ()
+;;   (interactive)
+;;   (info "org")
+;;   (+popup/raise (selected-window))
+;;   (+default/search-buffer))
+;; (defun my/search-info-elisp ()
+;;   (interactive)
+;;   (info "elisp")
+;;   (+popup/raise (selected-window))
+;;   (+default/search-buffer))
+;; (defun my/search-emacsd ()
+;;   (interactive)
+;;   (+vertico/project-search t nil "~/.emacs.d"))
+;; (map! :leader :prefix "s"
+;;       ;; "e" #'my/search-emacsd
+;;       "E" #'my/search-info-elisp
+;;       "n" #'my/search-info-org)
+
+
+#+end_src
+*** bib
+#+begin_src emacs-lisp
+(setq! bibtex-completion-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
+(setq! citar-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
 #+end_src
