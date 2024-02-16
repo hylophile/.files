@@ -434,14 +434,13 @@ BEG and END narrow the scope where candidates are searched."
    (?k . avy-action-kill-stay)
    (?K . avy-action-kill-whole-line)
    (?m . avy-action-mark)
-   (?p . avy-action-teleport)           ; pull
-   (?P . avy-action-teleport-whole-line)
+   (?t . avy-action-teleport)           ; pull
+   (?T . avy-action-teleport-whole-line)
    (?w . avy-action-copy)
    (?W . avy-action-copy-whole-line)
    (?y . avy-action-yank)
    (?Y . avy-action-yank-whole-line)
-   (?. . avy-action-embark)
-   (?? . avy-show-dispatch-help)))
+   (?. . avy-action-embark)))
 
 #+end_src
 
@@ -455,13 +454,15 @@ BEG and END narrow the scope where candidates are searched."
 (plist-put +popup-defaults :width 82)
 
 ;; (set-popup-rule! "^\\*lsp-help\\*" :side 'right :width 82 :vslot 1)
-(set-popup-rule! "^\\*helpful" :side 'right :width 82 :vslot 1)
+(set-popup-rule! "^\\*helpful" :side 'right :width 82 :vslot 1 :select
+  (lambda (popup orig)
+    (run-at-time nil nil `(lambda () (select-window ,orig)))))
 (set-popup-rules!
   '(("^\\*info\\*"
      :slot 2 :vslot -2 :side left :width 83 :quit nil)))
 
 (set-popup-rule! "^\\*Flycheck errors\\*$" :quit nil)
-;; (set-popup-rule! "^\\*helpful" :ignore t)
+;; (set-popup-rule! "^\\*helpful" :select nil)
 ;; (setq +popup-defaults (list :side 'right :height 0.16 :width 80 :quit t :select #'ignore :ttl 5))
 ;; (set-popup-rule! :side 'bottom :height 0.16 :width 40 :quit t :select #'5 :ignore ttl)
 ;; (set-popup-rule! "^\\*Org Src" :side 'right :size 0.4 :quit nil :vslot -1)
