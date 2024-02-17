@@ -282,7 +282,8 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 
 (setq my/theme (let ((output (shell-command-to-string "darkman get")))
                  (if (string= (string-trim-right output) "light")
-                     'ef-tritanopia-light
+                         ;; 'ef-tritanopia-light
+                         'ef-spring
                    'modus-vivendi)))
 ;; (setq doom-theme (hylo/random-dark-theme))
 (setq doom-theme my/theme)
@@ -296,51 +297,8 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ** repeat
 #+begin_src emacs-lisp :tangle yes
 (repeat-mode 1)
-(defvar structural-edit-map
-  (let ((map (make-sparse-keymap)))
-    (pcase-dolist (`(,k . ,f)
-                   '(("u" . backward-up-list)
-                     ("f" . forward-sexp)
-                     ("b" . backward-sexp)
-                     ("d" . down-list)
-                     ("k" . kill-sexp)
-                     ("n" . sp-next-sexp)
-                     ("p" . sp-previous-sexp)
-                     ("K" . sp-kill-hybrid-sexp)
-                     ("]" . sp-forward-slurp-sexp)
-                     ("[" . sp-backward-slurp-sexp)
-                     ("}" . sp-forward-barf-sexp)
-                     ("{" . sp-backward-barf-sexp)
-                     ("C" . sp-convolute-sexp)
-                     ("J" . sp-join-sexp)
-                     ("S" . sp-split-sexp)
-                     ("R" . sp-raise-sexp)
-                     ("\\" . indent-region)
-                     ("/" . undo)
-                     ("t" . transpose-sexps)
-                     ("x" . eval-defun)))
-      (define-key map (kbd k) f))
-    map))
 
-(map-keymap
- (lambda (_ cmd)
-   (put cmd 'repeat-map 'structural-edit-map))
- structural-edit-map)
-
-(defvar isearch-repeat-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "s") #'isearch-repeat-forward)
-    (define-key map (kbd "r") #'isearch-repeat-backward)
-    map))
-
-(dolist (cmd '(isearch-repeat-forward isearch-repeat-backward))
-  (put cmd 'repeat-map 'isearch-repeat-map))
-
-
-
-;; Disable the built-in repeat-mode hinting
-;; (custom-set-variables repeat-echo-function #'ignore)
-(setq repeat-echo-function #'ignore)
+(setq undo-repeat-map nil)
 
 ;; Spawn or hide a which-key popup
 (after! which-key
@@ -353,22 +311,51 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
          keymap)
       (which-key--hide-popup)))
   (setq repeat-echo-function #'my/repeat-help))
+#+end_src
+*** isearch
+#+begin_src emacs-lisp :tangle yes
+(defvar-keymap isearch-repeat-map
+  :repeat t
+  "s"  #'isearch-repeat-forward
+  "r"  #'isearch-repeat-backward)
+#+end_src
+*** smartparens
+#+begin_src emacs-lisp :tangle yes
+(defun my/sp-undo ()
+  (interactive)
+  (undo-fu-only-undo))
 
-;; ;; Spawn or hide a which-key popup
-;; (after! which-key
-;;   (advice-add 'repeat-post-hook :after
-;;               (defun repeat-help--which-key-popup ()
-;;                 (if-let ((cmd (or this-command real-this-command))
-;;                          (keymap (or repeat-map
-;;                                      (repeat--command-property 'repeat-map))))
-;;                     (run-at-time
-;;                      0 nil
-;;                      (lambda (keymap)
-;;                        (which-key--create-buffer-and-show
-;;                         nil (symbol-value keymap)))
-;;                      keymap)
+(defun my/sp-redo ()
+  (interactive)
+  (undo-fu-only-redo))
 
-;;                   (which-key--hide-popup)))))
+(map! :after smartparens :map smartparens-mode-map "C-M-u" #'sp-backward-up-sexp)
+
+(defvar-keymap structural-edit-map
+  :repeat t
+  "u" #'sp-backward-up-sexp
+  "f" #'sp-forward-sexp
+  "a" #'sp-beginning-of-sexp
+  "e" #'sp-end-of-sexp
+  "b" #'sp-backward-sexp
+  "d" #'sp-down-sexp
+  "k" #'sp-kill-sexp
+  "n" #'sp-next-sexp
+  "p" #'sp-previous-sexp
+  "K" #'sp-kill-hybrid-sexp
+  "]" #'sp-forward-slurp-sexp
+  "[" #'sp-backward-slurp-sexp
+  "}" #'sp-forward-barf-sexp
+  "{" #'sp-backward-barf-sexp
+  "C" #'sp-convolute-sexp
+  "J" #'sp-join-sexp
+  "t" #'sp-transpose-sexps
+  "S" #'sp-split-sexp
+  "R" #'sp-raise-sexp
+  "/" #'my/sp-undo
+  "?" #'my/sp-redo
+  "x" #'eval-defun
+  "<backspace>" #'sp-splice-sexp)
 #+end_src
 
 ** avy
@@ -1282,11 +1269,12 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    ;; '("G" . meow-grab)
    '("h" . meow-block)
    '("H" . meow-to-block)
-   ;; '("i" . meow-prev)
-   ;; '("I" . meow-prev-expand)
+   '("i" . meow-insert)
+   '("I" . meow-open-above)
    '("j" . meow-join)
    '("J" . delete-indentation) ; hmmmmmmmmmmmmmmmmmmmm
    '("k" . meow-kill)
+   '("K" . +lookup/documentation)
    '("l" . meow-line)
    '("L" . avy-goto-line)
    '("m" . meow-mark-word)
@@ -1304,8 +1292,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    ;; '("S" . meow-open-above)
    '("t" . meow-till)
    ;; '("T" . avy-goto-char-2)
-   '("u" . meow-undo)
-   '("U" . undo-redo)
+   '("u" . undo-fu-only-undo)
+   '("U" . undo-fu-only-redo)
    ;; '("U" . meow-undo-in-selection)
    '("v" . meow-search)
    '("w" . meow-save)
@@ -1319,21 +1307,20 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    ;; '("Z" . meow-swap-grab)
    '("'" . repeat)
    '("<escape>" . ignore))
- (meow-leader-define-key
-  '("c" . "<f6> c")
-  '("i" . "<f6> i")
-  '("n" . "<f6> n")
-  '("p" . "<f6> p")
-  '("f" . "<f6> f")
-  '("q" . "<f6> q")
-  '("t" . "<f6> t")
-  '("s" . "<f6> s")
-  '("v" . "<f6> v")
-  '("w" . ace-window)
-  '("a" . ace-window)
-  '("," . consult-buffer)
-  '("l" . "<f7>")
-  '("SPC" . projectile-find-file)))
+  (meow-leader-define-key
+   '("l" . "<f6> c")
+   '("i" . "<f6> i")
+   '("n" . "<f6> n")
+   '("p" . "<f6> p")
+   '("f" . "<f6> f")
+   '("q" . "<f6> q")
+   '("t" . "<f6> t")
+   '("s" . "<f6> s")
+   '("v" . "<f6> v")
+   '("w" . ace-window)
+   '("a" . ace-window)
+   '("," . consult-buffer)
+   '("SPC" . projectile-find-file)))
 
 (require 'meow)
 (meow-setup)
@@ -1676,8 +1663,8 @@ reordering."
 ;;   (idris-interpreter-path "idris2"))
 
 #+end_src
-** archive
-*** olivetti :ARCHIVE:
+** archive :ARCHIVE:
+*** olivetti
 
 #+begin_src emacs-lisp
 ;; (use-package! olivetti
@@ -1820,7 +1807,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
     :open #'hylo/find-file-at-point-with-pos
     :copy #'kill-new))
 
-efun hylo/find-file-at-point-with-pos ()
+(defun hylo/find-file-at-point-with-pos ()
 "goto line and column number of file at point, for example
 ~/woop.el:202:13. useful for link-hint-open-link"
 ;; (interactive)
