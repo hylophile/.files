@@ -9,7 +9,7 @@
   :defer t
   :hook (doom-first-input . global-corfu-mode)
   :config
-  (setq corfu-auto t
+  (setq corfu-auto nil
         corfu-auto-delay 0.1
         corfu-auto-prefix 2
         global-corfu-modes '((not

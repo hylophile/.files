@@ -1,6 +1,6 @@
 #+title: Config
 #+author: hylo
-#+property: header-args:emacs-lisp :tangle yes :comments link :results silent
+#+property: header-args:emacs-lisp :tangle yes :results silent
 
 * root
 
@@ -8,7 +8,17 @@
 
 always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
-;;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: t; -*-
+(setq lexical-binding t)
+#+end_src
+** corfu candidate overlay
+#+begin_src emacs-lisp
+(use-package! corfu-candidate-overlay
+  :after corfu
+  :config
+  (corfu-candidate-overlay-mode +1)
+  (global-set-key (kbd "M-<iso-lefttab>") #'corfu-candidate-overlay-complete-at-point)
+  (global-set-key (kbd "C-M-S-i") #'corfu-candidate-overlay-complete-at-point))
 #+end_src
 ** vertico
 #+begin_src emacs-lisp :tangle yes
@@ -70,7 +80,7 @@ always forget what this does exactly, but it's Good™
 
 #+begin_src emacs-lisp
 
-(setq doom-localleader-key ",")
+;; (setq doom-localleader-key ",")
 
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
 (setq +default-want-RET-continue-comments nil)
@@ -227,6 +237,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
  ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
  ;; doom-font (font-spec :family "Operator Mono" :size 13.0)
  doom-font (font-spec :family "Agave" :size 14.0)
+ ;; doom-font (font-spec :family "IosevkaCorfu" :size 14.0)
  ;; doom-font (font-spec :family "mononoki" :size 12.0)
  ;; doom-font (font-spec :family "Hermit" :size 11.0)
  ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
@@ -332,7 +343,7 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 (map! :after smartparens :map smartparens-mode-map "C-M-u" #'sp-backward-up-sexp)
 
 (defvar-keymap structural-edit-map
-  :repeat t
+  :repeat (:exit (ignore))
   "u" #'sp-backward-up-sexp
   "f" #'sp-forward-sexp
   "a" #'sp-beginning-of-sexp
@@ -355,7 +366,15 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
   "/" #'my/sp-undo
   "?" #'my/sp-redo
   "x" #'eval-defun
+  "q" #'ignore
+  "<escape>" #'ignore
   "<backspace>" #'sp-splice-sexp)
+#+end_src
+*** bookmarks
+#+begin_src emacs-lisp :tangle yes
+;; SPC i m => insert bookmark
+;; SPC s m => goto bookmark
+(map! :map doom-leader-insert-map "m" #'bookmark-set-no-overwrite)
 #+end_src
 
 ** avy
@@ -444,8 +463,8 @@ BEG and END narrow the scope where candidates are searched."
   t)
 
 (defun avy-action-teleport-whole-line (pt)
-    (avy-action-kill-whole-line pt)
-    (save-excursion (yank)) t)
+  (avy-action-kill-whole-line pt)
+  (save-excursion (yank)) t)
 
 (defun avy-action-embark (pt)
   (unwind-protect
@@ -460,10 +479,10 @@ BEG and END narrow the scope where candidates are searched."
 (defun avy-action-push (pt)
   (unwind-protect
       (kill-region (region-beginning) (region-end))
-      (deactivate-mark)
-      (save-excursion
-        (goto-char pt)
-        (yank))
+    (deactivate-mark)
+    (save-excursion
+      (goto-char pt)
+      (yank))
     (select-window
      (cdr (ring-ref avy-ring 0))))
   t)
@@ -550,6 +569,7 @@ BEG and END narrow the scope where candidates are searched."
 (plist-put +popup-defaults :width 82)
 
 ;; (set-popup-rule! "^\\*lsp-help\\*" :side 'right :width 82 :vslot 1)
+(set-popup-rule! "^\\*Help\\*" :side 'right :width 82 :vslot 1)
 (set-popup-rule! "^\\*helpful" :side 'right :width 82 :vslot 1 :select
   (lambda (popup orig)
     (run-at-time nil nil `(lambda () (select-window ,orig)))))
@@ -643,7 +663,7 @@ BEG and END narrow the scope where candidates are searched."
     (when (string-match "[^/]+/[^/]+$" (buffer-file-name))
       (rename-buffer (match-string 0 (buffer-file-name)) t))))
 
-(add-hook 'change-major-mode-hook #'rename-buffers-with-annoying-names)
+;; (add-hook 'change-major-mode-hook #'rename-buffers-with-annoying-names)
 
 
 #+end_src
@@ -708,18 +728,11 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 ** maps
 
 #+begin_src emacs-lisp
+(map! "C-+" #'doom/increase-font-size
+      "C-=" #'doom/reset-font-size
+      "C--" #'doom/decrease-font-size)
 
-
-
-(map! "C-+" #'doom/increase-font-size)
-(map! "C-=" #'doom/reset-font-size)
-(map! "C--" #'doom/decrease-font-size)
-
-
-
-(map! :leader
-      "," #'consult-buffer
-      )
+(map! :leader "," #'consult-buffer)
 
 (add-hook 'helpful-mode-hook 'mixed-pitch-mode)
 
@@ -727,7 +740,7 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 #+end_src
 
 ** org-mode
-
+*** 772
 #+begin_src emacs-lisp
 (setq org-directory "~/org/")
 
@@ -736,6 +749,10 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 (defvar org-refile-region-position 'bottom
   "Where to refile a region. Use 'bottom to refile at the
 end of the subtree. ")
+
+(after! org
+  (define-key org-mode-map (kbd "C-,") #'er/expand-region))
+
 
 (defun org-refile-region (beg end copy)
   "Refile the active region.
@@ -781,6 +798,8 @@ With prefix arg C-u, copy region instad of killing it."
 (setq org-agenda-tags-column 0)
 
 #+end_src
+ 
+*** 830
 #+begin_src emacs-lisp
 ;; (setq org-agenda-files (directory-files-recursively "~/org/" "\.org$"))
 (setq org-agenda-files '("~/org" "~/org/issues"))
@@ -804,6 +823,7 @@ With prefix arg C-u, copy region instad of killing it."
 
 
 #+end_src
+*** 854
 #+begin_src emacs-lisp
 
 
@@ -825,10 +845,8 @@ With prefix arg C-u, copy region instad of killing it."
 
 
 #+end_src
+*** 876
 #+begin_src emacs-lisp
-(setq org-cycle-max-level 5)
-
-
 (defadvice! my/hide-archived-on-global-cycle (&rest _)
   "For some reason org-content (i.e. <number>S-<TAB>) does not
 respect the hidden status of archived headings and shows them.
@@ -847,6 +865,7 @@ This hides them again."
                                                     (org-agenda-format-date-aligned date))))
 
 #+end_src
+*** 899
 #+begin_src emacs-lisp
 (use-package! org-roam
   :config
@@ -877,12 +896,12 @@ This hides them again."
       :if-new (file+head "%<%Y%m%d%H%M%S>-uni-cg-${slug}.org" "#+title: ${title}\n")
       :unnarrowed t))))
 
-(after! org-fold-core
-  (setq org-fold-core-style 'overlays))
+;; (after! org-fold-core
+;;   (setq org-fold-core-style 'overlays))
 
-(after! org
-  (push "notes" org-protecting-blocks)
-  (push "comment" org-protecting-blocks))
+;; ;; (after! org
+;;   (push "notes" org-protecting-blocks)
+;;   (push "comment" org-protecting-blocks))
 
 
 
@@ -913,6 +932,7 @@ This hides them again."
 
 
 #+end_src
+*** 966
 #+begin_src emacs-lisp
 (defun my/org-fmt ()
   "Ensure that blank lines exist between headings of level (n+1) which are followed by headings of level (n)."
@@ -929,6 +949,7 @@ This hides them again."
                           (insert "\n")))))))
 
 #+end_src
+*** 983
 #+begin_src emacs-lisp
 
 (use-package! org-appear
@@ -942,6 +963,7 @@ This hides them again."
   (run-at-time nil nil #'org-appear--set-elements))
 
 #+end_src
+*** 997
 #+begin_src emacs-lisp
 
 (defun org-archive-done-tasks ()
@@ -971,6 +993,7 @@ This hides them again."
         (holiday-fixed 10 3 "Tag der Deutschen Einheit")))
 
 #+end_src
+*** 1027
 #+begin_src emacs-lisp
 
 (setq holiday-christian-holidays
@@ -1176,6 +1199,15 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 
 #+end_src
+** insert primary
+#+begin_src emacs-lisp :tangle yes
+(defun insert-primary ()
+  (interactive)
+  (insert-for-yank (gui-get-primary-selection)))
+
+(global-set-key (kbd "<f2>") #'insert-primary)
+
+#+end_src
 ** scheme
 #+begin_src emacs-lisp
 (set-popup-rule! "^\\*Geiser Debug\\*$" :side 'bottom :vslot -3)
@@ -1297,7 +1329,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (meow-leader-define-key
    '("?" . meow-cheatsheet)
    ;; To execute the originally e in MOTION state, use SPC e.
-   '("e" . "H-e")
+   ;; '("e" . "H-e")
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
    '("3" . meow-digit-argument)
@@ -1333,7 +1365,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
    '("c" . meow-change)
-   '("C" . meow-comment)
+   ;; '("C" . meow-comment)
    '("d" . meow-delete)
    '("D" . meow-backward-delete)
    ;; '("e" . meow-next)
@@ -1357,6 +1389,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("M" . meow-mark-symbol)
    '("n" . meow-next)
    '("N" . meow-next-expand)
+   '("o" . "C-c l")
    ;; '("o" . meow-right)
    ;; '("O" . meow-right-expand)
    '("p" . meow-prev)
@@ -1381,10 +1414,11 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
    ;; '("Z" . meow-swap-grab)
-   '("'" . repeat)
+   '("'" . consult-register-load)
+   '("#" . consult-register-store)
    '("<escape>" . ignore))
   (meow-leader-define-key
-   '("l" . "<f6> c")
+   '("d" . "<f6> c")
    '("i" . "<f6> i")
    '("n" . "<f6> n")
    '("p" . "<f6> p")
@@ -1454,7 +1488,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 (map! "C-," #'er/expand-region)
 
-(define-key org-mode-map (kbd "C-,") #'er/expand-region)
 
 ;; The fwollowing code will turn off corfu only when the edits are being applied
 ;; (add-hook 'macrursors-pre-finish-hook 'meow-global-mode)
@@ -1524,8 +1557,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   ;; (global-set-key (kbd "C-c SPC") #'macrursors-select)
   (global-set-key (kbd "C->") #'macrursors-mark-next-instance-of)
   (global-set-key (kbd "C-<") #'macrursors-mark-previous-instance-of)
-  (global-set-key (kbd "M-n") #'macrursors-mark-next-instance-of)
-  (global-set-key (kbd "M-p") #'macrursors-mark-previous-instance-of)
+  (global-set-key (kbd "M-n") #'macrursors-mark-next-line)
+  (global-set-key (kbd "M-p") #'macrursors-mark-previous-line)
   (global-set-key (kbd "C-;") 'macrursors-mark-map)
   (define-key macrursors-mark-map (kbd "C-;") #'macrursors-mark-all-lines-or-instances)
   (define-key macrursors-mark-map (kbd "SPC") #'macrursors-select)
@@ -1535,8 +1568,6 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (define-key macrursors-mark-map (kbd "s") #'macrursors-mark-all-symbols)
   (define-key macrursors-mark-map (kbd "e") #'macrursors-mark-all-sexps)
   (define-key macrursors-mark-map (kbd "f") #'macrursors-mark-all-defuns)
-  (define-key macrursors-mark-map (kbd "n") #'macrursors-mark-next-line)
-  (define-key macrursors-mark-map (kbd "n") #'macrursors-mark-previous-line)
   (define-key macrursors-mark-map (kbd "Q") #'macrursors-mark-all-sentences)
   (define-key macrursors-mark-map (kbd "r") #'macrursors-mark-all-lines))
 
