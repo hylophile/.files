@@ -70,9 +70,9 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "us";
-    xkbVariant = "";
+    variant = "";
   };
 
   # Enable CUPS to print documents.
@@ -149,6 +149,8 @@
     qbittorrent
     xournalpp
     zathura
+    pavucontrol
+    telegram-desktop
 
     # shell
     wget
@@ -193,7 +195,7 @@
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)
         scheme-basic dvisvgm dvipng # for preview and export as html
-        wrapfig amsmath ulem hyperref capt-of;
+        mylatexformat xcolor preview wrapfig amsmath ulem hyperref capt-of;
       #(setq org-latex-compiler "lualatex")
       #(setq org-preview-latex-default-process 'dvisvgm)
     })
