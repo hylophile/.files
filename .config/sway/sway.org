@@ -169,7 +169,8 @@ input $elecom {
 
 # bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
 # bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
-bindsym $mod+F3 exec swaymsg "splith, exec wezterm start --class wezterm-600px"
+# split window so that remarkable tablet has full range
+bindsym $mod+Ctrl+Shift+F3 exec swaymsg "splith, exec wezterm start --class wezterm-600px"
 # bindsym $mod+F9 exec ~/scripts/switch-bg.scm here
 bindsym $mod+F9 exec ~/scripts/switch-bg.clj new current
 bindsym $mod+Ctrl+Shift+F9 exec ~/scripts/switch-bg.clj discard current
@@ -450,6 +451,10 @@ bindcode 199 exec ~/scripts/set-all-sources.clj unmute
 # select screenshot to clipboard
 bindsym $mod+F4 exec grim -g "$(slurp)" - | wl-copy
 bindsym $mod+Ctrl+F4 exec grim -g "$(slurp)"
+
+# org screenshot
+bindsym $mod+F3 exec ~/scripts/org-screenshot.sh
+
 # color picker to clipboard
 bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
@@ -458,7 +463,6 @@ bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
 bindsym $mod+F1 exec sh ~/scripts/toggle-work-vpn.sh
 
 #+end_src
-
 * Window-specific settings
 
 #+begin_src conf-space
