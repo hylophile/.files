@@ -474,27 +474,70 @@ BEG and END narrow the scope where candidates are searched."
     (set-mark pt)
     (transpose-sexps 0)))
 
+(defun avy-action-easy-kill-any (pt)
+  (unless (require 'easy-kill nil t)
+    (user-error "Easy Kill not found, please install."))
+  (cl-letf* ((bounds (if (use-region-p)
+                         (prog1 (cons (region-beginning) (region-end))
+                           (deactivate-mark))
+                       (bounds-of-thing-at-point 'sexp)))
+             (transpose-map
+              (define-keymap
+                "M-t" (lambda () (interactive "*")
+                        (pcase-let ((`(,beg . ,end) (easy-kill--bounds)))
+                          (transpose-regions (car bounds) (cdr bounds) beg end
+                                             'leave-markers)))))
+             ((symbol-function 'easy-kill-activate-keymap)
+              (lambda ()
+                (let ((map (easy-kill-map)))
+                  (set-transient-map
+                   (make-composed-keymap transpose-map map)
+                   (lambda ()
+                     ;; Prevent any error from activating the keymap forever.
+                     (condition-case err
+                         (or (and (not (easy-kill-exit-p this-command))
+                                  (or (eq this-command
+                                          (lookup-key map (this-single-command-keys)))
+                                      (let ((cmd (key-binding
+                                                  (this-single-command-keys) nil t)))
+                                        (command-remapping cmd nil (list map)))))
+                             (ignore
+                              (easy-kill-destroy-candidate)
+                              (unless (or (easy-kill-get mark) (easy-kill-exit-p this-command))
+                                (easy-kill-save-candidate))))
+                       (error (message "%s:%s" this-command (error-message-string err))
+                              nil)))
+                   (lambda ()
+                     (let ((dat (ring-ref avy-ring 0)))
+                       (select-frame-set-input-focus
+                        (window-frame (cdr dat)))
+                       (select-window (cdr dat))
+                       (goto-char (car dat)))))))))
+    (goto-char pt)
+    (easy-kill)))
 
-(setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?f))
-;; ?t ??????????????
+
+(setq avy-keys '(?n ?s ?e ?r ?i ?a ?o ?d ?m ?g))
 (setq avy-dispatch-alist
- '((?h . avy-action-lookup-documentation)
-   (?q . avy-action-exchange)
-   (?H . avy-action-helpful)
-   (?k . avy-action-kill-stay)
-   (?K . avy-action-kill-whole-line)
-   (?m . avy-action-mark)
-   (?p . avy-action-push)
-   (?t . avy-action-teleport)           ; pull
-   (?T . avy-action-teleport-whole-line)
-   (?w . avy-action-copy)
-   (?W . avy-action-copy-whole-line)
-   (?y . avy-action-yank)
-   (?Y . avy-action-yank-whole-line)
-   (?. . avy-action-embark)))
+      '((?h . avy-action-lookup-documentation)
+        (?H . avy-action-helpful)
+        (?k . avy-action-kill-stay)
+        (?K . avy-action-kill-whole-line)
+        (?q . avy-action-easy-copy)
+        (?m . avy-action-mark)
+        ;; (?p . avy-action-push)
+        (?t . avy-action-exchange)
+        (?T . avy-action-easy-kill-any)
+        (?l . avy-action-teleport)           ; pull
+        (?L . avy-action-teleport-whole-line)
+        (?w . avy-action-copy)
+        (?W . avy-action-copy-whole-line)
+        (?y . avy-action-yank)
+        (?Y . avy-action-yank-whole-line)
+        (?. . avy-action-embark)))
 
 (global-set-key (kbd "M-j") #'avy-goto-char-3)
-
+(global-set-key [remap kill-ring-save] 'easy-kill)
 #+end_src
 
 ** popup
