@@ -1071,6 +1071,39 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 #+end_src
 
+*** org-latex-preview
+#+begin_src emacs-lisp :tangle yes
+(use-package org-latex-preview
+  :config
+  ;; Increase preview width
+  (plist-put org-latex-preview-appearance-options
+             :zoom 1.25)
+  ;; Turn on auto-mode, it's built into Org and much faster/more featured than
+  ;; org-fragtog. (Remember to turn off/uninstall org-fragtog.)
+  (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
+
+  ;; Block C-n and C-p from opening up previews when using auto-mode
+  (add-hook 'org-latex-preview-auto-ignored-commands 'next-line)
+  (add-hook 'org-latex-preview-auto-ignored-commands 'previous-line)
+
+  (add-to-list 'org-latex-packages-alist '("" "amssymb"))
+  ;; Bonus: Turn on live previews.  This shows you a live preview of a LaTeX
+  ;; fragment and updates the preview in real-time as you edit it.
+  ;; To preview only environments, set it to '(block edit-special) instead
+  (setq org-latex-preview-live t))
+#+end_src
+*** org subscript fix
+#+begin_src emacs-lisp :tangle yes
+(defun my/org-raise-scripts-no-braces (_)
+  (when (and (eq (char-after (match-beginning 3)) ?{)
+             (eq (char-before (match-end 3)) ?}))
+    (remove-text-properties (match-beginning 3) (1+ (match-beginning 3))
+                    (list 'invisible nil))
+    (remove-text-properties (1- (match-end 3)) (match-end 3)
+                    (list 'invisible nil))))
+
+(advice-add 'org-raise-scripts :after #'my/org-raise-scripts-no-braces)
+#+end_src
 ** lsp
 
 #+begin_src emacs-lisp
