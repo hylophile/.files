@@ -34,6 +34,8 @@
 
 (package! corfu-candidate-overlay :recipe (:host nil :repo "https://code.bsdgeek.org/adam/corfu-candidate-overlay"
                                            :files (:defaults "*.el")))
+;; (package! completion-preview :recipe (:host nil :repo "https://git.sr.ht/~eshel/completion-preview"))
+
 
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
@@ -66,7 +68,6 @@
 ;; (package! emacs-everywhere :recipe (:local-repo "~/code/emacs-everywhere/" :build (:not compile)))
 ;; (package! ef-themes :recipe (:local-repo "~/code/misc/doom-ef-themes/" :build (:not compile)))
 (package! ef-themes :recipe (:host nil :repo "https://git.sr.ht/~protesilaos/ef-themes"))
-
 (package! page-break-lines)
 (package! minibuffer-header)
 
@@ -130,7 +131,6 @@
 (package! embrace)
 
 (package! macrursors :recipe (:host github :repo "corytertel/macrursors"))
-
 
 (package! easy-kill)
 ;; If the package you are trying to install does not contain a PACKAGENAME.el

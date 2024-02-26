@@ -17,12 +17,28 @@ always forget what this does exactly, but it's Good™
   :after corfu
   :config
   (corfu-candidate-overlay-mode +1)
-  (global-set-key (kbd "M-<iso-lefttab>") #'corfu-candidate-overlay-complete-at-point)
-  (global-set-key (kbd "C-M-S-i") #'corfu-candidate-overlay-complete-at-point))
+  (global-set-key (kbd "M-<tab>") #'corfu-candidate-overlay-complete-at-point)
+  ;; (global-set-key (kbd "M-<tab>") #'completion-at-point)
+  ;; glob
+  ;; (global-set-key (kbd "M-<iso-lefttab>") #'corfu-candidate-overlay-complete-at-point)
+  ;; (global-set-key (kbd "C-M-S-i") #'corfu-candidate-overlay-complete-at-point)
+  )
+#+end_src
+** completion preview :ARCHIVE:
+#+begin_src emacs-lisp :tangle yes
+(use-package! completion-preview
+  :after corfu
+  :hook (corfu-mode . completion-preview-mode)
+)
+  ;; :config
+  ;; (define-key completion-preview-active-mode-map (kbd "<tab>") #'completion-at-point)
+  ;; (define-key completion-preview-active-mode-map (kbd "M-<tab>") #'completion-preview-insert))
 #+end_src
 ** vertico
 #+begin_src emacs-lisp :tangle yes
 (map! :leader "/" #'+vertico/project-search)
+(setq tab-always-indent 'complete)
+
 #+end_src
 ** projectile
 #+begin_src emacs-lisp :tangle yes
@@ -169,13 +185,13 @@ always forget what this does exactly, but it's Good™
 
 (map! :after visual-fill-column :leader "t o" #'visual-fill-column-mode)
 #+end_src
+
 ** dotfiles
 A bit of setup for managing a bare dotfile repository.
 
 We check whether the current =default-directory= belongs to our dotfiles with =git ls-files=. If it does, we add our dotfile environment. We also memoize previous calls to =git=, since magit calls =magit-process-environment= quite often (~25 times per =magit-status=), which slows down every =magit=-command with our advice.
 #+begin_src emacs-lisp
 ;; inspired by https://github.com/magit/magit/issues/460#issuecomment-1475082958
-
 (setq hy/dotfile-dirs ())
 
 (defun hy/magit-process-environment (env)
@@ -215,7 +231,9 @@ When we want to add a new untracked dotfile in a new directory, we have no way o
 (map! :after magit :leader "g S" #'hy/magit-stage-file)
 #+end_src
 
-Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= in our dotfiles. We call =find-file= instead. There's probably a better solution for this.
+Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= in
+our dotfiles. We call =find-file= instead. There's probably a better solution for
+this.
 #+begin_src emacs-lisp
 (defun hy/projectile-find-file ()
   (interactive)
@@ -226,7 +244,6 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
 ;;(map! :leader "SPC" #'hy/projectile-find-file)
 #+end_src
 ** fonts
-
 #+begin_src emacs-lisp
 (setq
  ;; doom-font (font-spec :family "Fira Code" :size 10.0)
@@ -236,15 +253,19 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
  ;; doom-font (font-spec :family "DM Mono" :size 11.0)
  ;; doom-font (font-spec :family "Fantasque Sans Mono" :size 13.0)
  ;; doom-font (font-spec :family "Operator Mono" :size 13.0)
- doom-font (font-spec :family "Agave" :size 14.0)
- ;; doom-font (font-spec :family "IosevkaCorfu" :size 14.0)
+ ;; doom-font (font-spec :family "Agave" :size 14.0)
+ ;; doom-font (font-spec :family "hylosevka" :size 12.0)
+ doom-font (font-spec :family "hylosevka" :size 12.0 :weight 'medium)
  ;; doom-font (font-spec :family "mononoki" :size 12.0)
  ;; doom-font (font-spec :family "Hermit" :size 11.0)
  ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
  ;; doom-font (font-spec :family "Recursive Mono Casual Static" :size 10.0 :weight 'semi-light)
  ;; doom-font (font-spec :family "Victor Mono" :weight 'semi-bold :size 12.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
- doom-variable-pitch-font (font-spec :family "Jost" :size 13.0))
+ ;; doom-variable-pitch-font (font-spec :family "JostScaledForEmacs" :size 13.0)
+ doom-variable-pitch-font (font-spec :family "Jost" :size 13.0)
+ )
+
 ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
 
 
@@ -385,10 +406,10 @@ Prevent projectile from generating a cache for =~= whenever we press =SPC SPC= i
   (setq avy-timeout-seconds 0.3)
   (setq avy-all-windows 'all-frames))
 (defun avy-goto-char-3 (char1 char2 char3 &optional arg beg end)
-  "Jump to the currently visible CHAR1 followed by CHAR2.
-The window scope is determined by `avy-all-windows'.
-When ARG is non-nil, do the opposite of `avy-all-windows'.
-BEG and END narrow the scope where candidates are searched."
+  "Jump to the currently visible CHAR1 followed by CHAR2 followed by
+CHAR3. The window scope is determined by `avy-all-windows'. When
+ARG is non-nil, do the opposite of `avy-all-windows'. BEG and END
+narrow the scope where candidates are searched."
   (interactive (list (let ((c1 (read-char "char 1: " t)))
                        (if (memq c1 '(? ?\b))
                            (keyboard-quit)
@@ -744,6 +765,9 @@ Position is calculated base on WIDTH and HEIGHT of childframe text window"
 #+begin_src emacs-lisp
 (setq org-directory "~/org/")
 
+;; better scaling for mixed-pitch-mode
+(setq! face-font-rescale-alist '(("Jost" . 1.2)))
+
 (defvar org-refile-region-format "\n%s\n")
 
 (defvar org-refile-region-position 'bottom
@@ -982,7 +1006,6 @@ This hides them again."
       holiday-islamic-holidays nil
       holiday-oriental-holidays nil)
 
-
 (setq solar-n-hemi-seasons
       '("Frühlingsanfang" "Sommeranfang" "Herbstanfang" "Winteranfang"))
 
@@ -1023,7 +1046,10 @@ This hides them again."
 
 (use-package! mixed-pitch
   :hook
-  (org-mode . mixed-pitch-mode))
+  (org-mode . mixed-pitch-mode)
+  :config
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-default))
+
 
 (setq org-use-speed-commands t)
 #+end_src
@@ -1427,6 +1453,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("t" . "<f6> t")
    '("s" . "<f6> s")
    '("v" . "<f6> v")
+   '("b" . "<f6> b")
    '("w" . ace-window)
    '("a" . ace-window)
    '("," . consult-buffer)
@@ -1458,6 +1485,35 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;; (defun meow--maybe-toggle-beacon-state () nil)
 
 ;; embrace-change
+(map! :leader
+      (:prefix ("b" . "buffers")
+       :desc "Toggle narrowing"            "-"   #'doom/toggle-narrow-buffer
+       (:when (modulep! :ui workspaces)
+         :desc "Switch workspace buffer" "b" #'persp-switch-to-buffer
+         :desc "Switch buffer"           "B" #'switch-to-buffer
+         :desc "ibuffer workspace"       "I" #'+ibuffer/open-for-current-workspace)
+       :desc "Clone buffer"                "c"   #'clone-indirect-buffer
+       :desc "Clone buffer other window"   "C"   #'clone-indirect-buffer-other-window
+       :desc "Format buffer"               "f" #'+format/buffer
+       :desc "ibuffer"                     "i"   #'ibuffer
+       :desc "Kill buffer"                 "k"   #'kill-current-buffer
+       :desc "Kill all buffers"            "K"   #'doom/kill-all-buffers
+       :desc "Switch to last buffer"       "l"   #'evil-switch-to-windows-last-buffer
+       :desc "Set bookmark"                "m"   #'bookmark-set
+       :desc "Delete bookmark"             "M"   #'bookmark-delete
+       :desc "Next buffer"                 "n"   #'next-buffer
+       :desc "Kill other buffers"          "O"   #'doom/kill-other-buffers
+       :desc "Previous buffer"             "p"   #'previous-buffer
+       :desc "Revert buffer"               "r"   #'revert-buffer
+       :desc "Rename buffer"               "R"   #'rename-buffer
+       :desc "Save buffer"                 "s"   #'basic-save-buffer
+       :desc "Save buffer as root"         "u"   #'doom/sudo-save-buffer
+       :desc "Pop up scratch buffer"       "x"   #'doom/open-scratch-buffer
+       :desc "Switch to scratch buffer"    "X"   #'doom/switch-to-scratch-buffer
+       :desc "Yank buffer"                 "y"   #'+default/yank-buffer-contents
+       :desc "Bury buffer"                 "z"   #'bury-buffer
+       :desc "Kill buried buffers"         "Z"   #'doom/kill-buried-buffers
+       ))
 
 (setq meow-use-clipboard t)
 (map!
@@ -1481,10 +1537,10 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 
 (use-package embrace
-   :config
-    (map! "M-s c" #'embrace-change
-          "M-s a" #'embrace-add
-          "M-s d" #'embrace-delete))
+  :config
+  (map! "M-s c" #'embrace-change
+        "M-s a" #'embrace-add
+        "M-s d" #'embrace-delete))
 
 (map! "C-," #'er/expand-region)
 
@@ -1614,7 +1670,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
 
 #+begin_src emacs-lisp
 (custom-set-faces!
-  '(+workspace-tab-face :inherit default :family "Jost" :height 135)
+  '(+workspace-tab-face :inherit default :family "Jost" :weight regular)
   '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
 
 (after! persp-mode
@@ -1647,7 +1703,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
                                                                              '+workspace-tab-selected-face
                                                                            '+workspace-tab-face)
                                                                :slant italic
-                                                               :family "Agave"
+                                                               :family "hylosevka"
                                                                :foreground ,(face-attribute 'shadow :foreground)))))
                                 "  "))))
   ;; (defun workspaces-formatted ()
@@ -1771,6 +1827,12 @@ reordering."
 
 #+end_src
 ** archive :ARCHIVE:
+#+begin_src emacs-lisp
+
+(setq! bibtex-completion-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
+(setq! citar-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
+#+end_src
+
 *** olivetti
 
 #+begin_src emacs-lisp
@@ -2461,6 +2523,4 @@ region into a snippet more streamlined"
 #+end_src
 *** bib
 #+begin_src emacs-lisp
-(setq! bibtex-completion-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
-(setq! citar-bibliography '("~/code/misc/elitonom/docs/mono.bib"))
 #+end_src
