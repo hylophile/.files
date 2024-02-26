@@ -181,6 +181,7 @@
     nodePackages.prettier
     nodejs_20
     idris2.packages."${pkgs.system}".default
+    black
 
     # files
     ranger
