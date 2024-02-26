@@ -143,8 +143,12 @@
                     :onclick "scripts/menu.clj gamma"
                     (label :text "Toggle gammastep"))
             (button :class "button"
-                    :onclick "scripts/menu.clj next-output"
-                    (label :text "Next output"))))
+                    :onclick "scripts/menu.clj keyboard"
+                    (label :text "Toggle keyboard"))
+            ;; (button :class "button"
+            ;;         :onclick "scripts/menu.clj next-output"
+            ;;         (label :text "Next output"))
+            ))
 
 (defwindow menu-0
            :monitor 0

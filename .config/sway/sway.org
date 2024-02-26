@@ -196,6 +196,8 @@ exec sleep 300 && ~/scripts/switch-bg.clj new all
 
 exec ~/scripts/notify.clj
 
+exec wvkbd-mobintl --hidden -L 200
+
 exec_always ~/scripts/scale-up-edp.clj
 
 # exec ~/scripts/dynamic-opacity.clj

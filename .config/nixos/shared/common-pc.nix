@@ -151,6 +151,7 @@
     zathura
     pavucontrol
     telegram-desktop
+    wvkbd
 
     # shell
     wget
