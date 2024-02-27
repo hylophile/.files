@@ -176,12 +176,16 @@
     nixfmt
 
     # lang
-    babashka
-    python3
+    ## js
     nodePackages.prettier
     nodejs_20
     idris2.packages."${pkgs.system}".default
+    ## python
+    python3
     black
+    ## clojure
+    babashka
+    clojure-lsp
 
     # files
     ranger
