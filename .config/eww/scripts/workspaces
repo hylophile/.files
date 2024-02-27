@@ -25,7 +25,7 @@
 (defn- some-in-tree [key tree]
   (true? (or (some key tree)
              (some (fn [container]
-                     (some key (:nodes container)))
+                     (some-in-tree key (:nodes container)))
                    tree))))
 
 (defn workspace-tree []
