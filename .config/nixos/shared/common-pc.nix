@@ -201,13 +201,15 @@
     gammastep
     udiskie
     darkman
-    (pkgs.texlive.combine {
-      inherit (pkgs.texlive)
-        scheme-basic dvisvgm dvipng # for preview and export as html
-        mylatexformat xcolor preview wrapfig amsmath ulem hyperref capt-of;
-      #(setq org-latex-compiler "lualatex")
-      #(setq org-preview-latex-default-process 'dvisvgm)
-    })
+    texliveFull
+    # (pkgs.texlive.combine {
+    #   inherit (pkgs.texlive)
+    #     scheme-basic dvisvgm dvipng # for preview and export as html
+    #     etoolbox mylatexformat xcolor preview wrapfig amsmath ulem hyperref
+    #     unicode-math lualatex-math capt-of;
+    #   #(setq org-latex-compiler "lualatex")
+    #   #(setq org-preview-latex-default-process 'dvisvgm)
+    # })
 
     # fish
     fishPlugins.done
