@@ -34,19 +34,20 @@ function fish_prompt
     # end
 
     echo -n (date +%H)
-    set_color $retc
+    set_color -o $retc
     echo -n ⋅
     set_color normal
     set_color cyan
     echo -n (date +%M)
-    set_color $retc
+    set_color -o $retc
     echo -n ⋅
     set_color normal
     set_color cyan
     echo -n (date +%S)
-    set_color $retc
-    echo -n ' — '
+    set_color -o $retc
+    echo -n " ⟝ "
 
+    set_color normal
     if functions -q fish_is_root_user; and fish_is_root_user
         set_color red
     else
@@ -54,7 +55,7 @@ function fish_prompt
     end
 
     echo -n $USER
-    set_color $retc
+    set_color -o $retc
     echo -n @
     set_color normal
 
@@ -72,6 +73,11 @@ function fish_prompt
     echo -n (cat /etc/hostname)
     set_color normal
 
+    echo -n " "
+    set_color -o $retc
+    echo -n :
+    set_color normal
+
     # echo -n " "(pwd)
     # set_color -o $retc
     set_color cyan
@@ -80,7 +86,7 @@ function fish_prompt
         printf "~"
     end
     for i in (dirs | sed 's#/#\n#g' | tail -n +2)
-        set_color $retc
+        set_color -o $retc
         echo -n /
         set_color normal
         set_color cyan
