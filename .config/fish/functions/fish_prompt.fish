@@ -45,7 +45,7 @@ function fish_prompt
     set_color cyan
     echo -n (date +%S)
     set_color -o $retc
-    echo -n " ⟝ "
+    echo -n "  ⟝  "
 
     set_color normal
     if functions -q fish_is_root_user; and fish_is_root_user
@@ -73,7 +73,7 @@ function fish_prompt
     echo -n (cat /etc/hostname)
     set_color normal
 
-    echo -n " "
+    echo -n "  "
     set_color -o $retc
     echo -n :
     set_color normal
@@ -81,7 +81,7 @@ function fish_prompt
     # echo -n " "(pwd)
     # set_color -o $retc
     set_color cyan
-    echo -n " "
+    echo -n "  "
     if string match -q -- "$HOME*" "$PWD"
         printf "~"
     end
