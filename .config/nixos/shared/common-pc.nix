@@ -186,6 +186,9 @@
     ## clojure
     babashka
     clojure-lsp
+    ## shell
+    shfmt
+    shellcheck
 
     # files
     ranger
