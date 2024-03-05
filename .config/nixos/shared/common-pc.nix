@@ -62,18 +62,27 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+    displayManager.gdm = { enable = true; };
+    desktopManager.gnome = { enable = true; };
+    # displayManager.sddm = {
+    #   enable = true;
+    #   wayland.enable = true;
+    # };
+    # desktopManager.plasma6.enable = true;
+
   };
+
+  programs.dconf.enable = true;
 
   # Enable CUPS to print documents.
   services.printing = {
@@ -143,6 +152,7 @@
     # gui
     libsForQt5.dolphin
     libsForQt5.dolphin-plugins
+    libsForQt5.breeze-icons
     firefox
     ungoogled-chromium
     mpv
@@ -179,7 +189,7 @@
     ## js
     nodePackages.prettier
     nodejs_20
-    idris2.packages."${pkgs.system}".default
+    # idris2.packages."${pkgs.system}".default
     ## python
     python3
     black
@@ -219,6 +229,16 @@
   programs.nix-index.enable = true;
   programs.direnv.enable = true;
   programs.command-not-found.enable = false;
+
+  # qt = {
+  #   enable = true;
+  #   platformTheme = "gnome";
+  #   # style = "adwaita-dark";
+  #   # style = {
+  #   #   package = pkgs.arc-kde-theme;
+  #   #   name = "Arc";
+  #   # };
+  # };
 
   # qt = {
   #   enable = true;

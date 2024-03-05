@@ -23,9 +23,18 @@
     #      # to avoid problems caused by different versions of nixpkgs.
     #      inputs.nixpkgs.follows = "nixpkgs";
     #    };
-    eww.url = "github:ralismark/eww/tray-3";
-    wezterm.url = "github:edmundmiller/wezterm/nix-ci?dir=nix";
-    idris2.url = "github:idris-lang/idris2";
+    eww = {
+      url = "github:ralismark/eww/tray-3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wezterm = {
+      url = "github:edmundmiller/wezterm/nix-ci?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # idris2 = {
+    #   url = "github:idris-lang/idris2";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   # `outputs` are all the build result of the flake.
