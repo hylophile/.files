@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   services.pcscd.enable = true;
 
   # programs.firefox = {
@@ -35,5 +38,4 @@
         -libfile ${pkgs.p11-kit}/lib/p11-kit-proxy.so
     '')
   ];
-
 }

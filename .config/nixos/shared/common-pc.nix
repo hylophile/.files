@@ -1,11 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, wezterm, idris2, ... }:
-
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  config,
+  pkgs,
+  wezterm,
+  ...
+}: {
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -41,7 +43,7 @@
     KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
   '';
   users.extraGroups = {
-    uinput = { }; # a
+    uinput = {}; # a
   };
 
   # Set your time zone.
@@ -72,14 +74,13 @@
       variant = "";
     };
 
-    displayManager.gdm = { enable = true; };
-    desktopManager.gnome = { enable = true; };
+    displayManager.gdm = {enable = true;};
+    desktopManager.gnome = {enable = true;};
     # displayManager.sddm = {
     #   enable = true;
     #   wayland.enable = true;
     # };
     # desktopManager.plasma6.enable = true;
-
   };
 
   programs.dconf.enable = true;
@@ -144,7 +145,7 @@
     neovide
     emacs29-pgtk
     emacsPackages.vterm
-
+    emacs-lsp-booster
     # terminal
     wezterm.packages."${pkgs.system}".default
     kitty
@@ -183,7 +184,8 @@
     # dev
     distrobox
     git
-    nixfmt
+    # nixfmt
+    alejandra # nix formatter
 
     # lang
     ## js
@@ -193,6 +195,7 @@
     ## python
     python3
     black
+    nodePackages.pyright
     ## clojure
     babashka
     clojure-lsp

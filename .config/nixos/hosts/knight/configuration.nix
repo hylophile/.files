@@ -1,5 +1,10 @@
-{ config, pkgs, eww, ... }:
-let uid = "nsa";
+{
+  config,
+  pkgs,
+  eww,
+  ...
+}: let
+  uid = "nsa";
 in {
   imports = [
     ./hardware-configuration.nix
@@ -9,7 +14,7 @@ in {
     ./pki.nix
   ];
 
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = ["ntfs"];
   boot.loader.systemd-boot.enable = true;
 
   # boot.kernelParams = [ "module_blacklist=amdgpu" ];
@@ -19,7 +24,7 @@ in {
 
   networking.networkmanager = {
     enable = true;
-    plugins = [ pkgs.networkmanager-openconnect ];
+    plugins = [pkgs.networkmanager-openconnect];
   };
 
   services.syncthing = {
@@ -32,7 +37,7 @@ in {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."${uid}" = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
   };
 
   environment.systemPackages = with pkgs; [
@@ -42,6 +47,5 @@ in {
     tmux
   ];
 
-  users.groups.uinput.members = [ "${uid}" ];
-
+  users.groups.uinput.members = ["${uid}"];
 }

@@ -1,9 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, eww, ... }:
-let uid = "n";
+{
+  config,
+  pkgs,
+  eww,
+  ...
+}: let
+  uid = "n";
 in {
   imports = [
     ./hardware-configuration.nix
@@ -12,7 +16,7 @@ in {
     ../../shared/uni-seclab.nix
   ];
 
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = ["ntfs"];
   # Bootloader.
   boot.loader.systemd-boot = {
     enable = true;
@@ -24,19 +28,19 @@ in {
     # };
   };
 
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = ["amdgpu"];
   # boot.loader.grub.enable = true;
   # boot.loader.grub.device = "/dev/sda";
   # boot.loader.grub.useOSProber = true;
   fileSystems."/mnt/media" = {
     device = "/dev/disk/by-uuid/01D4C223DAD568D0";
     fsType = "ntfs-3g";
-    options = [ "rw" "uid=${uid}" ];
+    options = ["rw" "uid=${uid}"];
   };
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/01D652F1F13E5B80";
     fsType = "ntfs-3g";
-    options = [ "rw" "uid=${uid}" ];
+    options = ["rw" "uid=${uid}"];
   };
 
   networking.hostName = "rook"; # Define your hostname.
@@ -64,9 +68,8 @@ in {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."${uid}" = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
   };
 
-  users.groups.uinput.members = [ "${uid}" ];
-
+  users.groups.uinput.members = ["${uid}"];
 }
