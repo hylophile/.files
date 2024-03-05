@@ -1401,7 +1401,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    ;; '("f" . meow-find)
    '("g" . meow-cancel-selection)
    ;; '("G" . meow-grab)
-   '("h" . meow-block)
+   '("h" . er/expand-region)
    '("H" . meow-to-block)
    '("i" . meow-insert)
    '("I" . meow-open-above)
@@ -1439,6 +1439,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("y" . meow-yank)
    '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
+   '(">" . my/indent)
+   '("<" . my/indent)
    ;; '("Z" . meow-swap-grab)
    '("'" . consult-register-load)
    '("#" . consult-register-store)
@@ -1600,6 +1602,27 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 ;; go to matching parens
 ;; magit status -> nothing?
+#+end_src
+
+*** indent similar to evil
+#+begin_src emacs-lisp
+(define-key indent-rigidly-map (kbd ">") #'indent-rigidly-right-to-tab-stop)
+(define-key indent-rigidly-map (kbd "<") #'indent-rigidly-left-to-tab-stop)
+
+(defun my/indent ()
+  (interactive)
+  (message "%s" (this-command-keys))
+  (unless (region-active-p)
+    (push-mark nil nil))
+  (when (< (mark) (point))
+    (exchange-point-and-mark))
+  (beginning-of-line)
+  (exchange-point-and-mark)
+  (end-of-line)
+  (call-interactively #'indent-rigidly)
+  (if (equal (this-command-keys) "<")
+    (call-interactively #'indent-rigidly-left-to-tab-stop)
+    (call-interactively #'indent-rigidly-right-to-tab-stop)))
 #+end_src
 
 ** macrursors
