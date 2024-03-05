@@ -12,7 +12,7 @@
 ;;
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
-
+(setenv "LSP_USE_PLISTS" "1")
 ;; (setq +popup-defaults (list :side 'right :height 0.16 :width 60 :quit t :select #'ignore :ttl 5))
 (doom! :input
        ;;chinese
