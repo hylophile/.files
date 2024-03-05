@@ -1832,7 +1832,11 @@ reordering."
 
 (after! apheleia
  (setf (alist-get 'prettier-json apheleia-formatters)
-      '(npx "prettier" "--stdin-filepath" filepath "--parser=json")))
+      '(npx "prettier" "--stdin-filepath" filepath "--parser=json"))
+
+ (add-to-list 'apheleia-formatters '(alejandra "alejandra"))
+ (setf (alist-get 'nix-mode apheleia-mode-alist) 'alejandra)
+ )
 
 #+end_src
 ** yuck
