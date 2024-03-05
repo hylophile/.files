@@ -889,7 +889,7 @@ This hides them again."
                                                     (org-agenda-format-date-aligned date))))
 
 #+end_src
-*** 899
+*** 899 :ARCHIVE:
 #+begin_src emacs-lisp
 (use-package! org-roam
   :config
@@ -949,15 +949,18 @@ This hides them again."
 
 
 
-(setq
- org-hide-emphasis-markers t
- org-pretty-entities t
- org-ellipsis "…")
+
 
 
 #+end_src
 *** 966
 #+begin_src emacs-lisp
+
+(setq
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-ellipsis "…")
+
 (defun my/org-fmt ()
   "Ensure that blank lines exist between headings of level (n+1) which are followed by headings of level (n)."
   (interactive)
@@ -1127,6 +1130,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (use-package! org-modern
   :custom
   (org-modern-star '("❥" "⚘" "❥" "❦" "❥" "✿"))
+  (org-modern-table nil)
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda))
@@ -2301,6 +2305,7 @@ region into a snippet more streamlined"
                   (with-temp-message (or (current-message) "")
                     (menu-bar--display-line-numbers-mode-absolute)))))
 #+end_src
+
 *** mail
 
 #+begin_src emacs-lisp
