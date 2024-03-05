@@ -10,6 +10,8 @@ always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
 ;; -*- lexical-binding: t; -*-
 (setq lexical-binding t)
+
+(setq byte-compile-warnings nil)
 #+end_src
 ** corfu candidate overlay
 #+begin_src emacs-lisp
