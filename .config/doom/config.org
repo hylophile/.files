@@ -1691,6 +1691,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
          (doom-modeline--buffer-size)))))
 #+end_src
 ** fancy tab-bar
+The tab-bar is centered and there's nothing there except the tabs. One day I'll figure out how to left- and right-align other content. I dont need the tab-bar's buttons, the mouse bindings it provides are enough. I also don't need the tabs to have maximum/minimum sizes.
 #+begin_src emacs-lisp
 (tab-bar-mode +1)
 
@@ -1702,6 +1703,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
 (setq tab-bar-format '(hy/tab-bar-format-align-center tab-bar-format-tabs tab-bar-separator))
 #+end_src
 
+A little face-lift.
 #+begin_src emacs-lisp
 (custom-set-faces!
   '(tab-bar :family "Jost" :weight regular)
@@ -1712,6 +1714,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
 (defface tab-bar-dir `((t :slant italic :family "hylosevka" :foreground ,(face-attribute 'shadow :foreground))) "Tab bar face for default/project-directory")
 #+end_src
 
+Magit's bindings conflict with my tab-switching bindings.
 #+begin_src emacs-lisp
 (map! :map magit-mode-map
       "<tab>" #'magit-section-cycle
@@ -1720,6 +1723,10 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
       "M-2" nil
       "M-3" nil
       "M-4" nil)
+#+end_src
+
+Tab-bar bindings.
+#+begin_src emacs-lisp
 (map!
  "C-<tab>" #'tab-next
  "C-S-<iso-lefttab>" #'tab-previous
@@ -1737,6 +1744,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
  "M-0" (cmd! (tab-bar-select-tab 10)))
 #+end_src
 
+Tab-bar only provides =tab-bar-align-right=.
 #+begin_src emacs-lisp
 (defun hy/tab-bar-format-align-center ()
   "Align the rest of tab bar items centered."
@@ -1754,7 +1762,10 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
                               `(space :align-to (- right (,hpos)))
                             `(space :align-to (,(- (frame-inner-width) hpos)))))))
     `((align-center menu-item ,str ignore))))
+#+end_src
 
+All of the following styles tabs and gives them nicer names. Additionally, they are annotated with the =projectile-project-root=  / =default-directory=.
+#+begin_src emacs-lisp
 (setq tab-bar-tab-name-format-function #'hy/tab-bar-tab-name-format-default)
 (defun hy/tab-bar-tab-name-format-default (tab i)
   (let* ((hint (format "%d" i))
@@ -1763,6 +1774,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
          (name-format (concat
                        " "
                        (propertize hint 'face 'tab-bar-hint)
+                       " "
                        name
                        " "
                        (propertize dir 'face 'tab-bar-dir)
@@ -1777,9 +1789,10 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
 (setq tab-bar-tab-name-function #'hy/tab-bar-tab-name-current)
 (defun hy/tab-bar-tab-name-current ()
   (hy/shorten-string
-   (buffer-name (window-buffer (or (minibuffer-selected-window)
-                                   (and (window-minibuffer-p)
-                                        (get-mru-window)))))
+   (hy/abbreviate-tab-name
+    (buffer-name (window-buffer (or (minibuffer-selected-window)
+                                    (and (window-minibuffer-p)
+                                         (get-mru-window))))))
    25))
 
 (add-hook 'doom-switch-buffer-hook #'hy/set-tab-dir)
@@ -1788,7 +1801,7 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
         (hy/tab-bar-dir)))
 
 (defun hy/abbreviate-directory-path (path)
-  "Turns `~/code/test/project` into `~/c/t/project`."
+  "Turns `~/code/test/t` into `~/c/t/project`."
   (let* ((directories (seq-filter (lambda (s) (not (string= s ""))) (split-string path "/")))
          (last-dir (car (last directories)))
          (abbreviated-dirs (mapcar (lambda (dir)
@@ -1812,7 +1825,19 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
             (concat  "…" (substring string (- len max-length) len))
           (concat (substring string 0 max-length) "…"))
       string)))
+
+(defun hy/abbreviate-tab-name (name)
+  (string-trim (replace-regexp-in-string
+                (rx (or "*" "helpful" "Org Src"))
+                "" name)))
 #+end_src
+
+Modus themes rustling my jam.
+#+begin_src emacs-lisp
+(custom-set-faces!
+  '(modus-themes-tab-inactive :background nil))
+#+end_src
+
 
 ** lsp-booster
 #+begin_src emacs-lisp :tangle yes
