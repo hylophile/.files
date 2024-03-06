@@ -55,7 +55,7 @@
        ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        (window-select)     ; visually switch windows
        ;; tab-workspaces
-       workspaces        ; tab emulation, persistence & separate workspaces
+       ;; workspaces        ; tab emulation, persistence & separate workspaces
        ;; zen               ; distraction-free coding or writing
 
        :editor

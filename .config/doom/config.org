@@ -1695,65 +1695,104 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
      (or (and (not (string-empty-p meta)) meta)
          (doom-modeline--buffer-size)))))
 #+end_src
-** workspaces
+** fancy tab-bar
+#+begin_src emacs-lisp
+(tab-bar-mode +1)
+
+(setq tab-bar-tab-hints t
+      tab-bar-close-button-show nil
+      tab-bar-separator "  "
+      tab-bar-auto-width nil)
+
+(setq tab-bar-format '(hy/tab-bar-format-align-center tab-bar-format-tabs tab-bar-separator))
+#+end_src
 
 #+begin_src emacs-lisp
 (custom-set-faces!
-  '(+workspace-tab-face :inherit default :family "Jost" :weight regular)
-  '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
+  '(tab-bar :family "Jost" :weight regular)
+  `(tab-bar-tab :weight regular :background ,(face-attribute 'default :background) :box nil)
+  '(tab-bar-tab-inactive :background nil :box nil)
+  )
+(defface tab-bar-hint '((t :weight bold)) "Tab bar face for number hint.")
+(defface tab-bar-dir `((t :slant italic :family "hylosevka" :foreground ,(face-attribute 'shadow :foreground))) "Tab bar face for default/project-directory")
+#+end_src
 
-(after! persp-mode
-  (defun my/h ())
+#+begin_src emacs-lisp
+(map! :map magit-mode-map
+      "<tab>" #'magit-section-cycle
+      "C-<tab>" nil
+      "M-1" nil
+      "M-2" nil
+      "M-3" nil
+      "M-4" nil)
+(map!
+ "C-<tab>" #'tab-next
+ "C-S-<iso-lefttab>" #'tab-previous
+ "C-S-t" #'tab-new
+ "C-S-w" #'tab-close
+ "M-1" (cmd! (tab-bar-select-tab 1))
+ "M-2" (cmd! (tab-bar-select-tab 2))
+ "M-3" (cmd! (tab-bar-select-tab 3))
+ "M-4" (cmd! (tab-bar-select-tab 4))
+ "M-5" (cmd! (tab-bar-select-tab 5))
+ "M-6" (cmd! (tab-bar-select-tab 6))
+ "M-7" (cmd! (tab-bar-select-tab 7))
+ "M-8" (cmd! (tab-bar-select-tab 8))
+ "M-9" (cmd! (tab-bar-select-tab 9))
+ "M-0" (cmd! (tab-bar-select-tab 10)))
+#+end_src
+
+#+begin_src emacs-lisp
+(defun hy/tab-bar-format-align-center ()
+  "Align the rest of tab bar items centered."
+  (let* ((rest (cdr (memq 'hy/tab-bar-format-align-center tab-bar-format)))
+         (rest (tab-bar-format-list rest))
+         (rest (mapconcat (lambda (item) (nth 2 item)) rest  ""))
+         (hpos (progn
+                 (add-face-text-property 0 (length rest) 'tab-bar t rest)
+                 (string-pixel-width rest)))
+         (hpos (+ hpos (/ (- (frame-inner-width) hpos) 2)))
+         (str (propertize "​" 'display
+                          ;; The `right' spec doesn't work on TTY frames
+                          ;; when windows are split horizontally (bug#59620)
+                          (if (window-system)
+                              `(space :align-to (- right (,hpos)))
+                            `(space :align-to (,(- (frame-inner-width) hpos)))))))
+    `((align-center menu-item ,str ignore))))
+
+(setq tab-bar-tab-name-format-function #'hy/tab-bar-tab-name-format-default)
+(defun hy/tab-bar-tab-name-format-default (tab i)
+  (let* ((hint (format "%d" i))
+         (name (alist-get 'name tab))
+         (dir (concat "(" (alist-get 'dir tab "") ")"))
+         (name-format (concat
+                       " "
+                       (propertize hint 'face 'tab-bar-hint)
+                       name
+                       " "
+                       (propertize dir 'face 'tab-bar-dir)
+                       " ")))
+    (add-face-text-property
+     0 (length name-format)
+     (funcall tab-bar-tab-face-function tab)
+     'append name-format)
+    name-format))
 
 
-  (defun workspaces-formatted ()
-    (+doom-dashboard--center (frame-width)
-                             (let* ((names (or persp-names-cache nil))
-                                    (current-name (safe-persp-name (get-current-persp)))
-                                    (dirs (mapcar (lambda (p) (persp-parameter 'dir (persp-get-by-name p))) names)))
-                               (mapconcat
-                                #'identity
-                                (cl-loop for name in names
-                                         for dir in dirs
-                                         for i to (length names)
-                                         collect
-                                         (concat (propertize (format " %d" (1+ i)) 'face
-                                                             `(:inherit ,(if (equal current-name name)
-                                                                             '+workspace-tab-selected-face
-                                                                           '+workspace-tab-face)
-                                                               :weight bold))
-                                                 (propertize (format " %s " name) 'face
-                                                             (if (equal current-name name)
-                                                                 '+workspace-tab-selected-face
-                                                               '+workspace-tab-face))
+(setq tab-bar-tab-name-function #'hy/tab-bar-tab-name-current)
+(defun hy/tab-bar-tab-name-current ()
+  (hy/shorten-string
+   (buffer-name (window-buffer (or (minibuffer-selected-window)
+                                   (and (window-minibuffer-p)
+                                        (get-mru-window)))))
+   25))
 
-                                                 (propertize (if dir (format "(%s) " dir) "") 'face
-                                                             `(:inherit ,(if (equal current-name name)
-                                                                             '+workspace-tab-selected-face
-                                                                           '+workspace-tab-face)
-                                                               :slant italic
-                                                               :family "hylosevka"
-                                                               :foreground ,(face-attribute 'shadow :foreground)))))
-                                "  "))))
-  ;; (defun workspaces-formatted ()
-  ;;                            (buttonize "     hi" (lambda (_) (message "hi"))))
-  (defun hy/invisible-current-workspace ()
-    "The tab bar doesn't update when only faces change (i.e. the
-current workspace), so we invisibly print the current workspace
-name as well to trigger updates"
-    (propertize (safe-persp-name(get-current-persp)) 'invisible t))
+(add-hook 'doom-switch-buffer-hook #'hy/set-tab-dir)
+(defun hy/set-tab-dir ()
+  (setf (alist-get 'dir (cdr (tab-bar--current-tab-find)))
+        (hy/tab-bar-dir)))
 
- (customize-set-variable 'tab-bar-format '(workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
-;; (customize-set-variable 'tab-bar-format '(workspaces-formatted))
-  ;; don't show current workspaces when we switch, since we always see them
- (advice-add #'+workspace/display :override #'ignore)
-  ;; same for renaming and deleting (and saving, but oh well)
- (advice-add #'+workspace-message :override #'ignore))
-
-;; need to run this later for it to not break frame size for some reason
-(run-at-time nil nil (cmd! (tab-bar-mode +1)))
-
-(defun abbreviate-directory-path (path)
+(defun hy/abbreviate-directory-path (path)
   "Turns `~/code/test/project` into `~/c/t/project`."
   (let* ((directories (seq-filter (lambda (s) (not (string= s ""))) (split-string path "/")))
          (last-dir (car (last directories)))
@@ -1764,24 +1803,22 @@ name as well to trigger updates"
                                    directories)))
     (mapconcat 'identity abbreviated-dirs "/")))
 
-(defun hy/set-persp-project-dir (&rest _)
-  "Sets the `persp-parameter` of the current workspace to its
-current project-root or default-directory. We use a
-`persp-parameter` because just renaming a persp results in
-reordering."
-  (let ((dir (abbreviate-directory-path
-              (abbreviate-file-name
-               (or (projectile-project-root) default-directory)))))
-    (set-persp-parameter 'dir dir)))
+(defun hy/tab-bar-dir ()
+  (hy/shorten-string (hy/abbreviate-directory-path
+                      (abbreviate-file-name
+                       (or (projectile-project-root) default-directory)))
+                     10
+                     t))
 
-(add-hook 'doom-switch-buffer-hook #'hy/set-persp-project-dir)
+(defun hy/shorten-string (string max-length &optional at-start)
+  (let ((len (length string)))
+    (if (> len max-length)
+        (if at-start
+            (concat  "…" (substring string (- len max-length) len))
+          (concat (substring string 0 max-length) "…"))
+      string)))
 #+end_src
 
-#+begin_src emacs-lisp
-(after! persp-mode
-  (map! :ni "C-<tab>" #'+workspace:switch-next)
-  (map! :ni "C-S-<iso-lefttab>" #'+workspace:switch-previous))
-#+end_src
 ** lsp-booster
 #+begin_src emacs-lisp :tangle yes
  (defun lsp-booster--advice-json-parse (old-fn &rest args)
