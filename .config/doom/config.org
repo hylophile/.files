@@ -12,9 +12,11 @@ always forget what this does exactly, but it's Good™
 (setq lexical-binding t)
 
 (setq byte-compile-warnings nil)
+(desktop-save-mode 1)
 #+end_src
 ** corfu candidate overlay
 #+begin_src emacs-lisp
+(setq tab-always-indent 'complete)
 (use-package! corfu-candidate-overlay
   :after corfu
   :config
@@ -26,20 +28,9 @@ always forget what this does exactly, but it's Good™
   ;; (global-set-key (kbd "C-M-S-i") #'corfu-candidate-overlay-complete-at-point)
   )
 #+end_src
-** completion preview :ARCHIVE:
-#+begin_src emacs-lisp :tangle yes
-(use-package! completion-preview
-  :after corfu
-  :hook (corfu-mode . completion-preview-mode)
-)
-  ;; :config
-  ;; (define-key completion-preview-active-mode-map (kbd "<tab>") #'completion-at-point)
-  ;; (define-key completion-preview-active-mode-map (kbd "M-<tab>") #'completion-preview-insert))
-#+end_src
 ** vertico
 #+begin_src emacs-lisp :tangle yes
 (map! :leader "/" #'+vertico/project-search)
-(setq tab-always-indent 'complete)
 
 #+end_src
 ** projectile
@@ -50,7 +41,7 @@ always forget what this does exactly, but it's Good™
 ** rg
 #+begin_src emacs-lisp :tangle yes
 
-;; (defun my/update-rg-project ()
+;; (defun hy/update-rg-project ()
 ;;   (when-let*
 ;;       (((buffer-file-name (current-buffer)))
 ;;        ((projectile-project-root))
@@ -64,7 +55,7 @@ always forget what this does exactly, but it's Good™
 ;;     (with-selected-window win
 ;;         (rg-recompile))))
 
-;; (add-hook 'after-save-hook #'my/update-rg-project)
+;; (add-hook 'after-save-hook #'hy/update-rg-project)
 
 ;; (map! :leader "s P" #'rg-project)
 
@@ -74,7 +65,7 @@ always forget what this does exactly, but it's Good™
 #+begin_src emacs-lisp
 ;; (custom-set-faces! '(tree-sitter-hl-face:punctuation :background nil))
 
-(defun my/time-to-talk-region (start end)
+(defun hy/time-to-talk-region (start end)
   (interactive "r")
   (let* ((nwords (count-words start end))
          (wpm 140.0)
@@ -314,13 +305,13 @@ this.
 #+begin_src emacs-lisp
 
 
-(setq my/theme (let ((output (shell-command-to-string "darkman get")))
+(setq hy/theme (let ((output (shell-command-to-string "darkman get")))
                  (if (string= (string-trim-right output) "light")
-                         ;; 'ef-tritanopia-light
-                         'ef-spring
+                         'ef-tritanopia-light
+                         ;; 'ef-spring
                    'modus-vivendi)))
 ;; (setq doom-theme (hylo/random-dark-theme))
-(setq doom-theme my/theme)
+(setq doom-theme hy/theme)
 ;; (setq doom-theme 'ef-spring)
 ;; (setq doom-theme 'doom-dracula)
 ;; (setq doom-theme 'doom-feather-light)
@@ -336,7 +327,7 @@ this.
 
 ;; Spawn or hide a which-key popup
 (after! which-key
-  (defun my/repeat-help (keymap)
+  (defun hy/repeat-help (keymap)
     (if keymap
         (run-at-time
          0 nil
@@ -344,7 +335,7 @@ this.
            (which-key--create-buffer-and-show nil keymap))
          keymap)
       (which-key--hide-popup)))
-  (setq repeat-echo-function #'my/repeat-help))
+  (setq repeat-echo-function #'hy/repeat-help))
 #+end_src
 *** isearch
 #+begin_src emacs-lisp :tangle yes
@@ -355,11 +346,11 @@ this.
 #+end_src
 *** smartparens
 #+begin_src emacs-lisp :tangle yes
-(defun my/sp-undo ()
+(defun hy/sp-undo ()
   (interactive)
   (undo-fu-only-undo))
 
-(defun my/sp-redo ()
+(defun hy/sp-redo ()
   (interactive)
   (undo-fu-only-redo))
 
@@ -386,8 +377,8 @@ this.
   "t" #'sp-transpose-sexps
   "S" #'sp-split-sexp
   "R" #'sp-raise-sexp
-  "/" #'my/sp-undo
-  "?" #'my/sp-redo
+  "/" #'hy/sp-undo
+  "?" #'hy/sp-redo
   "x" #'eval-defun
   "q" #'ignore
   "<escape>" #'ignore
@@ -584,7 +575,7 @@ narrow the scope where candidates are searched."
 
 ** popup
 #+begin_src emacs-lisp
-(defun my/select-orig (popup orig)
+(defun hy/select-orig (popup orig)
   (run-at-time 0 nil `(lambda () (select-window ,orig t))))
 
 ;; (set-popup-rule! "^\\*lsp-help\\*" :side 'bottom)
@@ -696,43 +687,47 @@ narrow the scope where candidates are searched."
 (use-package! eldoc-box
   :hook
   (eldoc-mode . eldoc-box-hover-mode)
-  :config
+:config
+(setq eldoc-box-offset  '(0 0 30))
+  )
 
+  ;; :config
 
-  (push '(tab-bar-format . 0) eldoc-box-frame-parameters)
-  (push '(tab-bar-lines . 0) eldoc-box-frame-parameters)
-  (push '(alpha-background . 100) eldoc-box-frame-parameters)
+  ;;
+;;   (push '(tab-bar-format . 0) eldoc-box-frame-parameters)
+;;   (push '(tab-bar-lines . 0) eldoc-box-frame-parameters)
+;;   (push '(alpha-background . 100) eldoc-box-frame-parameters)
 
-  (push '(child-frame-border-width . 3) eldoc-box-frame-parameters)
-  (push '(tab-bar-lines-keep-state . 0) eldoc-box-frame-parameters)
+;;   (push '(child-frame-border-width . 3) eldoc-box-frame-parameters)
+;;   (push '(tab-bar-lines-keep-state . 0) eldoc-box-frame-parameters)
 
-  (defun my/eldoc-box--window-side ()
-    "Return the side of the selected window.
-Symbol 'left if the selected window is on the left,'right if on the right.
-Return 'left if there is only one window."
-    (let ((left-window (window-at 50 50)))
-      (if (eq left-window (selected-window))
-          'left
-        'right)))
+;;   (defun hy/eldoc-box--window-side ()
+;;     "Return the side of the selected window.
+;; Symbol 'left if the selected window is on the left,'right if on the right.
+;; Return 'left if there is only one window."
+;;     (let ((left-window (window-at 50 50)))
+;;       (if (eq left-window (selected-window))
+;;           'left
+;;         'right)))
 
-  (defun my/eldoc-box--default-upper-corner-position-function (width height)
-    "The default function to set childframe position.
-Used by `eldoc-box-position-function'.
-Position is calculated base on WIDTH and HEIGHT of childframe text window"
-    ;; (cons (- (frame-outer-width (selected-frame)) width 40) 100))
-    ;; (message (format "width: %s" width))
-    (pcase-let ((`(,offset-l ,offset-r ,offset-t) eldoc-box-offset))
-      (cons (pcase (my/eldoc-box--window-side) ; x position + offset
-              ;; display doc on right
-              ('left (- (frame-outer-width (selected-frame)) width 15))
-              ;; display doc on left
-              ('right offset-l))
-            ;; y position + v-offset
-            5)))
-  ;; (- (frame-outer-height (selected-frame)) height 120))))
+;;   (defun hy/eldoc-box--default-upper-corner-position-function (width height)
+;;     "The default function to set childframe position.
+;; Used by `eldoc-box-position-function'.
+;; Position is calculated base on WIDTH and HEIGHT of childframe text window"
+;;     ;; (cons (- (frame-outer-width (selected-frame)) width 40) 100))
+;;     ;; (message (format "width: %s" width))
+;;     (pcase-let ((`(,offset-l ,offset-r ,offset-t) eldoc-box-offset))
+;;       (cons (pcase (hy/eldoc-box--window-side) ; x position + offset
+;;               ;; display doc on right
+;;               ('left (- (frame-outer-width (selected-frame)) width 15))
+;;               ;; display doc on left
+;;               ('right offset-l))
+;;             ;; y position + v-offset
+;;             5)))
+;;   ;; (- (frame-outer-height (selected-frame)) height 120))))
 
-  (setq eldoc-box-position-function #'my/eldoc-box--default-upper-corner-position-function))
-(custom-set-faces! `(eldoc-box-border :background ,(doom-color 'grey)))
+;;   (setq eldoc-box-position-function #'hy/eldoc-box--default-upper-corner-position-function))
+;; (custom-set-faces! `(eldoc-box-border :background ,(doom-color 'grey)))
 ;; (custom-set-faces! `(eldoc-box-border :background ,(face-attribute 'solaire-default-face :background))))
 
 #+end_src
@@ -873,7 +868,7 @@ With prefix arg C-u, copy region instad of killing it."
 #+end_src
 *** 876
 #+begin_src emacs-lisp
-(defadvice! my/hide-archived-on-global-cycle (&rest _)
+(defadvice! hy/hide-archived-on-global-cycle (&rest _)
   "For some reason org-content (i.e. <number>S-<TAB>) does not
 respect the hidden status of archived headings and shows them.
 This hides them again."
@@ -963,7 +958,7 @@ This hides them again."
  org-pretty-entities t
  org-ellipsis "…")
 
-(defun my/org-fmt ()
+(defun hy/org-fmt ()
   "Ensure that blank lines exist between headings of level (n+1) which are followed by headings of level (n)."
   (interactive)
   (org-map-entries (lambda ()
@@ -1097,7 +1092,7 @@ This hides them again."
          ((agenda "" ((org-agenda-span 3)))
           (alltodo "" ((org-agenda-overriding-header "")))))))
 
-(defadvice! my/alltodo-without-time-grid (fn &optional arg)
+(defadvice! hy/alltodo-without-time-grid (fn &optional arg)
   "the org-super-agenda selector :time-grid t collects all TODO
 items in the alltodo agenda, so we dynamically remove it when using that."
   :around #'org-todo-list
@@ -1192,7 +1187,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 #+end_src
 *** org subscript fix
 #+begin_src emacs-lisp :tangle yes
-(defun my/org-raise-scripts-no-braces (_)
+(defun hy/org-raise-scripts-no-braces (_)
   (when (and (eq (char-after (match-beginning 3)) ?{)
              (eq (char-before (match-end 3)) ?}))
     (remove-text-properties (match-beginning 3) (1+ (match-beginning 3))
@@ -1200,7 +1195,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
     (remove-text-properties (1- (match-end 3)) (match-end 3)
                     (list 'invisible nil))))
 
-(advice-add 'org-raise-scripts :after #'my/org-raise-scripts-no-braces)
+(advice-add 'org-raise-scripts :after #'hy/org-raise-scripts-no-braces)
 #+end_src
 ** lsp
 
@@ -1209,16 +1204,16 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   :custom
   (lsp-completion-provider :none) ;; we use Corfu!
   :init
-  (defun my/lsp-mode-setup-completion ()
+  (defun hy/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(flex))) ;; Configure flex
   :hook
   (lsp-mode . lsp-headerline-breadcrumb-mode)
-  (lsp-completion-mode . my/lsp-mode-setup-completion))
+  (lsp-completion-mode . hy/lsp-mode-setup-completion))
 
-(defun my/lsp-no-code-actions ()
+(defun hy/lsp-no-code-actions ()
   (setq lsp-ui-sideline-show-code-actions nil))
-(add-hook 'lsp-after-initialize-hook #'my/lsp-no-code-actions)
+(add-hook 'lsp-after-initialize-hook #'hy/lsp-no-code-actions)
 
 ;; (with-eval-after-load 'lsp-volar
 ;;   (setq lsp-typescript-tsdk (file-name-directory (lsp-volar-get-typescript-server-path))))
@@ -1445,8 +1440,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("y" . meow-yank)
    '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
-   '(">" . my/indent)
-   '("<" . my/indent)
+   '(">" . hy/indent)
+   '("<" . hy/indent)
    ;; '("Z" . meow-swap-grab)
    '("'" . consult-register-load)
    '("#" . consult-register-store)
@@ -1615,7 +1610,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (define-key indent-rigidly-map (kbd ">") #'indent-rigidly-right-to-tab-stop)
 (define-key indent-rigidly-map (kbd "<") #'indent-rigidly-left-to-tab-stop)
 
-(defun my/indent ()
+(defun hy/indent ()
   (interactive)
   (message "%s" (this-command-keys))
   (unless (region-active-p)
@@ -1850,49 +1845,6 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
       orig-result)))
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 #+end_src
-** session restore
-#+begin_src emacs-lisp
-(defadvice! restore-no-confirm-session-quickload-a (_)
-   "Restore the no confirm quickload of workspace sessions"
-   :override #'doom/quickload-session
-   (message "Restoring session...")
-   (doom-load-session)
-   (message "Session restored. Welcome back."))
-
-(setq +doom-dashboard-menu-sections '(("Reload last session" :icon
-  (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
-  :when
-  (cond
-   ((modulep! :ui workspaces)
-    (file-exists-p
-     (expand-file-name persp-auto-save-fname persp-save-dir)))
-   ((require 'desktop nil t)
-    (file-exists-p
-     (desktop-full-file-name))))
-  :action doom/quickload-session)
- ("Recently opened files" :icon
-  (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
-  :action recentf-open-files)
- ("Open org-agenda" :icon
-  (nerd-icons-octicon "nf-oct-calendar" :face 'doom-dashboard-menu-title)
-  :when
-  (fboundp 'org-agenda)
-  :action org-agenda)
- ("Open project" :icon
-  (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
-  :action projectile-switch-project)
- ("Jump to bookmark" :icon
-  (nerd-icons-octicon "nf-oct-bookmark" :face 'doom-dashboard-menu-title)
-  :action bookmark-jump)
- ("Open private configuration" :icon
-  (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
-  :when
-  (file-directory-p doom-user-dir)
-  :action doom/open-private-config)
- ("Open documentation" :icon
-  (nerd-icons-octicon "nf-oct-book" :face 'doom-dashboard-menu-title)
-  :action doom/help)))
-#+end_src
 ** work config
 #+begin_src emacs-lisp
 (load! "work.el" nil t)
@@ -1990,14 +1942,15 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
 #+begin_src emacs-lisp
 (let ((output (shell-command-to-string "darkman get")))
   (if (string= (string-trim-right output) "light")
-      (load-theme 'ef-spring t)
+      ;; (load-theme 'ef-spring t)
+      (load-theme 'ef-tritanopia-light t)
     (load-theme 'doom-rouge t)))
 #+end_src
 *** gptel
 
 #+begin_src emacs-lisp
 (after! gptel
-  (defun my/gptel-api-key-from-auth-source (&optional host user)
+  (defun hy/gptel-api-key-from-auth-source (&optional host user)
     "Lookup api key in the auth source.
 By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
     (if-let ((secret (plist-get (car (auth-source-search
@@ -2007,7 +1960,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
                                 :secret)))
         (if (functionp secret) (funcall secret) secret)
       (user-error "No `gptel-api-key' found in the auth source")))
-  (setq gptel-api-key #'my/gptel-api-key-from-auth-source))
+  (setq gptel-api-key #'hy/gptel-api-key-from-auth-source))
 
 #+end_src
 *** flymake
@@ -2046,7 +1999,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 #+end_src
 *** dofiles bench
 #+begin_src emacs-lisp :tangle yes
-(defun my/magit-process-environment (env)
+(defun hy/magit-process-environment (env)
   "Detect and set git -bare repo env vars when in tracked dotfile directories."
   (let* ((default (file-name-as-directory (expand-file-name default-directory)))
          (git-dir (expand-file-name "~/.dotfiles/"))
@@ -2063,7 +2016,7 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
   env)
 
 (advice-add 'magit-process-environment
-            :filter-return #'my/magit-process-environment)
+            :filter-return #'hy/magit-process-environment)
 #+end_src
 *** follow file links with position
 
@@ -2295,9 +2248,9 @@ region into a snippet more streamlined"
 
 (setq find-file-visit-truename nil)
 (setq find-file-existing-other-name nil)
-;; (defun my/todo-org-is-unreal (buf)
+;; (defun hy/todo-org-is-unreal (buf)
 ;;       (string= (buffer-name buf) "todo.org"))
-;; (push #'my/todo-org-is-unreal doom-unreal-buffer-functions)
+;; (push #'hy/todo-org-is-unreal doom-unreal-buffer-functions)
 
 
 (setq iedit-toggle-key-default nil)
@@ -2590,39 +2543,181 @@ region into a snippet more streamlined"
 *** helpful
 
 #+begin_src emacs-lisp
-;; (defun my/info-buffer-p (buf)
+;; (defun hy/info-buffer-p (buf)
 ;;   (string= (buffer-name buf) "*info*"))
-;; (push 'my/info-buffer-p doom-real-buffer-functions)
+;; (push 'hy/info-buffer-p doom-real-buffer-functions)
 
-;; (defun my/helpful-buffer-p (buf)
+;; (defun hy/helpful-buffer-p (buf)
 ;;   (string-prefix-p "*helpful" (buffer-name buf)))
-;; (push 'my/helpful-buffer-p doom-real-buffer-functions)
+;; (push 'hy/helpful-buffer-p doom-real-buffer-functions)
 
 
 ;; (map! :map helpful-mode-map :n
 ;;       ;; "K" #'+popup/raise
 ;;       "<ESC>" #'+popup/quit-window)
 
-;; (defun my/search-info-org ()
+;; (defun hy/search-info-org ()
 ;;   (interactive)
 ;;   (info "org")
 ;;   (+popup/raise (selected-window))
 ;;   (+default/search-buffer))
-;; (defun my/search-info-elisp ()
+;; (defun hy/search-info-elisp ()
 ;;   (interactive)
 ;;   (info "elisp")
 ;;   (+popup/raise (selected-window))
 ;;   (+default/search-buffer))
-;; (defun my/search-emacsd ()
+;; (defun hy/search-emacsd ()
 ;;   (interactive)
 ;;   (+vertico/project-search t nil "~/.emacs.d"))
 ;; (map! :leader :prefix "s"
-;;       ;; "e" #'my/search-emacsd
-;;       "E" #'my/search-info-elisp
-;;       "n" #'my/search-info-org)
+;;       ;; "e" #'hy/search-emacsd
+;;       "E" #'hy/search-info-elisp
+;;       "n" #'hy/search-info-org)
 
 
 #+end_src
 *** bib
 #+begin_src emacs-lisp
+#+end_src
+*** workspaces :ARCHIVE:
+
+#+begin_src emacs-lisp
+(custom-set-faces!
+  '(+workspace-tab-face :inherit default :family "Jost" :weight regular)
+  '(+workspace-tab-selected-face :inherit (highlight +workspace-tab-face)))
+
+(after! persp-mode
+  (defun hy/h ())
+
+
+  (defun workspaces-formatted ()
+    (+doom-dashboard--center (frame-width)
+                             (let* ((names (or persp-names-cache nil))
+                                    (current-name (safe-persp-name (get-current-persp)))
+                                    (dirs (mapcar (lambda (p) (persp-parameter 'dir (persp-get-by-name p))) names)))
+                               (mapconcat
+                                #'identity
+                                (cl-loop for name in names
+                                         for dir in dirs
+                                         for i to (length names)
+                                         collect
+                                         (concat (propertize (format " %d" (1+ i)) 'face
+                                                             `(:inherit ,(if (equal current-name name)
+                                                                             '+workspace-tab-selected-face
+                                                                           '+workspace-tab-face)
+                                                               :weight bold))
+                                                 (propertize (format " %s " name) 'face
+                                                             (if (equal current-name name)
+                                                                 '+workspace-tab-selected-face
+                                                               '+workspace-tab-face))
+
+                                                 (propertize (if dir (format "(%s) " dir) "") 'face
+                                                             `(:inherit ,(if (equal current-name name)
+                                                                             '+workspace-tab-selected-face
+                                                                           '+workspace-tab-face)
+                                                               :slant italic
+                                                               :family "hylosevka"
+                                                               :foreground ,(face-attribute 'shadow :foreground)))))
+                                "  "))))
+  ;; (defun workspaces-formatted ()
+  ;;                            (buttonize "     hi" (lambda (_) (message "hi"))))
+  (defun hy/invisible-current-workspace ()
+    "The tab bar doesn't update when only faces change (i.e. the
+current workspace), so we invisibly print the current workspace
+name as well to trigger updates"
+    (propertize (safe-persp-name(get-current-persp)) 'invisible t))
+
+ (customize-set-variable 'tab-bar-format '(workspaces-formatted tab-bar-format-align-right hy/invisible-current-workspace))
+;; (customize-set-variable 'tab-bar-format '(workspaces-formatted))
+  ;; don't show current workspaces when we switch, since we always see them
+ (advice-add #'+workspace/display :override #'ignore)
+  ;; same for renaming and deleting (and saving, but oh well)
+ (advice-add #'+workspace-message :override #'ignore))
+
+;; need to run this later for it to not break frame size for some reason
+(run-at-time nil nil (cmd! (tab-bar-mode +1)))
+
+(defun abbreviate-directory-path (path)
+  "Turns `~/code/test/project` into `~/c/t/project`."
+  (let* ((directories (seq-filter (lambda (s) (not (string= s ""))) (split-string path "/")))
+         (last-dir (car (last directories)))
+         (abbreviated-dirs (mapcar (lambda (dir)
+                                     (if (string= dir last-dir)
+                                         dir
+                                       (substring dir 0 (if (string-prefix-p "." dir) 2 1))))
+                                   directories)))
+    (mapconcat 'identity abbreviated-dirs "/")))
+
+(defun hy/set-persp-project-dir (&rest _)
+  "Sets the `persp-parameter` of the current workspace to its
+current project-root or default-directory. We use a
+`persp-parameter` because just renaming a persp results in
+reordering."
+  (let ((dir (abbreviate-directory-path
+              (abbreviate-file-name
+               (or (projectile-project-root) default-directory)))))
+    (set-persp-parameter 'dir dir)))
+
+(add-hook 'doom-switch-buffer-hook #'hy/set-persp-project-dir)
+#+end_src
+
+#+begin_src emacs-lisp
+(after! persp-mode
+  (map! :ni "C-<tab>" #'+workspace:switch-next)
+  (map! :ni "C-S-<iso-lefttab>" #'+workspace:switch-previous))
+,#+end_#+begin_src
+
+      #+end_src
+*** session restore :ARCHIVE:
+#+begin_src emacs-lisp
+(defadvice! restore-no-confirm-session-quickload-a (_)
+   "Restore the no confirm quickload of workspace sessions"
+   :override #'doom/quickload-session
+   (message "Restoring session...")
+   (doom-load-session)
+   (message "Session restored. Welcome back."))
+
+(setq +doom-dashboard-menu-sections '(("Reload last session" :icon
+  (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
+  :when
+  (cond
+   ((modulep! :ui workspaces)
+    (file-exists-p
+     (expand-file-name persp-auto-save-fname persp-save-dir)))
+   ((require 'desktop nil t)
+    (file-exists-p
+     (desktop-full-file-name))))
+  :action doom/quickload-session)
+ ("Recently opened files" :icon
+  (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
+  :action recentf-open-files)
+ ("Open org-agenda" :icon
+  (nerd-icons-octicon "nf-oct-calendar" :face 'doom-dashboard-menu-title)
+  :when
+  (fboundp 'org-agenda)
+  :action org-agenda)
+ ("Open project" :icon
+  (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
+  :action projectile-switch-project)
+ ("Jump to bookmark" :icon
+  (nerd-icons-octicon "nf-oct-bookmark" :face 'doom-dashboard-menu-title)
+  :action bookmark-jump)
+ ("Open private configuration" :icon
+  (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
+  :when
+  (file-directory-p doom-user-dir)
+  :action doom/open-private-config)
+ ("Open documentation" :icon
+  (nerd-icons-octicon "nf-oct-book" :face 'doom-dashboard-menu-title)
+  :action doom/help)))
+#+end_src
+*** completion preview :ARCHIVE:
+#+begin_src emacs-lisp :tangle yes
+(use-package! completion-preview
+  :after corfu
+  :hook (corfu-mode . completion-preview-mode)
+)
+  ;; :config
+  ;; (define-key completion-preview-active-mode-map (kbd "<tab>") #'completion-at-point)
+  ;; (define-key completion-preview-active-mode-map (kbd "M-<tab>") #'completion-preview-insert))
 #+end_src
