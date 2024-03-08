@@ -1603,6 +1603,39 @@ Enter insert mode when editing
     (call-interactively #'indent-rigidly-left-to-tab-stop)
     (call-interactively #'indent-rigidly-right-to-tab-stop)))
 #+end_src
+
+*** modeline icon
+#+begin_src emacs-lisp
+
+(setq doom-modeline-modal nil)
+
+(after! doom-modeline
+
+  (doom-modeline-def-segment modals
+    (when (and doom-modeline-modal
+           (bound-and-true-p meow-mode))
+      (doom-modeline--modal-icon
+       meow--indicator
+       (cond
+        ((meow-normal-mode-p) 'doom-modeline-evil-normal-state)
+        ((meow-insert-mode-p) 'doom-modeline-evil-insert-state)
+        ((meow-keypad-mode-p) 'doom-modeline-evil-visual-state)
+        ((meow-motion-mode-p) 'doom-modeline-evil-operator-state)
+        (t 'doom-modeline-evil-normal-state))
+       meow--indicator
+       (cond
+        ((meow-normal-mode-p) "nf-md-alpha_n")
+        ((meow-insert-mode-p) "nf-md-alpha_i")
+        ((meow-keypad-mode-p) "nf-md-alpha_k")
+        ((meow-motion-mode-p) "nf-md-alpha_m")
+        (t "nf-md-alpha_n_circle"))
+       (cond
+        ((meow-normal-mode-p) "🅝")
+        ((meow-insert-mode-p) "🅘")
+        ((meow-motion-mode-p) "🅜")
+        (t "🅝"))))))
+
+#+end_src
 ** invisible vertical window dividers
 #+begin_src emacs-lisp
 (setq window-divider-default-places nil)
