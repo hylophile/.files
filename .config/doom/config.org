@@ -256,7 +256,7 @@ this.
  ;; doom-font (font-spec :family "Victor Mono" :weight 'semi-bold :size 12.0)
  ;; doom-font (font-spec :family "Victor Mono" :size 10.0)
  ;; doom-variable-pitch-font (font-spec :family "JostScaledForEmacs" :size 13.0)
- doom-variable-pitch-font (font-spec :family "Jost" :size 13.0)
+ doom-variable-pitch-font (font-spec :family "Jost" :weight 'regular)
  )
 
 ;; doom-variable-pitch-font (font-spec :family "Overpass" :size 10.0)
