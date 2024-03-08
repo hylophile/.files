@@ -1573,43 +1573,14 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
  (add-hook 'macrursors-mode-hook 'toggle-meow-during-macro)
 
+ ;; (global-set-key "<F3>" #'kmacro-start-macro-or-insert-counter)
  (defun meow--maybe-toggle-beacon-state ())
  (add-hook 'meow-insert-exit-hook #'corfu-quit))
 #+end_src
 
-#+begin_src emacs-lisp
-(after! doom-modeline
-
-  (doom-modeline-def-segment modals
-   (when (bound-and-true-p meow-mode)
-     (doom-modeline--modal-icon
-      meow--indicator
-      (cond
-       ((meow-normal-mode-p) 'doom-modeline-evil-normal-state)
-       ((meow-insert-mode-p) 'doom-modeline-evil-insert-state)
-       ((meow-keypad-mode-p) 'doom-modeline-evil-visual-state)
-       ((meow-motion-mode-p) 'doom-modeline-evil-operator-state)
-       (t 'doom-modeline-evil-normal-state))
-      meow--indicator
-      (cond
-       ((meow-normal-mode-p) "nf-md-alpha_n")
-       ((meow-insert-mode-p) "nf-md-alpha_i")
-       ((meow-keypad-mode-p) "nf-md-alpha_k")
-       ((meow-motion-mode-p) "nf-md-alpha_m")
-       (t "nf-md-alpha_n_circle"))
-      (cond
-       ((meow-normal-mode-p) "🅝")
-       ((meow-insert-mode-p) "🅘")
-       ((meow-motion-mode-p) "🅜")
-       (t "🅝"))))))
-
-#+end_src
-
+Enter insert mode when editing
 #+begin_src emacs-lisp
 (add-hook 'git-commit-setup-hook #'meow-insert-mode)
-
-;; go to matching parens
-;; magit status -> nothing?
 #+end_src
 
 *** indent similar to evil
@@ -1676,25 +1647,29 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
 
 ;; (global-set-key (kbd "C-i") #'next-line)
+#+end_src
 
+*** modeline segment
+#+begin_src emacs-lisp
 (after! doom-modeline
- (defun doom-modeline--macrursors ()
-  (when (bound-and-true-p macrursors-mode)
-        (let ((cursors-curr (1+ (cl-count-if (lambda (p) (< p (point))) macrursors--overlays
-                                            :key #'overlay-start)))
-              (cursors-count (1+ (length macrursors--overlays)))
-              (face 'doom-modeline-panel))
-             (concat
-                     (or (doom-modeline-icon 'mdicon "nf-md-multicast" "" "" :face face)
-                         (propertize "I"
-                                     'face `(:inherit ,face :height 1.4 :weight normal)
-                                     'display '(raise -0.1)))
-                     (propertize (doom-modeline-vspc)
-                                 'face `(:inherit (variable-pitch ,face)))
-                     (propertize (format "%d/%d " cursors-curr cursors-count) 'face face)))))
+  (defun doom-modeline--macrursors ()
+    (when (and (doom-modeline--active)
+               (bound-and-true-p macrursors-mode))
+      (let ((cursors-curr (1+ (cl-count-if (lambda (p) (< p (point))) macrursors--overlays
+                                           :key #'overlay-start)))
+            (cursors-count (1+ (length macrursors--overlays)))
+            (face 'doom-modeline-panel))
+        (concat
+         (or (doom-modeline-icon 'mdicon "nf-md-multicast" "" "" :face face)
+             (propertize "I"
+                         'face `(:inherit ,face :height 1.4 :weight normal)
+                         'display '(raise -0.1)))
+         (propertize (doom-modeline-vspc)
+                     'face `(:inherit (variable-pitch ,face)))
+         (propertize (format "%d/%d " cursors-curr cursors-count) 'face face))))))
 
- (doom-modeline-def-segment matches
-   "Displays matches.
+  (doom-modeline-def-segment matches
+    "Displays matches.
 
 Including:
 1. the currently recording macro, 2. A current/total for the
@@ -1702,16 +1677,30 @@ current search term (with `anzu'), 3. The number of substitutions being
 conducted with `evil-ex-substitute', and/or 4. The number of active `iedit'
 regions, 5. The current/total for the highlight term (with `symbol-overlay'),
 6. The number of active `multiple-cursors'."
-   (let ((meta (concat (doom-modeline--macro-recording)
-                       (doom-modeline--anzu)
-                       (doom-modeline--phi-search)
-                       (doom-modeline--evil-substitute)
-                       (doom-modeline--iedit)
-                       (doom-modeline--symbol-overlay)
-                       (doom-modeline--multiple-cursors)
-                       (doom-modeline--macrursors))))
-     (or (and (not (string-empty-p meta)) meta)
-         (doom-modeline--buffer-size)))))
+    (let ((meta (concat (doom-modeline--macro-recording)
+                        (doom-modeline--anzu)
+                        (doom-modeline--phi-search)
+                        (doom-modeline--evil-substitute)
+                        (doom-modeline--iedit)
+                        (doom-modeline--symbol-overlay)
+                        (doom-modeline--multiple-cursors)
+                        (doom-modeline--macrursors))))
+      (or (and (not (string-empty-p meta)) meta)
+          (doom-modeline--buffer-size)))))
+#+end_src
+
+** keycast
+
+#+begin_src emacs-lisp
+;; from https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
+(after! keycast
+  (define-minor-mode keycast-mode
+    "Show current command and its key binding in the mode line."
+    :global t
+    (if keycast-mode
+        (add-hook 'pre-command-hook 'keycast--update t)
+      (remove-hook 'pre-command-hook 'keycast--update))))
+(add-to-list 'global-mode-string '("" keycast-mode-line))
 #+end_src
 ** fancy tab-bar
 The tab-bar is centered and there's nothing there except the tabs. One day I'll figure out how to left- and right-align other content. I dont need the tab-bar's buttons, the mouse bindings it provides are enough. I also don't need the tabs to have maximum/minimum sizes.
