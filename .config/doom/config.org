@@ -1625,6 +1625,22 @@ items in the alltodo agenda, so we dynamically remove it when using that."
     (call-interactively #'indent-rigidly-left-to-tab-stop)
     (call-interactively #'indent-rigidly-right-to-tab-stop)))
 #+end_src
+** invisible vertical window dividers
+#+begin_src emacs-lisp
+(setq window-divider-default-places nil)
+
+(custom-set-faces!
+  `(fringe
+   :inherit default
+   :background nil
+   :foreground nil))
+(custom-set-faces!
+  `(vertical-border
+   :inherit default
+   :inverse-video t
+   :background nil
+   :foreground nil))
+#+end_src
 
 ** macrursors
 #+begin_src emacs-lisp

@@ -143,7 +143,9 @@
     vim
     neovim
     neovide
-    emacs29-pgtk
+    (pkgs.emacs-unstable-pgtk.overrideAttrs {
+      patches = [./vertical-border-respect-alpha-background.patch];
+    })
     emacsPackages.vterm
     emacs-lsp-booster
     # terminal

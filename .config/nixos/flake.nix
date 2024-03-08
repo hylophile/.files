@@ -36,6 +36,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+
     # idris2 = {
     #   url = "github:idris-lang/idris2";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -58,7 +60,10 @@
     ...
   } @ inputs: let
     my-overlays = {
-      nixpkgs.overlays = [inputs.emacs-lsp-booster.overlays.default];
+      nixpkgs.overlays = [
+        inputs.emacs-lsp-booster.overlays.default
+        inputs.emacs-overlay.overlays.emacs
+      ];
     };
   in {
     nixosConfigurations = {
