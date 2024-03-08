@@ -31,7 +31,7 @@
 
 (unpin! org)
 
-
+(package! keycast)
 (package! corfu-candidate-overlay :recipe (:host nil :repo "https://code.bsdgeek.org/adam/corfu-candidate-overlay"
                                            :files (:defaults "*.el")))
 ;; (package! completion-preview :recipe (:host nil :repo "https://git.sr.ht/~eshel/completion-preview"))
