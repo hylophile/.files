@@ -92,11 +92,12 @@ always forget what this does exactly, but it's Good™
 ;; (setq doom-localleader-key ",")
 
 ;; (remove-hook 'doom-first-buffer-hook 'global-hl-line-mode)
-(setq +default-want-RET-continue-comments nil)
+;; (setq +default-want-RET-continue-comments nil)
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
 ;; (add-to-list 'default-frame-alist '(alpha 100 100))
-(add-to-list 'default-frame-alist '(alpha-background . 95))
+(add-to-list 'default-frame-alist '(alpha-background . 85))
+;; (set-frame-parameter nil 'alpha-background 85)
 (setq auth-sources '("~/.authinfo"))
 
 ;; (setq lsp-idle-delay 0.01)
@@ -147,9 +148,6 @@ always forget what this does exactly, but it's Good™
 
 (setq confirm-kill-emacs nil) ; I know what I said.
 
-(setq
- window-divider-default-bottom-width 1
- window-divider-default-right-width 5)
 
 #+end_src
 
@@ -1296,12 +1294,12 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 (custom-set-faces!
   `(aw-leading-char-face
     ;; :family "Jost*"
-    :foreground ,(face-attribute 'mode-line-emphasis :foreground)
+    :foreground ,(face-foreground 'mode-line-emphasis)
     ;; :foreground ,(doom-color 'red)
     ;; :background ,(face-attribute 'solaire-default-face :background)
     ;; :width ultra-expanded
     ;; :weight light
-    :height 5.0))
+    :height 3.5))
 ;; :weight bold :height 2.0 :box (:line-width (5 . 5) :color ,(face-attribute 'mode-line :background))))
 (use-package! ace-window
   :config
@@ -1311,7 +1309,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    (ace-window-posframe-mode +1))
   (after! treemacs
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
-  (ace-window-display-mode t)
+  ;; (ace-window-display-mode t)
   (setq aw-background nil)
   (setq aw-keys '(?t ?n ?e ?r ?i ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m))
 
@@ -1590,7 +1588,6 @@ Enter insert mode when editing
 
 (defun hy/indent ()
   (interactive)
-  (message "%s" (this-command-keys))
   (unless (region-active-p)
     (push-mark nil nil))
   (when (< (mark) (point))
