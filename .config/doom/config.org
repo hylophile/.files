@@ -1916,6 +1916,21 @@ Modus themes rustling my jam.
 ;;   (idris-interpreter-path "idris2"))
 
 #+end_src
+
+*** modeline
+#+begin_src emacs-lisp
+  (setq doom-modeline-bar-width 1)
+(custom-set-faces!
+  `(doom-modeline-bar :background ,(face-background 'mode-line))
+  `(doom-modeline-bar-inactive :background ,(face-background 'mode-line-inactive)))
+
+(custom-set-faces!
+  '(mode-line :family "Jost" :weight regular)
+  '(mode-line-inactive :family "Jost" :weight regular))
+
+(setq modus-themes-mode-line '(borderless accented))
+#+end_src
+
 ** archive :ARCHIVE:
 #+begin_src emacs-lisp
 
@@ -2427,13 +2442,6 @@ region into a snippet more streamlined"
 ;; (after! vterm
 ;;   (set-popup-rule! "^\\*vterm" :size 0.15 :side 'right :vslot -4 :select t :quit nil :ttl 0 ))
 ;;
-
-#+end_src
-*** modeline
-#+begin_src emacs-lisp
-;; (setq doom-modeline-modal-icon nil)
-
-;; (advice-add #'doom-modeline-segment--modals :override #'ignore)
 
 #+end_src
 *** magit
