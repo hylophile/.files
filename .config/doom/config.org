@@ -1553,7 +1553,14 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;; (add-hook 'macrursors-post-finish-hook 'meow-global-mode)
 #+end_src
 
+#+begin_src emacs-lisp
+  (defun my/meow-mark ()
+    (interactive)
+    (meow--select (meow--make-selection '(expand . word) (point) (point)) nil)
+    (message "Meow mark set"))
 
+  (meow-define-keys 'normal '("C-SPC" . my/meow-mark))
+#+end_src
 
 #+begin_src emacs-lisp
 (delete-selection-mode -1)
