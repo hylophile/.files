@@ -210,6 +210,7 @@
 
     # misc
     # nix-index # todo: figure me out
+    wf-recorder # screen recording
     imagemagick
     gammastep
     udiskie

@@ -454,6 +454,9 @@ bindcode 199 exec ~/scripts/set-all-sources.clj unmute
 bindsym $mod+F4 exec grim -g "$(slurp)" - | wl-copy
 bindsym $mod+Ctrl+F4 exec grim -g "$(slurp)"
 
+# input a filename, select, record the selection, copy filename to clipboard. call again to stop
+bindsym $mod+F2 exec ~/scripts/record-selection.fish
+
 # org screenshot
 bindsym $mod+F3 exec ~/scripts/org-screenshot.sh
 
