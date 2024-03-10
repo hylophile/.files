@@ -165,6 +165,7 @@
     pavucontrol
     telegram-desktop
     wvkbd
+    inkscape-with-extensions
 
     # shell
     wget
@@ -204,6 +205,9 @@
     ## shell
     shfmt
     shellcheck
+    ## c
+    clang
+    clang-tools
 
     # files
     ranger
