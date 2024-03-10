@@ -22,6 +22,8 @@ always forget what this does exactly, but it's Good™
   :config
   (corfu-candidate-overlay-mode +1)
   (global-set-key (kbd "M-<tab>") #'corfu-candidate-overlay-complete-at-point)
+  ;; (keymap-set 'corfu-candidate-overlay-map (kbd "M-SPC") #'corfu-insert-separator)
+
   ;; (global-set-key (kbd "M-<tab>") #'completion-at-point)
   ;; glob
   ;; (global-set-key (kbd "M-<iso-lefttab>") #'corfu-candidate-overlay-complete-at-point)
@@ -1603,14 +1605,15 @@ Enter insert mode when editing
 
 *** modeline icon
 #+begin_src emacs-lisp
-
 (setq doom-modeline-modal nil)
+#+end_src
+**** setup :ARCHIVE:
 
+#+begin_src emacs-lisp
 (after! doom-modeline
-
   (doom-modeline-def-segment modals
     (when (and doom-modeline-modal
-           (bound-and-true-p meow-mode))
+               (bound-and-true-p meow-mode))
       (doom-modeline--modal-icon
        meow--indicator
        (cond
@@ -1631,8 +1634,8 @@ Enter insert mode when editing
         ((meow-insert-mode-p) "🅘")
         ((meow-motion-mode-p) "🅜")
         (t "🅝"))))))
-
 #+end_src
+
 ** invisible vertical window dividers
 #+begin_src emacs-lisp
 (setq window-divider-default-places nil)
@@ -1683,6 +1686,7 @@ Enter insert mode when editing
 #+begin_src emacs-lisp
 (after! doom-modeline
   (defun doom-modeline--macrursors ()
+
     (when (and (doom-modeline--active)
                (bound-and-true-p macrursors-mode))
       (let ((cursors-curr (1+ (cl-count-if (lambda (p) (< p (point))) macrursors--overlays
@@ -1696,7 +1700,9 @@ Enter insert mode when editing
                          'display '(raise -0.1)))
          (propertize (doom-modeline-vspc)
                      'face `(:inherit (variable-pitch ,face)))
-         (propertize (format "%d/%d " cursors-curr cursors-count) 'face face))))))
+         (propertize (format "%d/%d " cursors-curr cursors-count) 'face face)))))
+
+
 
   (doom-modeline-def-segment matches
     "Displays matches.
@@ -1947,9 +1953,10 @@ Modus themes rustling my jam.
 
 #+end_src
 
-*** modeline
+** modeline
 #+begin_src emacs-lisp
-  (setq doom-modeline-bar-width 1)
+(setq doom-modeline-bar-width 1
+      doom-modeline-workspace-name nil)
 (custom-set-faces!
   `(doom-modeline-bar :background ,(face-background 'mode-line))
   `(doom-modeline-bar-inactive :background ,(face-background 'mode-line-inactive)))
