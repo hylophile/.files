@@ -183,6 +183,9 @@
     entr
     btop
     lsd
+    libsecret
+    pinentry-gnome
+    rbw
 
     # dev
     distrobox
@@ -240,6 +243,7 @@
   programs.direnv.enable = true;
   programs.command-not-found.enable = false;
 
+  programs.gnupg.agent.enable = true;
   # qt = {
   #   enable = true;
   #   platformTheme = "gnome";

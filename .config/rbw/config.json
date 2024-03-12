@@ -5,6 +5,6 @@
   "notifications_url": null,
   "lock_timeout": 72000,
   "sync_interval": 3600,
-  "pinentry": "pinentry",
+  "pinentry": "rbw-pinentry-keyring",
   "client_cert_path": null
 }
