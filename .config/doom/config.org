@@ -1738,6 +1738,15 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
       (remove-hook 'pre-command-hook 'keycast--update))))
 (add-to-list 'global-mode-string '("" keycast-mode-line))
 #+end_src
+** mail
+#+begin_src emacs-lisp
+(setq +notmuch-sync-backend "mail-sync"
+      notmuch-command "notmuch-with-config"
+      notmuch-show-logo nil
+      user-full-name "Nate Sandy"
+      user-mail-address "nsan@posteo.de")
+
+#+end_src
 ** fancy tab-bar
 The tab-bar is centered and there's nothing there except the tabs. One day I'll figure out how to left- and right-align other content. I dont need the tab-bar's buttons, the mouse bindings it provides are enough. I also don't need the tabs to have maximum/minimum sizes.
 #+begin_src emacs-lisp

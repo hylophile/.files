@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+mbsync -c ~/.config/isync/isyncrc --all && \
+notmuch --config ~/.config/notmuch/notmuchrc new

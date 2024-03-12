@@ -1,0 +1,32 @@
+# Set default values for all following accounts.
+defaults
+auth           on
+tls            on
+tls_starttls   off
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.config/msmtp/msmtp.log
+
+# Gmail
+# account        gmail
+# host           smtp.gmail.com
+# port           587
+# from           username@gmail.com
+# user           username
+# password       plain-text-password
+# account        uni
+# host           exchange.uni.de
+# from           unilmail
+# user           nickname
+# port           587
+# passwordeval "pass email/uni"
+
+# A freemail service
+account        posteo
+host           posteo.de
+from           nsan@posteo.de
+user           nsan@posteo.de
+port           465
+passwordeval "rbw get posteo"
+
+# Set a default account
+account default : posteo

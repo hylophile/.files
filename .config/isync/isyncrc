@@ -1,0 +1,21 @@
+Create Both
+Expunge Both
+SyncState *
+
+IMAPAccount posteo
+Host posteo.de
+User nsan@posteo.de
+#PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg | awk '/machine posteo.de/ {print $NF}'"
+PassCmd "rbw get posteo"
+SSLType IMAPS
+
+IMAPStore posteo-remote
+Account posteo
+
+MaildirStore posteo-local
+Path ~/.mail/posteo/
+Inbox ~/.mail/posteo/inbox
+
+Channel posteo
+Far :posteo-remote:
+Near :posteo-local:

@@ -11,7 +11,8 @@
 in {
   imports = [
     ./hardware-configuration.nix
-    ../../shared/sway.nix # a
+    ../../shared/sway.nix
+    ../../shared/mail.nix
     ../../shared/common-pc.nix
     ../../shared/uni-seclab.nix
   ];
