@@ -1768,7 +1768,7 @@ A little face-lift.
 Magit's bindings conflict with my tab-switching bindings.
 #+begin_src emacs-lisp
 (map! :map magit-mode-map
-      "<tab>" #'magit-section-cycle
+      ;; "<tab>" #'magit-section-toggle
       "C-<tab>" nil
       "M-1" nil
       "M-2" nil
