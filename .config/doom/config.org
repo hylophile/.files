@@ -1279,19 +1279,12 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (split-window-below)
   (other-window 1))
 
-(defun hylo/split-window-fair-and-follow ()
-  "Split current window vertically or horizontally, based on its
- current dimensions. Use evil's window splitting function to
- follow into the new window."
-  (let* ((window (selected-window))
-         (w (window-body-width window))
-         (h (window-body-height window)))
+(defun split-window-fair-and-focus ()
+  (let* ((w (window-total-width))
+         (h (window-total-height)))
     (if (< (* h 2.2) w)
         (split-window-right-and-focus)
       (split-window-below-and-focus))))
-
-(map! :map evil-window-map "s" #'hylo/split-window-fair-and-follow)
-
 
 (custom-set-faces!
   `(aw-leading-char-face
@@ -1308,12 +1301,12 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (setq aw-scope 'visible)
   (setq aw-dispatch-always t)
   (when (display-graphic-p)
-   (ace-window-posframe-mode +1))
+    (ace-window-posframe-mode +1))
   (after! treemacs
     (setq aw-ignored-buffers (delete 'treemacs-mode aw-ignored-buffers)))
   ;; (ace-window-display-mode t)
   (setq aw-background nil)
-  (setq aw-keys '(?t ?n ?e ?r ?i ?o ?d ?f ?u ?p ?l ?w ?y ?c ?, ?x ?. ?g ?m))
+  (setq aw-keys '(?t ?n ?e ?i ?o ?d ?d ?g))
 
   (defun delete-selected-window ()
     (delete-window (selected-window)))
@@ -1329,9 +1322,10 @@ items in the alltodo agenda, so we dynamically remove it when using that."
           (?b aw-switch-buffer-in-window "Select Buffer")
           (?a aw-flip-window)
           (?B aw-switch-buffer-other-window "Switch Buffer Other Window")
-          (?s hylo/split-window-fair-and-follow)
-          (?S aw-swap-window "Swap Windows")
+          (?\  split-window-fair-and-focus)
+          (?s aw-swap-window "Swap Windows")
           (?u winner-undo)
+          (?r rotate-frame-clockwise)
           (?R +popup/raise "Raise Window")
           ;; (?v aw-split-window-vert "Split Vert Window")
           ;; (?h aw-split-window-horz "Split Horz Window")
