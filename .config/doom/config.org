@@ -1965,10 +1965,17 @@ Modus themes rustling my jam.
   `(doom-modeline-bar-inactive :background ,(face-background 'mode-line-inactive)))
 
 (custom-set-faces!
-  '(mode-line :family "Jost" :weight regular)
-  '(mode-line-inactive :family "Jost" :weight regular))
+  '(mode-line :family "Jost" :weight regular :box nil)
+  '(mode-line-inactive :family "Jost" :weight regular :box nil))
 
-(setq modus-themes-mode-line '(borderless accented))
+(setq modus-themes-mode-line '(borderless))
+
+#+end_src
+** display time
+#+begin_src emacs-lisp
+(display-time-mode +1)
+(setq display-time-24hr-format t
+      display-time-default-load-average nil)
 #+end_src
 
 ** archive :ARCHIVE:
