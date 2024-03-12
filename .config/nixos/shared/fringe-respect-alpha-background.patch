@@ -1,0 +1,13 @@
+diff --git a/src/pgtkterm.c b/src/pgtkterm.c
+index 1ec6bfc..d891c6a 100644
+--- a/src/pgtkterm.c
++++ b/src/pgtkterm.c
+@@ -2193,7 +2193,7 @@ pgtk_cr_draw_image (struct frame *f, Emacs_GC *gc, cairo_pattern_t *image,
+     cairo_rectangle (cr, dest_x, dest_y, width, height);
+   else
+     {
+-      pgtk_set_cr_source_with_gc_background (f, gc, false);
++      pgtk_set_cr_source_with_gc_background (f, gc, true);
+       cairo_rectangle (cr, dest_x, dest_y, width, height);
+       cairo_fill_preserve (cr);
+     }
