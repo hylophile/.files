@@ -52,7 +52,7 @@
 ;; (package! web-mode :recipe (:local-repo "~/.doom.d/p/web-mode"))
 ;;(package! ein :pin "e354ea77c29e8c20b6b1a9ee00d86e6a9512bc0d")
 ;; (unpin! web-mode)
-
+(package! transpose-frame)
 (unpin! ace-window)
 ;;(package! everforest-hard-dark-theme
 ;;  :recipe (:repo "https://git.sr.ht/~theorytoe/everforest-hard-dark-theme"))
