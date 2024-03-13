@@ -217,6 +217,9 @@
     ## c
     clang
     clang-tools
+    ## lua
+    lua-language-server
+    stylua
 
     # files
     ranger
