@@ -1128,6 +1128,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   :custom
   (org-modern-star '("❥" "⚘" "❥" "❦" "❥" "✿"))
   (org-modern-table nil)
+  (org-modern-label-border nil)
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda))
