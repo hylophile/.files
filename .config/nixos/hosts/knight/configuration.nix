@@ -41,10 +41,12 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    libreoffice-still # a
+    libreoffice-still
     python3
     nodejs_20
     tmux
+    samba
+    libsecret
   ];
 
   users.groups.uinput.members = ["${uid}"];
