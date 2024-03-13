@@ -5,7 +5,7 @@ if pgrep wf-recorder
     notify-send "Recording stopped."
     sleep 1
     set view (notify-send "Recording of '$(wl-paste)' saved. (Middle-click to view)" --action=view=view)
-    if test $view = view
+    if test -n "$view"; and test $view = view
         mpv $(wl-paste)
     end
 else
