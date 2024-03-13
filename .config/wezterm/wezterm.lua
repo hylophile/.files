@@ -77,7 +77,7 @@ return {
     },
     hide_mouse_cursor_when_typing = false,
     -- term = "wezterm",
-    window_background_opacity = 0.9,
+    window_background_opacity = 0.8,
     --"Dracula",
     color_scheme = "Dracula",
     -- color_scheme = scheme_for_appearance(get_appearance()),
