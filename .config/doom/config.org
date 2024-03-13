@@ -13,6 +13,8 @@ always forget what this does exactly, but it's Good™
 
 (setq byte-compile-warnings nil)
 ;; (desktop-save-mode 1)
+
+(map! "C-z" nil)
 #+end_src
 ** corfu candidate overlay
 #+begin_src emacs-lisp
