@@ -194,13 +194,15 @@ return {
         { key = "F2", mods = "CTRL", action = wezterm.action_callback(layouts.serialize_window) },
         { key = "F3", mods = "CTRL", action = wezterm.action_callback(layouts.deserialize_window) },
         { key = "x", mods = "ALT", action = act.ActivateCommandPalette },
+        { key = "=", mods = "CTRL", action = act.ResetFontSize },
+
         {
-            key = 'L',
-            mods = 'CTRL',
-            action = act.Multiple {
-            act.ClearScrollback 'ScrollbackAndViewport',
-            act.SendKey { key = 'L', mods = 'CTRL' },
-            },
+            key = "L",
+            mods = "CTRL",
+            action = act.Multiple({
+                act.ClearScrollback("ScrollbackAndViewport"),
+                act.SendKey({ key = "L", mods = "CTRL" }),
+            }),
         },
     },
 }
