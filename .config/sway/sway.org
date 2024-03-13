@@ -244,6 +244,7 @@ exec ~/scripts/move.scm reset
 
 # set $term ~/scripts/wezterm-start-on-current-workspace.fish
 set $term wezterm
+# set $term kitty
 bindsym $mod+Return exec $term
 
 # Kill focused window
@@ -486,6 +487,7 @@ for_window    [app_id="blueman-manager"]                      title_format "<spa
 for_window    [app_id="pavucontrol"]                          title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
 for_window    [class="steam"]                                 title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'>󰓓</span> %title"
 for_window    [app_id="org.wezfurlong.wezterm"]               title_format "<span foreground='#50FA7B' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
+for_window    [app_id="kitty"]               title_format "<span foreground='#50FA7B' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
 
 for_window    [class="Mullvad VPN"]                                      floating disable, move container to workspace number 10, urgent deny
 for_window    [instance="mullvad vpn"]                                   urgent deny
