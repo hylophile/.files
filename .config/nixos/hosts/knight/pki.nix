@@ -8,18 +8,17 @@
 
   # programs.firefox = {
   #   enable = true;
-  #   # nativeMessagingHosts.euwebid = true;
+  #   #   # nativeMessagingHosts.euwebid = true;
   #   policies.SecurityDevices.p11-kit-proxy =
   #     "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
   # };
   # Tell p11-kit to load/proxy opensc-pkcs11.so, providing all available slots
   # (PIN1 for authentication/decryption, PIN2 for signing).
-  environment.etc."pkcs11/modules/opensc-pkcs11".text = ''
-    module: ${pkgs.opensc}/lib/opensc-pkcs11.so
-  '';
   environment.etc."pkcs11/modules/pki-pkcs11".text = ''
     module: /home/nsa/smartcard/libcvP11.so
-    critical: yes
+  '';
+  environment.etc."pkcs11/modules/opensc-pkcs11".text = ''
+    module: ${pkgs.opensc}/lib/opensc-pkcs11.so
   '';
   environment.systemPackages = with pkgs; [
     # Wrapper script to tell to Chrome/Chromium to use p11-kit-proxy to load
