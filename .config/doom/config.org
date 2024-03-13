@@ -1215,8 +1215,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (setq lsp-ui-sideline-show-code-actions nil))
 (add-hook 'lsp-after-initialize-hook #'hy/lsp-no-code-actions)
 
-;; (with-eval-after-load 'lsp-volar
-;;   (setq lsp-typescript-tsdk (file-name-directory (lsp-volar-get-typescript-server-path))))
+(setq lsp-enable-suggest-server-download nil)
+
 
 (setq +format-with-lsp nil)
 (after! lsp-ui
