@@ -1365,6 +1365,8 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument))
   (meow-normal-define-key
+   '("SPC" . doom/leader)
+   '("e" . meow-keypad)
    '("0" . meow-expand-0)
    '("1" . meow-expand-1)
    '("2" . meow-expand-2)
@@ -1413,7 +1415,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("M" . meow-mark-symbol)
    '("n" . meow-next)
    '("N" . meow-next-expand)
-   '("o" . "C-c l")
+   ;; '("o" . "C-c l")
    ;; '("o" . meow-right)
    ;; '("O" . meow-right-expand)
    '("p" . meow-prev)
@@ -1443,24 +1445,27 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("'" . consult-register-load)
    '("#" . consult-register-store)
    '("<escape>" . ignore))
-  (meow-leader-define-key
-   '("d" . "<f6> c")
-   '("i" . "<f6> i")
-   '("n" . "<f6> n")
-   '("p" . "<f6> p")
-   '("f" . "<f6> f")
-   '("q" . "<f6> q")
-   '("t" . "<f6> t")
-   '("s" . "<f6> s")
-   '("v" . "<f6> v")
-   '("b" . "<f6> b")
-   '("w" . ace-window)
-   '("a" . ace-window)
-   '("," . consult-buffer)
-   '("SPC" . projectile-find-file)))
+  ;; (meow-leader-define-key
+  ;;  '("d" . "<f6> c")
+  ;;  '("i" . "<f6> i")
+  ;;  '("n" . "<f6> n")
+  ;;  '("p" . "<f6> p")
+  ;;  '("f" . "<f6> f")
+  ;;  '("q" . "<f6> q")
+  ;;  '("t" . "<f6> t")
+  ;;  '("s" . "<f6> s")
+  ;;  '("v" . "<f6> v")
+  ;;  '("b" . "<f6> b")
+  ;;  '("w" . ace-window)
+  ;;  '("a" . ace-window)
+  ;;  '("," . consult-buffer)
+  ;;  '("SPC" . projectile-find-file))
+  (setq meow-keypad-leader-dispatch ctl-x-map)
+  )
 
 (require 'meow)
 (meow-setup)
+(define-key meow-motion-state-keymap (kbd "SPC") #'doom/leader)
 (meow-global-mode 1)
 
 #+end_src
@@ -1473,13 +1478,16 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;;                                 (insert . "I")
 ;;                                 (beacon . "B")))
 ;; ;; (meow-leader-define-key '("b" . "<f6> b")) ???? where u at
-
-(setq doom-leader-alt-key "<f6>")
+(setq meow-keypad-literal-prefix (kbd "e"))
+;; (setq doom-leader-alt-key "<f6>")
 (setq meow-expand-hint-remove-delay 2.5)
 ;; (map! :map meow-leader-keymap
 (map! :map doom-leader-versioning-map "v" #'magit-status)
+;; (map! :map doom-leader-map "h" 'help-map)
+
+(define-key doom-leader-map (kbd "h") help-map)
 ;;   "w" #'meow-keypad-start)
-(setq doom-localleader-alt-key "<f7>")
+;; (setq doom-localleader-alt-key nil)
 ;; (map! :map meow-leader-keymap
 ;;   "l" #'meow-keypad-start)
 ;; (defun meow--maybe-toggle-beacon-state () nil)
@@ -1515,22 +1523,24 @@ items in the alltodo agenda, so we dynamically remove it when using that."
        :desc "Kill buried buffers"         "Z"   #'doom/kill-buried-buffers
        ))
 
+(map! :leader "p p" #'projectile-switch-project)
+(map! :leader "SPC" #'projectile-find-file)
 (setq meow-use-clipboard t)
-(map!
- "C-S-t"   #'+workspace/new
- "C-S-w"   #'+workspace/delete
- "C-<tab>" #'+workspace/cycle
- "C-S-<iso-lefttab>" (cmd! (+workspace/cycle -1))
- "M-1"   #'+workspace/switch-to-0
- "M-2"   #'+workspace/switch-to-1
- "M-3"   #'+workspace/switch-to-2
- "M-4"   #'+workspace/switch-to-3
- "M-5"   #'+workspace/switch-to-4
- "M-6"   #'+workspace/switch-to-5
- "M-7"   #'+workspace/switch-to-6
- "M-8"   #'+workspace/switch-to-7
- "M-9"   #'+workspace/switch-to-8
- "M-0"   #'+workspace/switch-to-final)
+;; (map!
+;;  "C-S-t"   #'+workspace/new
+;;  "C-S-w"   #'+workspace/delete
+;;  "C-<tab>" #'+workspace/cycle
+;;  "C-S-<iso-lefttab>" (cmd! (+workspace/cycle -1))
+;;  "M-1"   #'+workspace/switch-to-0
+;;  "M-2"   #'+workspace/switch-to-1
+;;  "M-3"   #'+workspace/switch-to-2
+;;  "M-4"   #'+workspace/switch-to-3
+;;  "M-5"   #'+workspace/switch-to-4
+;;  "M-6"   #'+workspace/switch-to-5
+;;  "M-7"   #'+workspace/switch-to-6
+;;  "M-8"   #'+workspace/switch-to-7
+;;  "M-9"   #'+workspace/switch-to-8
+;;  "M-0"   #'+workspace/switch-to-final)
 
 ;; (map! :map doom-leader-)
 
