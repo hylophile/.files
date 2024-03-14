@@ -2676,7 +2676,7 @@ region into a snippet more streamlined"
 *** bib
 #+begin_src emacs-lisp
 #+end_src
-*** workspaces :ARCHIVE:
+*** workspaces
 
 #+begin_src emacs-lisp
 (custom-set-faces!
@@ -2765,7 +2765,7 @@ reordering."
 ,#+end_#+begin_src
 
       #+end_src
-*** session restore :ARCHIVE:
+*** session restore
 #+begin_src emacs-lisp
 (defadvice! restore-no-confirm-session-quickload-a (_)
    "Restore the no confirm quickload of workspace sessions"
@@ -2808,7 +2808,7 @@ reordering."
   (nerd-icons-octicon "nf-oct-book" :face 'doom-dashboard-menu-title)
   :action doom/help)))
 #+end_src
-*** completion preview :ARCHIVE:
+*** completion preview
 #+begin_src emacs-lisp :tangle yes
 (use-package! completion-preview
   :after corfu
