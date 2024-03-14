@@ -1981,6 +1981,24 @@ Modus themes rustling my jam.
       display-time-default-load-average nil)
 #+end_src
 
+** apheleia formatting
+
+#+begin_src emacs-lisp
+(setq +format-with-lsp nil)
+
+(setq-hook! 'haskell-mode-hook +format-with 'fourmolu)
+(after! apheleia
+  (push '(fourmolu . ("fourmolu" "--stdin-input-file" (or (buffer-file-name) (buffer-name))))
+        apheleia-formatters)
+  (add-to-list 'apheleia-mode-alist '(python-mode . ruff))
+  (add-to-list 'apheleia-mode-alist '(python-ts-mode . ruff)))
+
+;; (use-package! apheleia
+;;   :config
+;;   (apheleia-global-mode +1)
+;;   (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
+
+#+end_src
 ** archive :ARCHIVE:
 #+begin_src emacs-lisp
 
@@ -2210,22 +2228,6 @@ By default, \"openai.com\" is used as HOST and \"apikey\" as USER."
 
 (after! eldoc
   (delete #'eldoc-display-in-echo-area eldoc-display-functions))
-
-#+end_src
-*** apheleia formatting
-
-#+begin_src emacs-lisp
-(setq +format-with-lsp nil)
-
-(setq-hook! 'haskell-mode-hook +format-with 'fourmolu)
-(after! apheleia
-  (push '(fourmolu . ("fourmolu" "--stdin-input-file" (or (buffer-file-name) (buffer-name))))
-        apheleia-formatters))
-
-;; (use-package! apheleia
-;;   :config
-;;   (apheleia-global-mode +1)
-;;   (push '(scheme-mode . lisp-indent) apheleia-mode-alist))
 
 #+end_src
 *** tempel
