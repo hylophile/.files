@@ -93,6 +93,7 @@ return {
     tab_max_width = 100,
     window_close_confirmation = "NeverPrompt",
     enable_scroll_bar = true,
+    default_cursor_style = "SteadyBar",
     window_frame = {
         -- The font used in the tab bar.
         -- Roboto Bold is the default; this font is bundled
@@ -112,13 +113,13 @@ return {
         inactive_titlebar_bg = "#1e1f29",
     },
     colors = {
-        cursor_bg = "#44475a",
+        cursor_bg = "#f8f8f2",
         -- -- Overrides the text color when the current cell is occupied by the cursor
         cursor_fg = "#f8f8f2",
         -- -- Specifies the border color of the cursor when the cursor style is set to Block,
         -- -- or the color of the vertical or horizontal bar when the cursor style is set to
         -- -- Bar or Underline.
-        cursor_border = "#44475a",
+        cursor_border = "#f8f8f2",
         -- default_cursor_style = "SteadyUnderline",
         -- the foreground color of selected text
         -- selection_fg = "black",
