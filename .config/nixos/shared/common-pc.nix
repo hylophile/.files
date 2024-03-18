@@ -196,17 +196,18 @@
     # dev
     distrobox
     git
-    # nixfmt
-    alejandra # nix formatter
 
     # lang
+    ## nix
+    alejandra # nix formatter
     ## js
     nodePackages.prettier
     nodejs_20
     # idris2.packages."${pkgs.system}".default
     ## python
     python3
-    black
+    ruff
+    ruff-lsp
     nodePackages.pyright
     ## clojure
     babashka
