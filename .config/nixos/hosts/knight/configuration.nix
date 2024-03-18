@@ -8,9 +8,9 @@
 in {
   imports = [
     ./hardware-configuration.nix
-    ../../shared/sway.nix # a
+    ../../shared/sway.nix
     ../../shared/common-pc.nix
-    ../../shared/uni-seclab.nix
+    ../../shared/emacs/emacs.nix
     ./pki.nix
   ];
 

@@ -14,7 +14,7 @@ in {
     ../../shared/sway.nix
     ../../shared/mail.nix
     ../../shared/common-pc.nix
-    ../../shared/uni-seclab.nix
+    ../../shared/emacs/emacs.nix
   ];
 
   boot.supportedFilesystems = ["ntfs"];

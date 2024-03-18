@@ -1,0 +1,138 @@
+From 63062b45d47f5054fc713f37daf3c0b88a7d5edf Mon Sep 17 00:00:00 2001
+From: Nate Sandy <nsan@posteo.de>
+Date: Sun, 17 Mar 2024 23:10:53 +0100
+Subject: [PATCH] Add rgba support for faces to pgtk
+
+---
+ src/dispextern.h |  2 +-
+ src/pgtkterm.c   | 56 ++++++++++++++++++++++++++++++++++--------------
+ 2 files changed, 41 insertions(+), 17 deletions(-)
+
+diff --git a/src/dispextern.h b/src/dispextern.h
+index 5387cb4560..1a6fbb2d95 100644
+--- a/src/dispextern.h
++++ b/src/dispextern.h
+@@ -50,7 +50,7 @@ #define No_Cursor (None)
+ typedef struct
+ {
+   unsigned long pixel;
+-  unsigned short red, green, blue;
++  unsigned short red, green, blue, alpha;
+ } Emacs_Color;
+ 
+ #ifndef HAVE_ANDROID
+diff --git a/src/pgtkterm.c b/src/pgtkterm.c
+index 1ec6bfcda4..b8284ba295 100644
+--- a/src/pgtkterm.c
++++ b/src/pgtkterm.c
+@@ -1677,6 +1677,7 @@ pgtk_compute_lighter_color (struct frame *f, unsigned long *pixel,
+   new.red = min (0xffff, factor * color.red);
+   new.green = min (0xffff, factor * color.green);
+   new.blue = min (0xffff, factor * color.blue);
++  new.alpha = color.alpha;
+ 
+   /* Calculate brightness of COLOR.  */
+   bright = (2 * color.red + 3 * color.green + color.blue) / 6;
+@@ -1706,7 +1707,8 @@ pgtk_compute_lighter_color (struct frame *f, unsigned long *pixel,
+ 	}
+     }
+ 
+-  new.pixel = (new.red >> 8 << 16
++  new.pixel = (new.alpha >> 8 << 24
++	       | new.red >> 8 << 16
+ 	       | new.green >> 8 << 8
+ 	       | new.blue >> 8);
+ 
+@@ -1717,7 +1719,8 @@ pgtk_compute_lighter_color (struct frame *f, unsigned long *pixel,
+       new.red = min (0xffff, delta + color.red);
+       new.green = min (0xffff, delta + color.green);
+       new.blue = min (0xffff, delta + color.blue);
+-      new.pixel = (new.red >> 8 << 16
++      new.pixel = (new.alpha >> 8 << 24
++		   | new.red >> 8 << 16
+ 		   | new.green >> 8 << 8
+ 		   | new.blue >> 8);
+     }
+@@ -7046,7 +7049,9 @@ pgtk_parse_color (struct frame *f, const char *color_name,
+       color->red = rgba.red * 65535;
+       color->green = rgba.green * 65535;
+       color->blue = rgba.blue * 65535;
+-      color->pixel = ((color->red >> 8) << 16
++      color->alpha = rgba.alpha * 65535;
++      color->pixel = ((color->alpha >> 8) << 24
++		      | (color->red >> 8) << 16
+ 		      | (color->green >> 8) << 8
+ 		      | (color->blue >> 8) << 0);
+       return 1;
+@@ -7066,9 +7071,11 @@ pgtk_query_colors (struct frame *f, Emacs_Color * colors, int ncolors)
+     {
+       unsigned long pixel = colors[i].pixel;
+       /* Convert to a 16 bit value in range 0 - 0xffff. */
++#define GetAValue(p) (((p) >> 24) & 0xff)
+ #define GetRValue(p) (((p) >> 16) & 0xff)
+ #define GetGValue(p) (((p) >> 8) & 0xff)
+ #define GetBValue(p) (((p) >> 0) & 0xff)
++      colors[i].alpha = GetAValue (pixel) * 257;
+       colors[i].red = GetRValue (pixel) * 257;
+       colors[i].green = GetGValue (pixel) * 257;
+       colors[i].blue = GetBValue (pixel) * 257;
+@@ -7255,6 +7262,18 @@ pgtk_set_cr_source_with_gc_background (struct frame *f, Emacs_GC *gc,
+ 				 respects_alpha_background);
+ }
+ 
++void
++pgtk_cr_operator_over (Emacs_Color a, Emacs_Color b, Emacs_Color *result) {
++  double a_alpha_norm = a.alpha / 65535.0;
++  double b_alpha_norm = b.alpha / 65535.0;
++
++  result->alpha = a_alpha_norm + b_alpha_norm * (1.0 - a_alpha_norm);
++  result->red = (a.red * a_alpha_norm + b.red * b_alpha_norm * (1.0 - a_alpha_norm)) / result->alpha;
++  result->green = (a.green * a_alpha_norm + b.green * b_alpha_norm * (1.0 - a_alpha_norm)) / result->alpha;
++  result->blue = (a.blue * a_alpha_norm + b.blue * b_alpha_norm * (1.0 - a_alpha_norm)) / result->alpha;
++
++}
++
+ void
+ pgtk_set_cr_source_with_color (struct frame *f, unsigned long color,
+ 			       bool respects_alpha_background)
+@@ -7263,19 +7282,24 @@ pgtk_set_cr_source_with_color (struct frame *f, unsigned long color,
+   col.pixel = color;
+   pgtk_query_color (f, &col);
+ 
+-  if (!respects_alpha_background)
+-    {
+-      cairo_set_source_rgb (FRAME_CR_CONTEXT (f), col.red / 65535.0,
+-			    col.green / 65535.0, col.blue / 65535.0);
+-      cairo_set_operator (FRAME_CR_CONTEXT (f), CAIRO_OPERATOR_OVER);
+-    }
+-  else
+-    {
+-      cairo_set_source_rgba (FRAME_CR_CONTEXT (f), col.red / 65535.0,
+-			     col.green / 65535.0, col.blue / 65535.0,
+-			     f->alpha_background);
+-      cairo_set_operator (FRAME_CR_CONTEXT (f), CAIRO_OPERATOR_SOURCE);
+-    }
++  if (respects_alpha_background) {
++    Emacs_Color frame_background;
++    pgtk_query_frame_background_color (f, &frame_background);
++
++    Emacs_Color result;
++    pgtk_cr_operator_over (col, frame_background, &result);
++
++    cairo_set_source_rgba (FRAME_CR_CONTEXT (f), result.red / 65535.0,
++			   result.green / 65535.0, result.blue / 65535.0,
++			   f->alpha_background * result.alpha);
++    cairo_set_operator (FRAME_CR_CONTEXT (f), CAIRO_OPERATOR_SOURCE);
++  } else {
++    cairo_set_source_rgba (FRAME_CR_CONTEXT (f), col.red / 65535.0,
++			   col.green / 65535.0, col.blue / 65535.0,
++			   col.alpha / 65535.0);
++    cairo_set_operator (FRAME_CR_CONTEXT (f), CAIRO_OPERATOR_OVER);
++  }
++
+ }
+ 
+ void
+-- 
+2.43.1
+

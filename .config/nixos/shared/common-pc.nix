@@ -145,15 +145,7 @@
     vim
     neovim
     neovide
-    (pkgs.emacs-pgtk.overrideAttrs {
-      patches = [
-        ./support-image-transparent.patch
-        ./vertical-border-respect-alpha-background.patch
-        ./fringe-respect-alpha-background.patch
-      ];
-    })
-    emacsPackages.vterm
-    emacs-lsp-booster
+
     # terminal
     wezterm.packages."${pkgs.system}".default
     kitty
