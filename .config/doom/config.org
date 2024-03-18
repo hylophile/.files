@@ -1996,9 +1996,9 @@ Modus themes rustling my jam.
 #+end_src
 ** display time
 #+begin_src emacs-lisp
-(display-time-mode +1)
 (setq display-time-24hr-format t
       display-time-default-load-average nil)
+(display-time-mode +1)
 #+end_src
 
 ** apheleia formatting
