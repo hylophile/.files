@@ -94,6 +94,7 @@ return {
     window_close_confirmation = "NeverPrompt",
     enable_scroll_bar = true,
     default_cursor_style = "SteadyBar",
+    audible_bell = "Disabled",
     window_frame = {
         -- The font used in the tab bar.
         -- Roboto Bold is the default; this font is bundled
