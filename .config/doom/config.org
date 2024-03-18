@@ -1482,7 +1482,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 ;;                                 (insert . "I")
 ;;                                 (beacon . "B")))
 ;; ;; (meow-leader-define-key '("b" . "<f6> b")) ???? where u at
-(setq meow-keypad-literal-prefix (kbd "e"))
+;; (setq meow-keypad-literal-prefix (kbd "SPC"))
 ;; (setq doom-leader-alt-key "<f6>")
 (setq meow-expand-hint-remove-delay 2.5)
 ;; (map! :map meow-leader-keymap
@@ -1754,9 +1754,15 @@ regions, 5. The current/total for the highlight term (with `symbol-overlay'),
 (setq +notmuch-sync-backend "mail-sync"
       notmuch-command "notmuch-with-config"
       notmuch-show-logo nil
+      ;; mail-self-blind t
+      mail-user-agent 'notmuch-user-agent
       user-full-name "Nate Sandy"
-      user-mail-address "nsan@posteo.de")
+      user-mail-address "nsan@posteo.de"
+      notmuch-fcc-dirs '(("nsan@posteo.de" . "posteo/Gesendet -inbox +sent -unread"))
+      )
 
+(map! :map notmuch-show-mode-map "C-<tab>" nil)
+(map! :after notmuch [remap compose-mail] #'+notmuch/compose)
 #+end_src
 ** fancy tab-bar
 The tab-bar is centered and there's nothing there except the tabs. One day I'll figure out how to left- and right-align other content. I dont need the tab-bar's buttons, the mouse bindings it provides are enough. I also don't need the tabs to have maximum/minimum sizes.

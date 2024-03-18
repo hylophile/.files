@@ -17,5 +17,6 @@ Path ~/.mail/posteo/
 Inbox ~/.mail/posteo/inbox
 
 Channel posteo
+Patterns *
 Far :posteo-remote:
 Near :posteo-local:

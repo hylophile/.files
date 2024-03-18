@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euxo pipefail
 
-mbsync -c ~/.config/isync/isyncrc --all && \
+lei up --all
+mbsync -c ~/.config/isync/isyncrc --all
 notmuch --config ~/.config/notmuch/notmuchrc new

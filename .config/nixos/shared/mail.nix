@@ -11,5 +11,6 @@
     isync
     msmtp
     goimapnotify
+    public-inbox
   ];
 }
