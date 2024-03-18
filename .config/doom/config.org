@@ -12,8 +12,12 @@ always forget what this does exactly, but it's Good™
 (setq lexical-binding t)
 
 (setq byte-compile-warnings nil)
-;; (desktop-save-mode 1)
 
+;; (desktop-save-mode 1)
+;; always restore desktop. for some reason desktop-save-mode doesn't work.
+(add-hook 'window-setup-hook #'desktop-revert 100)
+
+;; suspend-frame is too confusing when i hit C-z accidentally.
 (map! "C-z" nil)
 #+end_src
 ** corfu candidate overlay
