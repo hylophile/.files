@@ -22,6 +22,7 @@ always forget what this does exactly, but it's Good™
 #+end_src
 ** corfu candidate overlay
 #+begin_src emacs-lisp
+(use-package! corfu :config (setq corfu-auto nil))
 (setq tab-always-indent 'complete)
 (use-package! corfu-candidate-overlay
   :after corfu
