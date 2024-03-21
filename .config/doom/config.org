@@ -1469,6 +1469,26 @@ items in the alltodo agenda, so we dynamically remove it when using that."
 
   (define-key doom-leader-map (kbd "m") (meow--parse-def "C-c l"))
 
+  (setq meow-ignore-keymap (make-keymap))
+  (meow-define-state ignore
+    "meow ignore state"
+    :lighter " [I]"
+    :keymap meow-ignore-keymap)
+
+  (setq meow-cursor-type-ignore 'hollow)
+
+  (setq my/meow-ignored-modes
+        '(notmuch-show-mode
+          notmuch-search-mode
+          notmuch-tree-mode
+          notmuch-hello-mode))
+
+  (dolist (ignored-mode my/meow-ignored-modes)
+    (add-to-list 'meow-mode-state-list
+                 `(,ignored-mode . ignore)))
+
+  (meow-define-keys 'ignore
+    '("SPC" . doom/leader))
   )
 
 (require 'meow)
