@@ -1652,17 +1652,15 @@ Enter insert mode when editing
 #+begin_src emacs-lisp
 (setq window-divider-default-places nil)
 
+;; these (rgba colors) only work with my fork
 (custom-set-faces!
+  '(org-hide :foreground "rgba(0,0,0,0)")
   `(fringe
-   :inherit default
-   :background nil
-   :foreground nil))
-(custom-set-faces!
+    :background unspecified
+    :foreground unspecified)
   `(vertical-border
-   :inherit default
-   :inverse-video t
-   :background nil
-   :foreground nil))
+    :background "rgba(0,0,0,0)"
+    :foreground "rgba(0,0,0,0)"))
 #+end_src
 
 ** macrursors
