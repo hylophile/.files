@@ -1466,6 +1466,9 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   ;;  '("," . consult-buffer)
   ;;  '("SPC" . projectile-find-file))
   (setq meow-keypad-leader-dispatch ctl-x-map)
+
+  (define-key doom-leader-map (kbd "m") (meow--parse-def "C-c l"))
+
   )
 
 (require 'meow)
