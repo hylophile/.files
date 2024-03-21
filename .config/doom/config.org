@@ -1998,6 +1998,7 @@ Modus themes rustling my jam.
 ** display time
 #+begin_src emacs-lisp
 (setq display-time-24hr-format t
+      display-time-format ""
       display-time-default-load-average nil)
 (display-time-mode +1)
 #+end_src
