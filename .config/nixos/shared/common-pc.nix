@@ -210,6 +210,7 @@
     ## c
     clang
     clang-tools
+    bear
     ## lua
     lua-language-server
     stylua
