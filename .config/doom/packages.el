@@ -30,7 +30,9 @@
   :pin nil)
 
 (unpin! org)
-(unpin! doom-modeline)
+
+
+
 (package! keycast)
 (package! corfu-candidate-overlay :recipe (:host nil :repo "https://code.bsdgeek.org/adam/corfu-candidate-overlay"
                                            :files (:defaults "*.el")))
