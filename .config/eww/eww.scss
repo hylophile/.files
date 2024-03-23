@@ -64,34 +64,31 @@ tooltip {
   }
 }
 
-menubar {
+menu {
+  border: 0.05em $dr_bg1 solid;
+  background-color: $dr_bg0;
+
+  separator {
+    border-bottom: 0.05em $dr_bg1 solid;
+  }
+
   & > menuitem {
     padding: 0.25em 0;
   }
 
-  & menuitem:hover {
-    background-color: $dr_bg2;
+  & menuitem:disabled {
+    color: $dr_fg0;
   }
 
-  & menu {
-    border: 0.05em $dr_bg1 solid;
-    background-color: $dr_bg0;
+  & menuitem:hover {
+    background-color: $dr_bg2;
+    color: $dr_fg0;
+  }
 
-    separator {
-      border-bottom: 0.05em $dr_bg1 solid;
-    }
-
-    & menuitem {
-      padding: 0.25em;
-
-      &:disabled {
-        color: $dr_fg1;
-      }
-
-      &:hover {
-        background-color: $dr_bg1;
-      }
-    }
+  arrow {
+    border-top: 0.5em solid transparent;
+    border-bottom: 0.5em solid transparent;
+    border-right: 0.5em solid $dr_bg1;
   }
 }
 

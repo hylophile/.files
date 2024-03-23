@@ -24,7 +24,7 @@
     #      inputs.nixpkgs.follows = "nixpkgs";
     #    };
     eww = {
-      url = "github:ralismark/eww/tray-3";
+      url = "github:MoetaYuko/eww/tray-3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     wezterm = {

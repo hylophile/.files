@@ -104,8 +104,10 @@
             (volume)
             (menu-toggle)
             (systray :class "mt-2 mb-1"
+                     :orientation "v"
                      :icon-size 16
-                     :pack-direction "ttb")
+                     :spacing 10
+                     )
             (bat)
             (weather)
             (clock)))
