@@ -82,6 +82,7 @@
     # };
     # desktopManager.plasma6.enable = true;
   };
+  security.pam.services.gdm.enableGnomeKeyring = true;
 
   programs.dconf.enable = true;
 
