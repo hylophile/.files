@@ -1897,7 +1897,7 @@ All of the following styles tabs and gives them nicer names. Additionally, they 
         (hy/tab-bar-dir)))
 
 (defun hy/abbreviate-directory-path (path)
-  "Turns `~/code/test/t` into `~/c/t/project`."
+  "Turns `~/code/test/project` into `~/c/t/project`."
   (let* ((directories (seq-filter (lambda (s) (not (string= s ""))) (split-string path "/")))
          (last-dir (car (last directories)))
          (abbreviated-dirs (mapcar (lambda (dir)
