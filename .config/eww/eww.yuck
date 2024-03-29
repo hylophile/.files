@@ -31,8 +31,8 @@
            (box :orientation "v"
                 :space-evenly false
                 :visible {!volume-status.error}
-                (eventbox :onhover {volume-status.sink > 0 ? 'eww update sink-expanded=true' : ''}
-                          :onhoverlost "eww update sink-expanded=false"
+                (eventbox :onhover {volume-status.sink > 0 ? 'scripts/sink-expand-toggle.sh true 0 &' : ''}
+                          :onhoverlost "scripts/sink-expand-toggle.sh false 1 &"
                           (box :orientation "v"
                                :space-evenly false
                                (revealer :reveal {sink-expanded && volume-status.sink > 0}
