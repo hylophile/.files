@@ -1682,14 +1682,16 @@ Enter insert mode when editing
 (setq window-divider-default-places nil)
 
 ;; these (rgba colors) only work with my fork
+(defun hy/hide-org-hide ()
+  (set-face-foreground 'org-hide "rgba(0,0,0,0)"))
+
+(add-hook 'doom-load-theme-hook #'hy/hide-org-hide)
+
 (custom-set-faces!
-  '(org-hide :foreground "rgba(0,0,0,0)")
   `(fringe
     :background unspecified
     :foreground unspecified)
-  `(vertical-border
-    :background "rgba(0,0,0,0)"
-    :foreground "rgba(0,0,0,0)"))
+  )
 #+end_src
 
 ** macrursors
