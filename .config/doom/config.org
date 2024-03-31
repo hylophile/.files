@@ -13,12 +13,18 @@ always forget what this does exactly, but it's Good™
 
 (setq byte-compile-warnings nil)
 
-;; (desktop-save-mode 1)
-;; always restore desktop. for some reason desktop-save-mode doesn't work.
-(add-hook 'window-setup-hook #'desktop-revert 100)
 
 ;; suspend-frame is too confusing when i hit C-z accidentally.
 (map! "C-z" nil)
+#+end_src
+** desktop save and restore
+#+begin_src emacs-lisp
+(desktop-save-mode 1)
+
+;; apparently these bindings got swapped at some point?!
+(map! :map doom-leader-quit/restart-map
+      "q" #'save-buffers-kill-emacs
+      "Q" #'kill-emacs)
 #+end_src
 ** corfu candidate overlay
 #+begin_src emacs-lisp
