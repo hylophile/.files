@@ -1686,6 +1686,7 @@ Enter insert mode when editing
   (set-face-foreground 'org-hide "rgba(0,0,0,0)"))
 
 (add-hook 'doom-load-theme-hook #'hy/hide-org-hide)
+(add-hook 'org-mode-hook #'hy/hide-org-hide)
 
 (custom-set-faces!
   `(fringe
