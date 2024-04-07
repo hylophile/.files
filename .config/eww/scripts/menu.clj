@@ -22,7 +22,11 @@
                  :zoom ["sh -c 'swaymsg output %s scale %s && eww reload'" zoom]
                  :gamma ["echo side-effect" gamma]
                  :keyboard ["sh -c 'kill -s 34 $(pidof wvkbd-mobintl) && eww reload'"]
-                 :next-output ["swaymsg focus output left"]})
+                 :next-output ["swaymsg focus output left"]
+                 :light-monitor ["sh -c '~/scripts/hass.sh monitors'"]
+                 :light-eingang ["sh -c '~/scripts/hass.sh eingang'"]
+                 }
+  )
 
 
 (shell {:continue :true} "eww close menu-0 menu-1")

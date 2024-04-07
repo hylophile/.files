@@ -137,35 +137,42 @@
             (button :class "button"
                     :onclick "scripts/menu.clj rofi"
                     :timeout "20000ms"
-                    (label :text "Rofi"))
+                    (label :text "󰌧"))
             (button :class "button"
                     :onclick "scripts/menu.clj zoom ${output}"
-                    (label :text "Toggle zoom"))
+                    (label :text "󰍉"))
             (button :class "button"
                     :onclick "scripts/menu.clj gamma"
-                    (label :text "Toggle gammastep"))
+                    (label :text "󰖔"))
             (button :class "button"
                     :onclick "scripts/menu.clj keyboard"
-                    (label :text "Toggle keyboard"))
+                    (label :text "󰌌"))
+            (button :class "button"
+                    :onclick "scripts/menu.clj light-monitor"
+                    (label :text "󱉓"))
+            (button :class "button"
+                    :onclick "scripts/menu.clj light-eingang"
+                    (label :text "󰌵"))
+            )
             ;; (button :class "button"
             ;;         :onclick "scripts/menu.clj next-output"
             ;;         (label :text "Next output"))
-            ))
+            )
 
 (defwindow menu-0
            :monitor 0
            :stacking "overlay"
            :geometry (geometry :anchor "bottom right"
-                               :y "250px"
-                               :x "10px")
+                               :y "138px"
+                               :x "0px")
            (menu :output {outputs[0]}))
 
 (defwindow menu-1
            :monitor 1
            :stacking "overlay"
            :geometry (geometry :anchor "bottom right"
-                               :y "250px"
-                               :x "10px")
+                               :y "138px"
+                               :x "0px")
 
            (menu :output {outputs[1]}))
 
