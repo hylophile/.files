@@ -102,7 +102,7 @@
             :orientation "v"
             (azk :output output)
             (volume)
-            (menu-toggle)
+            (menu-toggle :output output)
             (systray :class "mt-2 mb-1"
                      :orientation "v"
                      :icon-size 16
@@ -126,8 +126,8 @@
              (center)
              (right :output output))))
 
-(defwidget menu-toggle []
-           (button :class "mt-2" :onclick "eww open-many --toggle menu-0 menu-1" (label :text "󰍜")))
+(defwidget menu-toggle [output]
+           (eventbox :class "mt-2" :onclick "swaymsg focus output ${output} && eww open-many --toggle menu-0 menu-1" (label :text "󰍜")))
 
 (defwidget menu [output]
            (box
