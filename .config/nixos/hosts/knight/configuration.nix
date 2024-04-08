@@ -73,6 +73,9 @@ in {
     samba
     libsecret
     yarn
+    openshift
+    go
+    gopls
   ];
 
   users.groups.uinput.members = ["${uid}"];
