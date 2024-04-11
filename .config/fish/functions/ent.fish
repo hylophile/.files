@@ -1,5 +1,5 @@
 function ent
     set x (string join " " $argv)
 
-    ls | entr -c -s (printf "\"%s\"" $x)
+    fd | entr -cc -s (printf "\"%s\"" $x)
 end
