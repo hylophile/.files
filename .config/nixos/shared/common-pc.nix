@@ -5,6 +5,7 @@
   config,
   pkgs,
   wezterm,
+  zig,
   ...
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -121,6 +122,7 @@
     true; # powers up the default Bluetooth controller on boot
   services.blueman.enable = true;
 
+  # services.tailscale.enable = true;
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -180,11 +182,13 @@
     zip
     unzip
     entr
+    watchexec
     btop
     lsd
     libsecret
-    pinentry-gnome
+    pinentry-gnome3
     rbw
+    # river
 
     # dev
     distrobox
@@ -193,6 +197,9 @@
     # lang
     ## nix
     alejandra # nix formatter
+    ## go
+    go
+    gopls
     ## js
     nodePackages.prettier
     nodejs_20
@@ -215,6 +222,11 @@
     ## lua
     lua-language-server
     stylua
+    ## zig
+    zig.packages."${pkgs.system}".master
+    zls
+    gdb
+    llvmPackages_latest.llvm
 
     # files
     ranger

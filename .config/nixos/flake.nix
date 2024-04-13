@@ -13,6 +13,7 @@
 
     # Official NixOS package source, using nixos-23.11 branch here
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     #    nixpkgs.url = "github:NixOS/nixpkgs/d65bceaee0fb1e64363f7871bc43dc1c6ecad99f";
     # home-manager, used for managing user configuration
     #    home-manager = {
@@ -38,6 +39,10 @@
 
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zig = {
+      url = "github:mitchellh/zig-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # idris2 = {
