@@ -320,7 +320,8 @@ this.
 
 (setq hy/theme (let ((output (shell-command-to-string "darkman get")))
                  (if (string= (string-trim-right output) "light")
-                         'ef-tritanopia-light
+                     'ef-summer
+                         ;; 'ef-tritanopia-light
                          ;; 'ef-spring
                    'modus-vivendi)))
 ;; (setq doom-theme (hylo/random-dark-theme))
