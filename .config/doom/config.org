@@ -12,10 +12,38 @@ always forget what this does exactly, but it's Good™
 (setq lexical-binding t)
 
 (setq byte-compile-warnings nil)
+(advice-add #'doom-highlight-non-default-indentation-h :override #'ignore)
+#+end_src
 
+Measly attempts at getting =forward-word= and =backward-word= to work like in =evil=...
+#+begin_src emacs-lisp
+;; (use-package! syntax-subword
+;;   :custom (syntax-subword-skip-spaces t))
+;;   :config (global-syntax-subword-mode 1))
+;; (advice-add #'forward-word :override #'syntax-subword-forward)
+;; (advice-add #'backward-word :override #'syntax-subword-backward)
+;; (setq subword-forward-function (cmd! (syntax-subword-forward-1 1)))
+;; (setq subword-backward-function (cmd! (syntax-subword-backward 1)))
+;; TODO why is doom enabling whitespace everywhere?
 
-;; suspend-frame is too confusing when i hit C-z accidentally.
+;; (setq subword-forward-regexp
+;;   "\\W*\\(\\([[:upper:]]*\\(\\W\\)?\\)[[:lower:][:digit:]]*\\)")
+
+;; (setq subword-backward-regexp
+;;   "\\(\\(\\W\\|[[:lower:][:digit:]]\\)\\([[:upper:]]+\\W*\\)\\|\\W\\w+\\)")
+#+end_src
+
+=suspend-frame= is too confusing when i hit C-z accidentally.
+#+begin_src emacs-lisp
 (map! "C-z" nil)
+#+end_src
+
+Weird interaction between desktop-mode and lsp-mode for which I don't know better fixes.
+#+begin_src emacs-lisp
+;; void function (gcmh-set-high-threshold)
+(require 'gcmh)
+;; https://github.com/doomemacs/doomemacs/issues/7491
+(setq lsp-auto-register-remote-clients nil)
 #+end_src
 ** desktop save and restore
 #+begin_src emacs-lisp
@@ -154,7 +182,7 @@ always forget what this does exactly, but it's Good™
       scroll-margin 5
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
-(global-subword-mode t)                           ; Iterate through CamelCase words
+;; (global-subword-mode t)                           ; Iterate through CamelCase words
 
 
 #+end_src
@@ -1427,7 +1455,7 @@ items in the alltodo agenda, so we dynamically remove it when using that."
    '("M" . meow-mark-symbol)
    '("n" . meow-next)
    '("N" . meow-next-expand)
-   ;; '("o" . "C-c l")
+   '("o" . "C-c l")
    ;; '("o" . meow-right)
    ;; '("O" . meow-right-expand)
    '("p" . meow-prev)
@@ -1625,6 +1653,18 @@ Enter insert mode when editing
 (add-hook 'git-commit-setup-hook #'meow-insert-mode)
 #+end_src
 
+#+begin_src emacs-lisp
+(dolist (char-thing '((?\( . round)
+                      (?\) . round)
+                      (?\[ . square)
+                      (?\] . square)
+                      (?\{ . curly)
+                      (?\} . curly)))
+ (add-to-list 'meow-char-thing-table char-thing))
+#+end_src
+
+#+begin_src emacs-lisp
+#+end_src
 *** indent similar to evil
 #+begin_src emacs-lisp
 (define-key indent-rigidly-map (kbd ">") #'indent-rigidly-right-to-tab-stop)
