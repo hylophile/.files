@@ -12,6 +12,7 @@ in {
     ../../shared/common-pc.nix
     ../../shared/emacs/emacs.nix
     ./pki.nix
+    ../../shared/uni-seclab.nix
   ];
 
   boot.supportedFilesystems = ["ntfs"];
