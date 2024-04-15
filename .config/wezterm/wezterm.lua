@@ -76,7 +76,7 @@ return {
         },
     },
 
-    enable_wayland = false,
+    -- enable_wayland = false,
     hide_mouse_cursor_when_typing = false,
     -- term = "wezterm",
     window_background_opacity = 0.8,
