@@ -229,7 +229,7 @@
     llvmPackages_latest.llvm
 
     # files
-    ranger
+    yazi
     ncdu
     dua
 
