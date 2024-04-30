@@ -90,8 +90,8 @@ in {
         "guest ok" = "yes";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "n";
-        "force group" = "n";
+        # "force user" = "n";
+        # "force group" = "n";
       };
       # private = {
       #   path = "/mnt/Shares/Private";
