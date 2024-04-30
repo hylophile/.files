@@ -31,6 +31,7 @@
 
 (unpin! org)
 
+(package! syntax-subword)
 
 
 (package! keycast)
@@ -128,7 +129,8 @@
 (package! idris2 :recipe (:host github :repo "jeroendehaas/idris2-mode" :branch "fix-completion-error"))
 (package! prop-menu)
 
-(package! meow)
+;; (package! meow)
+(package! meow :recipe (:local-repo "~/code/meow/" :build (:not compile)))
 
 (package! embrace)
 

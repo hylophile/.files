@@ -122,7 +122,7 @@
     true; # powers up the default Bluetooth controller on boot
   services.blueman.enable = true;
 
-  # services.tailscale.enable = true;
+  # services.tailscale.enable = false;
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -188,7 +188,7 @@
     libsecret
     pinentry-gnome3
     rbw
-    # river
+    hyperfine
 
     # dev
     distrobox
@@ -203,9 +203,10 @@
     ## js
     nodePackages.prettier
     nodejs_20
+    corepack_20
     # idris2.packages."${pkgs.system}".default
     ## python
-    python3
+    python312
     ruff
     ruff-lsp
     nodePackages.pyright
@@ -259,6 +260,9 @@
   programs.direnv.enable = true;
   programs.command-not-found.enable = false;
 
+  programs.steam = {
+    enable = true;
+  };
   programs.gnupg.agent.enable = true;
   # qt = {
   #   enable = true;

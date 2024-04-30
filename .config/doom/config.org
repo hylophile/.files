@@ -17,9 +17,13 @@ always forget what this does exactly, but it's Good™
 
 Measly attempts at getting =forward-word= and =backward-word= to work like in =evil=...
 #+begin_src emacs-lisp
-;; (use-package! syntax-subword
-;;   :custom (syntax-subword-skip-spaces t))
-;;   :config (global-syntax-subword-mode 1))
+(use-package! syntax-subword
+  :custom (syntax-subword-skip-spaces t)
+  :config (global-syntax-subword-mode 1))
+
+;; (fset forward-word 'syntax-subword-forward)
+;; (fset backward-word 'syntax-subword-backward)
+
 ;; (advice-add #'forward-word :override #'syntax-subword-forward)
 ;; (advice-add #'backward-word :override #'syntax-subword-backward)
 ;; (setq subword-forward-function (cmd! (syntax-subword-forward-1 1)))
@@ -139,8 +143,8 @@ Weird interaction between desktop-mode and lsp-mode for which I don't know bette
 
 ;; (add-hook 'minibuffer-setup-hook #'general-override-mode)
 ;; (add-to-list 'default-frame-alist '(alpha 100 100))
-(add-to-list 'default-frame-alist '(alpha-background . 85))
-;; (set-frame-parameter nil 'alpha-background 85)
+(add-to-list 'default-frame-alist '(alpha-background . 90))
+;; (set-frame-parameter nil 'alpha-background 90)
 (setq auth-sources '("~/.authinfo"))
 
 ;; (setq lsp-idle-delay 0.01)
@@ -178,11 +182,11 @@ Weird interaction between desktop-mode and lsp-mode for which I don't know bette
       auto-save-default t                         ; Nobody likes to loose work, I certainly don't
       truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
       password-cache-expiry nil                   ; I can trust my computers ... can't I?
+      global-subword-mode t
       scroll-preserve-screen-position 'always     ; Don't have `point' jump around
       scroll-margin 5
       hscroll-margin 10)                            ; It's nice to maintain a little margin
 
-;; (global-subword-mode t)                           ; Iterate through CamelCase words
 
 
 #+end_src
@@ -290,6 +294,7 @@ this.
  ;; doom-font (font-spec :family "Agave" :size 14.0)
  ;; doom-font (font-spec :family "hylosevka" :size 12.0)
  doom-font (font-spec :family "hylosevka" :size 12.0 :weight 'medium)
+ ;; doom-font (font-spec :family "Maple Mono" :size 12.0 :weight 'medium)
  ;; doom-font (font-spec :family "mononoki" :size 12.0)
  ;; doom-font (font-spec :family "Hermit" :size 11.0)
  ;; doom-font (font-spec :family "IBM Plex Mono" :size 10.0)
@@ -1190,10 +1195,10 @@ items in the alltodo agenda, so we dynamically remove it when using that."
   (org-timeblock-scale-options '(8 . 20))
   (org-timeblock-tag-colors
    '(("@uni" "#9bf6ff" "")
-     ("zoom" "#caffbf")
-     ("homework" "#bdb2ff")
-     ("work" "#ffc6ff")
-     ("todo" "#ffadad"))))
+     ("@online" "#caffbf")
+     ("@homework" "#bdb2ff")
+     ("@work" "#ffc6ff")
+     ("@todo" "#ffadad"))))
 ;; "#ffadad";
 ;; "#ffd6a5";
 ;; "#fdffb6";
