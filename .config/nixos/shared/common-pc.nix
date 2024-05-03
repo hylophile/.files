@@ -202,6 +202,8 @@
     gopls
     ## js
     nodePackages.prettier
+    typescript
+    nodePackages.typescript-language-server
     nodejs_20
     corepack_20
     # idris2.packages."${pkgs.system}".default
@@ -210,6 +212,7 @@
     ruff
     ruff-lsp
     nodePackages.pyright
+    uv
     ## clojure
     babashka
     clojure-lsp
@@ -220,6 +223,7 @@
     clang
     clang-tools
     bear
+    gcc
     ## lua
     lua-language-server
     stylua
