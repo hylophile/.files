@@ -1,0 +1,25 @@
+theme = "modus_vivendi_tritanopia"
+
+
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+
+[keys.insert]
+C-q = ":x"
+A-x = "command_palette"
+[keys.insert.C-x]
+"C-s" = ":w"
+
+[keys.normal]
+C-q = ":x"
+"ret" = ["open_below", "normal_mode"]
+A-x = "command_palette"
+[keys.normal.C-x]
+"C-s" = ":w"
+
+[keys.normal.Z]
+Z = ":x"

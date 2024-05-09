@@ -148,6 +148,7 @@
     vim
     neovim
     neovide
+    helix
 
     # terminal
     wezterm.packages."${pkgs.system}".default
@@ -156,6 +157,7 @@
     # gui
     libsForQt5.dolphin
     libsForQt5.dolphin-plugins
+    libsForQt5.kio-extras
     libsForQt5.breeze-icons
     firefox
     ungoogled-chromium
@@ -201,6 +203,7 @@
     go
     gopls
     ## js
+    vscode-langservers-extracted
     nodePackages.prettier
     typescript
     nodePackages.typescript-language-server

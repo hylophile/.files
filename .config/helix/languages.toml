@@ -1,0 +1,14 @@
+
+
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+config = {} # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
+
+[[language]]
+name = "python"
+#formatter = { command = "black", args = ["--quiet", "-"] }
+auto-format = true
+roots = ["pyproject.toml"]
+language-servers = [ "pyright" ]
+ 
