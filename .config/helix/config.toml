@@ -1,4 +1,5 @@
 # theme = "modus_vivendi_tritanopia"
+
 theme = "my_modus"
 
 
@@ -13,7 +14,7 @@ select = "underline"
 C-q = ":q"
 A-x = "command_palette"
 [keys.insert.C-x]
-"C-s" = ["commit_undo_checkpoint", ":w"]
+"C-s" = ["commit_undo_checkpoint", ":write"]
 
 [keys.normal]
 C-q = ":q"

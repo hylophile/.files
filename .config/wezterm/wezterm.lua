@@ -114,7 +114,6 @@ return {
         inactive_titlebar_bg = "#1e1f29",
     },
     colors = {
-
         background="black",
         cursor_bg = "#f8f8f2",
         -- -- Overrides the text color when the current cell is occupied by the cursor
@@ -194,6 +193,12 @@ return {
         saturation = 1.0,
         brightness = 0.6,
     },
+    window_padding = {
+  left = 0,
+  right = 0,
+  top = 0,
+  bottom = 0,
+},
     keys = {
         { key = "F2", mods = "CTRL", action = wezterm.action_callback(layouts.serialize_window) },
         { key = "F3", mods = "CTRL", action = wezterm.action_callback(layouts.deserialize_window) },
