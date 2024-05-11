@@ -114,6 +114,8 @@ return {
         inactive_titlebar_bg = "#1e1f29",
     },
     colors = {
+
+        background="black",
         cursor_bg = "#f8f8f2",
         -- -- Overrides the text color when the current cell is occupied by the cursor
         cursor_fg = "#f8f8f2",

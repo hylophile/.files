@@ -8,10 +8,11 @@ end
 
 distrobox_auto_setup
 
-set -U XDG_CURRENT_DESKTOP sway
-set -U MOZ_ENABLE_WAYLAND 1
-set -U _JAVA_AWT_WM_NONREPARENTING 1
+set -gx XDG_CURRENT_DESKTOP sway
+set -gx MOZ_ENABLE_WAYLAND 1
+set -gx _JAVA_AWT_WM_NONREPARENTING 1
 
+set -gx EDITOR hx
 
 fish_add_path ~/.nix-profile/bin
 fish_add_path ~/.local/bin

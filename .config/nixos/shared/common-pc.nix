@@ -214,6 +214,7 @@
     python312
     ruff
     ruff-lsp
+    black
     nodePackages.pyright
     uv
     ## clojure
