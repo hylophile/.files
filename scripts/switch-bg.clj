@@ -43,7 +43,9 @@
                       (update-in wss [idx k] (constantly v)))]
     (as-> wallpapers $
       (reduce #(set-key-val %1 %2 "used" used) $ ids)
-      (reduce #(set-key-val %1 %2 "discarded" discarded) $ ids))))
+      (if discarded 
+        (reduce #(set-key-val %1 %2 "discarded" discarded) $ ids)
+        $))))
 
 (defn write-config [wallpapers]
   (json/generate-stream wallpapers (io/writer wallpapers-config))

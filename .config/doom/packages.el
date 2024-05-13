@@ -131,7 +131,7 @@
 
 ;; (package! meow)
 (package! meow :recipe (:local-repo "~/code/meow/" :build (:not compile)))
-
+(package! visual-regexp)
 (package! embrace)
 
 (package! macrursors :recipe (:host github :repo "corytertel/macrursors"))
