@@ -198,7 +198,8 @@
 
     # lang
     ## nix
-    alejandra # nix formatter
+    alejandra # formatter
+    nil
     ## go
     go
     gopls
@@ -231,6 +232,8 @@
     ## lua
     lua-language-server
     stylua
+    ## yaml
+    yaml-language-server
     ## zig
     zig.packages."${pkgs.system}".master
     zls

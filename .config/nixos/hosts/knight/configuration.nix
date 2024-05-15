@@ -46,6 +46,8 @@ in {
     lfs.enable = true;
   };
 
+  services.gvfs.enable = true;
+
   virtualisation = {
     podman = {
       enable = true;
@@ -77,6 +79,7 @@ in {
     openshift
     go
     gopls
+    cifs-utils
   ];
 
   users.groups.uinput.members = ["${uid}"];
