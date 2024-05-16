@@ -191,6 +191,7 @@
     pinentry-gnome3
     rbw
     hyperfine
+    lazygit
 
     # dev
     distrobox
@@ -224,6 +225,8 @@
     ## shell
     shfmt
     shellcheck
+    ## toml
+    taplo
     ## c
     clang
     clang-tools
