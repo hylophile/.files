@@ -2,41 +2,66 @@
 
 theme = "my_modus"
 
-editor.soft-wrap.enable = true
+[editor]
+line-number = "relative"
+cursorline = true
+auto-save = true
+color-modes = true
+jump-label-alphabet = "ntesirlpfuywdhcxqoa"
 
-[editor.cursor-shape]
-insert = "bar"
-normal = "block"
-select = "underline"
+soft-wrap.enable = true
 
-[editor.indent-guides]
-render = true
-character = "▏"
-skip-levels = 1
+statusline.separator = " "
+statusline.right = [
+  # "workspace-diagnostics",
+  "diagnostics",
+  "version-control",
+  "separator",
+  "selections",
+  "register",
+  "separator",
+  "position",
+  "position-percentage",
+  "file-encoding",
+  "separator",
+]
 
+cursor-shape.insert = "bar"
+cursor-shape.normal = "block"
+cursor-shape.select = "underline"
 
-[editor.lsp]
-display-messages = true
-display-inlay-hints = true
-display-signature-help-docs = true
+indent-guides.render = true
+indent-guides.character = "┆"
+indent-guides.skip-levels = 1
 
-[editor.file-picker]
-hidden = false
+# lsp.display-messages = true
+lsp.display-inlay-hints = true
+
+file-picker.hidden = false
+
 
 [keys.insert]
 C-q = ":q"
 A-x = "command_palette"
-[keys.insert.C-x]
-"C-s" = ["commit_undo_checkpoint", ":write"]
+C-x.C-s = ["commit_undo_checkpoint", ":write"]
 
 [keys.normal]
 C-q = ":q"
-"ret" = ["open_below", "normal_mode"]
+# ret = ["open_below", "normal_mode"]
 A-x = "command_palette"
-[keys.normal.C-x]
-"C-s" = ":w"
+C-x.C-s = ":w"
+Z.Z = ":x"
 
-[keys.normal.Z]
-Z = ":x"
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+h = "flip_selections"
+l = "goto_word"
 
+space.c.r = ":config-reload"
+space.c.o = ":config-open"
 
+[keys.select]
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+h = "flip_selections"
+l = "goto_word"

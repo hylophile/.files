@@ -3,15 +3,20 @@
 [language-server.pyright]
 command = "pyright-langserver"
 args = ["--stdio"]
-config = {} # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
+config = {}                    # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
 
 [[language]]
 name = "python"
 #formatter = { command = "black", args = ["--quiet", "-"] }
 auto-format = true
 roots = ["pyproject.toml"]
-language-servers = [ "pyright" ]
- 
+language-servers = ["pyright"]
+
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["format", "-"] }
+auto-format = true
+
 [[language]]
 name = "html"
 formatter = { command = 'prettier', args = ["--parser", "html"] }

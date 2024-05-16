@@ -1,4 +1,4 @@
 inherits = "modus_vivendi_tritanopia"
-"ui.background" ={}
+"ui.background" = {}
 "ui.gutter" = {}
-"ui.linenr" = {bg=""}
+"ui.linenr" = { bg = "" }
