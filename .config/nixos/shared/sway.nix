@@ -58,7 +58,7 @@ in {
 
     swaylock
     swayidle
-    sway-audio-idle-inhibit
+    wayland-pipewire-idle-inhibit
     swaybg
 
     grim # screenshot functionality
