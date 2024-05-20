@@ -204,13 +204,15 @@
     ## go
     go
     gopls
-    ## js
+    ## web
     vscode-langservers-extracted
     nodePackages.prettier
     typescript
     nodePackages.typescript-language-server
     nodejs_20
     corepack_20
+    # markdown
+    marksman
     # idris2.packages."${pkgs.system}".default
     ## python
     python312
