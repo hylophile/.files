@@ -11,19 +11,19 @@ jump-label-alphabet = "ntesirlpfuywdhcxqoa"
 
 soft-wrap.enable = true
 
-statusline.separator = " "
+# statusline.separator = " "
 statusline.right = [
   # "workspace-diagnostics",
   "diagnostics",
   "version-control",
-  "separator",
+  # "separator",
   "selections",
   "register",
-  "separator",
+  # "separator",
   "position",
   "position-percentage",
   "file-encoding",
-  "separator",
+  # "separator",
 ]
 
 cursor-shape.insert = "bar"
