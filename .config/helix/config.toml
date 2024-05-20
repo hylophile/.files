@@ -57,8 +57,12 @@ Z.Z = ":x"
 h = "flip_selections"
 l = "goto_word"
 
-space.c.r = ":config-reload"
-space.c.o = ":config-open"
+[keys.normal.space]
+# c.r = ":config-reload"
+# c.o = ":config-open"
+q.q = ":quit"
+q.r = ":config-reload"
+q.o = ":config-open"
 
 [keys.select]
 "{" = "goto_prev_paragraph"
