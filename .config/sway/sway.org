@@ -204,6 +204,8 @@ exec wvkbd-mobintl --hidden -L 200
 
 exec_always ~/scripts/scale-up-edp.clj
 
+
+exec sway-audio-idle-inhibit
 # exec ~/scripts/dynamic-opacity.clj
 
 # exec wezterm-mux-server --daemonize
