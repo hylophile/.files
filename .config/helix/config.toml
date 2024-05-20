@@ -11,19 +11,14 @@ jump-label-alphabet = "ntesirlpfuywdhcxqoa"
 
 soft-wrap.enable = true
 
-# statusline.separator = " "
 statusline.right = [
-  # "workspace-diagnostics",
   "diagnostics",
   "version-control",
-  # "separator",
   "selections",
   "register",
-  # "separator",
   "position",
   "position-percentage",
   "file-encoding",
-  # "separator",
 ]
 
 cursor-shape.insert = "bar"
@@ -34,7 +29,6 @@ indent-guides.render = true
 indent-guides.character = "┆"
 indent-guides.skip-levels = 1
 
-# lsp.display-messages = true
 lsp.display-inlay-hints = true
 
 file-picker.hidden = false
@@ -47,7 +41,6 @@ C-x.C-s = ["commit_undo_checkpoint", ":write"]
 
 [keys.normal]
 C-q = ":q"
-# ret = ["open_below", "normal_mode"]
 A-x = "command_palette"
 C-x.C-s = ":w"
 Z.Z = ":x"
@@ -58,8 +51,6 @@ h = "flip_selections"
 l = "goto_word"
 
 [keys.normal.space]
-# c.r = ":config-reload"
-# c.o = ":config-open"
 q.q = ":quit"
 q.r = ":config-reload"
 q.o = ":config-open"
