@@ -69,7 +69,10 @@ in {
   users.extraGroups.docker.members = [uid];
 
   environment.systemPackages = with pkgs; [
-    libreoffice-still # a
+    openconnect
+    expect
+    gnome.zenity
+    libreoffice-still
     python3
     nodejs_20
     tmux

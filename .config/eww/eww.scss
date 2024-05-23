@@ -133,6 +133,18 @@ menu > menuitem check:checked ~ label {
   min-height: 1em;
 }
 
+.vpn {
+  transition: all 0.5s;
+  background-color: $dr_re;
+  border-radius: 10em;
+  margin: 0.25em;
+  min-height: 1em;
+}
+
+.vpn.active {
+  background-color: $dr_gr;
+}
+
 window widget box.focused {
   color: $dr_fg0;
 }
