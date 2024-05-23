@@ -8,8 +8,9 @@ cursorline = true
 auto-save = true
 color-modes = true
 jump-label-alphabet = "ntesirlpfuywdhcxqoa"
-
+completion-trigger-len = 1
 soft-wrap.enable = true
+
 
 statusline.right = [
   "diagnostics",
