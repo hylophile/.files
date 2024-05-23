@@ -47,7 +47,7 @@ local function scheme_for_appearance(appearance)
   end
 end
 
-return {
+local config = {
   quick_select_patterns = {
     -- match things that look like sha1 hashes
     -- (this is actually one of the default patterns)
@@ -220,3 +220,27 @@ return {
     },
   },
 }
+
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
+table.insert(config.hyperlink_rules, {
+  regex = "~?(/[^/ \'\"`:]*)+(:[0-9]+)?(:[0-9]+)?",
+  format = "hx://$0",
+})
+
+wezterm.on('open-uri', function(window, pane, uri)
+  local start, _ = uri:find('hx://');
+  if start == 1 then
+    local path = uri:gsub("^hx://", "")
+
+    window:perform_action(
+      wezterm.action.SpawnCommandInNewTab {
+        args = { "hx", path }
+      },
+      pane
+    )
+    return false;
+  end
+end)
+
+return config

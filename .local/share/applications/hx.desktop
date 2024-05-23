@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=hx-handler.sh %u
+Icon=helix
+Terminal=false
+Categories=Utility;X-XFCE;X-Xfce-Toplevel;
+MimeType=x-scheme-handler/hx
+Name=Helix Scheme Handler
+Comment=Launch helix with optional line & column numbers
