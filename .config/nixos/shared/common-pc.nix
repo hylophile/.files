@@ -198,22 +198,25 @@
     git
 
     # lang
-    ## nix
-    alejandra # formatter
-    nil
+    ## c
+    clang
+    clang-tools
+    bear
+    gcc
+    ## clojure
+    babashka
+    clojure-lsp
     ## go
     go
     gopls
-    ## web
-    vscode-langservers-extracted
-    nodePackages.prettier
-    typescript
-    nodePackages.typescript-language-server
-    nodejs_20
-    corepack_20
-    # markdown
+    ## lua
+    lua-language-server
+    stylua
+    ## markdown
     marksman
-    # idris2.packages."${pkgs.system}".default
+    ## nix
+    alejandra
+    nil
     ## python
     python312
     ruff
@@ -221,22 +224,22 @@
     black
     nodePackages.pyright
     uv
-    ## clojure
-    babashka
-    clojure-lsp
     ## shell
     shfmt
     shellcheck
     ## toml
     taplo
-    ## c
-    clang
-    clang-tools
-    bear
-    gcc
-    ## lua
-    lua-language-server
-    stylua
+    ## typst
+    typst
+    typst-lsp
+    typstfmt
+    ## web
+    vscode-langservers-extracted
+    nodePackages.prettier
+    typescript
+    nodePackages.typescript-language-server
+    nodejs_20
+    corepack_20
     ## yaml
     yaml-language-server
     ## zig
@@ -244,6 +247,7 @@
     zls
     gdb
     llvmPackages_latest.llvm
+
 
     # files
     yazi
