@@ -224,7 +224,7 @@ local config = {
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 table.insert(config.hyperlink_rules, {
-  regex = "~?(/[^/ \'\"`:]*)+(:[0-9]+)?(:[0-9]+)?",
+  regex = "~?(/[^/ \'\"`:~;]*)+(:[0-9]+)?(:[0-9]+)?",
   format = "hx://$0",
 })
 
