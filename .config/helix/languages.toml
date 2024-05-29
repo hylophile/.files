@@ -51,3 +51,22 @@ auto-format = true
 name = "markdown"
 formatter = { command = 'prettier', args = ["--parser", "markdown"] }
 auto-format = true
+
+
+[[language]]
+name = "devicetree"
+# scope = "source.devicetree"
+# injection-regex = "(dtsi?|devicetree|fdt)"
+file-types = ["dts", "dtsi", "keymap"]
+# comment-token = "//"
+# block-comment-tokens = { start = "/*", end = "*/" }
+# indent = { tab-width = 4, unit = "\t" }
+
+# [[grammar]]
+# name = "devicetree-keymap"
+# source = { git = "https://github.com/joelspadin/tree-sitter-devicetree", rev = "877adbfa0174d25894c40fa75ad52d4515a36368" }
+
+[[language]]
+name = "typst"
+formatter = { command = "typstfmt", args = ["--output", "-"] }
+auto-format = true

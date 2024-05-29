@@ -33,6 +33,28 @@ lsp.display-inlay-hints = true
 
 file-picker.hidden = false
 
+[editor.whitespace.render]
+space = "none"
+tab = "none"
+nbsp = "none"
+nnbsp = "none"
+newline = "all"
+
+
+[editor.whitespace.characters]
+# space = "·"
+# nbsp = "⍽"
+# nnbsp = "␣"
+# tab = "→"
+# newline = "⏎"
+newline = "↩"
+# newline = "↵"
+# tabpad = "·" # Tabs will look like "→···" (depending on tab width)# ⌅
+# ↩
+
+# newline = "⌤"
+# newline = "⌅"
+# ⏎↵↵
 
 [keys.insert]
 C-q = ":q"
