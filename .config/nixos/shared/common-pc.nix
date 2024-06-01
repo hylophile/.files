@@ -4,8 +4,8 @@
 {
   config,
   pkgs,
-  wezterm,
-  zig,
+  # wezterm,
+  # zig,
   ...
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -151,7 +151,8 @@
     helix
 
     # terminal
-    wezterm.packages."${pkgs.system}".default
+    # wezterm.packages."${pkgs.system}".default
+    wezterm
     kitty
 
     # gui
@@ -223,6 +224,7 @@
     ruff-lsp
     black
     nodePackages.pyright
+    basedpyright
     uv
     ## shell
     shfmt
@@ -243,7 +245,8 @@
     ## yaml
     yaml-language-server
     ## zig
-    zig.packages."${pkgs.system}".master
+    # zig.packages."${pkgs.system}".master
+    zig
     zls
     gdb
     llvmPackages_latest.llvm

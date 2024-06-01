@@ -68,7 +68,7 @@ in {
     wdisplays
     rofi-wayland
 
-    eww.packages."${pkgs.system}".eww-wayland
+    eww.packages."${pkgs.system}".eww
     libnotify # for notify-send
     jq
     acpi # battery status

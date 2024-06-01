@@ -25,26 +25,26 @@
     #      inputs.nixpkgs.follows = "nixpkgs";
     #    };
     eww = {
-      url = "github:MoetaYuko/eww/tray-3";
+      url = "github:elkowar/eww";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    wezterm = {
-      url = "github:wez/wezterm?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    emacs-lsp-booster = {
-      url = "github:slotThe/emacs-lsp-booster-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # wezterm = {
+    #   url = "github:wez/wezterm?dir=nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # emacs-lsp-booster = {
+    #   url = "github:slotThe/emacs-lsp-booster-flake";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zig = {
-      url = "github:mitchellh/zig-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # emacs-overlay = {
+    #   url = "github:nix-community/emacs-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # zig = {
+    #   url = "github:mitchellh/zig-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     # idris2 = {
     #   url = "github:idris-lang/idris2";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -68,8 +68,8 @@
   } @ inputs: let
     my-overlays = {
       nixpkgs.overlays = [
-        inputs.emacs-lsp-booster.overlays.default
-        inputs.emacs-overlay.overlays.emacs
+        # inputs.emacs-lsp-booster.overlays.default
+        # inputs.emacs-overlay.overlays.emacs
       ];
     };
   in {
