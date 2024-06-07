@@ -108,9 +108,9 @@ menu > menuitem check:checked ~ label {
   font-weight: 500;
 }
 
-// menu > menuitem label:hover ~ check:checked {
-//   background-color: $dr_fg1;
-// }
+/* // menu > menuitem label:hover ~ check:checked { */
+/* //   background-color: $dr_fg1; */
+/* // } */
 
 .muted {
   color: $dr_or;
@@ -122,14 +122,30 @@ menu > menuitem check:checked ~ label {
 
 .azk {
   transition: all 0.5s;
-  background-color: $dr_re;
   border-radius: 10em;
   margin: 0.25em;
+  min-height: 1em;
+}
+
+.azk.break {
   min-height: 5em;
+  background-color: $dr_re;
 }
 
 .azk.work {
   background-color: $dr_cy;
+}
+
+.vpn {
+  transition: all 0.5s;
+  background-color: $dr_re;
+  border-radius: 10em;
+  margin: 0.25em;
+  min-height: 1em;
+}
+
+.vpn.active {
+  background-color: $dr_gr;
   min-height: 1em;
 }
 

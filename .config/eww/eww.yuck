@@ -79,13 +79,18 @@
            (label :class "my-2" :text temperature :angle -90))
 
 
-;(defpoll eduroam-p :interval "600s" "nmcli con show --active | grep d15a2958")
 (defpoll ethernet-p :interval "600s" "nmcli con show --active | grep ethernet")
 (deflisten azk-state "~/azk/show_azk.sh")
 (defwidget azk [output]
            (button :visible {(output == 'eDP-1' ? true : false) && (ethernet-p != "")}
                    :class "my-2 azk ${azk-state.state}"
                    :onclick "~/azk/azk.py stamp"))
+
+(defpoll vpn-p :interval "600s" "pgrep openconnect; true")
+(defwidget vpn [output]
+           (button :visible {output == 'eDP-1' ? true : false}
+                   :class "my-2 vpn ${vpn-p != '' ? 'active' : ''}"
+                   :onclick "~/token/toggle.sh &"))
 
 
 (defwidget left [index]
@@ -101,6 +106,7 @@
             :valign "end"
             :orientation "v"
             (azk :output output)
+            (vpn :output output)
             (volume)
             (menu-toggle :output output)
             (systray :class "mt-2 mb-1"

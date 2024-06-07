@@ -1,0 +1,6 @@
+customCommands:
+  - key: 'F'
+    command: 'git pull --rebase --autostash'
+    # context: 'localBranches'
+    context: global
+    stream: true
