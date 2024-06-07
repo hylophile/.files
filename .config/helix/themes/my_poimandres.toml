@@ -1,0 +1,5 @@
+inherits = "poimandres"
+"ui.background" = {}
+"ui.gutter" = {}
+"ui.linenr" = { bg = "" }
+comment = { fg = "hotRed", modifiers = ["italic"] }

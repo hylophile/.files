@@ -1,6 +1,7 @@
 # theme = "modus_vivendi_tritanopia"
 
-theme = "my_modus"
+# theme = "my_modus"
+theme = "my_poimandres"
 
 [editor]
 line-number = "relative"
