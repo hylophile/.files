@@ -1,0 +1,41 @@
+#!/usr/bin/env bash # for helix syntax highlighting
+
+exec mullvad-vpn
+
+exec sleep 300 && ~/scripts/switch-bg.clj new all
+
+exec ~/scripts/notify.clj
+
+exec wvkbd-mobintl --hidden -L 200
+
+exec_always ~/scripts/scale-up-edp.clj
+
+exec wayland-pipewire-idle-inhibit
+
+exec gammastep
+
+exec nm-applet --indicator
+
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+exec udiskie
+
+exec swayidle -w timeout 900 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"'
+
+exec ~/scripts/move.scm reset
+
+exec_always eww kill; eww open-many bar-0 bar-1 bar-2
+
+# exec ~/scripts/switch-bg.scm all
+
+# exec ~/scripts/dynamic-opacity.clj
+
+# exec wvkbd-mobintl --hidden
+
+# exec input-remapper-control --command autoload
+
+# exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
+
+# exec sh ~/scripts/disable-laptop-output-if-others.sh

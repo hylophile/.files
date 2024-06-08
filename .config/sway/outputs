@@ -1,0 +1,50 @@
+#!/usr/bin/env bash # for helix syntax highlighting
+
+output "AOC 2460G4 0x00000BD5" {
+    resolution 1920x1080
+    position 0,0
+}
+
+output "Synaptics Inc Non-PnP 0x0000FD4E" {
+    resolution 1920x1080@60.000Hz
+    position 0,0
+}
+
+output "AOC 2460G4 E99GBBA003029" {
+    resolution 1920x1080
+    position 0,0
+}
+
+output "Unknown 2460G4 E99GBBA003029" {
+    resolution 1920x1080
+    position 0,0
+}
+
+output "Synaptics Inc Non-PnP 0x0000FD4E" {
+    resolution 1920x1080
+    position 0,0
+}
+
+output "Dell Inc. DELL P2217H RH81R79A566B" {
+    resolution 1920x1080
+    position 0,0
+}
+
+output "BNQ BenQ EW3270U W8L04567019" {
+    resolution 3840x2160
+    position 1920,0
+    scale 1.5
+}
+
+output "BenQ Corporation BenQ EW3270U W8L04567019" {
+    resolution 3840x2160
+    position 1920,0
+    scale 1.5
+}
+
+output eDP-1 {
+position 0,1080
+}
+
+# output * background "#000000" solid_color
+

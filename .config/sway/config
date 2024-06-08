@@ -1,21 +1,23 @@
-# [[file:sway.org::*Settings][Settings:1]]
+#!/usr/bin/env bash # for helix syntax highlighting
+
+include outputs
+include inputs
+include windows
+include colors
+include startup
+
 set $mod Mod4
-# Home row direction keys, like vim
+
 set $left Left
 set $down Down
 set $up Up
 set $right Right
-# Your preferred terminal emulator
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
 
 set $font pango:Jost
 set $weight Light
 set $size 13
 
 font $font $size
-
 
 # default_border none
 focus_follows_mouse no
@@ -29,182 +31,19 @@ hide_edge_borders smart
 floating_modifier $mod normal
 focus_on_window_activation focus
 
-
 titlebar_border_thickness 0
 titlebar_padding 5 0
 
-
-
-
-# seat seat0 xcursor_theme Adwaita 24
-# output  "*" bg "~/Downloads/seealpsee-lake-alps-mountains-reflections-scenery-summer-7680x5363-8853.jpg" fill
-# Settings:1 ends here
-
-# [[file:sway.org::*Variables][Variables:1]]
-
-# Variables:1 ends here
-
-# [[file:sway.org::*Outputs][Outputs:1]]
-output "AOC 2460G4 0x00000BD5" {
-    resolution 1920x1080
-    position 0,0
-}
-
-output "Synaptics Inc Non-PnP 0x0000FD4E" {
-    resolution 1920x1080@60.000Hz
-    position 0,0
-}
-
-output "AOC 2460G4 E99GBBA003029" {
-    resolution 1920x1080
-    position 0,0
-}
-
-output "Unknown 2460G4 E99GBBA003029" {
-    resolution 1920x1080
-    position 0,0
-}
-
-output "Synaptics Inc Non-PnP 0x0000FD4E" {
-    resolution 1920x1080
-    position 0,0
-}
-
-output "Dell Inc. DELL P2217H RH81R79A566B" {
-    resolution 1920x1080
-    position 0,0
-}
-
-output "BNQ BenQ EW3270U W8L04567019" {
-    resolution 3840x2160
-    position 1920,0
-    scale 1.5
-}
-
-output "BenQ Corporation BenQ EW3270U W8L04567019" {
-    resolution 3840x2160
-    position 1920,0
-    scale 1.5
-}
-
-output eDP-1 {
-position 0,1080
-}
-
-# output * background "#000000" solid_color
-# Outputs:1 ends here
-
-# [[file:sway.org::*Inputs][Inputs:1]]
-input 4617:13404:https://github.com/stapelberg_kinT_(kint41) {
-    xkb_options compose:rwin
-}
-
-input 0:0:remarkable_touchpad {
-    tap enabled
-    natural_scroll enabled
-    scroll_factor 0.5
-}
-
-input 1:1:AT_Translated_Set_2_keyboard {
-    xkb_layout us,de
-    xkb_options caps:escape
-}
-
-input type:keyboard {
-    xkb_options compose:rwin
-    repeat_delay 200
-    repeat_rate 35
-}
-
-input type:pointer {
-    accel_profile flat
-    pointer_accel 0
-}
-
-input 5426:145:Razer_Razer_Viper_8KHz {
-    accel_profile flat
-    pointer_accel 1
-}
-
-input 2:7:SynPS/2_Synaptics_TouchPad {
-        tap enabled
-}
-
-# set $slimblade 1149:8257:Kensington_Slimblade_Trackball
-# set $irslim 1149:8257:input-remapper_Kensington_Slimblade_Trackball_forwarded
-
-# input $slimblade {
-#     middle_emulation enabled
-#     # drag enabled
-# }
-
-
-set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
-input $elecom {
-      pointer_accel -0.25
-      accel_profile flat
-}
-
-# bindsym --input-device=$slimblade --whole-window BTN_MIDDLE seat - cursor press button8
-# bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cursor release button8
-
-# bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
-# bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
 # split window so that remarkable tablet has full range
 bindsym $mod+Ctrl+Shift+F3 exec swaymsg "splith, exec wezterm start --class wezterm-600px"
-# bindsym $mod+F9 exec ~/scripts/switch-bg.scm here
+
 bindsym $mod+F9 exec ~/scripts/switch-bg.clj new current
 bindsym $mod+Ctrl+Shift+F9 exec ~/scripts/switch-bg.clj discard current
 bindsym button6 --whole-window focus output next
 bindsym button7 --whole-window exec ~/.config/sway/swap-visible-workspaces.sh
 # bindsym button7 --whole-window focus output next
 bindcode 277 --whole-window move container to output next
-# Inputs:1 ends here
 
-# [[file:sway.org::*Startup][Startup:1]]
-# on-rook
-
-exec mullvad-vpn
-
-
-
-
-# exec ~/scripts/switch-bg.scm all
-exec sleep 300 && ~/scripts/switch-bg.clj new all
-
-exec ~/scripts/notify.clj
-
-exec wvkbd-mobintl --hidden -L 200
-
-exec_always ~/scripts/scale-up-edp.clj
-
-
-exec wayland-pipewire-idle-inhibit
-# exec ~/scripts/dynamic-opacity.clj
-
-
-# exec wvkbd-mobintl --hidden
-exec gammastep
-
-exec nm-applet --indicator
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-exec udiskie
-
-# exec input-remapper-control --command autoload
-
-# exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
-
-exec swayidle -w timeout 900 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"'
-         # timeout 500 'swaylock -f -c 000000' \
-         # before-sleep 'swaylock -f -c 000000'
-
-exec ~/scripts/move.scm reset
-
-# exec sh ~/scripts/disable-laptop-output-if-others.sh
-# Startup:1 ends here
-
-# [[file:sway.org::*General][General:1]]
 # set $term ~/scripts/wezterm-start-on-current-workspace.fish
 # set $term wezterm
 set $term kitty
@@ -215,7 +54,6 @@ bindsym $mod+Ctrl+Return exec wezterm
 bindsym $mod+q kill
 
 # Start your launcher
-set $menu wofi --show drun -I -a | xargs swaymsg exec --
 set $menu "rofi -show-icons -combi-modi window#drun -show combi"
 bindsym $mod+d exec $menu
 # bindsym $mod+o exec $menu
@@ -254,7 +92,6 @@ bindsym $mod+Shift+e move down
 bindsym $mod+Shift+i move up
 bindsym $mod+Shift+o move right
 
-
 bindsym $mod+Shift+h splith
 bindsym $mod+Shift+v splitv
 
@@ -265,15 +102,10 @@ bindsym $mod+Control+s layout toggle split
 bindsym $mod+f fullscreen
 bindsym $mod+Control+f border toggle
 
-
-# Toggle the current focus between tiling and floating mode
-# bindsym $mod+Shift+space floating toggle
-
 bindsym $mod+period focus mode_toggle
 
 # focus the parent container
 bindsym $mod+Control+c focus parent
-
 
 # focus the child container
 bindsym $mod+c focus child
@@ -286,14 +118,11 @@ bindsym $mod+comma scratchpad show
 # If there are multiple scratchpad windows, this command cycles through them.
 # bindsym $mod+period scratchpad show
 
-
 bindsym F21 focus right
 bindsym F23 focus left
-# Swap focus between the tiling area and the floating area
+
 bindsym $mod+Shift+f floating toggle
 
-# bindsym $mod+space exec ~/scripts/next-prev-output.scm prev
-# bindsym $mod+space exec ~/scripts/next-prev-output.clj prev
 bindsym $mod+space focus output left
 
 bindsym $mod+Control+space exec ~/scripts/swap-visible-workspaces.clj
@@ -305,21 +134,6 @@ bindsym $mod+t workspace next_on_output
 bindsym $mod+Shift+t move container to workspace prev_on_output
 bindsym $mod+b workspace back_and_forth
 
-
-# bindsym $mod+i exec env RUST_BACKTRACE=1 \
-#     swayr switch-window >> /tmp/swayr.log 2>&1
-# bindsym $mod+comma exec env RUST_BACKTRACE=1 \
-#     swayr switch-window >> /tmp/swayr.log 2>&1
-
-# bindsym $mod+Delete exec env RUST_BACKTRACE=1 \
-#     swayr quit-window >> /tmp/swayr.log 2>&1
-# bindsym $mod+p workspace back_and_forth
-
-# bindsym $mod+p exec env RUST_BACKTRACE=1 \
-#     swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
-# General:1 ends here
-
-# [[file:sway.org::*Workspace numbers][Workspace numbers:1]]
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
@@ -341,27 +155,21 @@ bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
-# Workspace numbers:1 ends here
 
-# [[file:sway.org::*(move to) new workspace][(move to) new workspace:1]]
 bindsym $mod+w exec ~/scripts/new-workspace.clj focus
 bindsym $mod+Shift+w exec ~/scripts/new-workspace.clj move-to
-# (move to) new workspace:1 ends here
 
-# [[file:sway.org::*Audio][Audio:1]]
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-# Audio:1 ends here
 
-# [[file:sway.org::*Audio][Audio:2]]
+# toggle mic mute
 bindsym XF86Mail exec ~/scripts/set-all-sources.clj toggle-mute
 
+# push to talk
 bindcode --release --no-repeat 199 exec ~/scripts/set-all-sources.clj mute
 bindcode 199 exec ~/scripts/set-all-sources.clj unmute
-# Audio:2 ends here
 
-# [[file:sway.org::*Misc][Misc:1]]
 # select screenshot to clipboard
 bindsym $mod+F4 exec grim -g "$(slurp)" - | wl-copy
 bindsym $mod+Ctrl+F4 exec ~/scripts/screenshot-with-prompt.fish
@@ -375,94 +183,9 @@ bindsym $mod+F3 exec ~/scripts/org-screenshot.sh
 # color picker to clipboard
 bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
+
 bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
 
 bindsym $mod+F1 exec sh ~/scripts/toggle-work-vpn.sh
-# Misc:1 ends here
-
-# [[file:sway.org::*Window-specific settings][Window-specific settings:1]]
-for_window    [app_id="chrome-outlook.office.com__-Default"]  title_format "<span foreground='#0072C6' face='Symbols Nerd Font Mono' rise='2pt'>󰴢</span> %title"
-for_window    [app_id="chrome-teams.microsoft.com__-Default"] title_format "<span foreground='#7B83EC' face='Symbols Nerd Font Mono' rise='2pt'>󰊻</span> %title"
-for_window    [app_id="firefox.*"]                            title_format "<span foreground='#33BFFF' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="google-chrome"]                        title_format "<span foreground='#F1FA8C' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="emacs"]                                title_format "<span foreground='#FF79C6' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="telegramdesktop"]                      title_format "<span foreground='#0088CC' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="org.kde.dolphin"]                      title_format "<span foreground='#33BFFF' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="mpv"]                                  title_format "<span foreground='#E557E5' face='Symbols Nerd Font Mono' rise='2pt'>󰕧</span> %title"
-for_window    [app_id="neovide"]                              title_format "<span foreground='#00B952' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="org.qbittorrent.qBittorrent"]          title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="blueman-manager"]                      title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [app_id="pavucontrol"]                          title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
-for_window    [class="steam"]                                 title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'>󰓓</span> %title"
-for_window    [app_id="org.wezfurlong.wezterm"]               title_format "<span foreground='#50FA7B' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
-for_window    [app_id="kitty"]               title_format "<span foreground='#50FA7B' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
-
-for_window    [class="Mullvad VPN"]                                      floating disable, move container to workspace number 10, urgent deny
-for_window    [instance="mullvad vpn"]                                   urgent deny
-
-for_window [app_id="firefox.*" title="Picture-in-Picture"]               floating enable, border none, resize set width 30ppt height 30ppt, opacity 1.0
-for_window [app_id="firefox.*" title=".* — Sharing Indicator"]           floating enable, move container to workspace number 10
-
-#for_window [app_id="^chrome-.*__-.*$"]                                  shortcuts_inhibitor disable
-
-
-for_window    [app_id="org.kde.dolphin" title="^Copying.*"]                      floating enable
-
-for_window [app_id="^chrome-.*"]                                         shortcuts_inhibitor disable
-for_window [app_id="^anki$" title="^Add$"]                               floating enable
-for_window [app_id="^anki$" title="^Preview$"]                           floating enable
-for_window [app_id="^wezterm-floating$"]                                 floating enable, border pixel 5
-for_window [app_id="^wezterm-600px$"]                                 resize set width 600px
-
-
-assign [title="^Bevy App$"]                                              workspace number 1
-assign [title="^Aperiodic"]                                              workspace number 1
-
-
-# set $opacity 0.95
-# for_window [app_id="org.wezfurlong.wezterm"] opacity 1.0
-# for_window [app_id="emacs"] opacity 1.0
-# for_window [app_id="neovide"] opacity 1.0
-# for_window [app_id=".*"] opacity $opacity
-# for_window [app_id=".*firefox.*"] opacity $opacity
-# for_window [app_id=".*firefox.*"] opacity $opacity
-# Window-specific settings:1 ends here
-
-# [[file:sway.org::*Colors][Colors:1]]
-# # class                 border  bground text    indicator child_border
-# set $nofocusbg #e4ddd2
-# set $nofocusfg #605a52
-# set $focusfg #605a52
-# set $focusbg #f7f3ee
-# set focusinfg
-# client.focused          $focusbg $focusbg $focusfg $focusbg $focusbg
-# client.focused_inactive #44475A #44475A #BFBFBF #44475A   #44475A
-# client.unfocused        $nofocusbg $nofocusbg #bfbfbf $nofocusbg   $nofocusbg
-# client.urgent           #50fa7b #44475a #50fa7b #FF5555   #FF5555
-# client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-# class                 border  bground text    indicator child_border
-client.focused          #44475A #6272a4 #F8F8F2 #44475A   #44475A
-client.focused_inactive #44475A #44475A #BFBFBF #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #50fa7b #44475a #50fa7b #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-# Colors:1 ends here
-
-# [[file:sway.org::*Bar][Bar:1]]
-bar {
-    mode invisible
-}
-
-set $eww_init eww open-many bar-0 bar-1 bar-2
-
-exec $eww_init
-
-exec_always eww kill; $eww_init
-# Bar:1 ends here
-
-# [[file:sway.org::*Fin][Fin:1]]
-exec dbus-sway-environment
-exec configure-gtk
 
 include /etc/sway/config.d/*
-# Fin:1 ends here

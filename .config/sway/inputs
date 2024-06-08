@@ -1,0 +1,57 @@
+#!/usr/bin/env bash # for helix syntax highlighting
+
+input 4617:13404:https://github.com/stapelberg_kinT_(kint41) {
+    xkb_options compose:rwin
+}
+
+input 0:0:remarkable_touchpad {
+    tap enabled
+    natural_scroll enabled
+    scroll_factor 0.5
+}
+
+input 1:1:AT_Translated_Set_2_keyboard {
+    xkb_layout us,de
+    xkb_options caps:escape
+}
+
+input type:keyboard {
+    xkb_options compose:rwin
+    repeat_delay 200
+    repeat_rate 35
+}
+
+input type:pointer {
+    accel_profile flat
+    pointer_accel 0
+}
+
+input 5426:145:Razer_Razer_Viper_8KHz {
+    accel_profile flat
+    pointer_accel 1
+}
+
+input 2:7:SynPS/2_Synaptics_TouchPad {
+        tap enabled
+}
+
+# set $slimblade 1149:8257:Kensington_Slimblade_Trackball
+# set $irslim 1149:8257:input-remapper_Kensington_Slimblade_Trackball_forwarded
+
+# input $slimblade {
+#     middle_emulation enabled
+#     # drag enabled
+# }
+
+set $elecom 1390:253:ELECOM_ELECOM_TrackBall_Mouse
+input $elecom {
+      pointer_accel -0.25
+      accel_profile flat
+}
+
+# bindsym --input-device=$slimblade --whole-window BTN_MIDDLE seat - cursor press button8
+# bindsym --input-device=$slimblade --whole-window --release BTN_MIDDLE seat - cursor release button8
+
+# bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
+# bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
+

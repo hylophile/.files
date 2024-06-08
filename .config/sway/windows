@@ -1,0 +1,46 @@
+
+#!/usr/bin/env bash # for helix syntax highlighting
+
+
+
+for_window [app_id="chrome-outlook.office.com__-Default"]          title_format "<span foreground='#0072C6' face='Symbols Nerd Font Mono' rise='2pt'>󰴢</span> %title"
+for_window [app_id="chrome-teams.microsoft.com__-Default"]         title_format "<span foreground='#7B83EC' face='Symbols Nerd Font Mono' rise='2pt'>󰊻</span> %title"
+for_window [app_id="firefox.*"]                                    title_format "<span foreground='#33BFFF' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="google-chrome"]                                title_format "<span foreground='#F1FA8C' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="emacs"]                                        title_format "<span foreground='#FF79C6' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="telegramdesktop"]                              title_format "<span foreground='#0088CC' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="org.kde.dolphin"]                              title_format "<span foreground='#33BFFF' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="mpv"]                                          title_format "<span foreground='#E557E5' face='Symbols Nerd Font Mono' rise='2pt'>󰕧</span> %title"
+for_window [app_id="neovide"]                                      title_format "<span foreground='#00B952' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="org.qbittorrent.qBittorrent"]                  title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="blueman-manager"]                              title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [app_id="pavucontrol"]                                  title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'></span> %title"
+for_window [class="steam"]                                         title_format "<span foreground='#50FA7B' face='Symbols Nerd Font Mono' rise='2pt'>󰓓</span> %title"
+for_window [app_id="org.wezfurlong.wezterm"]                       title_format "<span foreground='#50FA7B' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
+for_window [app_id="kitty"]                                        title_format "<span foreground='#50FA7B' face='Recursive Mono Casual Static'><b>λ</b></span> %title"
+
+for_window [class="Mullvad VPN"]                                   floating disable, move container to workspace number 10, urgent deny
+for_window [instance="mullvad vpn"]                                urgent deny
+
+for_window [app_id="firefox.*" title="Picture-in-Picture"]         floating enable, border none, resize set width 30ppt height 30ppt, opacity 1.0
+for_window [app_id="firefox.*" title=".* — Sharing Indicator"]     floating enable, move container to workspace number 10
+
+for_window [app_id="org.kde.dolphin" title="^Copying.*"]           floating enable
+
+for_window [app_id="^chrome-.*"]                                   shortcuts_inhibitor disable
+for_window [app_id="^anki$" title="^Add$"]                         floating enable
+for_window [app_id="^anki$" title="^Preview$"]                     floating enable
+for_window [app_id="^wezterm-floating$"]                           floating enable, border pixel 5
+for_window [app_id="^wezterm-600px$"]                              resize set width 600px
+
+assign     [title="^Bevy App$"]                                    workspace number 1
+assign     [title="^Aperiodic"]                                    workspace number 1
+
+# set $opacity 0.95
+# for_window [app_id="org.wezfurlong.wezterm"] opacity 1.0
+# for_window [app_id="emacs"] opacity 1.0
+# for_window [app_id="neovide"] opacity 1.0
+# for_window [app_id=".*"] opacity $opacity
+# for_window [app_id=".*firefox.*"] opacity $opacity
+# for_window [app_id=".*firefox.*"] opacity $opacity
+
