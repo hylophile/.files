@@ -1,0 +1,10 @@
+inherits = "default"
+"ui.background" = {}
+"ui.gutter" = {}
+# "ui.linenr" = { bg = "" }
+# comment = { fg = "brightYellow", modifiers = ["italic"] }
+# "ui.selection" = { bg = "darkerGray.50" }
+# "ui.selection.primary" = { bg = "bluishGray" }
+comment = { fg = "honey", modifiers = ["italic"] }
+
+# "ui.linenr" = { fg = "#ff00ff", bg = "" }

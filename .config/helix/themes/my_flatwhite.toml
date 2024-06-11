@@ -1,0 +1,4 @@
+inherits = "flatwhite"
+"ui.background" = {}
+"ui.gutter" = {}
+"ui.linenr" = { bg = "" }
