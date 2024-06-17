@@ -75,9 +75,19 @@ file-types = ["dts", "dtsi", "keymap"]
 # name = "devicetree-keymap"
 # source = { git = "https://github.com/joelspadin/tree-sitter-devicetree", rev = "877adbfa0174d25894c40fa75ad52d4515a36368" }
 
+# [[language]]
+# name = "typst"
+# formatter = { command = "typstfmt", args = ["--output", "-"] }
+# auto-format = true
+
+
+[language-server.tinymist]
+command = "tinymist"
+
 [[language]]
 name = "typst"
-formatter = { command = "typstfmt", args = ["--output", "-"] }
+language-servers = ["tinymist"]
+formatter = { command = "typstyle" }
 auto-format = true
 
 

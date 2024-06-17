@@ -233,8 +233,8 @@
     taplo
     ## typst
     typst
-    typst-lsp
-    typstfmt
+    tinymist
+    typstyle
     ## web
     vscode-langservers-extracted
     nodePackages.prettier
