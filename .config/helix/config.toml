@@ -62,13 +62,28 @@ newline = "↩"
 [keys.insert]
 C-q = ":q"
 A-x = "command_palette"
-C-x.C-s = ["commit_undo_checkpoint", ":write"]
+C-s = ["commit_undo_checkpoint", ":write"]
 
+
+# readline bindings
+C-a = "goto_first_nonwhitespace"
+C-e = ["goto_line_end", "move_char_right"]
+A-b = "move_prev_word_start"
+A-f = "move_next_word_end"
+C-f = "move_char_right"
+C-b = "move_char_left"
+# default
+# Ctrl-w, Alt-Backspace	Delete previous word	delete_word_backward
+# Alt-d,  Alt-Delete	Delete next word	delete_word_forward
+# Ctrl-u, Delete to start of line	kill_to_line_start
+# Ctrl-k, Delete to end of line	kill_to_line_end
 [keys.normal]
 C-q = ":q"
-A-x = "command_palette"
-C-x.C-s = ":w"
+# A-x = "command_palette"
+C-s = ":w"
+C-S = "save_selection"
 Z.Z = ":x"
+G = "goto_file_end"
 
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
@@ -79,6 +94,7 @@ l = "goto_word"
 q.q = ":quit"
 q.r = ":config-reload"
 q.o = ":config-open"
+q.f = ":format"
 
 [keys.select]
 "{" = "goto_prev_paragraph"

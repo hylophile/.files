@@ -33,5 +33,5 @@ function llt --wraps='lsd -alrt' --description 'alias llt=lsd -alrt'
 end
 
 
-bind \cW repaint
+# bind \cW repaint
 bind \ch backward-kill-word

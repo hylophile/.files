@@ -246,10 +246,10 @@
     yaml-language-server
     ## zig
     # zig.packages."${pkgs.system}".master
-    zig
-    zls
-    gdb
-    llvmPackages_latest.llvm
+    # zig
+    # zls
+    # gdb
+    # llvmPackages_latest.llvm
 
 
     # files
@@ -264,7 +264,14 @@
     gammastep
     udiskie
     darkman
-    texliveFull
+
+    kicad-small
+    blender
+    freecad
+    openscad-unstable
+    openscad-lsp
+
+    # texliveFull
     # (pkgs.texlive.combine {
     #   inherit (pkgs.texlive)
     #     scheme-basic dvisvgm dvipng # for preview and export as html
