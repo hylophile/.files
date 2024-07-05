@@ -34,4 +34,5 @@ end
 
 
 # bind \cW repaint
-bind \ch backward-kill-word
+# bind \ch backward-kill-word
+bind \cz 'disown && fish_prompt'
