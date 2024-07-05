@@ -161,7 +161,8 @@
     libsForQt5.kio-extras
     libsForQt5.breeze-icons
     firefox
-    ungoogled-chromium
+    # ungoogled-chromium
+    google-chrome
     mpv
     qbittorrent
     xournalpp
