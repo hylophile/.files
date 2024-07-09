@@ -194,6 +194,7 @@
     rbw
     hyperfine
     lazygit
+    just
 
     # dev
     distrobox
