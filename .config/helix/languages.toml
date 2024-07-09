@@ -11,6 +11,11 @@ roots = ["pyproject.toml"]
 language-servers = ["pyright"]
 
 [[language]]
+name = "nix"
+formatter = { command = "alejandra", args = [] }
+auto-format = true
+
+[[language]]
 name = "toml"
 formatter = { command = "taplo", args = ["format", "-"] }
 auto-format = true
