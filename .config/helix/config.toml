@@ -8,6 +8,7 @@ theme = "my_default"
 line-number = "relative"
 cursorline = true
 auto-save = true
+auto-format = true
 color-modes = true
 jump-label-alphabet = "ntesirlpfuywdhcxqoa"
 completion-trigger-len = 1
