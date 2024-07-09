@@ -15,10 +15,13 @@ name = "nix"
 formatter = { command = "alejandra", args = [] }
 auto-format = true
 
-[[language]]
-name = "just"
-formatter = { command = "just", args = ["--dump"] }
-auto-format = true
+
+# doesn't actually work
+# https://github.com/casey/just/pull/1933
+# [[language]]
+# name = "just"
+# formatter = { command = "just", args = ["--dump"] }
+# auto-format = true
 
 [[language]]
 name = "toml"
