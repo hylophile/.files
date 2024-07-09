@@ -221,11 +221,9 @@
     alejandra
     nil
     ## python
-    python312
+    python3
     ruff
     ruff-lsp
-    black
-    nodePackages.pyright
     basedpyright
     uv
     ## shell
@@ -253,7 +251,6 @@
     # gdb
     # llvmPackages_latest.llvm
 
-
     # files
     yazi
     ncdu
@@ -267,9 +264,9 @@
     udiskie
     darkman
 
-    kicad-small
-    blender
-    freecad
+    # kicad-small
+    # blender
+    # freecad
     openscad-unstable
     openscad-lsp
 
@@ -288,7 +285,7 @@
   ];
 
   programs.fish.enable = true;
-  programs.nix-index.enable = true;
+  # programs.nix-index.enable = true;
   programs.direnv.enable = true;
   programs.command-not-found.enable = false;
 

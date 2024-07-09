@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  eww,
   ...
 }: let
   uid = "nsa";

@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  eww,
   ...
 }: let
   # bash script to let dbus know about important env variables and
@@ -54,7 +53,7 @@ in {
     libsForQt5.qt5ct
     arc-kde-theme
     dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme # default gnome cursors
+    adwaita-icon-theme # default gnome cursors
 
     swaylock
     swayidle
@@ -68,7 +67,8 @@ in {
     wdisplays
     rofi-wayland
 
-    eww.packages."${pkgs.system}".eww
+    # eww.packages."${pkgs.system}".eww
+    eww
     libnotify # for notify-send
     jq
     acpi # battery status

@@ -24,10 +24,10 @@
     #      # to avoid problems caused by different versions of nixpkgs.
     #      inputs.nixpkgs.follows = "nixpkgs";
     #    };
-    eww = {
-      url = "github:elkowar/eww";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # eww = {
+    #   url = "github:elkowar/eww";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     # wezterm = {
     #   url = "github:wez/wezterm?dir=nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -36,6 +36,11 @@
     #   url = "github:slotThe/emacs-lsp-booster-flake";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # emacs-overlay = {
     #   url = "github:nix-community/emacs-overlay";
@@ -64,6 +69,7 @@
   outputs = {
     self,
     nixpkgs,
+    nix-index-database,
     ...
   } @ inputs: let
     my-overlays = {
@@ -78,13 +84,21 @@
         system = "x86_64-linux";
 
         specialArgs = inputs; # pass custom arguments into all sub module.
-        modules = [./hosts/rook/configuration.nix my-overlays];
+        modules = [
+          ./hosts/rook/configuration.nix
+          my-overlays
+          nix-index-database.nixosModules.nix-index
+        ];
       };
       "knight" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         specialArgs = inputs; # pass custom arguments into all sub module.
-        modules = [./hosts/knight/configuration.nix my-overlays];
+        modules = [
+          ./hosts/knight/configuration.nix
+          my-overlays
+          nix-index-database.nixosModules.nix-index
+        ];
       };
     };
   };
