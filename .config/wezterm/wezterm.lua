@@ -31,21 +31,22 @@ end)
 
 -- wezterm.gui is not available to the mux server, so take care to
 -- do something reasonable when this config is evaluated by the mux
-local function get_appearance()
-  if wezterm.gui then
-    return wezterm.gui.get_appearance()
-  end
-  return "Dark"
-end
+-- local function get_appearance()
+--   if wezterm.gui then
+--     return wezterm.gui.get_appearance()
+--   end
+--   return "Dark"
+-- end
 
-local function scheme_for_appearance(appearance)
-  if appearance:find("Dark") then
-    return "Dracula"
-  else
-    -- return "Dracula"
-    return "Ef-Spring"
-  end
-end
+-- local function scheme_for_appearance(appearance)
+--   if appearance:find("Dark") then
+--     return "Dracula"
+--   else
+--     -- return "Dracula"
+--     return "Ef-Spring"
+--   end
+-- end
+
 
 local config = {
   quick_select_patterns = {
@@ -87,6 +88,7 @@ local config = {
   harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
   -- term = "wezterm",
   window_background_opacity = 0.8,
+  switch_to_last_active_tab_when_closing_tab = true,
   --"Dracula",
   color_scheme = "Dracula",
   -- color_scheme = scheme_for_appearance(get_appearance()),
@@ -140,7 +142,7 @@ local config = {
     tab_bar = {
       -- The color of the strip that goes along the top of the window
       -- (does not apply when fancy tab bar is in use)
-      background = "#1e1f29",
+      background = "rgba(0,0,0,0.8)",
       -- The active tab is the one that has focus in the window
       active_tab = {
         -- The color of the background area for the tab
@@ -164,7 +166,8 @@ local config = {
       },
       -- Inactive tabs are the tabs that do not have focus
       inactive_tab = {
-        bg_color = "#1e1f29",
+        -- bg_color = "#1e1f29",
+        bg_color = "rgba(0,0,0,0.8)",
         fg_color = "#bfbfbf",
         -- The same options that were listed under the `active_tab` section above
         -- can also be used for `inactive_tab`.
@@ -180,7 +183,8 @@ local config = {
       },
       -- The new tab button that let you create new tabs
       new_tab = {
-        bg_color = "#1e1f29",
+        -- bg_color = "#1e1f29",
+        bg_color = "rgba(0,0,0,0.8)",
         fg_color = "#bfbfbf",
         -- The same options that were listed under the `active_tab` section above
         -- can also be used for `new_tab`.
