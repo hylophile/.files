@@ -225,6 +225,7 @@
     ruff
     ruff-lsp
     basedpyright
+    pyright
     uv
     ## shell
     shfmt

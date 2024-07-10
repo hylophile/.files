@@ -1,7 +1,7 @@
-[language-server.pyright]
-command = "basedpyright-langserver"
-args = ["--stdio"]
-config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
+# [language-server.pyright]
+# command = "basedpyright-langserver"
+# args = ["--stdio"]
+# config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
 
 [[language]]
 name = "python"
@@ -22,6 +22,12 @@ auto-format = true
 # name = "just"
 # formatter = { command = "just", args = ["--dump"] }
 # auto-format = true
+
+# [[grammar]]
+# name = "just"
+# source = { git = "https://github.com/IndianBoy42/tree-sitter-just", rev = "8af0aab79854aaf25b620a52c39485849922f766" }
+# newest doesn't work
+# source = { git = "https://github.com/IndianBoy42/tree-sitter-just", rev = "379fbe36d1e441bc9414ea050ad0c85c9d6935ea" }
 
 [[language]]
 name = "toml"
