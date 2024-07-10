@@ -84,6 +84,7 @@ q.q = ":quit"
 q.r = ":config-reload"
 q.o = ":config-open"
 q.f = ":format"
+q.j = [":write", ":sh just --fmt --unstable", ":reload", ":write"]
 
 [keys.select]
 "{" = "goto_prev_paragraph"
