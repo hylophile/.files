@@ -61,7 +61,7 @@
 ; (defpoll date-year :interval "5s" "date '+%y'")
 ; (defpoll date-month :interval "5s" "date '+%m'")
 ; (defpoll date-day :interval "5s" "date '+%d'")
-(defpoll date-ymd :interval "5s" "date '+%Y ⋅ %m ⋅ %d'")
+(defpoll date-ymd :interval "5s" "date '+%Y ⋅ %B ⋅ %d'")
 (defpoll date-hour :interval "5s" "date '+%H'")
 (defpoll date-minute :interval "5s" "date '+%M'")
 (defwidget clock []
