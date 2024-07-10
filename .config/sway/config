@@ -46,9 +46,10 @@ bindcode 277 --whole-window move container to output next
 
 # set $term ~/scripts/wezterm-start-on-current-workspace.fish
 # set $term wezterm
-set $term kitty
+set $term wezterm
+set $otherterm kitty
 bindsym $mod+Return exec $term
-bindsym $mod+Ctrl+Return exec wezterm
+bindsym $mod+Ctrl+Return exec $otherterm
 
 # Kill focused window
 bindsym $mod+q kill

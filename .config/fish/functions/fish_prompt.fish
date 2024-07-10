@@ -45,7 +45,7 @@ function fish_prompt
     set_color cyan
     echo -n (date +%S)
     set_color -o $retc
-    echo -n " ⟝ "
+    echo -n " ⊢ "
 
     set_color normal
     if functions -q fish_is_root_user; and fish_is_root_user

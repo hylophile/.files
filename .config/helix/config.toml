@@ -42,7 +42,7 @@ space = "none"
 tab = "none"
 nbsp = "none"
 nnbsp = "none"
-newline = "all"
+# newline = "all"
 
 
 [editor.whitespace.characters]
