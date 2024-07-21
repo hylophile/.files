@@ -1,3 +1,3 @@
 function wx
-    watchexec -c -q -- $argv
+    watchexec -c -- $argv
 end
