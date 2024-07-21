@@ -13,6 +13,7 @@
 
     # Official NixOS package source, using nixos-23.11 branch here
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-old.url = "github:NixOS/nixpkgs?rev=ad57eef4ef0659193044870c731987a6df5cf56b";
 
     #    nixpkgs.url = "github:NixOS/nixpkgs/d65bceaee0fb1e64363f7871bc43dc1c6ecad99f";
     # home-manager, used for managing user configuration
@@ -69,6 +70,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-old,
     nix-index-database,
     ...
   } @ inputs: let

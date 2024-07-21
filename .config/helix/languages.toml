@@ -1,7 +1,7 @@
-# [language-server.pyright]
-# command = "basedpyright-langserver"
-# args = ["--stdio"]
-# config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
+[language-server.pyright]
+command = "basedpyright-langserver"
+args = ["--stdio"]
+config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
 
 [[language]]
 name = "python"

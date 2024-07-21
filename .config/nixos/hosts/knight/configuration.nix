@@ -70,7 +70,7 @@ in {
   environment.systemPackages = with pkgs; [
     openconnect
     expect
-    gnome.zenity
+    zenity
     libreoffice-still
     python3
     nodejs_20

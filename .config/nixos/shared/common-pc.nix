@@ -6,6 +6,7 @@
   pkgs,
   # wezterm,
   # zig,
+  nixpkgs-old,
   ...
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -195,6 +196,7 @@
     hyperfine
     lazygit
     just
+    go-task
 
     # dev
     distrobox
@@ -224,8 +226,8 @@
     python3
     ruff
     ruff-lsp
-    basedpyright
-    pyright
+    nixpkgs-old.legacyPackages.${system}.basedpyright
+    # pyright
     uv
     ## shell
     shfmt
