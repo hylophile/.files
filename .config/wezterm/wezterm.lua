@@ -80,9 +80,9 @@ local config = {
   -- enable_wayland = false,
   front_end = 'WebGpu',
   foreground_text_hsb = {
-    -- hue = 1.0,
-    -- saturation = 0.9,
-    brightness = 1.2,
+    -- hue = 1.25,
+    saturation = 0.9,
+    brightness = 1.1,
   },
   hide_mouse_cursor_when_typing = false,
   harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
@@ -235,7 +235,7 @@ local config = {
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 table.insert(config.hyperlink_rules, {
-  regex = "~?(/[^/ \'\"`:~;]*)+(:[0-9]+)?(:[0-9]+)?",
+  regex = "~?(/?[^/ \'\"`:~;]+/)+([^/ \'\"`:~;]+)(:[0-9]+)?(:[0-9]+)?",
   format = "hx://$0",
 })
 
