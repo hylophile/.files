@@ -70,7 +70,7 @@ C-b = "move_char_left"
 C-q = ":q"
 # A-x = "command_palette"
 C-s = ":w"
-C-S = "save_selection"
+C-j = "save_selection"
 Z.Z = ":x"
 G = "goto_file_end"
 
@@ -85,6 +85,7 @@ q.r = ":config-reload"
 q.o = ":config-open"
 q.f = ":format"
 q.j = [":write", ":sh just --fmt --unstable", ":reload", ":write"]
+"F" = "file_picker_in_current_buffer_directory"
 
 [keys.select]
 "{" = "goto_prev_paragraph"
