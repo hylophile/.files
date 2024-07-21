@@ -61,8 +61,8 @@
        :editor
        ;; (evil +everywhere); come to the dark side, we have cookies
        ;;(meow +colemak-dh +override)
-       file-templates    ; auto-snippets for empty files
-       fold              ; (nigh) universal code folding
+       ;;file-templates    ; auto-snippets for empty files
+       ;;fold              ; (nigh) universal code folding
        (format +onsave)  ; automated prettiness
        ;; format
        ;;god               ; run Emacs commands without modifier keys
@@ -108,7 +108,7 @@
        ;; (magit )             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
-       pdf               ; pdf enhancements
+       ;;pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
@@ -116,7 +116,7 @@
        ;;tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
        tree-sitter
-       biblio
+       ;;biblio
 
        :os
        ;;(:if IS-MAC macos)  ; improve compatibility with macOS
@@ -191,7 +191,7 @@
        ;;terra             ; Earth and Moon in alignment for performance.
        (web +html +css +lsp +tree-sitter)               ; the tubes
        (yaml +lsp)              ; JSON, but readable
-       (zig +lsp +tree-sitter)               ; C, but simpler
+       ;;(zig +lsp +tree-sitter)               ; C, but simpler
 
        :email
        ;; (mu4e +org +gmail)
