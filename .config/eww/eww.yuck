@@ -194,32 +194,43 @@
 
 
 
-(defwindow bar-0
-           :monitor '["DELL P2217H"]'
-           :geometry (geometry :x "0%"
-                               :y "0%"
-                               :height "100%"
-                               :anchor "center right")
-           :stacking "fg"
-           :exclusive true
-           (sidebar :index 0 :output {outputs[0]}))
+; (defwindow bar-0
+;            :monitor '["DELL P2217H"]'
+;            :geometry (geometry :x "0%"
+;                                :y "0%"
+;                                :height "100%"
+;                                :anchor "center right")
+;            :stacking "fg"
+;            :exclusive true
+;            (sidebar :index 1 :output {outputs[1]}))
 
-(defwindow bar-1
-           :monitor '["BenQ EW3270U"]'
+(defwindow bar [index output height]
+           :monitor {index}
            :geometry (geometry :x "0%"
                                :y "0%"
-                               :height "100%"
-                               :height "1440px"
+                               :height {height}
                                :anchor "center right")
            :stacking "fg"
            :exclusive true
-           (sidebar :index 1 :output {outputs[1]}))
+           (sidebar :index {index} :output {output}))
 
-(defwindow bar-2
-           :monitor '["edp TODO"]'
-           :geometry (geometry :x "0%"
-                               :y "0%"
-                               :anchor "center right")
-           :stacking "fg"
-           :exclusive true
-           (sidebar :index 2 :output {outputs[2]}))
+; (defwindow bar-1
+;            :monitor '["BenQ EW3270U"]'
+;            :geometry (geometry :x "0%"
+;                                :y "0%"
+;                                :height "100%"
+;                                :height "1440px"
+;                                :anchor "center right")
+;            :stacking "fg"
+;            :exclusive true
+;            (sidebar :index 2 :output {outputs[2]}))
+
+; (defwindow bar-2
+;            :monitor '["0x573D"]'
+;            :geometry (geometry :x "0%"
+;                                :y "0%"
+;                       :height "720px"
+;                                :anchor "center right")
+;            :stacking "fg"
+;            :exclusive true
+;            (sidebar :index 0 :output {outputs[0]}))
