@@ -22,6 +22,7 @@ for_window [app_id="kitty"]                                        title_format 
 for_window [class="Mullvad VPN"]                                   floating disable, move container to workspace number 10, urgent deny
 for_window [instance="mullvad vpn"]                                urgent deny
 
+for_window [class="zoom"]                                          floating enable
 for_window [app_id="firefox.*" title="Picture-in-Picture"]         floating enable, border none, resize set width 30ppt height 30ppt, opacity 1.0
 for_window [app_id="firefox.*" title=".* — Sharing Indicator"]     floating enable, move container to workspace number 10
 
@@ -32,6 +33,9 @@ for_window [app_id="^anki$" title="^Add$"]                         floating enab
 for_window [app_id="^anki$" title="^Preview$"]                     floating enable
 for_window [app_id="^wezterm-floating$"]                           floating enable, border pixel 5
 for_window [app_id="^wezterm-600px$"]                              resize set width 600px
+
+# for_window [app_id="^firefox"] opacity 0.9
+# for_window [app_id="^firefox" title="YouTube"] opacity 1.0
 
 assign     [title="^Bevy App$"]                                    workspace number 1
 assign     [title="^Aperiodic"]                                    workspace number 1
