@@ -71,6 +71,10 @@ function fish_prompt
     end
 
     echo -n (cat /etc/hostname)
+    if test "$CONTAINER_ID" != ""
+        echo -n ."$CONTAINER_ID"
+    end
+
     set_color normal
 
     echo -n " "
