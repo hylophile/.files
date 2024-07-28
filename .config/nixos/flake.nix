@@ -13,6 +13,9 @@
 
     # Official NixOS package source, using nixos-23.11 branch here
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # from 2024-07-07
+    nixpkgs-be.url = "github:NixOS/nixpkgs?rev=655a58a72a6601292512670343087c2d75d859c1";
+    # before that
     nixpkgs-old.url = "github:NixOS/nixpkgs?rev=ad57eef4ef0659193044870c731987a6df5cf56b";
 
     #    nixpkgs.url = "github:NixOS/nixpkgs/d65bceaee0fb1e64363f7871bc43dc1c6ecad99f";

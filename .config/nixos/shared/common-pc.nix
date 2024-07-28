@@ -102,7 +102,7 @@
   services.flatpak.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  # sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -226,7 +226,8 @@
     python3
     ruff
     ruff-lsp
-    nixpkgs-old.legacyPackages.${system}.basedpyright
+    # nixpkgs-old.legacyPackages.${system}.basedpyright
+    basedpyright
     # pyright
     uv
     ## shell
@@ -253,6 +254,7 @@
     # zls
     # gdb
     # llvmPackages_latest.llvm
+    eclipses.eclipse-java
 
     # files
     yazi
