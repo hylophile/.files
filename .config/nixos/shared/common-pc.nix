@@ -13,6 +13,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  nix.settings.substituters = ["https://helix.cachix.org"];
+  nix.settings.trusted-public-keys = ["helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="];
   # boot.supportedFilesystems = [ "ntfs" ];
   # # Bootloader.
   # boot.loader.systemd-boot.enable = true;
@@ -158,6 +160,7 @@
 
     # gui
     libsForQt5.dolphin
+    kdePackages.okular
     libsForQt5.dolphin-plugins
     libsForQt5.kio-extras
     libsForQt5.breeze-icons
@@ -197,6 +200,7 @@
     lazygit
     just
     go-task
+    cachix
 
     # dev
     distrobox
