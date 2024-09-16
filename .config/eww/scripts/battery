@@ -17,7 +17,7 @@
 
 (defn parse-output [output]
   (if (or (= output "")
-          (str/includes? output "rate information unavailable"))
+          (str/includes? output "No support"))
     {:supported false}
     (let [[status percentage left] (str/split output #",")
           percentage (parse-long (re-find #"\d+" percentage))
