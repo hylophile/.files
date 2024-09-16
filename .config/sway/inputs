@@ -28,7 +28,7 @@ input type:pointer {
 
 input 5426:145:Razer_Razer_Viper_8KHz {
     accel_profile flat
-    pointer_accel 1
+    pointer_accel 0
 }
 
 input 2:7:SynPS/2_Synaptics_TouchPad {
