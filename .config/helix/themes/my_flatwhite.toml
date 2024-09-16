@@ -1,4 +1,18 @@
 inherits = "flatwhite"
-"ui.background" = {}
-"ui.gutter" = {}
-"ui.linenr" = { bg = "" }
+# "ui.background" = {}
+# "ui.gutter" = {}
+# "ui.linenr" = { bg = "" }
+# local yellow_text = "#5b5a43"
+# local yellow_text_sec = "#a9994c"
+# -- local yellow_bg = "#f3eec4"
+# -- local yellow_bg = "#F2EDC0"
+# -- local yellow_bg = "#F2EaC0"
+# -- local yellow_bg = "#fcf2bf"
+# -- local yellow_bg = "#f3e7c4"
+# -- local yellow_bg = "#f9f0c2"
+# local yellow_bg = "#f5edc7"
+
+"comment" = { bg = "#f5edc7", fg = "#5b5a43", modifiers = ["italic"] }
+"comment.line" = { bg = "#f5edc7", fg = "#5b5a43", modifiers = ["italic"] }
+"comment.block" = { bg = "#f5edc7", fg = "#5b5a43", modifiers = ["italic"] }
+# line_comment = { bg = "#f5edc7", fg = "#5b5a43", modifiers = ["italic"] }
