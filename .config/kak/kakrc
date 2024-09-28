@@ -1,0 +1,464 @@
+colorscheme modus-vivendi
+
+nop %sh{
+    mkdir -p "$kak_config/autoload"
+    ln -sfn "$kak_runtime/rc" "$kak_config/autoload/standard-library"
+}
+
+set global indentwidth 2
+set global tabstop 2
+set global indentwidth 2
+
+# HACK: fix for wezterm; it doesn’t support synchronized output very well for
+# now: <https://github.com/wez/wezterm/issues/4607>
+set global ui_options terminal_assistant=none terminal_synchronized=false
+
+#add-highlighter global/number-lines number-lines -hlcursor
+# add-highlighter global/column-limit column 80 default,black+d
+add-highlighter global/show-whitespaces show-whitespaces -spc ' ' -indent '▏' -lf '↩'
+set-face global Whitespace bright-black+f
+set-face global WhitespaceIndent bright-black+f
+
+# # for writing emails
+# hook global BufSetOption filetype=mail %{
+#   add-highlighter -override global/column-limit column 72 default,black+d
+# }
+
+# # Git support
+# add-highlighter global/git-diff flag-lines Default git_diff_flags
+# hook global -group git-main-hook BufCreate .* %{
+#   # Update git diff column signs
+#   try %{ git show-diff }
+# }
+# hook global -group git-main-hook FocusIn .* %{
+#   # Update git diff column signs
+#   try %{ git update-diff }
+# }
+# hook global -group git-main-hook BufReload .* %{
+#   # Update git diff column signs
+#   try %{ git update-diff }
+# }
+# hook global -group git-main-hook BufWritePost .* %{
+#   # Update git diff column signs
+#   try %{ git update-diff }
+# }
+
+# Better :grep!
+set-option global grepcmd 'rg --column --smart-case --sort path'
+
+map global normal <C-q> :quit<ret>
+
+# swiper.kak
+set-option global swiper_cmd 'rg -in'
+set-option global swiper_reduce_cmd 'rg -i'
+set-face global Swiper green+r
+
+# Git support
+map global user g ':enter-user-mode git<ret>' -docstring 'git mode'
+# set-option global awk_cmd %sh{
+#   test "$(uname)" = "Darwin" && echo 'gawk' || echo 'awk'
+# }
+
+## Some specific filetypes I see at work / spare-time
+# hook global WinCreate .*\.bzl %{ set-option buffer filetype python }
+# hook global WinCreate .*\.zprofile %{ set-option buffer filetype sh }
+# hook global WinCreate .*\.(bazel|bzl) %{ set-option buffer filetype python }
+# hook global WinCreate .*\.nu %{ set-option buffer filetype nu }
+
+
+## wezterm integration
+define-command wezterm-split -params 1 -docstring 'split' %{
+  nop %sh{
+    wezterm cli split-pane --pane-id "$kak_client_env_WEZTERM_PANE" "--$1" -- kak -c $kak_session
+  }
+}
+
+define-command wezterm-select-pane -params 1 -docstring 'select pane' %{
+  nop %sh{
+    wezterm cli activate-pane-direction $1
+  }
+}
+
+define-command wezterm-set-user-var -params 2 -docstring 'run lua by changing wezterm user var' %{
+  nop %sh{
+    printf "\033]1337;SetUserVar=%s=%s\007" "$1" $(echo -n "$2" | base64 --wrap=0) > /dev/tty
+  }
+}
+
+declare-user-mode window-wezterm
+map global window-wezterm a       ':wezterm-set-user-var pane-select-mode 0<ret>' -docstring 'pane-select-mode'
+map global user           a       ':wezterm-set-user-var pane-select-mode 0<ret>' -docstring 'pane-select-mode'
+map global window-wezterm Q       ':q!<ret>'                                      -docstring 'close window (force)'
+map global window-wezterm q       ':q<ret>'                                       -docstring 'close window'
+map global window-wezterm q       ':q<ret>'                                       -docstring 'close window'
+map global window-wezterm <left>  ':wezterm-select-pane left<ret>'                -docstring 'move left'
+map global window-wezterm <down>  ':wezterm-select-pane down<ret>'                -docstring 'move down'
+map global window-wezterm <up>    ':wezterm-select-pane up<ret>'                  -docstring 'move up'
+map global window-wezterm <right> ':wezterm-select-pane right<ret>'               -docstring 'move right'
+map global window-wezterm n       ':wezterm-select-pane next<ret>'                -docstring 'move to next'
+map global window-wezterm w       ':wezterm-select-pane next<ret>'                -docstring 'move to next'
+map global window-wezterm p       ':wezterm-select-pane prev<ret>'                -docstring 'move to prev'
+map global window-wezterm W       ':wezterm-select-pane prev<ret>'                -docstring 'move to prev'
+map global window-wezterm h       ':wezterm-split bottom<ret>'                    -docstring 'horizontal split'
+map global window-wezterm v       ':wezterm-split right<ret>'                     -docstring 'vertical split'
+
+## Some pickers
+define-command -hidden open_buffer_picker %{
+  prompt buffer: -menu -buffer-completion %{
+    buffer %val{text}
+  }
+}
+
+define-command -hidden open_file_picker %{
+  prompt file: -menu -shell-script-candidates 'fd --type=file' %{
+    edit -existing %val{text}
+  }
+}
+
+define-command file-picker %{
+  try %{
+    edit -scratch '*file-picker*'
+
+    map buffer normal <ret> 'x_gf'
+    add-highlighter buffer/file-picker-item regex (.*) 1:cyan
+    set-option buffer swiper_callback 'x_gf'
+
+    execute-keys '|fd --type=file<ret>gg'
+  }
+}
+
+## match mode
+define-command -hidden match-delete-surround -docstring 'delete surrounding key' %{
+  on-key %{
+    match-delete-surround-key %val{key}
+  }
+}
+
+define-command -hidden match-delete-surround-key -params 1 %{
+  execute-keys -draft "<a-a>%arg{1}i<del><esc>a<backspace><esc>"
+}
+
+## surround mode
+define-command surround-key -docstring 'surround key' %{
+  on-key %{
+    add-surrounding-pair %val{key} %val{key}
+  }
+}
+
+define-command surround-tag -docstring 'surround tag' %{
+  prompt surround-tag: %{
+    add-surrounding-pair "<%val{text}>" "</%val{text}>"
+  }
+}
+    
+define-command -override add-surrounding-pair -params 2 -docstring 'add surrounding pairs left and right to selection' %{
+  evaluate-commands -no-hooks -save-regs '"' %{
+    set-register '"' %arg{1}
+    execute-keys -draft P
+    set-register '"' %arg{2}
+    execute-keys -draft p
+  }
+}
+
+define-command surround-replace -docstring 'prompt for a surrounding pair and replace it with another' %{
+  on-key %{
+    surround-replace-sub %val{key}
+  }
+}
+
+define-command -hidden surround-replace-sub -params 1 %{
+	on-key %{
+    evaluate-commands -no-hooks -draft %{
+      execute-keys "<a-a>%arg{1}"
+
+      # select the surrounding pair and add the new one around it
+      enter-user-mode surround-add
+      execute-keys %val{key}
+    }
+
+    # delete the old one
+    match-delete-surround-key %arg{1}
+	}
+}
+
+declare-user-mode match
+map global match a '<a-a>'                               -docstring 'match around'
+map global match d ':match-delete-surround<ret>'         -docstring 'delete surround'
+map global match i '<a-i>'                               -docstring 'match inside'
+map global match m m                                     -docstring 'select other matching delimiter'
+map global match s ':enter-user-mode surround-add<ret>'  -docstring 'add surrounding pairs'
+map global match r ':surround-replace<ret>'              -docstring 'replace surrounding pairs'
+
+declare-user-mode match-extend
+map global match-extend a '<A-a>'                        -docstring 'extend around'
+map global match-extend i '<A-i>'                        -docstring 'extend inside'
+map global match-extend m M                              -docstring 'extend other matching delimiter'
+
+# surround-add mode; support most of the useful delimiters
+declare-user-mode surround-add
+map global surround-add "'" ":add-surrounding-pair ""'"" ""'""<ret>" -docstring 'surround selections with quotes'
+map global surround-add ' ' ':add-surrounding-pair " " " "<ret>'     -docstring 'surround selections with pipes'
+map global surround-add '"' ':add-surrounding-pair ''"'' ''"''<ret>' -docstring 'surround selections with double quotes'
+map global surround-add '(' ':add-surrounding-pair ( )<ret>'         -docstring 'surround selections with curved brackets'
+map global surround-add ')' ':add-surrounding-pair ( )<ret>'         -docstring 'surround selections with curved brackets'
+map global surround-add '*' ':add-surrounding-pair * *<ret>'         -docstring 'surround selections with stars'
+map global surround-add '<' ':add-surrounding-pair <lt> <gt><ret>'   -docstring 'surround selections with chevrons'
+map global surround-add '>' ':add-surrounding-pair <lt> <gt><ret>'   -docstring 'surround selections with chevrons'
+map global surround-add '[' ':add-surrounding-pair [ ]<ret>'         -docstring 'surround selections with square brackets'
+map global surround-add ']' ':add-surrounding-pair [ ]<ret>'         -docstring 'surround selections with square brackets'
+map global surround-add '_' ':add-surrounding-pair "_" "_"<ret>'     -docstring 'surround selections with underscores'
+map global surround-add '{' ':add-surrounding-pair { }<ret>'         -docstring 'surround selections with angle brackets'
+map global surround-add '|' ':add-surrounding-pair | |<ret>'         -docstring 'surround selections with pipes'
+map global surround-add '}' ':add-surrounding-pair { }<ret>'         -docstring 'surround selections with angle brackets'
+map global surround-add '«' ':add-surrounding-pair « »<ret>'         -docstring 'surround selections with French chevrons'
+map global surround-add '»' ':add-surrounding-pair « »<ret>'         -docstring 'surround selections with French chevrons'
+map global surround-add '“' ':add-surrounding-pair “ ”<ret>'         -docstring 'surround selections with French chevrons'
+map global surround-add '”' ':add-surrounding-pair “ ”<ret>'         -docstring 'surround selections with French chevrons'
+map global surround-add ` ':add-surrounding-pair ` `<ret>'           -docstring 'surround selections with ticks'
+map global surround-add t ':surround-tag<ret>'                       -docstring 'surround selections with a <tag>'
+
+## yank mode
+define-command extra-yank-buffile -docstring 'yank the path of the current buffer' %{
+  set-register p %val{buffile}
+}
+
+define-command extra-yank-system -docstring 'yank into the system clipboard' %{
+  execute-keys -draft "<a-|>wl-copy --trim-newline<ret>"
+  # execute-keys -draft "!%opt{extra_yank_system_clipboard_cmd}<ret>"
+}
+
+define-command extra-paste-system -docstring 'paste from the system clipboard' %{
+  execute-keys -draft "!wl-paste --no-newline<ret>"
+}
+
+define-command extra-replace-system -docstring 'replace selections with the system clipboard' %{
+  set-register \"  %sh{ wl-paste --no-newline }
+  execute-keys '""R'
+}
+
+map global user p ':extra-paste-system<ret>' -docstring 'paste selections from system clipboard'
+map global user y ':extra-yank-system<ret>'  -docstring 'yank to system clipboard'
+map global user R ':extra-replace-system<ret>'  -docstring 'replace selections from system clipboard'
+
+# Tree-sitter
+eval %sh{ kak-tree-sitter -dks --init "$kak_session" --with-highlighting --with-text-objects -vvv }
+# colorscheme catppuccin_macchiato
+
+define-command -override tree-sitter-user-after-highlighter %{
+  add-highlighter -override buffer/show-matching show-matching -previous
+}
+
+# Modeline
+declare-option str bufname_abbrev
+
+define-command -hidden update-bufname-abbrev %{
+  set-option window bufname_abbrev %sh{
+    if (( ${#kak_bufname} > $((kak_window_width / 3)) )); then
+      sed "s:\([^/]\)[^/]*/:\1/:g" <<< $kak_bufname
+    else
+      echo $kak_bufname
+    fi
+  }
+}
+
+hook global -group bufname-abbrev WinDisplay .* update-bufname-abbrev
+hook global -group bufname-abbrev WinResize .* update-bufname-abbrev
+
+declare-option str modeline_swiper ''
+
+hook global WinSetOption (swiper_enabled=true|swiper_terms=.+) %{
+  set-option buffer modeline_swiper "swiper (%opt{swiper_terms}){Default} "
+}
+
+hook global WinSetOption swiper_enabled=false %{
+  set-option buffer modeline_swiper ''
+}
+
+set-option global modelinefmt '{DiagnosticError} %opt{lsp_diagnostic_error_count} {DiagnosticWarning} %opt{lsp_diagnostic_warning_count} {DiagnosticInfo} %opt{lsp_diagnostic_info_count} {DiagnosticHint} %opt{lsp_diagnostic_hint_count} {Swiper}%opt{modeline_swiper}{StatusLine}%opt{bufname_abbrev} {green}%val{cursor_line}:%val{cursor_char_column} {blue}(%val{buf_line_count}L){{context_info}} {{mode_info}}'
+
+# notes
+# set-face global notes_review "%opt{orange}"
+# set-face global notes_tag "%opt{mauve}+u"
+
+# LSP
+
+eval %sh{ kak-lsp --kakoune -s $kak_session }
+lsp-enable
+
+## common options
+lsp-auto-signature-help-enable
+lsp-inlay-hints-enable global
+lsp-inlay-diagnostics-enable global
+lsp-inlay-code-lenses-enable global
+lsp-inline-diagnostics-disable global
+lsp-diagnostic-lines-disable global
+set-option global lsp_hover_anchor true
+set-option global lsp_auto_show_code_actions true
+
+# TODO this is ugly as hell; I want to get rid of it
+hook global WinSetOption filetype=(haskell|rust|python|go|javascript|typescript|zig) %{
+  hook window BufWritePre .* lsp-formatting-sync
+}
+
+# Progress report
+declare-option -hidden str lsp_modeline_progress ""
+define-command -hidden -params 6 -override lsp-handle-progress %{
+    set-option global lsp_modeline_progress %sh{
+        if ! "$6"; then
+            echo "$2${5:+" ($5%)"}${4:+": $4"}"
+        fi
+    }
+}
+
+# faces / colorschemes
+## inlay hints (type annotations, etc.)
+set-face global PrimaryCursor black,cyan
+set-face global PrimarySelection default,bright-black
+set-face global PrimaryCursorEol black,cyan
+
+set-face global SecondaryCursor black,white
+set-face global SecondarySelection default,bright-black
+set-face global SecondaryCursorEol black,white
+
+# set-face global MenuForeground "black,%opt{mauve}"
+# set-face global MenuInfo "%opt{green},black"
+# set-face global Information "%opt{orange},default"
+# set-face global StatusLine "%opt{mauve},rgb:1e2030"
+# set-face global StatusLineMode "%opt{green}"
+# set-face global StatusLineInfo "%opt{teal}"
+# set-face global StatusLineValue "%opt{orange}"
+# set-face global StatusCursor "black,%opt{mauve}"
+# set-face global Prompt "%opt{orange}"
+# set-face global InlayHint black+i
+# set-face global InlayCodeLens comment
+# set-face global DiagnosticInfo "%opt{blue}"
+# set-face global DiagnosticHint "%opt{mauve}"
+# set-face global DiagnosticWarning "%opt{orange}"
+# set-face global DiagnosticError "%opt{red}"
+
+# keybindings
+
+## anchor / cursor
+map global user <space> '<a-;>' -docstring 'swap anchor & cursor'
+
+## insert mode C-w
+map global insert <c-w> '<esc>:execute-keys bd<ret>i'
+map global insert <c-a> '<esc>:execute-keys gh<ret>i'
+map global insert <c-e> '<esc>:execute-keys gl<ret>i'
+
+## convenience
+map global user $ ':e -existing ~/.config/kak/kakrc<ret>' -docstring 'edit Kakoune configuration'
+map global user S ':swiper<ret>'                          -docstring 'swiper'
+map global user s ':swiper-reduce<ret>'                   -docstring 'swiper reduce'
+
+## buffers
+declare-user-mode user-buffer
+map global user b ':enter-user-mode user-buffer<ret>' -docstring 'buffers'
+map global user-buffer b ':open_buffer_picker<ret>'   -docstring 'pick buffer'
+map global user-buffer d ':db<ret>'                   -docstring 'delete buffer'
+map global user-buffer D ':db!<ret>'                  -docstring 'force-delete buffer'
+
+map global user / ':grep '                   -docstring 'grep'
+map global user f ':open_file_picker<ret>'   -docstring 'pick file'
+
+## match
+map global normal M ':enter-user-mode match-extend<ret>' -docstring 'match mode (extend)'
+map global normal m ':enter-user-mode match<ret>'        -docstring 'match mode'
+
+## window management
+map global user w ':enter-user-mode window-wezterm<ret>' -docstring 'window mode'
+
+## LSP
+declare-user-mode user-lsp
+map global user l ':enter-user-mode user-lsp<ret>'      -docstring 'lsp mode'
+map global user-lsp a ':lsp-code-actions<ret>'          -docstring 'code action'
+map global user-lsp c ':lsp-code-lens<ret>'             -docstring 'execute code lens'
+map global user-lsp d ':lsp-diagnostics<ret>'           -docstring 'list diagnostics'
+map global user-lsp h ':lsp-highlight-references<ret>'  -docstring 'highlight references'
+map global user-lsp I ':lsp-implementation<ret>'        -docstring 'list implementations'
+map global user-lsp i ':lsp-incoming-calls<ret>'        -docstring 'incoming calls'
+map global user-lsp K ':lsp-hover-buffer<ret>'          -docstring 'hover in a dedicated buffer'
+map global user-lsp k ':lsp-hover<ret>'                 -docstring 'hover'
+map global user-lsp l ':lsp-code-lens<ret>'             -docstring 'run a code lens'
+map global user-lsp ) ':lsp-next-function<ret>'         -docstring 'jump to the next function'
+map global user-lsp ( ':lsp-previous-function<ret>'     -docstring 'jump to the previous function'
+map global user-lsp o ':lsp-outgoing-calls<ret>'        -docstring 'outgoing calls'
+map global user-lsp p ':lsp-workspace-symbol-incr<ret>' -docstring 'pick workspace symbol'
+map global user-lsp P ':lsp-workspace-symbol<ret>'      -docstring 'list workspace symbols'
+map global user-lsp r ':lsp-references<ret>'            -docstring 'list references'
+map global user-lsp R ':lsp-rename-prompt<ret>'         -docstring 'rename'
+map global user-lsp S ':lsp-document-symbol<ret>'       -docstring 'list workspace symbols'
+map global user-lsp s ':lsp-goto-document-symbol<ret>'  -docstring 'pick document symbol'
+map global user-lsp x ':lsp-find-error<ret>'            -docstring 'jump to the prev/next error'
+map global user n ':enter-user-mode notes<ret>'         -docstring 'notes'
+
+map global normal \' '"'
+map global insert <c-s> '<esc>:w<ret>i'
+map global normal <c-s> ':w<ret>'
+map global normal <c-a-s> '<c-s>'
+
+## bookmarks
+map global user _ ':enter-user-mode bookmarks<ret>' -docstring 'bookmarks'
+
+# hop.kak
+evaluate-commands %sh{ hop-kak --init }
+
+declare-option str hop_kak_keyset "tnseriaodhcdhcxzplfuwyq"
+
+define-command hop-kak %{
+  eval -no-hooks -- %sh{ hop-kak --keyset "$kak_opt_hop_kak_keyset" --sels "$kak_selections_desc" }
+}
+
+define-command hop-kak-words %{
+  evaluate-commands -draft %{
+    execute-keys 'gtGbxs\w+<ret>'
+    evaluate-commands -no-hooks -client "%val{client}" -- %sh{ hop-kak --keyset "$kak_opt_hop_kak_keyset" --sels "$kak_selections_desc" }
+  }
+}
+
+map global normal J :hop-kak<ret>
+map global normal j :hop-kak-words<ret>
+
+# comment
+map global user c ':comment-line<ret>' -docstring 'comment line'
+
+# tree-sitter
+map global user t ':enter-user-mode tree-sitter<ret>' -docstring 'tree-sitter'
+
+# # experiment around ! and buffer-based interactive shells
+# define-command -override run -shell-completion -params .. -docstring 'run command' %{
+#   # this is not strictly needed on every run, but it’s easier for this experiment
+#   set-option buffer filetype sh
+#   execute-keys -draft "gjo# %sh{date} %sh{pwd}<ret>"
+#   execute-keys -draft "gji# %arg{@}<ret>"
+#   execute-keys "gj!%arg{@}<ret>"
+# }
+
+hook global BufSetOption filetype=(?:svelte) %{
+    set-option buffer lsp_servers %exp{
+		[svelteserver]
+		filetypes = ["svelte"]
+        root = "%sh{eval "$kak_opt_lsp_find_root" package.json tsconfig.json jsconfig.json $(: kak_buffile)}"
+		args = ["--stdio"]
+        settings_section = "config"
+        [svelteserver.settings.config.configuration.typescript]
+        inlayHints.parameterTypes.enabled = true
+        inlayHints.variableTypes.enabled = true
+        inlayHints.propertyDeclarationTypes.enabled = true
+        inlayHints.functionLikeReturnTypes.enabled = true
+        inlayHints.enumMemberValues.enabled = true
+        inlayHints.parameterNames.enabled = "all"
+        [svelteserver.settings.config.configuration.javascript]
+        inlayHints.parameterTypes.enabled = true
+        inlayHints.variableTypes.enabled = true
+        inlayHints.propertyDeclarationTypes.enabled = true
+        inlayHints.functionLikeReturnTypes.enabled = true
+        inlayHints.enumMemberValues.enabled = true
+        inlayHints.parameterNames.enabled = "all"
+        [tailwindcss-language-server]
+        root = "%sh{eval "$kak_opt_lsp_find_root" tailwind.config.ts tailwind.config.js $(: kak_buffile)}"
+        args = ["--stdio"]
+        [tailwindcss-language-server.settings.tailwindcss]
+        editor = {}
+    }
+}

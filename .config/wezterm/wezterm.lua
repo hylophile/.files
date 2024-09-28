@@ -47,6 +47,11 @@ end)
 --   end
 -- end
 
+wezterm.on('user-var-changed', function(window, pane, name, value)
+  if name == 'pane-select-mode' then window:perform_action(act.PaneSelect({}), pane)
+  -- elseif name == '...' then ...
+  end
+end)
 
 local config = {
   quick_select_patterns = {
@@ -55,6 +60,7 @@ local config = {
     "'.+'",
     "[^ ]{5,}",
   },
+  quick_select_alphabet = "tnseriaodhcdhc,x.z?plfuwyq'",
 
   ssh_domains = {
     {
@@ -88,6 +94,7 @@ local config = {
   harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
   -- term = "wezterm",
   window_background_opacity = 0.8,
+  -- text_background_opacity = 0.8,
   switch_to_last_active_tab_when_closing_tab = true,
   --"Dracula",
   color_scheme = "Dracula",
@@ -210,7 +217,30 @@ local config = {
     top = 0,
     bottom = 0,
   },
+
+leader = { mods = 'CTRL', key = 'm', timeout_milliseconds = 5000 },
   keys = {
+  {
+    key = 'v',
+    mods = 'LEADER',
+    action = wezterm.action.SplitPane { direction = 'Right' },
+  },
+  {
+    key = 'd',
+    mods = 'LEADER',
+    action = wezterm.action.CloseCurrentPane { confirm = false },
+  },
+  -- {
+  --   key = 't',
+  --   mods = 'LEADER',
+  --   action = wezterm.action.ActivatePaneDirection 'Down'
+  -- },
+  {
+    key = 'h',
+    mods = 'LEADER',
+    action = wezterm.action.SplitPane { direction = 'Down' },
+  },
+
     { key = "F2", mods = "CTRL",           action = wezterm.action_callback(layouts.serialize_window) },
     { key = "F3", mods = "CTRL",           action = wezterm.action_callback(layouts.deserialize_window) },
     { key = "x",  mods = "ALT|CTRL|SHIFT", action = act.ActivateCommandPalette },
