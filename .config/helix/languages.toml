@@ -78,6 +78,7 @@ auto-format = true
 name = "svelte"
 formatter = { command = 'prettier', args = ["--parser", "svelte"] }
 auto-format = true
+language-servers = ["svelteserver", "tailwindcss-ls"]
 
 [[language]]
 name = "devicetree"
