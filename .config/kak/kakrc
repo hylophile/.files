@@ -5,6 +5,13 @@ nop %sh{
     ln -sfn "$kak_runtime/rc" "$kak_config/autoload/standard-library"
 }
 
+evaluate-commands %sh{
+  for f in `fd '\.kak$' ${kak_config} --exclude autoload --exclude colors`; do
+  	echo "source $f"
+  done
+}
+
+
 set global indentwidth 2
 set global tabstop 2
 set global indentwidth 2
@@ -15,7 +22,6 @@ set global ui_options terminal_assistant=none terminal_synchronized=false
 
 #add-highlighter global/number-lines number-lines -hlcursor
 # add-highlighter global/column-limit column 80 default,black+d
-add-highlighter global/show-whitespaces show-whitespaces -spc ' ' -indent '▏' -lf '↩'
 set-face global Whitespace bright-black+f
 set-face global WhitespaceIndent bright-black+f
 
@@ -64,43 +70,6 @@ map global user g ':enter-user-mode git<ret>' -docstring 'git mode'
 # hook global WinCreate .*\.zprofile %{ set-option buffer filetype sh }
 # hook global WinCreate .*\.(bazel|bzl) %{ set-option buffer filetype python }
 # hook global WinCreate .*\.nu %{ set-option buffer filetype nu }
-
-
-## wezterm integration
-define-command wezterm-split -params 1 -docstring 'split' %{
-  nop %sh{
-    wezterm cli split-pane --pane-id "$kak_client_env_WEZTERM_PANE" "--$1" -- kak -c $kak_session
-  }
-}
-
-define-command wezterm-select-pane -params 1 -docstring 'select pane' %{
-  nop %sh{
-    wezterm cli activate-pane-direction $1
-  }
-}
-
-define-command wezterm-set-user-var -params 2 -docstring 'run lua by changing wezterm user var' %{
-  nop %sh{
-    printf "\033]1337;SetUserVar=%s=%s\007" "$1" $(echo -n "$2" | base64 --wrap=0) > /dev/tty
-  }
-}
-
-declare-user-mode window-wezterm
-map global window-wezterm a       ':wezterm-set-user-var pane-select-mode 0<ret>' -docstring 'pane-select-mode'
-map global user           a       ':wezterm-set-user-var pane-select-mode 0<ret>' -docstring 'pane-select-mode'
-map global window-wezterm Q       ':q!<ret>'                                      -docstring 'close window (force)'
-map global window-wezterm q       ':q<ret>'                                       -docstring 'close window'
-map global window-wezterm q       ':q<ret>'                                       -docstring 'close window'
-map global window-wezterm <left>  ':wezterm-select-pane left<ret>'                -docstring 'move left'
-map global window-wezterm <down>  ':wezterm-select-pane down<ret>'                -docstring 'move down'
-map global window-wezterm <up>    ':wezterm-select-pane up<ret>'                  -docstring 'move up'
-map global window-wezterm <right> ':wezterm-select-pane right<ret>'               -docstring 'move right'
-map global window-wezterm n       ':wezterm-select-pane next<ret>'                -docstring 'move to next'
-map global window-wezterm w       ':wezterm-select-pane next<ret>'                -docstring 'move to next'
-map global window-wezterm p       ':wezterm-select-pane prev<ret>'                -docstring 'move to prev'
-map global window-wezterm W       ':wezterm-select-pane prev<ret>'                -docstring 'move to prev'
-map global window-wezterm h       ':wezterm-split bottom<ret>'                    -docstring 'horizontal split'
-map global window-wezterm v       ':wezterm-split right<ret>'                     -docstring 'vertical split'
 
 ## Some pickers
 define-command -hidden open_buffer_picker %{
@@ -217,29 +186,6 @@ map global surround-add '”' ':add-surrounding-pair “ ”<ret>'         -docs
 map global surround-add ` ':add-surrounding-pair ` `<ret>'           -docstring 'surround selections with ticks'
 map global surround-add t ':surround-tag<ret>'                       -docstring 'surround selections with a <tag>'
 
-## yank mode
-define-command extra-yank-buffile -docstring 'yank the path of the current buffer' %{
-  set-register p %val{buffile}
-}
-
-define-command extra-yank-system -docstring 'yank into the system clipboard' %{
-  execute-keys -draft "<a-|>wl-copy --trim-newline<ret>"
-  # execute-keys -draft "!%opt{extra_yank_system_clipboard_cmd}<ret>"
-}
-
-define-command extra-paste-system -docstring 'paste from the system clipboard' %{
-  execute-keys -draft "!wl-paste --no-newline<ret>"
-}
-
-define-command extra-replace-system -docstring 'replace selections with the system clipboard' %{
-  set-register \"  %sh{ wl-paste --no-newline }
-  execute-keys '""R'
-}
-
-map global user p ':extra-paste-system<ret>' -docstring 'paste selections from system clipboard'
-map global user y ':extra-yank-system<ret>'  -docstring 'yank to system clipboard'
-map global user R ':extra-replace-system<ret>'  -docstring 'replace selections from system clipboard'
-
 # Tree-sitter
 eval %sh{ kak-tree-sitter -dks --init "$kak_session" --with-highlighting --with-text-objects -vvv }
 # colorscheme catppuccin_macchiato
@@ -280,45 +226,8 @@ set-option global modelinefmt '{DiagnosticError} %opt{lsp_diagnostic_error_co
 # set-face global notes_review "%opt{orange}"
 # set-face global notes_tag "%opt{mauve}+u"
 
-# LSP
-
-eval %sh{ kak-lsp --kakoune -s $kak_session }
-lsp-enable
-
-## common options
-lsp-auto-signature-help-enable
-lsp-inlay-hints-enable global
-lsp-inlay-diagnostics-enable global
-lsp-inlay-code-lenses-enable global
-lsp-inline-diagnostics-disable global
-lsp-diagnostic-lines-disable global
-set-option global lsp_hover_anchor true
-set-option global lsp_auto_show_code_actions true
-
-# TODO this is ugly as hell; I want to get rid of it
-hook global WinSetOption filetype=(haskell|rust|python|go|javascript|typescript|zig) %{
-  hook window BufWritePre .* lsp-formatting-sync
-}
-
-# Progress report
-declare-option -hidden str lsp_modeline_progress ""
-define-command -hidden -params 6 -override lsp-handle-progress %{
-    set-option global lsp_modeline_progress %sh{
-        if ! "$6"; then
-            echo "$2${5:+" ($5%)"}${4:+": $4"}"
-        fi
-    }
-}
-
 # faces / colorschemes
 ## inlay hints (type annotations, etc.)
-set-face global PrimaryCursor black,cyan
-set-face global PrimarySelection default,bright-black
-set-face global PrimaryCursorEol black,cyan
-
-set-face global SecondaryCursor black,white
-set-face global SecondarySelection default,bright-black
-set-face global SecondaryCursorEol black,white
 
 # set-face global MenuForeground "black,%opt{mauve}"
 # set-face global MenuInfo "%opt{green},black"
@@ -347,7 +256,7 @@ map global insert <c-a> '<esc>:execute-keys gh<ret>i'
 map global insert <c-e> '<esc>:execute-keys gl<ret>i'
 
 ## convenience
-map global user $ ':e -existing ~/.config/kak/kakrc<ret>' -docstring 'edit Kakoune configuration'
+map global user $ ':e -existing ~/.config/kak/kakrc<ret>:cd ~/.config/kak<ret>' -docstring 'edit Kakoune configuration'
 map global user S ':swiper<ret>'                          -docstring 'swiper'
 map global user s ':swiper-reduce<ret>'                   -docstring 'swiper reduce'
 
@@ -400,25 +309,6 @@ map global normal <c-a-s> '<c-s>'
 ## bookmarks
 map global user _ ':enter-user-mode bookmarks<ret>' -docstring 'bookmarks'
 
-# hop.kak
-evaluate-commands %sh{ hop-kak --init }
-
-declare-option str hop_kak_keyset "tnseriaodhcdhcxzplfuwyq"
-
-define-command hop-kak %{
-  eval -no-hooks -- %sh{ hop-kak --keyset "$kak_opt_hop_kak_keyset" --sels "$kak_selections_desc" }
-}
-
-define-command hop-kak-words %{
-  evaluate-commands -draft %{
-    execute-keys 'gtGbxs\w+<ret>'
-    evaluate-commands -no-hooks -client "%val{client}" -- %sh{ hop-kak --keyset "$kak_opt_hop_kak_keyset" --sels "$kak_selections_desc" }
-  }
-}
-
-map global normal J :hop-kak<ret>
-map global normal j :hop-kak-words<ret>
-
 # comment
 map global user c ':comment-line<ret>' -docstring 'comment line'
 
@@ -434,31 +324,3 @@ map global user t ':enter-user-mode tree-sitter<ret>' -docstring 'tree-sitter'
 #   execute-keys "gj!%arg{@}<ret>"
 # }
 
-hook global BufSetOption filetype=(?:svelte) %{
-    set-option buffer lsp_servers %exp{
-		[svelteserver]
-		filetypes = ["svelte"]
-        root = "%sh{eval "$kak_opt_lsp_find_root" package.json tsconfig.json jsconfig.json $(: kak_buffile)}"
-		args = ["--stdio"]
-        settings_section = "config"
-        [svelteserver.settings.config.configuration.typescript]
-        inlayHints.parameterTypes.enabled = true
-        inlayHints.variableTypes.enabled = true
-        inlayHints.propertyDeclarationTypes.enabled = true
-        inlayHints.functionLikeReturnTypes.enabled = true
-        inlayHints.enumMemberValues.enabled = true
-        inlayHints.parameterNames.enabled = "all"
-        [svelteserver.settings.config.configuration.javascript]
-        inlayHints.parameterTypes.enabled = true
-        inlayHints.variableTypes.enabled = true
-        inlayHints.propertyDeclarationTypes.enabled = true
-        inlayHints.functionLikeReturnTypes.enabled = true
-        inlayHints.enumMemberValues.enabled = true
-        inlayHints.parameterNames.enabled = "all"
-        [tailwindcss-language-server]
-        root = "%sh{eval "$kak_opt_lsp_find_root" tailwind.config.ts tailwind.config.js $(: kak_buffile)}"
-        args = ["--stdio"]
-        [tailwindcss-language-server.settings.tailwindcss]
-        editor = {}
-    }
-}
