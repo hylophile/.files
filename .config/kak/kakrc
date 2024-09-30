@@ -25,6 +25,7 @@ evaluate-commands %sh{
   done
 }
 
+# add-highlighter global/show-whitespaces show-whitespaces -tab ' ' -spc ' ' -indent '▏' -lf '↩'
 
 set global indentwidth 2
 set global tabstop 2
@@ -127,11 +128,19 @@ hook global -group bufname-abbrev WinDisplay .* update-bufname-abbrev
 hook global -group bufname-abbrev WinResize .* update-bufname-abbrev
 
 set-option global modelinefmt '{DiagnosticError} %opt{lsp_diagnostic_error_count} {DiagnosticWarning} %opt{lsp_diagnostic_warning_count} {DiagnosticInfo} %opt{lsp_diagnostic_info_count} {DiagnosticHint} %opt{lsp_diagnostic_hint_count} {Swiper}%opt{modeline_swiper}{StatusLine}%opt{bufname_abbrev} {green}%val{cursor_line}:%val{cursor_char_column} {blue}(%val{buf_line_count}L){{context_info}} {{mode_info}}'
-# set-option global ui_options 'terminal_title=yes'
 
 define-command -hidden update-window-title %{
-  set-option global ui_options %sh{ echo "terminal_title=$kak_bufname $(date)" }
-} 
+  set-option global ui_options %sh{
+    home_as_tilde="s#^$HOME#~#"
+    shorten_path="s#(\.?[^/])[^/]+/#\1/#g"
+    project_dir=`git rev-parse --show-toplevel || pwd`
+    printf "terminal_title="
+    printf `rg -o '([^/]+/[^/]+$|\*.*)' <<< $kak_bufname || echo $kak_bufname`
+    printf " ("
+    printf `echo $project_dir | sed -E -e $home_as_tilde -e $shorten_path`
+    printf ")"
+  }
+}
 
 hook global -group window-title WinDisplay .* update-window-title
 hook global -group window-title WinResize .* update-window-title
@@ -168,6 +177,8 @@ map global user <space> '<a-;>' -docstring 'swap anchor & cursor'
 map global insert <c-w> '<esc>:execute-keys bd<ret>i'
 map global insert <c-a> '<esc>:execute-keys gh<ret>i'
 map global insert <c-e> '<esc>:execute-keys gl<ret>i'
+
+map global normal / /(?i)
 
 ## convenience
 map global user $ ':e -existing ~/.config/kak/kakrc<ret>:cd ~/.config/kak<ret>' -docstring 'edit Kakoune configuration'

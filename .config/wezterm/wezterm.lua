@@ -88,7 +88,7 @@ local config = {
   foreground_text_hsb = {
     -- hue = 1.25,
     -- saturation = 0.9,
-    brightness = 1.1,
+    -- brightness = 1.1,
   },
   hide_mouse_cursor_when_typing = false,
   harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
@@ -208,8 +208,9 @@ local config = {
     },
   },
   inactive_pane_hsb = {
-    saturation = 0.5,
-    -- brightness = 0.6,
+    saturation = 0.8,
+    -- hue=2,
+    brightness = 0.8,
   },
   window_padding = {
     left = 0,
