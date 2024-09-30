@@ -5,8 +5,22 @@ nop %sh{
     ln -sfn "$kak_runtime/rc" "$kak_config/autoload/standard-library"
 }
 
+# mkdir -p $HOME/.config/kak/bundle/
+# git clone https://codeberg.org/jdugan6240/kak-bundle $HOME/.config/kak/bundle/kak-bundle
+
+source "%val{config}/bundle/kak-bundle/rc/kak-bundle.kak"
+bundle-noload kak-bundle https://codeberg.org/jdugan6240/kak-bundle
+bundle swiper.kak https://git.sr.ht/~hadronized/swiper.kak
+bundle kakoune-focus https://github.com/caksoylar/kakoune-focus.git
+# :bundle-install
+
+# install kakoune-lsp
+# cargo install kak-tree-sitter
+# cargo install ktsctl
+# cargo install hop-kak
+
 evaluate-commands %sh{
-  for f in `fd '\.kak$' ${kak_config} --exclude autoload --exclude colors`; do
+  for f in `fd '\.kak$' ${kak_config} --exclude autoload --exclude colors --exclude bundle`; do
   	echo "source $f"
   done
 }

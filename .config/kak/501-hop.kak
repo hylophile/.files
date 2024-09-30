@@ -1,5 +1,10 @@
 evaluate-commands %sh{ hop-kak --init }
 
+declare-option range-specs hop_ranges
+
+set-face global hop_label_head black,green+F
+set-face global hop_label_tail black,blue+F
+
 declare-option str hop_kak_keyset "tnseriaodhcdhcxzplfuwyq"
 
 define-command hop-kak %{
