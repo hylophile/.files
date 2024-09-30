@@ -15,6 +15,8 @@ define-command extra-replace-system -docstring 'replace selections with the syst
   execute-keys '""R'
 }
 
+hook global RawKey <mouse:press:middle:.*> %{ exec !wl-paste<space>--primary<ret> }
+
 map global user p ':extra-paste-system<ret>' -docstring 'paste selections from system clipboard'
 map global user y ':extra-yank-system<ret>'  -docstring 'yank to system clipboard'
 map global user R ':extra-replace-system<ret>'  -docstring 'replace selections from system clipboard'

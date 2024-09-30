@@ -20,47 +20,13 @@ set global indentwidth 2
 # now: <https://github.com/wez/wezterm/issues/4607>
 set global ui_options terminal_assistant=none terminal_synchronized=false
 
-#add-highlighter global/number-lines number-lines -hlcursor
-# add-highlighter global/column-limit column 80 default,black+d
-set-face global Whitespace bright-black+f
-set-face global WhitespaceIndent bright-black+f
-
-# # for writing emails
-# hook global BufSetOption filetype=mail %{
-#   add-highlighter -override global/column-limit column 72 default,black+d
-# }
-
-# # Git support
-# add-highlighter global/git-diff flag-lines Default git_diff_flags
-# hook global -group git-main-hook BufCreate .* %{
-#   # Update git diff column signs
-#   try %{ git show-diff }
-# }
-# hook global -group git-main-hook FocusIn .* %{
-#   # Update git diff column signs
-#   try %{ git update-diff }
-# }
-# hook global -group git-main-hook BufReload .* %{
-#   # Update git diff column signs
-#   try %{ git update-diff }
-# }
-# hook global -group git-main-hook BufWritePost .* %{
-#   # Update git diff column signs
-#   try %{ git update-diff }
-# }
-
 # Better :grep!
 set-option global grepcmd 'rg --column --smart-case --sort path'
 
 map global normal <C-q> :quit<ret>
 
-# swiper.kak
-set-option global swiper_cmd 'rg -in'
-set-option global swiper_reduce_cmd 'rg -i'
-set-face global Swiper green+r
-
 # Git support
-map global user g ':enter-user-mode git<ret>' -docstring 'git mode'
+# map global user g ':enter-user-mode git<ret>' -docstring 'git mode'
 # set-option global awk_cmd %sh{
 #   test "$(uname)" = "Darwin" && echo 'gawk' || echo 'awk'
 # }
@@ -70,6 +36,40 @@ map global user g ':enter-user-mode git<ret>' -docstring 'git mode'
 # hook global WinCreate .*\.zprofile %{ set-option buffer filetype sh }
 # hook global WinCreate .*\.(bazel|bzl) %{ set-option buffer filetype python }
 # hook global WinCreate .*\.nu %{ set-option buffer filetype nu }
+
+
+hook global InsertCompletionShow .* %{ map window insert <tab> <c-n>; map window insert <s-tab> <c-p> }
+hook global InsertCompletionHide .* %{ unmap window insert <tab> <c-n>; unmap window insert <s-tab> <c-p> }
+map global normal '#' :comment-line<ret>
+
+set-face global CurWord +u
+
+hook global NormalIdle .* %{
+    eval -draft %{ try %{
+        exec ,<a-i>w
+        add-highlighter -override global/curword regex "[^\w](\Q%val{selection}\E)[^\w]" 1:CurWord
+    } catch %{
+        add-highlighter -override global/curword group
+    } }
+}
+
+
+define-command -override search-doc -params 1 %{
+  prompt -menu search: -shell-script-candidates "rg --smart-case --no-heading --line-number ""%arg{1}"" %val{runtime}/doc" %{
+      edit -existing %sh{ echo $kak_text | cut -d: -f1 } %sh{ echo $kak_text | cut -d: -f2 }
+
+		#### somehow evaluate-commands on %val{text}?
+    # evaluate-commands -save-regs fl %{
+    #   execute-keys -draft 'ghT:"fy2lT:"ly'
+    #   edit -existing %reg{f} $reg{l}
+    # }
+  }
+}
+
+map global user ? :search-doc<space>
+
+define-command eval-selection %{ eval %val{selection} }
+map global user e :eval-selection<ret>
 
 ## Some pickers
 define-command -hidden open_buffer_picker %{
@@ -96,104 +96,6 @@ define-command file-picker %{
   }
 }
 
-## match mode
-define-command -hidden match-delete-surround -docstring 'delete surrounding key' %{
-  on-key %{
-    match-delete-surround-key %val{key}
-  }
-}
-
-define-command -hidden match-delete-surround-key -params 1 %{
-  execute-keys -draft "<a-a>%arg{1}i<del><esc>a<backspace><esc>"
-}
-
-## surround mode
-define-command surround-key -docstring 'surround key' %{
-  on-key %{
-    add-surrounding-pair %val{key} %val{key}
-  }
-}
-
-define-command surround-tag -docstring 'surround tag' %{
-  prompt surround-tag: %{
-    add-surrounding-pair "<%val{text}>" "</%val{text}>"
-  }
-}
-    
-define-command -override add-surrounding-pair -params 2 -docstring 'add surrounding pairs left and right to selection' %{
-  evaluate-commands -no-hooks -save-regs '"' %{
-    set-register '"' %arg{1}
-    execute-keys -draft P
-    set-register '"' %arg{2}
-    execute-keys -draft p
-  }
-}
-
-define-command surround-replace -docstring 'prompt for a surrounding pair and replace it with another' %{
-  on-key %{
-    surround-replace-sub %val{key}
-  }
-}
-
-define-command -hidden surround-replace-sub -params 1 %{
-	on-key %{
-    evaluate-commands -no-hooks -draft %{
-      execute-keys "<a-a>%arg{1}"
-
-      # select the surrounding pair and add the new one around it
-      enter-user-mode surround-add
-      execute-keys %val{key}
-    }
-
-    # delete the old one
-    match-delete-surround-key %arg{1}
-	}
-}
-
-declare-user-mode match
-map global match a '<a-a>'                               -docstring 'match around'
-map global match d ':match-delete-surround<ret>'         -docstring 'delete surround'
-map global match i '<a-i>'                               -docstring 'match inside'
-map global match m m                                     -docstring 'select other matching delimiter'
-map global match s ':enter-user-mode surround-add<ret>'  -docstring 'add surrounding pairs'
-map global match r ':surround-replace<ret>'              -docstring 'replace surrounding pairs'
-
-declare-user-mode match-extend
-map global match-extend a '<A-a>'                        -docstring 'extend around'
-map global match-extend i '<A-i>'                        -docstring 'extend inside'
-map global match-extend m M                              -docstring 'extend other matching delimiter'
-
-# surround-add mode; support most of the useful delimiters
-declare-user-mode surround-add
-map global surround-add "'" ":add-surrounding-pair ""'"" ""'""<ret>" -docstring 'surround selections with quotes'
-map global surround-add ' ' ':add-surrounding-pair " " " "<ret>'     -docstring 'surround selections with pipes'
-map global surround-add '"' ':add-surrounding-pair ''"'' ''"''<ret>' -docstring 'surround selections with double quotes'
-map global surround-add '(' ':add-surrounding-pair ( )<ret>'         -docstring 'surround selections with curved brackets'
-map global surround-add ')' ':add-surrounding-pair ( )<ret>'         -docstring 'surround selections with curved brackets'
-map global surround-add '*' ':add-surrounding-pair * *<ret>'         -docstring 'surround selections with stars'
-map global surround-add '<' ':add-surrounding-pair <lt> <gt><ret>'   -docstring 'surround selections with chevrons'
-map global surround-add '>' ':add-surrounding-pair <lt> <gt><ret>'   -docstring 'surround selections with chevrons'
-map global surround-add '[' ':add-surrounding-pair [ ]<ret>'         -docstring 'surround selections with square brackets'
-map global surround-add ']' ':add-surrounding-pair [ ]<ret>'         -docstring 'surround selections with square brackets'
-map global surround-add '_' ':add-surrounding-pair "_" "_"<ret>'     -docstring 'surround selections with underscores'
-map global surround-add '{' ':add-surrounding-pair { }<ret>'         -docstring 'surround selections with angle brackets'
-map global surround-add '|' ':add-surrounding-pair | |<ret>'         -docstring 'surround selections with pipes'
-map global surround-add '}' ':add-surrounding-pair { }<ret>'         -docstring 'surround selections with angle brackets'
-map global surround-add '«' ':add-surrounding-pair « »<ret>'         -docstring 'surround selections with French chevrons'
-map global surround-add '»' ':add-surrounding-pair « »<ret>'         -docstring 'surround selections with French chevrons'
-map global surround-add '“' ':add-surrounding-pair “ ”<ret>'         -docstring 'surround selections with French chevrons'
-map global surround-add '”' ':add-surrounding-pair “ ”<ret>'         -docstring 'surround selections with French chevrons'
-map global surround-add ` ':add-surrounding-pair ` `<ret>'           -docstring 'surround selections with ticks'
-map global surround-add t ':surround-tag<ret>'                       -docstring 'surround selections with a <tag>'
-
-# Tree-sitter
-eval %sh{ kak-tree-sitter -dks --init "$kak_session" --with-highlighting --with-text-objects -vvv }
-# colorscheme catppuccin_macchiato
-
-define-command -override tree-sitter-user-after-highlighter %{
-  add-highlighter -override buffer/show-matching show-matching -previous
-}
-
 # Modeline
 declare-option str bufname_abbrev
 
@@ -210,17 +112,9 @@ define-command -hidden update-bufname-abbrev %{
 hook global -group bufname-abbrev WinDisplay .* update-bufname-abbrev
 hook global -group bufname-abbrev WinResize .* update-bufname-abbrev
 
-declare-option str modeline_swiper ''
-
-hook global WinSetOption (swiper_enabled=true|swiper_terms=.+) %{
-  set-option buffer modeline_swiper "swiper (%opt{swiper_terms}){Default} "
-}
-
-hook global WinSetOption swiper_enabled=false %{
-  set-option buffer modeline_swiper ''
-}
-
 set-option global modelinefmt '{DiagnosticError} %opt{lsp_diagnostic_error_count} {DiagnosticWarning} %opt{lsp_diagnostic_warning_count} {DiagnosticInfo} %opt{lsp_diagnostic_info_count} {DiagnosticHint} %opt{lsp_diagnostic_hint_count} {Swiper}%opt{modeline_swiper}{StatusLine}%opt{bufname_abbrev} {green}%val{cursor_line}:%val{cursor_char_column} {blue}(%val{buf_line_count}L){{context_info}} {{mode_info}}'
+# set-option global ui_options 'terminal_title=yes'
+# set-option global ui_options %sh{echo "terminal_title=$PWD"} 
 
 # notes
 # set-face global notes_review "%opt{orange}"
