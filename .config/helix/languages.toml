@@ -1,7 +1,7 @@
 [language-server.pyright]
 command = "basedpyright-langserver"
 args = ["--stdio"]
-config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
+# config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
 
 [[language]]
 name = "python"
@@ -104,3 +104,8 @@ language-servers = ["steel-language-server"]
 [language-server.steel-language-server]
 command = "steel-language-server"
 args = []
+
+
+[[language]]
+name = "svelte"
+language-servers = [ "tailwindcss-ls", "svelteserver" ]
