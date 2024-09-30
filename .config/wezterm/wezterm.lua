@@ -87,7 +87,7 @@ local config = {
   front_end = 'WebGpu',
   foreground_text_hsb = {
     -- hue = 1.25,
-    saturation = 0.9,
+    -- saturation = 0.9,
     brightness = 1.1,
   },
   hide_mouse_cursor_when_typing = false,
@@ -208,8 +208,8 @@ local config = {
     },
   },
   inactive_pane_hsb = {
-    saturation = 1.0,
-    brightness = 0.6,
+    saturation = 0.5,
+    -- brightness = 0.6,
   },
   window_padding = {
     left = 0,
