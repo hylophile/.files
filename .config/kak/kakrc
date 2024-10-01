@@ -131,19 +131,19 @@ set-option global modelinefmt '{DiagnosticError} %opt{lsp_diagnostic_error_co
 
 define-command -hidden update-window-title %{
   set-option global ui_options %sh{
-    home_as_tilde="s#^$HOME#~#"
-    shorten_path="s#(\.?[^/])[^/]+/#\1/#g"
+    # git root or pwd
     project_dir=`git rev-parse --show-toplevel || pwd`
-    printf "terminal_title="
-    printf `rg -o '([^/]+/[^/]+$|\*.*)' <<< $kak_bufname || echo $kak_bufname`
-    printf " ("
-    printf `echo $project_dir | sed -E -e $home_as_tilde -e $shorten_path`
-    printf ")"
+    # <last_dir>/<filename> if bufname is path, otherwise bufname
+    short_bufname=`grep -Eo '[^/]+/[^/]+$' <<< $kak_bufname || echo $kak_bufname`
+    home_as_tilde="s#^$HOME#~#"
+    # ~/.config/kak/colors => ~/.c/k/colors
+    shortened_path="s#(\.?[^/])[^/]+/#\1/#g"
+    short_project_dir=`sed -E -e $home_as_tilde -e $shortened_path <<< $project_dir`
+    printf "terminal_title=%s (%s)" "$short_bufname" "$short_project_dir"
   }
 }
 
 hook global -group window-title WinDisplay .* update-window-title
-hook global -group window-title WinResize .* update-window-title
 
 # notes
 # set-face global notes_review "%opt{orange}"
@@ -179,6 +179,9 @@ map global insert <c-a> '<esc>:execute-keys gh<ret>i'
 map global insert <c-e> '<esc>:execute-keys gl<ret>i'
 
 map global normal / /(?i)
+map global normal n nvv
+# doesnt work
+# map global normal <c-*> <a-i>w*
 
 ## convenience
 map global user $ ':e -existing ~/.config/kak/kakrc<ret>:cd ~/.config/kak<ret>' -docstring 'edit Kakoune configuration'
@@ -193,7 +196,11 @@ map global user-buffer d ':db<ret>'                   -docstring 'delete buffer'
 map global user-buffer D ':db!<ret>'                  -docstring 'force-delete buffer'
 
 map global user / ':grep '                   -docstring 'grep'
-map global user f ':open_file_picker<ret>'   -docstring 'pick file'
+declare-user-mode user-file
+map global user f ':enter-user-mode user-file<ret>' -docstring 'files'
+map global user-file f ':open_file_picker<ret>'     -docstring 'pick file'
+map global user-file r ':recentf<ret>'              -docstring 'recent files'
+map global user-file s ':write<ret>'                -docstring 'save file'
 
 ## match
 map global normal M ':enter-user-mode match-extend<ret>' -docstring 'match mode (extend)'
