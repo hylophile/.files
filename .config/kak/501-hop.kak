@@ -5,7 +5,7 @@ declare-option range-specs hop_ranges
 set-face global hop_label_head black,green+F
 set-face global hop_label_tail black,blue+F
 
-declare-option str hop_kak_keyset "tnseriaodhcdhcxzplfuwyq"
+declare-option str hop_kak_keyset "tnseriaodhcgmvkplbjfuwyq"
 
 define-command hop-kak %{
   eval -no-hooks -- %sh{ hop-kak --keyset "$kak_opt_hop_kak_keyset" --sels "$kak_selections_desc" }

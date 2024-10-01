@@ -60,7 +60,7 @@ local config = {
     "'.+'",
     "[^ ]{5,}",
   },
-  quick_select_alphabet = "tnseriaodhcdhc,x.z?plfuwyq'",
+  quick_select_alphabet = "tnseriaodhcgmvkplbjfuwyq",
 
   ssh_domains = {
     {
