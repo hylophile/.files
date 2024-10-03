@@ -231,11 +231,16 @@ leader = { mods = 'CTRL', key = 'm', timeout_milliseconds = 5000 },
     mods = 'LEADER',
     action = wezterm.action.CloseCurrentPane { confirm = false },
   },
-  -- {
-  --   key = 't',
-  --   mods = 'LEADER',
-  --   action = wezterm.action.ActivatePaneDirection 'Down'
-  -- },
+  {
+    key = 'a',
+    mods = 'LEADER',
+    action = wezterm.action.PaneSelect { }
+  },
+  {
+    key = 'm',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneDirection 'Next'
+  },
   {
     key = 'h',
     mods = 'LEADER',
