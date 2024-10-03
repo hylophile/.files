@@ -24,13 +24,12 @@ evaluate-commands %sh{
   	echo "source $f"
   done
 }
-
 # add-highlighter global/show-whitespaces show-whitespaces -tab ' ' -spc ' ' -indent '▏' -lf '↩'
+add-highlighter global/ wrap -marker '↪'
 
 set global indentwidth 2
 set global tabstop 2
-set global indentwidth 2
-
+set global scrolloff 5,0
 # HACK: fix for wezterm; it doesn’t support synchronized output very well for
 # now: <https://github.com/wez/wezterm/issues/4607>
 set global ui_options terminal_assistant=none terminal_synchronized=false
@@ -132,7 +131,7 @@ set-option global modelinefmt '{DiagnosticError} %opt{lsp_diagnostic_error_co
 define-command -hidden update-window-title %{
   set-option global ui_options %sh{
     # git root or pwd
-    project_dir=`git rev-parse --show-toplevel || pwd`
+    project_dir=`git rev-parse --show-toplevel 2&>/dev/null || pwd`
     # <last_dir>/<filename> if bufname is path, otherwise bufname
     short_bufname=`grep -Eo '[^/]+/[^/]+$' <<< $kak_bufname || echo $kak_bufname`
     home_as_tilde="s#^$HOME#~#"
@@ -177,12 +176,16 @@ map global user <space> '<a-;>' -docstring 'swap anchor & cursor'
 map global insert <c-w> '<esc>:execute-keys bd<ret>i'
 map global insert <c-a> '<esc>:execute-keys gh<ret>i'
 map global insert <c-e> '<esc>:execute-keys gl<ret>i'
-
+map global normal X %{<a-:>F<ret>x} -docstring 'extend lines downwards' 
+map global normal <a-X> %{<a-:><a-;><a-H>Kx} -docstring 'extend lines upwards' 
 map global normal / /(?i)
 map global normal n nvv
 # doesnt work
 # map global normal <c-*> <a-i>w*
-
+map global prompt <c-p> <S-tab>
+map global prompt <c-n> <tab>
+# map global prompt <space> '<a-;>: eval -save-regs a %{ set-register a " "; exec <lt>c-r<gt>a }<ret>'
+# map -docstring "backspace" global prompt "<backspace>" "<left><del>"
 ## convenience
 map global user $ ':e -existing ~/.config/kak/kakrc<ret>:cd ~/.config/kak<ret>' -docstring 'edit Kakoune configuration'
 map global user S ':swiper<ret>'                          -docstring 'swiper'
