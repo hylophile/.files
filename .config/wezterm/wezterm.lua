@@ -265,6 +265,11 @@ leader = { mods = 'CTRL', key = 'm', timeout_milliseconds = 5000 },
       mods = 'CTRL|SHIFT',
       action = wezterm.action.CloseCurrentTab { confirm = false },
     },
+    {
+      key = 'Enter',
+      mods = 'ALT',
+      action = wezterm.action.DisableDefaultAssignment,
+    },
   },
 }
 
