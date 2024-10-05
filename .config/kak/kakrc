@@ -98,8 +98,8 @@ define-command -hidden open_buffer_picker %{
 }
 
 define-command -hidden open_file_picker %{
-  prompt file: -shell-script-candidates 'fd --type=file' %{
-    edit %val{text}
+  prompt file: -menu -shell-script-candidates 'fd --type=file' %{
+    edit -existing %val{text}
   }
 }
 
