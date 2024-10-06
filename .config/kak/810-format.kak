@@ -13,3 +13,5 @@ EOF
 }
 
 install-formatter "svelte" "npx prettier --parser svelte"
+install-formatter "typescript" "npx prettier --parser typescript"
+
