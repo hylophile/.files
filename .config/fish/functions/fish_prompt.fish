@@ -2,6 +2,9 @@ function fish_prompt
     set -l retc red
     test $status = 0; and set retc brmagenta
 
+    # set -l promptbg 44475A
+    set -l promptbg 282a36
+
     set -q __fish_git_prompt_showupstream
     or set -g __fish_git_prompt_showupstream auto
 
@@ -10,12 +13,12 @@ function fish_prompt
         set -l field_name $argv[2]
         set -l field_value $argv[3]
 
-        set_color normal
+        set_color normal -b $promptbg
         set_color $retc
         echo -n ' '
         set_color -o green
         echo -n '('
-        set_color normal
+        set_color normal -b $promptbg
         test -n $field_name
         and echo -n $field_name:
         set_color $retc
@@ -25,9 +28,8 @@ function fish_prompt
     end
 
 
-    set_color normal
+    set_color normal -b $promptbg
     set_color cyan
-    echo
 
     # if test "$CONTAINER_ID" != ""
     #     printf "󰆢 "
@@ -36,18 +38,18 @@ function fish_prompt
     echo -n (date +%H)
     set_color -o $retc
     echo -n : #⋅
-    set_color normal
+    set_color normal -b $promptbg
     set_color cyan
     echo -n (date +%M)
     set_color -o $retc
     echo -n : #⋅
-    set_color normal
+    set_color normal -b $promptbg
     set_color cyan
     echo -n (date +%S)
     set_color -o $retc
     echo -n " ⊢ "
 
-    set_color normal
+    set_color normal -b $promptbg
     if functions -q fish_is_root_user; and fish_is_root_user
         set_color red
     else
@@ -57,7 +59,7 @@ function fish_prompt
     echo -n $USER
     set_color -o $retc
     echo -n @
-    set_color normal
+    set_color normal -b $promptbg
 
     # if [ -z "$SSH_CLIENT" ]
     #     set_color cyan
@@ -75,12 +77,12 @@ function fish_prompt
         echo -n ."$CONTAINER_ID"
     end
 
-    set_color normal
+    set_color normal -b $promptbg
 
     echo -n " "
     set_color -o $retc
     echo -n ⊣
-    set_color normal
+    set_color normal -b $promptbg
 
     # echo -n " "(pwd)
     # set_color -o $retc
@@ -92,7 +94,7 @@ function fish_prompt
     for i in (dirs | sed 's#/#\n#g' | tail -n +2)
         set_color -o $retc
         echo -n /
-        set_color normal
+        set_color normal -b $promptbg
         set_color cyan
         printf "%s" $i
     end
@@ -101,32 +103,6 @@ function fish_prompt
 
     # Date
     #_nim_prompt_wrapper $retc '' (date +%X)
-
-    # Vi-mode
-    # The default mode prompt would be prefixed, which ruins our alignment.
-    function fish_mode_prompt
-    end
-
-    if test "$fish_key_bindings" = fish_vi_key_bindings
-        or test "$fish_key_bindings" = fish_hybrid_key_bindings
-        set -l mode
-        switch $fish_bind_mode
-            case default
-                set mode (set_color --bold red)N
-            case insert
-                set mode (set_color --bold green)I
-            case replace_one
-                set mode (set_color --bold green)R
-                echo '[R]'
-            case replace
-                set mode (set_color --bold cyan)R
-            case visual
-                set mode (set_color --bold magenta)V
-        end
-        set mode $mode(set_color normal)
-        _nim_prompt_wrapper $retc '' $mode
-    end
-
 
     # Virtual Environment
     set -q VIRTUAL_ENV_DISABLE_PROMPT
@@ -150,7 +126,7 @@ function fish_prompt
     echo
 
     # Background jobs
-    set_color normal
+    set_color normal -b $promptbg
 
     for job in (jobs)
         set_color $retc
