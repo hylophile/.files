@@ -1,9 +1,9 @@
-colorscheme modus-vivendi
 
 nop %sh{
     mkdir -p "$kak_config/autoload"
     ln -sfn "$kak_runtime/rc" "$kak_config/autoload/standard-library"
 }
+
 
 # mkdir -p $HOME/.config/kak/bundle/
 # git clone https://codeberg.org/jdugan6240/kak-bundle $HOME/.config/kak/bundle/kak-bundle
@@ -26,6 +26,10 @@ evaluate-commands %sh{
   	echo "source $f"
   done
 }
+
+colorscheme catppuccin_macchiato
+# colorscheme modus-vivendi
+ 
 # add-highlighter global/show-whitespaces show-whitespaces -tab ' ' -spc ' ' -indent '▏' -lf '↩'
 add-highlighter global/ wrap -marker '↪'
 
@@ -239,7 +243,7 @@ map global user-buffer b ':open_buffer_picker<ret>'   -docstring 'pick buffer'
 map global user-buffer d ':db<ret>'                   -docstring 'delete buffer'
 map global user-buffer D ':db!<ret>'                  -docstring 'force-delete buffer'
 
-map global user / ':grep '                   -docstring 'grep'
+map global user / ':live-grep<ret>'                   -docstring 'live-grep'
 declare-user-mode user-file
 map global user f ':enter-user-mode user-file<ret>' -docstring 'files'
 map global user-file f ':open_file_picker<ret>'     -docstring 'pick file'
