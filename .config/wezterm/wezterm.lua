@@ -277,17 +277,24 @@ config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 table.insert(config.hyperlink_rules, {
   regex = "~?(/?[^/ \'\"`:~;]+/)+([^/ \'\"`:~;]+)(:[0-9]+)?(:[0-9]+)?",
-  format = "hx://$0",
+  format = "edit://$0",
 })
 
 wezterm.on('open-uri', function(window, pane, uri)
-  local start, _ = uri:find('hx://');
+  local start, _ = uri:find('edit://');
   if start == 1 then
-    local path = uri:gsub("^hx://", "")
+    local authority = uri:gsub("^edit://", "")
+    local path, line, column = string.match(authority, "([^:]+):?(%d*):?(%d*)")
+    local args = {"kak", path}
+    local pos = ""
+    if line ~= "" then pos = "+" .. line end
+    if column ~= "" then pos = pos .. ":" .. column end
+    if pos ~= "" then table.insert(args, pos) end
+    -- wezterm.log_info(args)
 
     window:perform_action(
       wezterm.action.SpawnCommandInNewTab {
-        args = { "hx", path }
+        args = args
       },
       pane
     )
