@@ -19,6 +19,7 @@ bundle kak-live-grep https://github.com/raiguard/kak-live-grep.git
 # cargo install kak-tree-sitter
 # cargo install ktsctl
 # cargo install hop-kak
+# cargo install --git https://github.com/jtrv/grug
 
 evaluate-commands %sh{
   for f in `fd '\.kak$' ${kak_config} --exclude autoload --exclude colors --exclude bundle`; do
@@ -126,6 +127,23 @@ define-command file-picker %{
     execute-keys '|fd --type=file<ret>gg'
   }
 }
+
+define-command grep-write -docstring "
+  grep-write: pipes the current grep-buffer to grug -w and prints the results
+" %{
+  declare-option -hidden str grug_buf
+  evaluate-commands -draft %{
+    evaluate-commands %sh{
+      echo "set-option buffer grug_buf '$(mktemp /tmp/grug_buf.XXX)'"
+    }
+    write -sync -force %opt{grug_buf}
+    evaluate-commands %sh{
+      cat "$kak_opt_grug_buf" | grug -w |
+        xargs -I{} echo "echo -debug 'grug: {}'; echo -markup {Information} 'grug: {}';"
+    }
+  }
+}
+
 
 # Modeline
 declare-option str bufname_abbrev
