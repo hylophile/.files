@@ -43,7 +43,7 @@ output "BenQ Corporation BenQ EW3270U W8L04567019" {
 }
 
 output eDP-1 {
-position 0,1080
+    position 640,1080
 }
 
 # output * background "#000000" solid_color

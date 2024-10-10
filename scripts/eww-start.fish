@@ -10,8 +10,8 @@ for output in $outputs
 
     switch $makes[$i]
         case AU\ Optronics
-            # set height 720px
-            set height 100%
+            set height 720px
+            # set height 100%
         case BNQ
             set height 1440px
         case Dell\ Inc.

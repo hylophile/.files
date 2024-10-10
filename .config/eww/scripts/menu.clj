@@ -29,7 +29,7 @@
   )
 
 
-(shell {:continue :true} "eww close menu-0 menu-1")
+(shell {:continue :true} "eww close menu-0 menu-1 menu-2")
 
 (let [[cmd & args] *command-line-args*
       [cmd func] (->> cmd keyword (get menu-items))]
