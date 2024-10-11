@@ -91,7 +91,7 @@ set-face global builtin        "%opt{lavender}+b"
 
 # Tree-sitter (<https://github.com/hadronized/kak-tree-sitter>)
 set-face global ts_attribute                    "%opt{blue}"
-set-face global ts_comment                      "%opt{yellow}+i"
+set-face global ts_comment                      "%opt{overlay0}+i"
 set-face global ts_conceal                      "%opt{mauve}+i"
 set-face global ts_constant                     "%opt{orange}"
 set-face global ts_constant_builtin_boolean     "%opt{sky}"

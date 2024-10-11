@@ -13,6 +13,7 @@ bundle-noload kak-bundle https://codeberg.org/jdugan6240/kak-bundle
 bundle swiper.kak https://git.sr.ht/~hadronized/swiper.kak
 bundle kakoune-focus https://github.com/caksoylar/kakoune-focus.git
 bundle kak-live-grep https://github.com/raiguard/kak-live-grep.git
+bundle kakoune-smooth-scroll https://github.com/caksoylar/kakoune-smooth-scroll.git
 # :bundle-install
 
 # install kakoune-lsp
