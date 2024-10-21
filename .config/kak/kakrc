@@ -16,7 +16,7 @@ bundle kak-live-grep https://github.com/raiguard/kak-live-grep.git
 bundle kakoune-smooth-scroll https://github.com/caksoylar/kakoune-smooth-scroll.git
 # :bundle-install
 
-# install kakoune-lsp
+# cargo install --git https://github.com/kakoune-lsp/kakoune-lsp
 # cargo install kak-tree-sitter
 # cargo install ktsctl
 # cargo install hop-kak

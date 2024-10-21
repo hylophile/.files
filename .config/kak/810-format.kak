@@ -13,4 +13,4 @@ define-command install-formatter -params 2 %{
 
 install-formatter "svelte" "prettier --parser svelte"
 install-formatter "typescript" "prettier --parser typescript"
-
+install-formatter "python" "ruff format --quiet -"
