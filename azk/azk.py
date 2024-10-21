@@ -61,8 +61,15 @@ def get_work_time(date: date):
     with open(date_to_file(date), "r") as csvfile:
         reader = csv.DictReader(csvfile, fieldnames=fields)
         rows = list(reader)
-        if rows[-1]["type"] == start:
-            raise Exception("not stopped yet")
+        try:
+            if rows[-1]["type"] == start:
+                raise Exception("not stopped yet")
+        except:
+            print(f"rows: {rows}")
+            # raise Exception("not stopped yet")
+            import sys
+
+            sys.exit(1)
 
         first_start = datetime.strptime(rows[0]["time"], "%H:%M:%S")
         # last_stop = rows[-1]["time"]
