@@ -11,6 +11,14 @@ define-command install-formatter -params 2 %{
   }
 }
 
-install-formatter "svelte" "prettier --parser svelte"
-install-formatter "typescript" "prettier --parser typescript"
 install-formatter "python" "ruff format --quiet -"
+
+install-formatter "html"       "prettier --parser html"
+install-formatter "json"       "prettier --parser json"
+install-formatter "yaml"       "prettier --parser yaml"
+install-formatter "css"        "prettier --parser css"
+install-formatter "typescript" "prettier --parser typescript"
+install-formatter "javascript" "prettier --parser typescript"
+install-formatter "tsx"        "prettier --parser typescript"
+install-formatter "markdown"   "prettier --parser markdown"
+install-formatter "svelte"     "prettier --parser svelte"
