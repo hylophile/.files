@@ -109,3 +109,15 @@ args = []
 [[language]]
 name = "svelte"
 language-servers = [ "tailwindcss-ls", "svelteserver" ]
+
+[language-server.zk]
+command = "zk"
+args = ["lsp"]
+
+[[language]]
+name = "markdown"
+injection-regex = "md|markdown"
+language-servers = [{ name = "zk"}, {name = "marksman"}]
+roots = [".zk"]
+scope = "source.md"
+file-types = ["md"]
