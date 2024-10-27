@@ -25,7 +25,7 @@
                    :tooltip "${battery.capacity}%, Remaining: ${battery.time}")))
 
 
-(deflisten volume-status :initial '{"source":0,"sink":0}' "scripts/volume")
+(deflisten volume-status :initial '{"source":0,"sink":0}' "scripts/volume.clj")
 (defvar sink-expanded false)
 (defwidget volume []
            (box :orientation "v"
@@ -44,7 +44,7 @@
                                                 :class "mb-2"
                                                 :flipped true
                                                 :value {volume-status.sink}
-                                                :onchange "./scripts/volume @DEFAULT_AUDIO_SINK@ {}"))
+                                                :onchange "./scripts/volume.clj @DEFAULT_AUDIO_SINK@ {}"))
                                (eventbox :onclick "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
                                          :class "volume-sink"
                                          (label :class {volume-status.sink > 0 ? 'unmuted' : 'muted'}

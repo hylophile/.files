@@ -32,12 +32,12 @@
     (when (and source volume (> volume 0.0))
       (println
        (format
-        "wpctl set-volume -l 1.0 %s %f"
+        "wpctl set-volume -l 1.0 %s %.2f"
         source
         (/ volume 100.0)))
       (shell
        (format
-        "wpctl set-volume -l 1.0 %s %f "
+        "wpctl set-volume -l 1.0 %s %.2f "
         source
         (/ volume 100.0))))
     (System/exit 0))
@@ -67,10 +67,21 @@
     :shutdown destroy-tree}
    (str "pw-mon")))
 
-(with-open [rdr (io/reader (:out  pipewire-stream))]
+(def last-event-time (atom 0))
+(def debounce-delay 500)
+
+(defn debounce-volume-status []
+  (let [now (System/currentTimeMillis)]
+    (future
+      (Thread/sleep debounce-delay)
+      (when (>= (- (System/currentTimeMillis) @last-event-time) debounce-delay)
+        (volume-status)))))
+
+(with-open [rdr (io/reader (:out pipewire-stream))]
   (binding [*in* rdr]
     (loop []
       (when-let [line (read-line)]
         (when (str/includes? line "changed")
-          (volume-status))
+          (reset! last-event-time (System/currentTimeMillis))
+          (debounce-volume-status))
         (recur)))))
