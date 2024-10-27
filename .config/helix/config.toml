@@ -66,18 +66,6 @@ C-b = "move_char_left"
 # Alt-d,  Alt-Delete	Delete next word	delete_word_forward
 # Ctrl-u, Delete to start of line	kill_to_line_start
 # Ctrl-k, Delete to end of line	kill_to_line_end
-[keys.normal]
-C-q = ":q"
-# A-x = "command_palette"
-C-s = ":w"
-C-j = "save_selection"
-Z.Z = ":x"
-G = "goto_file_end"
-
-"{" = "goto_prev_paragraph"
-"}" = "goto_next_paragraph"
-h = "flip_selections"
-l = "goto_word"
 
 [keys.normal.space]
 q.q = ":quit"
@@ -92,3 +80,64 @@ q.j = [":write", ":sh just --fmt --unstable", ":reload", ":write"]
 "}" = "goto_next_paragraph"
 h = "flip_selections"
 l = "goto_word"
+
+
+
+[keys.normal]
+C-q = ":q"
+# A-x = "command_palette"
+C-s = ":w"
+C-j = "save_selection"
+Z.Z = ":x"
+G = "goto_file_end"
+
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+h = "flip_selections"
+l = "goto_word"
+# Enter command mode
+ret = 'command_mode'
+
+# Moving around
+H = 'extend_char_left'
+J = 'extend_line_down'
+K = 'extend_line_up'
+L = 'extend_char_right'
+
+# Left-right motions
+f = ['ensure_selections_forward', 'extend_next_char']
+t = ['ensure_selections_forward', 'extend_till_char']
+F = ['ensure_selections_forward', 'flip_selections', 'extend_prev_char']
+T = ['ensure_selections_forward', 'flip_selections', 'extend_till_prev_char']
+
+# Word motions
+W = 'extend_next_word_start'
+E = 'extend_next_word_end'
+B = 'extend_prev_word_start'
+
+A-w = 'move_next_long_word_start'
+A-e = 'move_next_long_word_end'
+A-b = 'move_prev_long_word_start'
+
+A-W = 'extend_next_long_word_start'
+A-E = 'extend_next_long_word_end'
+A-B = 'extend_prev_long_word_start'
+
+# Line motions
+A-h = ['ensure_selections_forward', 'flip_selections', 'extend_to_line_start']
+A-l = ['ensure_selections_forward', 'extend_to_line_end']
+
+X = ['extend_to_line_bounds', 'ensure_selections_forward', 'flip_selections']
+
+# Paragraph motions
+# '{' = ['ensure_selections_forward', 'flip_selections', 'select_mode', 'goto_prev_paragraph', 'exit_select_mode']
+# '}' = ['ensure_selections_forward', 'select_mode', 'goto_next_paragraph', 'exit_select_mode']
+
+# Various motions
+# G.e = ['select_mode', 'ensure_selections_forward', 'goto_file_end', 'exit_select_mode']
+m.x = ['extend_to_line_bounds', 'trim_selections']
+M = ['select_mode', 'match_brackets', 'exit_select_mode']
+
+# Join and keep matching selections
+A-j = 'join_selections'
+A-k = 'keep_selections'
