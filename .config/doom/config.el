@@ -6,13 +6,16 @@
 
 (setq confirm-kill-emacs nil)
 (setq doom-theme 'modus-vivendi)
-; (setq display-line-numbers-type nil)
 (setq org-directory "~/org/")
 (setq org-use-speed-commands t)
 (after! org
        (setq org-agenda-span 21))
 
 (add-to-list 'default-frame-alist '(alpha-background . 90))
+
+; We don't need this file in recentf.
+(after! recentf
+  (add-to-list 'recentf-exclude ".*/etc/workspaces/autosave"))
 
 (defun org-archive-done-tasks ()
   (interactive)
