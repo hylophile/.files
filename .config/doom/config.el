@@ -5,10 +5,14 @@
       doom-variable-pitch-font (font-spec :family "Jost" :size 13))
 
 (setq confirm-kill-emacs nil)
-(setq doom-theme 'doom-challenger-deep)
-(setq display-line-numbers-type t)
+(setq doom-theme 'modus-vivendi)
+; (setq display-line-numbers-type nil)
 (setq org-directory "~/org/")
+(setq org-use-speed-commands t)
+(after! org
+       (setq org-agenda-span 21))
 
+(add-to-list 'default-frame-alist '(alpha-background . 90))
 
 (defun org-archive-done-tasks ()
   (interactive)
