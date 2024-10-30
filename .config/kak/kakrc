@@ -5,6 +5,39 @@ nop %sh{
 }
 
 
+declare-option str project_directory
+
+hook global KakBegin .* %{
+    evaluate-commands %sh{
+        current_dir=`pwd`
+        project_dir=""
+        while [ "$PWD" != "/" ]; do
+            if [ -f .kakrc ]; then
+                printf %s\\n "set-option global project_directory '$PWD'"
+                printf %s\\n "source '$PWD/.kakrc'"
+                project_dir="$PWD"
+                break
+            fi
+            cd ..
+        done
+
+				cd "$current_dir"
+        
+        if [ -z "$project_dir" ]; then
+          	git_root=`git rev-parse --show-toplevel`
+          	if [ $? -eq 0 ]; then
+              printf %s\\n "set-option global project_directory '$git_root'"
+              project_dir="$PWD"
+            fi
+        fi
+
+        if [ ! -z "$project_dir" ]; then
+        		printf %s\\n "cd '$project_dir'"
+        fi
+    }
+}
+
+
 # mkdir -p $HOME/.config/kak/bundle/
 # git clone https://codeberg.org/jdugan6240/kak-bundle $HOME/.config/kak/bundle/kak-bundle
 
@@ -108,19 +141,6 @@ define-command -hidden open_file_picker %{
     edit -existing %val{text}
   }
 }
-
-define-command testing -params 1 %{
-  info %sh{
-    echo "$@"
-  }
-}
-
-complete-command testing shell-script %{
-  printf "1\n2\n3\n"
-  printf `date`
-  echo hi >> /tmp/a
-}
-
 define-command file-picker %{
   try %{
     edit -scratch '*file-picker*'
@@ -170,8 +190,7 @@ set-option global modelinefmt '{DiagnosticError} %opt{lsp_diagnostic_error_co
 
 define-command -hidden update-window-title %{
   set-option global ui_options %sh{
-   < /dev/null  # git root or pwd
-    project_dir=`git rev-parse --show-toplevel 2>/dev/null || pwd`
+    project_dir=`pwd`
     # <last_dir>/<filename> if bufname is path, otherwise bufname
     short_bufname=`grep -Eo '[^/]+/[^/]+$' <<< $kak_bufname || echo $kak_bufname`
     home_as_tilde="s#^$HOME#~#"
