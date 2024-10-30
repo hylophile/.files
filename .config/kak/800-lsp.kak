@@ -12,9 +12,9 @@ set-option global lsp_hover_anchor true
 set-option global lsp_auto_show_code_actions true
 
 # TODO this is ugly as hell; I want to get rid of it
-hook global WinSetOption filetype=(haskell|rust|python|go|javascript|typescript|zig) %{
-  hook window BufWritePre .* lsp-formatting-sync
-}
+# hook global WinSetOption filetype=(haskell|rust|python|go|javascript|typescript|zig) %{
+#   hook window BufWritePre .* lsp-formatting-sync
+# }
 
 # Progress report
 declare-option -hidden str lsp_modeline_progress ""
