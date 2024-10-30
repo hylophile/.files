@@ -28,6 +28,32 @@ hook -group lsp-filetype-svelte global BufSetOption filetype=(?:svelte) %{
     }
 }
 
+hook -group lsp-filetype-typescript global BufSetOption filetype=(?:typescript) %{
+    set-option buffer lsp_servers %exp{
+        [typescript-language-server]
+        filetypes = ["typescript"]
+        root_globs = ["package.json", "tsconfig.json", "jsconfig.json", ".git", ".hg"]
+        args = ["--stdio"]
+        settings_section = "config"
+        [typescript-language-server.settings.config.typescript.inlayHints]
+        includeInlayEnumMemberValueHints = true
+        includeInlayFunctionLikeReturnTypeHints = true
+        includeInlayFunctionParameterTypeHints = true
+        includeInlayParameterNameHints = "all"
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true
+        includeInlayPropertyDeclarationTypeHints = true
+        includeInlayVariableTypeHints = true
+
+        [typescript-language-server.settings.config.javascript.inlayHints]
+        includeInlayEnumMemberValueHints = true
+        includeInlayFunctionLikeReturnTypeHints = true
+        includeInlayFunctionParameterTypeHints = true
+        includeInlayParameterNameHints = "all"
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true
+        includeInlayPropertyDeclarationTypeHints = true
+        includeInlayVariableTypeHints = true
+    }
+}
 hook -group lsp-filetype-python global BufSetOption filetype=python %{
     set-option buffer lsp_servers %{
         [basedpyright-langserver"]
