@@ -11,7 +11,31 @@
 (after! org
        (setq org-agenda-span 21))
 
+
+(use-package! ob-rust)
+
+; org export with modus-operandi theme
 (add-to-list 'default-frame-alist '(alpha-background . 90))
+(defun my/with-theme (theme fn &rest args)
+  (let ((current-themes custom-enabled-themes))
+    (mapcar #'disable-theme custom-enabled-themes)
+    (load-theme theme t)
+    (let ((result (apply fn args)))
+      (mapcar #'disable-theme custom-enabled-themes)
+      (mapcar (lambda (theme) (load-theme theme t)) current-themes)
+      result)))
+(advice-add #'org-export-to-file :around (apply-partially #'my/with-theme 'modus-operandi))
+(advice-add #'org-export-to-buffer :around (apply-partially #'my/with-theme 'modus-operandi))
+
+(setq org-timeblock-span 14
+      org-timeblock-show-future-repeats t
+      org-timeblock-show-outline-path t
+      org-timeblock-tag-colors '(("@uni" . modus-themes-grue)
+                                 ("@online" . modus-themes-mark-alt)
+                                 ("@homework" . modus-themes-mark-del)
+                                 ("@work" . modus-themes-mark-sel)
+                                 ("@todo" . org-level-3))
+      org-timeblock-scale-options '(8 . 20))
 
 ; We don't need this file in recentf.
 (after! recentf
