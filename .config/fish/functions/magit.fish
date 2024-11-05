@@ -1,4 +1,6 @@
-function magit --wraps='emacs --no-window-system --eval "(progn (magit-status) (delete-other-windows))"' --description 'alias magit=emacs --no-window-system --eval "(progn (magit-status) (delete-other-windows))"'
-  emacs --no-window-system --eval "(progn (magit-status) (delete-other-windows))" $argv
-        
+function magit --wraps="emacsclient"
+    if ! pgrep --full "emacs --daemon=magit" >/dev/null
+        emacs --daemon=magit
+    end
+    emacsclient --tty --socket=magit --eval "(progn (magit-status) (delete-other-windows))" $argv
 end
