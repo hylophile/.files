@@ -12,7 +12,7 @@ define-command install-formatter -params 2 %{
 }
 
 install-formatter "python" "ruff format --quiet -"
-
+install-formatter "go" "gofmt"
 # install-formatter "html"       "prettier --parser html"
 # install-formatter "json"       "prettier --parser json"
 # install-formatter "yaml"       "prettier --parser yaml"
