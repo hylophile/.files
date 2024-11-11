@@ -26,8 +26,12 @@
 ;; with the `:disable' property:
 ;; (package! builtin-package :disable t)
 (package! ob-rust)
+
 ;;(unpin! rustic)
 (package! rustic :disable t)
+
+(package! mixed-pitch)
+(package! visual-fill-column)
 (package! org-timeblock :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
 ;; You can override the recipe of a built in package without having to specify
 ;; all the properties for `:recipe'. These will inherit the rest of its recipe

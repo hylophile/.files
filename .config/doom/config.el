@@ -4,12 +4,38 @@
                            :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Jost" :size 13))
 
+(setq display-line-numbers-type nil)
+
 (setq confirm-kill-emacs nil)
 (setq doom-theme 'modus-vivendi)
 (setq org-directory "~/org/")
 (setq org-use-speed-commands t)
 (after! org
        (setq org-agenda-span 21))
+
+;; better scaling for mixed-pitch-mode
+(setq! face-font-rescale-alist '(("Jost" . 1.2)))
+
+(use-package! mixed-pitch
+  :hook
+  (org-mode . mixed-pitch-mode)
+  :config
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-default))
+
+(use-package! visual-fill-column
+  :custom
+  (visual-fill-column-center-text t)
+  (visual-fill-column-width 100)
+  (visual-fill-column-enable-sensible-window-split t)
+  :hook
+  (prog-mode . visual-fill-column-mode)
+  (text-mode . visual-fill-column-mode)
+  ;(special-mode . visual-fill-column-mode)
+  )
+
+(setq org-superstar-headline-bullets-list "❥⚘❥❦❥✿");"●⚬")
+
+(map! :after visual-fill-column :leader "t o" #'visual-fill-column-mode)
 
 
 (use-package! ob-rust)
