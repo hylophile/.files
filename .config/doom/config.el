@@ -10,6 +10,7 @@
 (setq doom-theme 'modus-vivendi)
 (setq org-directory "~/org/")
 (setq org-use-speed-commands t)
+(setq org-return-follows-link t)
 (after! org
        (setq org-agenda-span 21))
 
@@ -20,7 +21,11 @@
   :hook
   (org-mode . mixed-pitch-mode)
   :config
-  (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-default))
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'corfu-default)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-property-value)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-drawer)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-special-keyword)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-transclusion-keyword))
 
 (use-package! visual-fill-column
   :custom
@@ -32,6 +37,27 @@
   (text-mode . visual-fill-column-mode)
   ;(special-mode . visual-fill-column-mode)
   )
+
+(use-package citar
+  :custom
+  (citar-bibliography '("~/tub/references.bib"))
+  :hook
+  ;(LaTeX-mode . citar-capf-setup)
+  (org-mode . citar-capf-setup))
+
+;; ~/.doom.d/config.el
+(use-package! org-transclusion
+  :after org
+  :init
+  (custom-set-faces! '(org-transclusion :inherit shadow))
+  (setq org-transclusion-exclude-elements '(property-drawer keyword))
+  (map!
+   :map doom-leader-notes-map
+   :desc "Org Transclusion Mode" "u" #'org-transclusion-mode))
+
+
+
+
 
 (setq org-superstar-headline-bullets-list "❥⚘❥❦❥✿");"●⚬")
 
