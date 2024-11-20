@@ -18,6 +18,9 @@
 ;; better scaling for mixed-pitch-mode
 (setq! face-font-rescale-alist '(("Jost" . 1.2)))
 
+;; fix roam errror
+(defun emacsql-sqlite-ensure-binary ())
+
 (use-package! mixed-pitch
   :hook
   (org-mode . mixed-pitch-mode)
