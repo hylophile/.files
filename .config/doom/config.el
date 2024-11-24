@@ -1,7 +1,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(setq doom-font (font-spec :family "hylosevka" :size 18
-                           :weight 'semi-light)
+(setq doom-font (font-spec :family "hylosevka" :size 18)
+                         ;  :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Jost" :size 13))
 
 (setq display-line-numbers-type nil)
@@ -11,6 +11,7 @@
 (setq org-directory "~/org/")
 (setq org-use-speed-commands t)
 (setq org-return-follows-link t)
+(setq org-agenda-tags-column 0)
 (after! org
        (setq org-agenda-span 21))
 
@@ -49,20 +50,45 @@
 (use-package! org-transclusion
   :after org
   :init
-  (custom-set-faces! '(org-transclusion :inherit shadow))
+  (custom-set-faces! '(org-transclusion :inherit hl-line))
   (setq org-transclusion-exclude-elements '(property-drawer keyword))
   (map!
    :map doom-leader-notes-map
    :desc "Org Transclusion Mode" "u" #'org-transclusion-mode))
 
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
+(map! :map doom-leader-notes-map "r c" #'citar-org-roam-ref-add)
 
 
+(use-package! org-modern
+  :custom
+  (org-modern-star 'replace)
+  (org-modern-replace-stars "❥⚘❥❦❥✿")
+  (org-modern-table nil)
+  (org-modern-label-border nil)
+  :hook
+  (org-mode . org-modern-mode)
+  (org-agenda-finalize . org-modern-agenda))
 
-
-(setq org-superstar-headline-bullets-list "❥⚘❥❦❥✿");"●⚬")
 
 (map! :after visual-fill-column :leader "t o" #'visual-fill-column-mode)
-
+(map! "C-+" #'doom/increase-font-size)
+(map! "C-=" #'doom/reset-font-size)
+(map! "C--" #'doom/decrease-font-size)
 
 (use-package! ob-rust)
 

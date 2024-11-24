@@ -26,10 +26,11 @@
 ;; with the `:disable' property:
 ;; (package! builtin-package :disable t)
 (package! ob-rust)
-
+(unpin! org-roam)
+(package! org-roam-ui)
 ;;(unpin! rustic)
 (package! rustic :disable t)
-
+(package! org-modern)
 (package! mixed-pitch)
 (package! visual-fill-column)
 (package! org-timeblock :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
