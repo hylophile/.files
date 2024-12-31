@@ -35,6 +35,8 @@
 (package! visual-fill-column)
 (package! org-timeblock :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
 (package! org-transclusion)
+
+(package! org-typst-preview :recipe (:host github :repo "remimimimimi/org-typst-preview.el"))
 ;; You can override the recipe of a built in package without having to specify
 ;; all the properties for `:recipe'. These will inherit the rest of its recipe
 ;; from Doom or MELPA/ELPA/Emacsmirror:

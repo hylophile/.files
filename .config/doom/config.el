@@ -14,12 +14,14 @@
 (setq org-agenda-tags-column 0)
 (after! org
        (setq org-agenda-span 21))
-
+(setq org-cite-global-bibliography  '("~/tub/references.bib"))
 ;; better scaling for mixed-pitch-mode
 (setq! face-font-rescale-alist '(("Jost" . 1.2)))
 
 ;; fix roam errror
 (defun emacsql-sqlite-ensure-binary ())
+
+(use-package! org-typst-preview)
 
 (use-package! mixed-pitch
   :hook

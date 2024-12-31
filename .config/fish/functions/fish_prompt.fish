@@ -4,6 +4,7 @@ function fish_prompt
 
     # set -l promptbg 44475A
     set -l promptbg 282a36
+    # set -l promptbg $black
 
     set -q __fish_git_prompt_showupstream
     or set -g __fish_git_prompt_showupstream auto

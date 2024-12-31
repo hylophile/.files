@@ -95,6 +95,7 @@ local config = {
   -- term = "wezterm",
   window_background_opacity = 0.8,
   -- text_background_opacity = 0.8,
+  -- text_background_opacity = 0.8,
   switch_to_last_active_tab_when_closing_tab = true,
   --"Dracula",
   color_scheme = "Dracula",
@@ -131,7 +132,7 @@ local config = {
   },
   colors = {
     background = "black",
-    cursor_bg = "#f8f8f2",
+    -- cursor_bg = "#f8f8f2",
     -- -- Overrides the text color when the current cell is occupied by the cursor
     cursor_fg = "#f8f8f2",
     -- -- Specifies the border color of the cursor when the cursor style is set to Block,
@@ -213,7 +214,7 @@ local config = {
     brightness = 0.8,
   },
   window_padding = {
-    left = 0,
+    left = 10,
     right = 0,
     top = 0,
     bottom = 0,
@@ -228,6 +229,11 @@ leader = { mods = 'CTRL', key = 'm', timeout_milliseconds = 5000 },
   },
   {
     key = 'd',
+    mods = 'LEADER',
+    action = wezterm.action.CloseCurrentPane { confirm = false },
+  },
+  {
+    key = 'q',
     mods = 'LEADER',
     action = wezterm.action.CloseCurrentPane { confirm = false },
   },
@@ -269,6 +275,11 @@ leader = { mods = 'CTRL', key = 'm', timeout_milliseconds = 5000 },
       key = 'Enter',
       mods = 'ALT',
       action = wezterm.action.DisableDefaultAssignment,
+    },
+    {
+      key = 'n',
+      mods = 'CTRL',
+      action = wezterm.action.SpawnWindow,
     },
   },
 }
