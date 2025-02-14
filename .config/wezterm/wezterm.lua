@@ -296,11 +296,12 @@ wezterm.on('open-uri', function(window, pane, uri)
   if start == 1 then
     local authority = uri:gsub("^edit://", "")
     local path, line, column = string.match(authority, "([^:]+):?(%d*):?(%d*)")
-    local args = {"kak", path}
-    local pos = ""
-    if line ~= "" then pos = "+" .. line end
-    if column ~= "" then pos = pos .. ":" .. column end
-    if pos ~= "" then table.insert(args, pos) end
+    local args = {"helix", path}
+    -- kak version
+    -- local pos = ""
+    -- if line ~= "" then pos = "+" .. line end
+    -- if column ~= "" then pos = pos .. ":" .. column end
+    -- if pos ~= "" then table.insert(args, pos) end
     -- wezterm.log_info(args)
 
     window:perform_action(
