@@ -37,6 +37,10 @@ lsp.display-inlay-hints = true
 
 file-picker.hidden = false
 
+# end-of-line-diagnostics = "hint"
+# [editor.inline-diagnostics]
+# cursor-line = "warning" # show warnings and errors on the cursorline inline
+
 [editor.whitespace.render]
 space = "none"
 tab = "none"
