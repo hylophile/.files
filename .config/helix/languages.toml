@@ -121,3 +121,8 @@ language-servers = [{ name = "zk"}, {name = "marksman"}]
 roots = [".zk"]
 scope = "source.md"
 file-types = ["md"]
+
+[[language]]
+name = "common-lisp"
+formatter = { command = 'cljfmt', args = ["fix", "--quiet", "-"] }
+auto-format = true
