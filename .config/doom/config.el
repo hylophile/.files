@@ -15,6 +15,10 @@
 (after! org
        (setq org-agenda-span 21))
 (setq org-cite-global-bibliography  '("~/tub/references.bib"))
+
+(after! org (setq org-startup-with-latex-preview t))
+
+
 ;; better scaling for mixed-pitch-mode
 (setq! face-font-rescale-alist '(("Jost" . 1.2)))
 
