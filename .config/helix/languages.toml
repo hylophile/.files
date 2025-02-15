@@ -108,7 +108,7 @@ args = []
 
 [[language]]
 name = "svelte"
-language-servers = [ "tailwindcss-ls", "svelteserver" ]
+language-servers = ["tailwindcss-ls", "svelteserver"]
 
 [language-server.zk]
 command = "zk"
@@ -117,12 +117,13 @@ args = ["lsp"]
 [[language]]
 name = "markdown"
 injection-regex = "md|markdown"
-language-servers = [{ name = "zk"}, {name = "marksman"}]
+language-servers = [{ name = "zk" }, { name = "marksman" }]
 roots = [".zk"]
 scope = "source.md"
 file-types = ["md"]
 
 [[language]]
 name = "common-lisp"
-formatter = { command = 'cljfmt', args = ["fix", "--quiet", "-"] }
+# formatter = { command = 'cljfmt', args = ["fix", "--quiet", "-"] }
+formatter = { command = 'zprint' }
 auto-format = true
