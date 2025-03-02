@@ -1,11 +1,9 @@
 function ,series
-    set input (xsv input -d '\t' ~/.config/mpv/hey.log | xsv select datetime,filename)
-
     function find_highest_episode -a query
         set max_season 0
         set max_episode 0
         set max_file ""
-        set -l list (string split "\n" -- $input | rgi $query)
+        set -l list (xsv input -d '\t' ~/.config/mpv/hey.log | xsv select datetime,filename | rgi $query)
         set -l regex 's([0-9]{2})e([0-9]{2})'
 
         for file in $list
