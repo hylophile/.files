@@ -125,5 +125,6 @@ file-types = ["md"]
 [[language]]
 name = "common-lisp"
 # formatter = { command = 'cljfmt', args = ["fix", "--quiet", "-"] }
-formatter = { command = 'zprint' }
+# formatter = { command = 'zprint' }
+formatter = { command = 'raco', args = ["fmt"] }
 auto-format = true
