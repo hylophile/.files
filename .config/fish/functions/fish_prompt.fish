@@ -2,9 +2,9 @@ function fish_prompt
     set -l retc red
     test $status = 0; and set retc brmagenta
 
-    # set -l promptbg 44475A
-    set -l promptbg 282a36
-    # set -l promptbg $black
+    if test $COLUMNS -ne 80
+        set promptbg 282a36
+    end
 
     set -q __fish_git_prompt_showupstream
     or set -g __fish_git_prompt_showupstream auto
@@ -27,7 +27,6 @@ function fish_prompt
         set_color -o green
         echo -n ')'
     end
-
 
     set_color normal -b $promptbg
     set_color cyan
@@ -124,7 +123,10 @@ function fish_prompt
     # and _nim_prompt_wrapper $retc B (acpi -b | cut -d' ' -f 4-)
     #
     # New line
-    echo
+    # echo
+    printf '\x1b[J\n'
+    set_color normal
+    printf '\x1b[J'
 
     # Background jobs
     set_color normal -b $promptbg
