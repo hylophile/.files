@@ -296,7 +296,7 @@ wezterm.on('open-uri', function(window, pane, uri)
   if start == 1 then
     local authority = uri:gsub("^edit://", "")
     local path, line, column = string.match(authority, "([^:]+):?(%d*):?(%d*)")
-    local args = {"helix", authority}
+    local args = {"hx", authority}
     -- kak version
     -- local pos = ""
     -- if line ~= "" then pos = "+" .. line end
