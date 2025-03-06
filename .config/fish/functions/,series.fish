@@ -24,13 +24,20 @@ function ,series
             end
         end
 
+        function days_ago
+            set -l date1 (date -d (date --iso-8601=d) +%s)
+            set -l date2 (date -d $argv[1] +%s)
+            set -l diff (math "round (($date1 - $date2) / 86400)")
+            echo $diff
+        end
+
         set_color cyan
         printf "%20s: " "$query"
         set_color magenta
         printf "S%s E%s" $max_season $max_episode
         set_color normal
         set date (echo $max_file | rg -o '^[0-9]{4}-[0-9]{2}-[0-9]{2}')
-        printf " ($date)\n"
+        printf " ($(days_ago $date) days ago)\n"
     end
 
     for arg in $argv
