@@ -41,6 +41,14 @@ file-picker.hidden = false
 # [editor.inline-diagnostics]
 # cursor-line = "warning" # show warnings and errors on the cursorline inline
 
+[editor.auto-pairs]
+'(' = ')'
+'{' = '}'
+'[' = ']'
+'"' = '"'
+'`' = '`'
+'<' = '>'
+
 [editor.whitespace.render]
 space = "none"
 tab = "none"
@@ -78,13 +86,13 @@ q.o = ":config-open"
 q.f = ":format"
 q.j = [":write", ":sh just --fmt --unstable", ":reload", ":write"]
 "F" = "file_picker_in_current_buffer_directory"
+",".b = ":sh gh browse %{buffer_name}:%{cursor_line} --no-browser --commit=$(git rev-parse HEAD) | wl-copy &"
 
 [keys.select]
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
 h = "flip_selections"
 l = "goto_word"
-
 
 
 [keys.normal]
