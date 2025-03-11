@@ -18,6 +18,7 @@
 
 (after! org (setq org-startup-with-latex-preview t))
 
+(xterm-mouse-mode +1)
 
 ;; better scaling for mixed-pitch-mode
 (setq! face-font-rescale-alist '(("Jost" . 1.2)))
