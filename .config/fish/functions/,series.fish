@@ -32,12 +32,14 @@ function ,series
         end
 
         set_color cyan
-        printf "%20s: " "$query"
+        printf "%20s:  " "$query"
         set_color magenta
         printf "S%s E%s" $max_season $max_episode
         set_color normal
         set date (echo $max_file | rg -o '^[0-9]{4}-[0-9]{2}-[0-9]{2}')
-        printf " ($(days_ago $date) days ago)\n"
+        printf " %4s days ago  " "$(days_ago $date)"
+        set_color ffb86c
+        printf "%s\n" "$(string split , $max_file | tail -n1)"
     end
 
     for arg in $argv
