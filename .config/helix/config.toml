@@ -106,9 +106,7 @@ G = "goto_file_end"
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
 h = "flip_selections"
-l = "goto_word"
-# Enter command mode
-ret = 'command_mode'
+ret = 'goto_word'
 
 # Moving around
 H = 'extend_char_left'
