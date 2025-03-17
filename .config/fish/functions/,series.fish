@@ -38,7 +38,7 @@ function ,series
         set_color normal
         set date (echo $max_file | rg -o '^[0-9]{4}-[0-9]{2}-[0-9]{2}')
         printf " %4s days ago  " "$(days_ago $date)"
-        set_color ffb86c
+        set_color 6b6f8c
         printf "%s\n" "$(string split , $max_file | tail -n1)"
     end
 
