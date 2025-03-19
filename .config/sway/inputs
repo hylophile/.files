@@ -60,3 +60,7 @@ input $elecom {
 # bindsym --input-device=$slimblade --whole-window BTN_SIDE seat - cursor press button9
 # bindsym --input-device=$slimblade --whole-window --release BTN_SIDE seat - cursor release button9
 
+input 1133:45890:Keyboard_K380_Keyboard {
+    xkb_layout de
+    xkb_options caps:escape
+}
