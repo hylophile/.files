@@ -16,7 +16,11 @@
        (setq org-agenda-span 21))
 (setq org-cite-global-bibliography  '("~/tub/references.bib"))
 
-(after! org (setq org-startup-with-latex-preview t))
+(after! org (setq org-startup-with-latex-preview t)
+  (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
+  (setq org-latex-preview-live t)
+  (setq org-latex-preview-appearance-options (plist-put org-latex-preview-appearance-options :scale 2.0))
+  )
 
 (xterm-mouse-mode +1)
 
