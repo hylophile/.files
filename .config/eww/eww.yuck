@@ -24,6 +24,9 @@
             (label :text {battery.icon}
                    :tooltip "${battery.capacity}%, Remaining: ${battery.time}")))
 
+(deflisten lrhand-status :initial 'disabled' `scripts/lrhanded.sh`)
+(defwidget lrhand [output]
+           (eventbox :class "mt-2" :onclick "scripts/lrhanded.sh toggle" (label :text {lrhand-status == "disabled" ? "R" : "L"})))
 
 (deflisten volume-status :initial '{"source":0,"sink":0}' "scripts/volume.clj")
 (defvar sink-expanded false)
@@ -108,9 +111,10 @@
             :space-evenly false
             :valign "end"
             :orientation "v"
-            (azk :output output)
-            (vpn :output output)
+            ; (azk :output output)
+            ; (vpn :output output)
             (volume)
+            (lrhand :output output)
             (menu-toggle :output output)
             (systray :class "mt-2 mb-1"
                      :orientation "v"
