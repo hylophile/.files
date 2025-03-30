@@ -1,7 +1,7 @@
-(defpoll outputs :interval "3600s" "swaymsg -t get_outputs | jq '.[] .name' | jq -sc")
+(defpoll outputs :initial "[]" :interval "3600s" "swaymsg -t get_outputs | jq --unbuffered '.[] .name' | jq -sc --unbuffered")
 
 (deflisten workspaces :initial "[[],[],[],[]]" "scripts/workspaces")
-(deflisten current-output "scripts/output-name")
+(deflisten current-output :initial '{name:"DP-2"}' "scripts/output-name")
 
 (defwidget workspace-widget [spaces]
            (box
@@ -16,7 +16,7 @@
                   :class "workspace-wrapper ${workspace.visible ? 'visible' : ''} ${workspace.focused ? 'focused' : ''} ${workspace.urgent ? 'urgent' : ''}"
                   (label :text {workspace.name})))))
 
-(defpoll battery :interval "300s" "scripts/battery")
+(defpoll battery :initial 'null' :interval "300s" "scripts/battery")
 (defwidget bat []
            (box
             :visible {battery.supported && battery.capacity < 90}
@@ -79,24 +79,24 @@
                 (label :text date-minute)))
 
 
-(defpoll temperature :interval "600s" "scripts/weather.clj")
+(defpoll temperature :initial "0.0" :interval "600s" "scripts/weather.clj")
 (defwidget weather []
            (label :class "my-2" :text temperature :angle -90))
 
 
-(defpoll ethernet-p :interval "600s" "nmcli con show --active | grep ethernet")
-(deflisten azk-state "~/azk/show_azk.sh")
-(defwidget azk [output]
-           (button :visible {(output == 'DP-2' && hostname == 'day' ? true : false) && (ethernet-p != "")}
-                   :class "my-2 azk ${azk-state.state}"
-                   :onclick "~/azk/azk.py stamp"))
+; (defpoll ethernet-p :interval "600s" "nmcli con show --active | grep ethernet")
+; (deflisten azk-state "~/azk/show_azk.sh")
+; (defwidget azk [output]
+;            (button :visible {(output == 'DP-2' && hostname == 'day' ? true : false) && (ethernet-p != "")}
+;                    :class "my-2 azk ${azk-state.state}"
+;                    :onclick "~/azk/azk.py stamp"))
 
-(defpoll hostname :initial "" :interval "24h" `hostnamectl hostname`)
-(defpoll vpn-p :interval "600s" "pgrep openconnect; true")
-(defwidget vpn [output]
-           (button :visible {output == 'DP-2' && hostname == 'day' ? true : false}
-                   :class "my-2 vpn ${vpn-p != '' ? 'active' : ''}"
-                   :onclick "~/token/toggle.sh &"))
+; (defpoll hostname :initial "" :interval "24h" `hostnamectl hostname`)
+; (defpoll vpn-p :interval "600s" "pgrep openconnect; true")
+; (defwidget vpn [output]
+;            (button :visible {output == 'DP-2' && hostname == 'day' ? true : false}
+;                    :class "my-2 vpn ${vpn-p != '' ? 'active' : ''}"
+;                    :onclick "~/token/toggle.sh &"))
 
 
 (defwidget left [index]

@@ -19,6 +19,7 @@ for output in $outputs
     end
 
     eww open bar --id bar-$output --arg "height=$height" --arg "index=$ewwi" --arg "output=$output"
+    sleep 10
 
     set i (math $i+1)
 end
