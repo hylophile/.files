@@ -90,6 +90,9 @@ language-servers = ["tinymist"]
 formatter = { command = "typstyle" }
 auto-format = true
 
+[language-server.tinymist.config.preview.background]
+enabled = true
+
 [[language]]
 name = "css"
 file-types = ["css"]
@@ -138,3 +141,5 @@ name = "rust"
 '"' = '"'
 '`' = '`'
 '<' = '>'
+[language-server.rust-analyzer]
+command = "ra-multiplex"

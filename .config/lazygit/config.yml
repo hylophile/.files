@@ -3,4 +3,4 @@ customCommands:
     command: 'git pull --rebase --autostash'
     # context: 'localBranches'
     context: global
-    stream: true
+    output: log

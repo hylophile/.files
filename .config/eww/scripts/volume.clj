@@ -68,7 +68,7 @@
    (str "pw-mon")))
 
 (def last-event-time (atom 0))
-(def debounce-delay 500)
+(def debounce-delay 0)
 
 (defn debounce-volume-status []
   (let [now (System/currentTimeMillis)]

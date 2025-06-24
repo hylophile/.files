@@ -8,7 +8,6 @@ end
 
 distrobox_auto_setup
 
-
 function ls --wraps=lsd --description 'alias ls=lsd'
     lsd $argv
 end
@@ -21,7 +20,7 @@ function llt --wraps='lsd -alrt' --description 'alias llt=lsd -alrt'
     lsd -alrt $argv
 end
 
-
 # bind \cW repaint
 # bind \ch backward-kill-word
 bind \ez 'disown; fish_prompt'
+bind \cx fg

@@ -84,7 +84,7 @@ local config = {
   },
 
   -- enable_wayland = false,
-  front_end = 'WebGpu',
+  -- front_end = 'WebGpu',
   foreground_text_hsb = {
     -- hue = 1.25,
     -- saturation = 0.9,

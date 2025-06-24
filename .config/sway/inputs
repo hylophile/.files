@@ -63,4 +63,9 @@ input $elecom {
 input 1133:45890:Keyboard_K380_Keyboard {
     xkb_layout de
     xkb_options caps:escape
+    repeat_delay 600
+}
+
+input 1133:45091:Logitech_Wireless_Mouse_MX_Master_3 {
+    pointer_accel 0.25
 }

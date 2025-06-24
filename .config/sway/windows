@@ -2,6 +2,7 @@
 #!/usr/bin/env bash # for helix syntax highlighting
 
 
+for_window [class=".*"] inhibit_idle fullscreen
 
 for_window [app_id="chrome-outlook.office.com__-Default"]          title_format "<span foreground='#0072C6' face='Symbols Nerd Font Mono' rise='2pt'>󰴢</span> %title"
 for_window [app_id="chrome-teams.microsoft.com__-Default"]         title_format "<span foreground='#7B83EC' face='Symbols Nerd Font Mono' rise='2pt'>󰊻</span> %title"

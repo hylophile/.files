@@ -26,10 +26,9 @@ exec swayidle -w timeout 900 'swaymsg "output * dpms off"' resume 'swaymsg "outp
 
 exec_always "eww kill; ~/scripts/eww-start.fish"
 
-exec kak -d -s meow
+exec solaar -w hide
 
-
-
+# exec kak -d -s meow
 # exec ~/scripts/move.scm reset
 # exec ~/scripts/switch-bg.scm all
 # exec ~/scripts/dynamic-opacity.clj

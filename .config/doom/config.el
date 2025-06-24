@@ -20,6 +20,8 @@
   (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
   (setq org-latex-preview-live t)
   (setq org-latex-preview-appearance-options (plist-put org-latex-preview-appearance-options :scale 2.0))
+(setq org-startup-with-link-previews t)
+(setq org-cycle-link-previews-display t)
   )
 
 (xterm-mouse-mode +1)
