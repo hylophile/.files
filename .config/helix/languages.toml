@@ -143,3 +143,6 @@ name = "rust"
 '<' = '>'
 [language-server.rust-analyzer]
 command = "ra-multiplex"
+
+[language-server]
+lean = { command = "lean", args = ["--server"] }
