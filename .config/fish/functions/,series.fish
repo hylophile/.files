@@ -3,7 +3,7 @@ function ,series
         set max_season 0
         set max_episode 0
         set max_file ""
-        set -l list (xsv input -d '\t' ~/.config/mpv/hey.log | rgi $query)
+        set -l list (rg --smart-case $query ~/.config/mpv/hey.log)
         set -l regex 's([0-9]{2})e([0-9]{2})'
 
         for file in $list
@@ -39,13 +39,13 @@ function ,series
         set date (echo $max_file | rg -o '^[0-9]{4}-[0-9]{2}-[0-9]{2}')
         printf " %4s days ago  " "$(days_ago $date)"
 
-        set -l pos "$(string split , $max_file | head -3 | tail -1)"
-        set -l dur "$(string split , $max_file | head -4 | tail -1)"
+        set -l pos "$(string split \t $max_file | head -3 | tail -1)"
+        set -l dur "$(string split \t $max_file | head -4 | tail -1)"
         set -l percent (math "round (100 * $pos / $dur)")
         printf "%3s%%  " $percent
 
         set_color 6b6f8c
-        printf "%s\n" "$(string split , $max_file | head -2 | tail -1)"
+        printf "%s\n" "$(string split \t $max_file | head -2 | tail -1)"
     end
 
     for arg in $argv
