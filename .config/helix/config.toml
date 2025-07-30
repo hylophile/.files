@@ -86,6 +86,7 @@ q.o = ":config-open"
 q.f = ":format"
 q.j = [":write", ":sh just --fmt --unstable", ":reload", ":write"]
 "F" = "file_picker_in_current_buffer_directory"
+z = ":lsp-restart"
 ",".b = ":sh gh browse %{buffer_name}:%{cursor_line} --no-browser --commit=$(git rev-parse HEAD) | wl-copy &"
 
 [keys.select]
