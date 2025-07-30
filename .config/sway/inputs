@@ -18,11 +18,11 @@ input 1:1:AT_Translated_Set_2_keyboard {
   #us,de
     xkb_layout de
     xkb_options caps:escape
+    xkb_options compose:prsc
 }
 
 input type:keyboard {
     xkb_options compose:rwin
-    xkb_options compose:prsc
     repeat_delay 200
     repeat_rate 35
 }
