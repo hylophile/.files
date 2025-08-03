@@ -20,7 +20,9 @@
                   (filter #(% "focused") $)
                   (first $)
                   ($ "name"))
-        names (map #(% "name") outputs-json)
+        names (as-> outputs-json $
+                (filter #(% "active") $)
+                (map #(% "name") $))
         outputs-list (->> names
                           (repeat 2)
                           flatten)
@@ -43,3 +45,4 @@
                         (filter #(% "visible"))
                         (map #(% "num")))}))
 
+(printf (str(outputs)))
