@@ -1,0 +1,59 @@
+include "%L"
+
+<Multi_key> <m> <f> <a> : "∀"
+
+<Multi_key> <period> <less> : "⟨"
+<Multi_key> <period> <greater> : "⟩"
+
+# Lowercase Greek letters (Greek keyboard layout mapping)
+<Multi_key> <g> <a> : "α"   # alpha
+<Multi_key> <g> <b> : "β"   # beta
+<Multi_key> <g> <c> : "ψ"   # psi
+<Multi_key> <g> <d> : "δ"   # delta
+<Multi_key> <g> <e> : "ε"   # epsilon
+<Multi_key> <g> <f> : "φ"   # phi
+<Multi_key> <g> <g> : "γ"   # gamma
+<Multi_key> <g> <h> : "η"   # eta
+<Multi_key> <g> <i> : "ι"   # iota
+<Multi_key> <g> <j> : "ξ"   # xi
+<Multi_key> <g> <k> : "κ"   # kappa
+<Multi_key> <g> <l> : "λ"   # lambda
+<Multi_key> <g> <m> : "μ"   # mu
+<Multi_key> <g> <n> : "ν"   # nu
+<Multi_key> <g> <o> : "ο"   # omicron
+<Multi_key> <g> <p> : "π"   # pi
+<Multi_key> <g> <r> : "ρ"   # rho
+<Multi_key> <g> <s> : "σ"   # sigma
+<Multi_key> <g> <t> : "τ"   # tau
+<Multi_key> <g> <u> : "θ"   # theta
+<Multi_key> <g> <v> : "ω"   # omega
+<Multi_key> <g> <w> : "ς"   # final sigma
+<Multi_key> <g> <x> : "χ"   # chi
+<Multi_key> <g> <y> : "υ"   # upsilon
+<Multi_key> <g> <z> : "ζ"   # zeta
+
+# Uppercase Greek letters (Greek keyboard layout mapping)
+<Multi_key> <G> <A> : "Α"   # Alpha
+<Multi_key> <G> <B> : "Β"   # Beta
+<Multi_key> <G> <C> : "Ψ"   # Psi
+<Multi_key> <G> <D> : "Δ"   # Delta
+<Multi_key> <G> <E> : "Ε"   # Epsilon
+<Multi_key> <G> <F> : "Φ"   # Phi
+<Multi_key> <G> <G> : "Γ"   # Gamma
+<Multi_key> <G> <H> : "Η"   # Eta
+<Multi_key> <G> <I> : "Ι"   # Iota
+<Multi_key> <G> <J> : "Ξ"   # Xi
+<Multi_key> <G> <K> : "Κ"   # Kappa
+<Multi_key> <G> <L> : "Λ"   # Lambda
+<Multi_key> <G> <M> : "Μ"   # Mu
+<Multi_key> <G> <N> : "Ν"   # Nu
+<Multi_key> <G> <O> : "Ο"   # Omicron
+<Multi_key> <G> <P> : "Π"   # Pi
+<Multi_key> <G> <R> : "Ρ"   # Rho
+<Multi_key> <G> <S> : "Σ"   # Sigma
+<Multi_key> <G> <T> : "Τ"   # Tau
+<Multi_key> <G> <U> : "Θ"   # Theta
+<Multi_key> <G> <V> : "Ω"   # Omega
+<Multi_key> <G> <X> : "Χ"   # Chi
+<Multi_key> <G> <Y> : "Υ"   # Upsilon
+<Multi_key> <G> <Z> : "Ζ"   # Zeta
