@@ -1,9 +1,17 @@
 function fish_prompt
     set -l retc red
-    test $status = 0; and set retc brmagenta
+    set -l mainc blue
+    test $status = 0; and set retc brwhite
 
     if test $COLUMNS -ne 80
-        set promptbg 282a36
+        # set promptbg e1eaed
+        # set promptbg f1ece4
+        # set promptbg e4ddd2
+        # set promptbg f2e9e1
+        # set promptbg dcd3c6
+        # set promptbg e4ddd2
+        set promptbg f1ece4
+        set promptbg f7f3ee
     end
 
     set -q __fish_git_prompt_showupstream
@@ -29,7 +37,7 @@ function fish_prompt
     end
 
     set_color normal -b $promptbg
-    set_color cyan
+    set_color $mainc
 
     # if test "$CONTAINER_ID" != ""
     #     printf "󰆢 "
@@ -39,12 +47,12 @@ function fish_prompt
     set_color -o $retc
     echo -n : #⋅
     set_color normal -b $promptbg
-    set_color cyan
+    set_color $mainc
     echo -n (date +%M)
     set_color -o $retc
     echo -n : #⋅
     set_color normal -b $promptbg
-    set_color cyan
+    set_color $mainc
     echo -n (date +%S)
     set_color -o $retc
     echo -n " ⊢ "
@@ -53,7 +61,7 @@ function fish_prompt
     if functions -q fish_is_root_user; and fish_is_root_user
         set_color red
     else
-        set_color cyan
+        set_color $mainc
     end
 
     echo -n $USER
@@ -62,14 +70,14 @@ function fish_prompt
     set_color normal -b $promptbg
 
     # if [ -z "$SSH_CLIENT" ]
-    #     set_color cyan
+    #     set_color $mainc
     # else
-    #     set_color cyan
+    #     set_color $mainc
     # end
     if test "$CONTAINER_ID" = ""
-        set_color cyan
+        set_color $mainc
     else
-        set_color --underline cyan
+        set_color --underline $mainc
     end
 
     echo -n (cat /etc/hostname)
@@ -86,7 +94,7 @@ function fish_prompt
 
     # echo -n " "(pwd)
     # set_color -o $retc
-    set_color cyan
+    set_color $mainc
     echo -n " "
     if string match -q -- "$HOME*" "$PWD"
         printf "~"
@@ -95,7 +103,7 @@ function fish_prompt
         set_color -o $retc
         echo -n /
         set_color normal -b $promptbg
-        set_color cyan
+        set_color $mainc
         printf "%s" $i
     end
     set_color -o green
