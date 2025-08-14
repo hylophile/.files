@@ -142,11 +142,11 @@ local config = {
     -- background = "#f7f3ee",
     -- cursor_bg = "#f8f8f2",
     -- -- Overrides the text color when the current cell is occupied by the cursor
-    cursor_fg = "#f8f8f2",
+    -- cursor_fg = "#f8f8f2",
     -- -- Specifies the border color of the cursor when the cursor style is set to Block,
     -- -- or the color of the vertical or horizontal bar when the cursor style is set to
     -- -- Bar or Underline.
-    cursor_border = "#f8f8f2",
+    -- cursor_border = "#f8f8f2",
     -- default_cursor_style = "SteadyUnderline",
     -- the foreground color of selected text
     -- selection_fg = "black",

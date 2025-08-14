@@ -6,6 +6,7 @@
 theme = "my_flatwhite"
 
 [editor]
+gutters = ["diagnostics", "line-numbers", "diff"]
 line-number = "relative"
 cursorline = true
 auto-save = true
@@ -95,6 +96,7 @@ z = ":lsp-restart"
 "}" = "goto_next_paragraph"
 h = "flip_selections"
 l = "goto_word"
+ret = 'extend_to_word'
 
 
 [keys.normal]
