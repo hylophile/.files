@@ -58,8 +58,8 @@
 
 "diagnostic" = { modifiers = ["underlined"] }
 
-"diagnostic.info" = { underline = { color = "orange_text", style = "curl" } }
-"diagnostic.warning" = { underline = { color = "orange_text", style = "curl" } }
+"diagnostic.info" = { underline = { color = "diff_renamed", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "diff_change", style = "curl" } }
 "diagnostic.error" = { underline = { color = "diff_delete", style = "curl" } }
 "diagnostic.unnecessary" = { modifiers = ["dim"] }
 "diagnostic.deprecated" = { modifiers = ["crossed_out"] }
@@ -86,7 +86,7 @@
 "markup.quote" = { fg = "teal_text", bg = "teal_bg" }
 "markup.list" = { fg = "purple_text", bg = "purple_bg" }
 
-# "ui.background" = { fg = "base1", bg = "base7" }
+# "ui.background" = { fg = "base1", bg = "base6" }
 "ui.cursorline" = { bg = "base6" }
 # "ui.cursor.normal" = { fg = "base1", bg = "base7", modifiers = ["reversed"] }
 # "ui.cursor.insert" = { fg = "blue_text", bg = "blue_text" }
@@ -94,7 +94,7 @@
 # "ui.cursor.primary" = { fg = "base1", bg = "base7", modifiers = ["reversed"] }
 # "ui.cursor.match" = { fg = "base5", bg = "base3", modifiers = ["reversed"] }
 
-"ui.cursor" = { fg = "base6", bg="base2" }
+"ui.cursor" = { fg = "base6", bg = "base2" }
 "ui.cursor.select" = { bg = "base3" }
 "ui.cursor.insert" = { fg = "base1", bg = "base3" }
 "ui.cursor.match" = { fg = "teal_text", bg = "teal_bg" }
@@ -108,8 +108,10 @@
 "ui.virtual" = { fg = "base5", bg = "base6" }
 "ui.virtual.whitespace" = { fg = "base5" }
 "ui.virtual.ruler" = { bg = "base6" }
+# "ui.virtual.jump-label" = { fg = "diff_delete", bg = "teal_text" } #, modifiers = ["bold"] }
+"ui.virtual.jump-label" = { fg = "teal_bg", bg = "teal_text" } #, modifiers = ["bold"] }
 # "ui.virtual.jump-label" = { fg = "green_bg", bg = "green_text" } #, modifiers = ["bold"] }
-"ui.virtual.jump-label" = { fg = "base7", bg = "base2" } #, modifiers = ["bold"] }
+# "ui.virtual.jump-label" = { fg = "base7", bg = "base2" } #, modifiers = ["bold"] }
 # Invalid modifier: "normal". See 'https://github.com/helix-editor/helix/issues/5709'
 # "ui.virtual.inlay-hint" = { fg = "base4", modifiers = ["normal"] }
 # "ui.virtual.inlay-hint.parameter" = { fg = "base3", modifiers = ["normal"] }
@@ -131,6 +133,7 @@
   "bold",
 ] }
 
+"ui.background" = { fg = "base1", bg = "base7" }
 "ui.text" = { fg = "base1" }
 "ui.text.focus" = { fg = "base1", bg = "base4", modifiers = ["bold"] }
 
@@ -171,12 +174,23 @@ blue_bg = "#dde4f2"
 purple_text = "#614c61"
 purple_text_sec = "#9c739c"
 purple_bg = "#f1ddf1"
-diff_add = "#2db448"
-diff_change = "#f2a60d"
-diff_change_dark = "#795306"
-diff_delete = "#ff1414"
-diff_renamed = "#52aeff"
+# diff_add = "#2db448"
+# diff_change = "#f2a60d"
+# diff_change_dark = "#795306"
+# diff_delete = "#ff1414"
+# diff_renamed = "#52aeff"
 white = "#ffffff"
+diff_add = "#80bd00"
+diff_change = "#f08e00"
+# diff_change_dark = "#795306"
+diff_delete = "#e00000"
+diff_renamed = "#00bda4"
 
 yellow_text = "#5b5a43"
-yellow_bg = "#f5edc7"
+# yellow_bg = "#f5edc7"
+# yellow_bg = "#f9f2b7"
+# yellow_bg = "#f0e9ac"
+# yellow_bg = "#f9f2c1"
+# yellow_bg = "#f6f0c1"
+# yellow_bg = "#f8f3cb"
+yellow_bg = "#f4edcb"

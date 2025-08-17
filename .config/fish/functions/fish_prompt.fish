@@ -1,17 +1,18 @@
 function fish_prompt
     set -l retc red
-    set -l mainc blue
-    test $status = 0; and set retc brwhite
+    set -l mainc cyan
+    test $status = 0; and set retc brmagenta
 
     if test $COLUMNS -ne 80
         # set promptbg e1eaed
+        set promptbg 282a36
         # set promptbg f1ece4
         # set promptbg e4ddd2
         # set promptbg f2e9e1
         # set promptbg dcd3c6
         # set promptbg e4ddd2
-        set promptbg f1ece4
-        set promptbg f7f3ee
+        # set promptbg f1ece4
+        # set promptbg f7f3ee
     end
 
     set -q __fish_git_prompt_showupstream

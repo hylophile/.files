@@ -15,6 +15,10 @@ name = "nix"
 formatter = { command = "alejandra", args = [] }
 auto-format = true
 
+[[language]]
+name = "lua"
+formatter = { command = "stylua", args = ["-"] }
+auto-format = true
 
 # doesn't actually work
 # https://github.com/casey/just/pull/1933
@@ -146,4 +150,4 @@ command = "ra-multiplex"
 
 [language-server.lean]
 command = "lean"
-args = [ "--server" ] 
+args = ["--server"]

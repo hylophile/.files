@@ -1,38 +1,30 @@
-user: dark_red # love
-group: dark_yellow # gold
+#  Dracula
+#  ┬  ┌─┐┌┬┐
+#  │  └─┐ ││
+#  ┴─┘└─┘─┴┘
+# urrick hunt
+
+user: 159 # cyan
+group: 231 # foreground
 permission:
-  read: dark_cyan # foam
-  write: dark_magenta # iris
-  exec: dark_magenta # rose
-  exec-sticky: dark_yellow # gold
-  no-access: grey # muted
-  octal: dark_grey # subtle
-  acl: cyan # pine
-  context: dark_grey # overlay
+  read: 183 # blue
+  write: 212 # magenta
+  exec: 159 # cyan
+  exec-sticky: 159 # cyan
+  no-access: 210 # red
 date:
-  hour-old: white # text
-  day-old: dark_cyan # foam
-  older: dark_grey # subtle
+  hour-old: 146 # comment 20% lighter
+  day-old: 103 # comment
+  older: 60 # current line
 size:
-  none: grey # muted
-  small: dark_cyan # pine
-  medium: cyan # foam
-  large: magenta # iris
+  none: 60 # current line
+  small: 120 # green
+  medium: 215 # orange
+  large: 210 # red
 inode:
-  valid: cyan # foam
-  invalid: grey # muted
+  valid: 231 # foreground
+  invalid: 210 # red
 links:
-  valid: white # text
-  invalid: grey # muted
-tree-edge: grey # muted
-git-status:
-  default: grey # muted
-  unmodified: dark_grey # subtle
-  ignored: grey # muted
-  new-in-index: dark_cyan # foam
-  new-in-workdir: dark_cyan # foam
-  typechange: dark_yellow # gold
-  deleted: dark_red # love
-  renamed: dark_cyan # pine
-  modified: dark_magenta # rose
-  conflicted: dark_red # love
+  valid: 159 # cyan
+  invalid: 210 # red
+tree-edge: 183 # blue

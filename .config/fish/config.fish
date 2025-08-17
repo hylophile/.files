@@ -20,7 +20,7 @@ function llt --wraps='lsd -alrt' --description 'alias llt=lsd -alrt'
     lsd -alrt $argv
 end
 
-fish_config theme choose rose-pine-dawn
+# fish_config theme choose rose-pine-dawn
 # fish_config theme choose "Snow Day"
 # fish_config theme choose snow
 # fish_config theme choose Tomorrow
