@@ -94,6 +94,7 @@
 # "ui.cursor.primary" = { fg = "base1", bg = "base7", modifiers = ["reversed"] }
 # "ui.cursor.match" = { fg = "base5", bg = "base3", modifiers = ["reversed"] }
 
+
 "ui.cursor" = { fg = "base6", bg = "base2" }
 "ui.cursor.select" = { bg = "base3" }
 "ui.cursor.insert" = { fg = "base1", bg = "base3" }
@@ -103,13 +104,17 @@
 "ui.cursor.primary" = { fg = "base7", bg = "base1" }
 
 "ui.selection" = { bg = "base4" }
-"ui.selection.primary" = { fg = "base6", bg = "base2" }
+# "ui.selection.primary" = { fg = "base6", bg = "base2" }
+"ui.selection.primary" = { bg = "base4" }
 
 "ui.virtual" = { fg = "base5", bg = "base6" }
 "ui.virtual.whitespace" = { fg = "base5" }
 "ui.virtual.ruler" = { bg = "base6" }
-# "ui.virtual.jump-label" = { fg = "diff_delete", bg = "teal_text" } #, modifiers = ["bold"] }
-"ui.virtual.jump-label" = { fg = "teal_bg", bg = "teal_text" } #, modifiers = ["bold"] }
+"ui.virtual.jump-label" = { fg = "teal_text", bg = "teal_bg", modifiers = [
+  "reversed",
+  "bold",
+] }
+# "ui.virtual.jump-label" = { fg = "teal_bg", bg = "teal_text" } #, modifiers = ["bold"] }
 # "ui.virtual.jump-label" = { fg = "green_bg", bg = "green_text" } #, modifiers = ["bold"] }
 # "ui.virtual.jump-label" = { fg = "base7", bg = "base2" } #, modifiers = ["bold"] }
 # Invalid modifier: "normal". See 'https://github.com/helix-editor/helix/issues/5709'
@@ -137,11 +142,11 @@
 "ui.text" = { fg = "base1" }
 "ui.text.focus" = { fg = "base1", bg = "base4", modifiers = ["bold"] }
 
-"ui.menu" = { fg = "base1", bg = "base7" }
-"ui.menu.selected" = { fg = "base1", bg = "base4" }
-"ui.menu.scroll" = { fg = "base1", bg = "base7" }
-"ui.help" = { fg = "base1", bg = "base7" }
-"ui.popup" = { fg = "base1", bg = "base7" }
+"ui.menu" = { fg = "base1", bg = "base5" }
+"ui.menu.selected" = { fg = "base7", bg = "base2" }
+"ui.menu.scroll" = { fg = "base1", bg = "base5" }
+"ui.help" = { fg = "base1", bg = "base5" }
+"ui.popup" = { fg = "base1", bg = "base5" }
 "ui.window" = { fg = "base1" }
 # "ui.background.separator" = { fg = "base1", bg = "base7" }
 # "ui.background" = { fg = "base1", bg = "base7" }

@@ -43,6 +43,11 @@ file-picker.hidden = false
 # [editor.inline-diagnostics]
 # cursor-line = "warning" # show warnings and errors on the cursorline inline
 
+[editor.word-completion]
+enable = true
+# Set the trigger length lower so that words are completed more often
+trigger-length = 4
+
 [editor.auto-pairs]
 '(' = ')'
 '{' = '}'
