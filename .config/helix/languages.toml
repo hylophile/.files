@@ -149,5 +149,5 @@ name = "rust"
 command = "ra-multiplex"
 
 [language-server.lean]
-command = "lean"
-args = ["--server"]
+command = "lake"
+args = ["env", "lean", "--server"]
