@@ -151,3 +151,7 @@ command = "ra-multiplex"
 [language-server.lean]
 command = "lake"
 args = ["env", "lean", "--server"]
+
+[[language]]
+name = "lean"
+rulers = []
