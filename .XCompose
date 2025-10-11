@@ -1,6 +1,11 @@
 include "%L"
 
 <Multi_key> <m> <f> <a> : "∀"
+<Multi_key> <m> <e> <x> : "∃"
+<Multi_key> <m> <n> <d> : "∧"
+<Multi_key> <m> <o> <r> : "∨"
+<Multi_key> <m> <n> <t> : "¬"
+
 
 <Multi_key> <period> <less> : "⟨"
 <Multi_key> <period> <greater> : "⟩"
