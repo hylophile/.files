@@ -22,7 +22,8 @@
 # "comment.line.documentation" = { fg = "base2" }
 # "comment.block" = {}
 # "comment.block.documentation" = { fg = "base2" }
-# "comment" = { bg = "yellow_bg", fg = "yellow_text", modifiers = ["italic"] }
+"comment.unused" = {}
+"comment" = { bg = "yellow_bg", fg = "yellow_text", modifiers = ["italic"] }
 "comment.line" = { bg = "yellow_bg", fg = "yellow_text", modifiers = [
   "italic",
 ] }
@@ -50,7 +51,7 @@
 # "variable" = {modifiers=["italic"]}
 # "variable" = { fg = "blue_text", bg = "blue_bg" }
 # "variable.parameter" = { fg = "blue_text", bg = "blue_bg" }
-"identifier" = { fg = "blue_text", bg = "blue_bg" }
+# "identifier" = { fg = "blue_text", bg = "blue_bg" }
 # "type" = { fg = "blue_text", bg = "blue_bg" }
 # "variable" = { fg = "blue_text", bg = "blue_bg" }
 # "variable.parameter" = { fg = "orange_text", bg = "orange_bg" } # { fg = "base1" }
