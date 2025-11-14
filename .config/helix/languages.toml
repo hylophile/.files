@@ -91,6 +91,7 @@ file-types = ["dts", "dtsi", "keymap"]
 [[language]]
 name = "typst"
 language-servers = ["tinymist"]
+# language-servers = ["tinymist", "typos"]
 formatter = { command = "typstyle" }
 auto-format = true
 
@@ -155,3 +156,6 @@ args = ["env", "lean", "--server"]
 [[language]]
 name = "lean"
 rulers = []
+
+[language-server.typos]
+command = "typos-lsp"

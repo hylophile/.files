@@ -16,13 +16,13 @@
 # Author: Alexander Brevig <alexanderbrevig@gmail.com>, krfl <kr.fl@outlook.com>
 # Adopted from https://github.com/biletskyy/flatwhite-syntax
 
-"attribute" = { fg = "blue_text", bg = "blue_bg" }
+# "attribute" = { fg = "blue_text", bg = "blue_bg" }
 # "comment" = { fg = "base3", modifiers = ["italic"] }
 # "comment.line" = {}
 # "comment.line.documentation" = { fg = "base2" }
 # "comment.block" = {}
 # "comment.block.documentation" = { fg = "base2" }
-"comment" = { bg = "yellow_bg", fg = "yellow_text", modifiers = ["italic"] }
+# "comment" = { bg = "yellow_bg", fg = "yellow_text", modifiers = ["italic"] }
 "comment.line" = { bg = "yellow_bg", fg = "yellow_text", modifiers = [
   "italic",
 ] }
@@ -31,26 +31,27 @@
 ] }
 # line_comment = { bg = "#f5edc7", fg = "#5b5a43", modifiers = ["italic"] }
 
-"constant" = { fg = "blue_text", bg = "blue_bg" }
-"module.declaration.def.match_alt" = { fg = "blue_text", bg = "blue_bg" }
-"constructor" = { fg = "base1" }
+"constant" = { fg = "orange_text", bg = "orange_bg" }
+# "module.declaration.def.match_alt" = { fg = "blue_text", bg = "blue_bg" }
+# "constructor" = { fg = "base1" }
 "function" = { fg = "base1", modifiers = ["bold"] }
 "keyword" = { fg = "purple_text", bg = "purple_bg" }
 "label" = { modifiers = ["bold"] }
-"namespace" = { fg = "teal_text", bg = "teal_bg" }
+# "namespace" = { fg = "teal_text", bg = "teal_bg" }
 # "operator" = { fg = "base1" }
-"operator" = { fg = "orange_text", bg = "orange_bg" }
-"punctuation.bracket" = { fg = "orange_text", bg = "orange_bg", modifiers = [
-  "bold",
-] }
-"special" = { fg = "blue_text", bg = "blue_bg" }
-"quoted" = { fg = "blue_text", bg = "blue_bg" }
+# "operator" = { fg = "orange_text", bg = "orange_bg" }
+# "punctuation.bracket" = { fg = "orange_text", bg = "orange_bg", modifiers = [
+#   "bold",
+# ] }
+# "special" = { fg = "blue_text", bg = "blue_bg" }
+# "quoted" = { fg = "blue_text", bg = "blue_bg" }
 "string" = { fg = "green_text", bg = "green_bg" }
 # "type" = { fg = "base1" }
-# "variable" = { fg = "base1" }
-"variable.parameter" = { fg = "blue_text", bg = "blue_bg" }
+# "variable" = {modifiers=["italic"]}
+# "variable" = { fg = "blue_text", bg = "blue_bg" }
+# "variable.parameter" = { fg = "blue_text", bg = "blue_bg" }
 "identifier" = { fg = "blue_text", bg = "blue_bg" }
-"type" = { fg = "blue_text", bg = "blue_bg" }
+# "type" = { fg = "blue_text", bg = "blue_bg" }
 # "variable" = { fg = "blue_text", bg = "blue_bg" }
 # "variable.parameter" = { fg = "orange_text", bg = "orange_bg" } # { fg = "base1" }
 # "variable.parameter" = { fg = "blue_text", bg = "blue_bg" }

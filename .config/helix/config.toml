@@ -95,6 +95,9 @@ q.j = [":write", ":sh just --fmt --unstable", ":reload", ":write"]
 "F" = "file_picker_in_current_buffer_directory"
 z = ":lsp-restart"
 ",".b = ":sh gh browse %{buffer_name}:%{cursor_line} --no-browser --commit=$(git rev-parse HEAD) | wl-copy &"
+",".n = ":sh wl-copy %{buffer_name}"
+",".m.i = ":pipe awk '{print $0 + 1}'"
+",".m.d = ":pipe awk '{print $0 - 1}'"
 
 [keys.select]
 "{" = "goto_prev_paragraph"
