@@ -27,7 +27,7 @@ exec_always "eww kill; ~/scripts/eww-start.fish"
 exec solaar -w hide
 
 # virtual keyboard
-# exec wvkbd-mobintl --hidden -L 200
+exec wvkbd-deskintl --hidden -L 200
 # exec kak -d -s meow
 # exec ~/scripts/move.scm reset
 # exec ~/scripts/switch-bg.scm all

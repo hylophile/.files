@@ -21,7 +21,7 @@
 (def menu-items {:rofi ["rofi -show-icons -combi-modi window#drun -show combi"]
                  :zoom ["sh -c 'swaymsg output %s scale %s && eww reload'" zoom]
                  :gamma ["echo side-effect" gamma]
-                 :keyboard ["sh -c 'kill -s 34 $(pidof wvkbd-mobintl) && eww reload'"]
+                 :keyboard ["sh -c 'kill -s 34 $(pidof wvkbd-deskintl) && eww reload'"]
                  :next-output ["swaymsg focus output left"]
                  :light-monitor ["sh -c '~/scripts/hass.sh monitors'"]
                  :light-eingang ["sh -c '~/scripts/hass.sh eingang'"]
