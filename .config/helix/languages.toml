@@ -95,8 +95,9 @@ language-servers = ["tinymist"]
 formatter = { command = "typstyle" }
 auto-format = true
 
-[language-server.tinymist.config.preview.background]
-enabled = true
+[language-server.tinymist.config]
+typstExtraArgs = ["main.typ"]
+preview.background.enabled = true
 
 [[language]]
 name = "css"
@@ -159,3 +160,14 @@ rulers = []
 
 [language-server.typos]
 command = "typos-lsp"
+
+[[language]]
+name = "smt"
+scope = "source.smt"
+file-types = ["smt"]
+shebangs = []
+comment-token = ";"
+indent = { tab-width = 2, unit = "  " }
+# block-comment-tokens = { start = "#|", end = "|#" }
+# language-servers = [ "racket" ]
+grammar = "scheme"

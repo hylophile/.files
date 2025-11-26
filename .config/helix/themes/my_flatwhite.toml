@@ -35,12 +35,12 @@
 "constant" = { fg = "orange_text", bg = "orange_bg" }
 # "module.declaration.def.match_alt" = { fg = "blue_text", bg = "blue_bg" }
 # "constructor" = { fg = "base1" }
-"function" = { fg = "base1", modifiers = ["bold"] }
+# "function" = { fg = "base1", modifiers = ["bold"] }
 "keyword" = { fg = "purple_text", bg = "purple_bg" }
 "label" = { modifiers = ["bold"] }
 # "namespace" = { fg = "teal_text", bg = "teal_bg" }
 # "operator" = { fg = "base1" }
-# "operator" = { fg = "orange_text", bg = "orange_bg" }
+# "operator" = { fg = "purple_text", bg = "purple_bg" }
 # "punctuation.bracket" = { fg = "orange_text", bg = "orange_bg", modifiers = [
 #   "bold",
 # ] }
