@@ -3,7 +3,9 @@
 # theme = "my_modus"
 # theme = "my_poimandres"
 # theme = "my_default"
-theme = "my_flatwhite"
+[theme]
+light = "my_flatwhite"
+dark = "my_everforest"
 
 [editor]
 gutters = ["diagnostics", "line-numbers", "diff"]
