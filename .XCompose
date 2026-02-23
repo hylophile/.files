@@ -6,6 +6,9 @@ include "%L"
 <Multi_key> <m> <o> <r> : "∨"
 <Multi_key> <m> <n> <t> : "¬"
 
+<Multi_key> <b> <b> <l> : "└─"
+
+<Multi_key> <bar> <minus> <greater> : "↦"
 
 <Multi_key> <period> <less> : "⟨"
 <Multi_key> <period> <greater> : "⟩"
