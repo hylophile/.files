@@ -29,3 +29,4 @@ end
 # bind \ch backward-kill-word
 bind \ez 'disown; fish_prompt'
 bind \cx fg
+mise activate fish | source
