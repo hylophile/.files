@@ -5,3 +5,7 @@ inherits = "poimandres"
 comment = { fg = "brightYellow", modifiers = ["italic"] }
 "ui.selection" = { bg = "darkerGray.50" }
 "ui.selection.primary" = { bg = "bluishGray" }
+"ui.virtual.jump-label" = { bg = "bg", fg = "offWhite", modifiers = [
+  "reversed",
+  "bold",
+] }
