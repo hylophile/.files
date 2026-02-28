@@ -1,11 +1,5 @@
-# theme = "modus_vivendi_tritanopia"
-
-# theme = "my_modus"
-# theme = "my_poimandres"
-# theme = "my_default"
-[theme]
-light = "my_flatwhite"
-dark = "my_everforest"
+# my_flatwhite, my_poimandres, my_everforest
+theme = "my_flatwhite"
 
 [editor]
 gutters = ["diagnostics", "line-numbers", "diff"]

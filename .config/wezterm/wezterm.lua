@@ -55,25 +55,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     return "   " .. tab.active_pane.title .. "   "
 end)
 
-function query_appearance_gnome()
+function query_appearance()
     local success, stdout = wezterm.run_child_process({
-        "gsettings",
+        "darkman",
         "get",
-        "org.gnome.desktop.interface",
-        "gtk-theme",
     })
-    -- lowercase and remove whitespace
-    stdout = stdout:lower():gsub("%s+", "")
-    local mapping = {
-        highcontrast = "LightHighContrast",
-        highcontrastinverse = "DarkHighContrast",
-        adwaita = "Light",
-        ["adwaita-dark"] = "Dark",
-    }
-    local appearance = mapping[stdout]
-    if appearance then
-        return appearance
-    end
     if stdout:find("dark") then
         return "Dark"
     end
@@ -83,7 +69,7 @@ end
 wezterm.on("update-right-status", function(window, pane)
     local info = pane:get_foreground_process_info()
     if info then
-        if string.find(info.executable, "hx") and query_appearance_gnome() == "Light" then
+        if string.find(info.executable, "hx") and query_appearance() == "Light" then
             window:set_config_overrides({
                 colors = dracula_colors_c,
                 font = wezterm.font("hylosevka", { weight = "Medium" }),
