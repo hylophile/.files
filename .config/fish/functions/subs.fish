@@ -9,9 +9,9 @@ function subs
     set -l backupd (date --iso-8601=s | sed -E 's/(\:|\+)//g')
     if test -n "$inp" && test -n "$srt"
         set_color green
-        echo uvx ffsubsync $argv[1] -i $inp -o $outp
+        echo ffsubsync $argv[1] -i $inp -o $outp
         set_color normal
-        uvx ffsubsync $argv[1] -i $inp -o $outp
+        ffsubsync $argv[1] -i $inp -o $outp
 
         set_color green
         echo mv $srt .(basename $srt).backup.$backupd
