@@ -182,7 +182,7 @@ bindsym $mod+F2 exec ~/scripts/record-selection.fish
 bindsym $mod+F3 exec ~/scripts/org-screenshot.sh
 
 # color picker to clipboard
-bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
+bindsym $mod+F12 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | tr -d '\n' | wl-copy
 
 
 bindsym $mod+j exec rofimoji --selector wofi --skin-tone neutral
