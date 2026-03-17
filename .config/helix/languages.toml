@@ -92,7 +92,8 @@ file-types = ["dts", "dtsi", "keymap"]
 name = "typst"
 language-servers = ["tinymist"]
 # wraps text when formatting typst with typstyle
-formatter = { command = "typstyle", args = ["--wrap-text"] }
+# formatter = { command = "typstyle", args = ["--wrap-text"] }
+formatter = { command = "typstyle", args = [] }
 auto-format = true
 
 [language-server.tinymist.config]
