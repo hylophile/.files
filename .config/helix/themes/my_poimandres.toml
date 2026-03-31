@@ -1,7 +1,7 @@
 inherits = "poimandres"
 "ui.background" = {}
 "ui.gutter" = {}
-"ui.linenr" = { bg = "" }
+# "ui.linenr" = { bg = "" }
 comment = { fg = "brightYellow", modifiers = ["italic"] }
 "ui.selection" = { bg = "darkerGray.50" }
 "ui.selection.primary" = { bg = "bluishGray" }
