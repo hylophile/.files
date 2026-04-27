@@ -6,8 +6,9 @@
 
 (defn cmd [cmd]
   (->> cmd
-       (shell {:out :string})
+       (shell {:out :string :continue true})
        :out
+       str/trim
        str/split-lines
        first))
 
@@ -15,9 +16,13 @@
   (cmd "wpctl get-volume @DEFAULT_AUDIO_SINK@"))
 
 (defn source-status []
-  (cmd "wpctl get-volume @DEFAULT_AUDIO_SOURCE@"))
+   (def o (:out (shell {:out :string} "wpctl get-volume @DEFAULT_AUDIO_SOURCE@")))
+   (if (str/blank? o)
+       "Volume: 0.00 [MUTED]"
+       o))
 
 (defn status->volume [status]
+  (println status)
   (let [[_ volume muted] (str/split status #" ")]
     (if (nil? muted)
       (-> volume
@@ -49,13 +54,12 @@
         {:error false
          :sink (status->volume (sink-status))
          :source (status->volume (source-status))
-         :source_is_mic (-> (shell {:out :string} "wpctl inspect @DEFAULT_AUDIO_SOURCE@")
-                            :out
+         :source_is_mic (-> (cmd "wpctl inspect @DEFAULT_AUDIO_SOURCE@ || echo error")
                             (str/includes? "source"))
          :bt (-> (shell {:out :string} "wpctl inspect @DEFAULT_AUDIO_SINK@")
                  :out
                  (str/includes? "bluez"))}
-        (catch Exception _ {:error true}))
+        (catch Exception e {:error e}))
       json/generate-string
       println))
 
