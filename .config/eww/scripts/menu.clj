@@ -25,6 +25,9 @@
                  :next-output ["swaymsg focus output left"]
                  :light-monitor ["sh -c '~/scripts/hass.sh monitors'"]
                  :light-eingang ["sh -c '~/scripts/hass.sh eingang'"]
+                 :notifs ["swaync-client -t"]
+                 :brb ["systemctl suspend"]
+                 :bye ["systemctl poweroff"]
                  }
   )
 

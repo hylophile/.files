@@ -161,11 +161,20 @@
                     :onclick "scripts/menu.clj keyboard"
                     (label :text "󰌌"))
             (button :class "button"
+                    :onclick "scripts/menu.clj notifs"
+                    (label :text "🔔"))
+            (button :class "button"
                     :onclick "scripts/menu.clj light-monitor"
                     (label :text "󱉓"))
             (button :class "button"
                     :onclick "scripts/menu.clj light-eingang"
                     (label :text "󰌵"))
+            (button :class "button"
+                    :onmiddleclick "scripts/menu.clj brb"
+                    (label :text "󰒲"))
+            (button :class "button"
+                    :onmiddleclick "scripts/menu.clj bye"
+                    (label :text "󰐥"))
             )
                       )
 
