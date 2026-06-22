@@ -16,7 +16,7 @@
   (cmd "wpctl get-volume @DEFAULT_AUDIO_SINK@"))
 
 (defn source-status []
-   (def o (:out (shell {:out :string} "wpctl list audio sources | grep source && wpctl get-volume @DEFAULT_AUDIO_SOURCE@")))
+   (def o (:out (shell {:out :string} "wpctl list audio sources | grep source && wpctl get-volume @DEFAULT_AUDIO_SOURCE@ || echo")))
    (if (str/blank? o)
        "Volume: 0.00 [MUTED]"
        o))
@@ -59,7 +59,7 @@
          :bt (-> (shell {:out :string} "wpctl inspect @DEFAULT_AUDIO_SINK@")
                  :out
                  (str/includes? "bluez"))}
-        (catch Exception e {:error e}))
+        (catch Exception _ {:error true}))
       json/generate-string
       println))
 
