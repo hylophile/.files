@@ -16,13 +16,13 @@
   (cmd "wpctl get-volume @DEFAULT_AUDIO_SINK@"))
 
 (defn source-status []
-   (def o (:out (shell {:out :string} "wpctl get-volume @DEFAULT_AUDIO_SOURCE@")))
+   (def o (:out (shell {:out :string} "wpctl list audio sources | grep source && wpctl get-volume @DEFAULT_AUDIO_SOURCE@")))
    (if (str/blank? o)
        "Volume: 0.00 [MUTED]"
        o))
 
 (defn status->volume [status]
-  (println status)
+  ; (println status)
   (let [[_ volume muted] (str/split status #" ")]
     (if (nil? muted)
       (-> volume
@@ -54,7 +54,7 @@
         {:error false
          :sink (status->volume (sink-status))
          :source (status->volume (source-status))
-         :source_is_mic (-> (cmd "wpctl inspect @DEFAULT_AUDIO_SOURCE@ || echo error")
+         :source_is_mic (-> (cmd "wpctl list audio sources")
                             (str/includes? "source"))
          :bt (-> (shell {:out :string} "wpctl inspect @DEFAULT_AUDIO_SINK@")
                  :out
@@ -69,7 +69,7 @@
   (process
    {:err :inherit
     :shutdown destroy-tree}
-   (str "pw-mon")))
+   (str "pw-mon -pao")))
 
 (def last-event-time (atom 0))
 (def debounce-delay 0)
@@ -85,7 +85,7 @@
   (binding [*in* rdr]
     (loop []
       (when-let [line (read-line)]
-        (when (str/includes? line "changed")
-          (reset! last-event-time (System/currentTimeMillis))
-          (debounce-volume-status))
+        (when (str/includes? line "PipeWire:Interface:Node")
+          (volume-status)
+          )
         (recur)))))
