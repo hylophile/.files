@@ -1,14 +1,14 @@
-[language-server.pyright]
-command = "basedpyright-langserver"
-args = ["--stdio"]
-# config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
+# [language-server.pyright]
+# command = "basedpyright-langserver"
+# args = ["--stdio"]
+# # config = {}                         # buggy behaviour, you need a pyproject.toml and pyrightconfig.json
 
 [[language]]
 name = "python"
 formatter = { command = "ruff", args = ["format", "--quiet", "-"] }
 auto-format = true
 roots = ["pyproject.toml"]
-language-servers = ["pyright"]
+language-servers = ["ty"]
 
 [[language]]
 name = "nix"
