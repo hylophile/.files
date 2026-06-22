@@ -17,9 +17,9 @@
 (setq org-cite-global-bibliography  '("~/tub/references.bib"))
 
 (after! org (setq org-startup-with-latex-preview t)
-  (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
+  (add-hook 'org-mode-hook 'org-latex-preview-mode)
   (setq org-latex-preview-live t)
-  (setq org-latex-preview-appearance-options (plist-put org-latex-preview-appearance-options :scale 2.0))
+  (setq org-latex-preview-appearance-options (plist-put org-latex-preview-appearance-options :scale 3.0))
 (setq org-startup-with-link-previews t)
 (setq org-cycle-link-previews-display t)
   )
@@ -88,6 +88,7 @@
           org-roam-ui-open-on-start t))
 
 (map! :map doom-leader-notes-map "r c" #'citar-org-roam-ref-add)
+(map! :map doom-leader-notes-map "r t" #'org-roam-tag-add)
 
 
 (use-package! org-modern
@@ -100,6 +101,12 @@
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda))
 
+(use-package! org-roam-timestamps
+  :after org-roam
+  :custom
+  (org-roam-timestamps-timestamp-parent-file nil)
+  (org-roam-timestamps-remember-timestamps nil)
+  :config (org-roam-timestamps-mode))
 
 (map! :after visual-fill-column :leader "t o" #'visual-fill-column-mode)
 (map! "C-+" #'doom/increase-font-size)
